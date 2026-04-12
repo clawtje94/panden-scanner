@@ -42,41 +42,46 @@ VERKOCHT_KEYWORDS = [
 ]
 
 
+_browser = None
+_browser_context = None
+
+def _get_browser():
+    """Hergebruik 1 browser voor alle verkocht-checks."""
+    global _browser, _browser_context
+    if _browser is None:
+        from playwright.sync_api import sync_playwright
+        _pw = sync_playwright().start()
+        _browser = _pw.chromium.launch(headless=True, args=["--no-sandbox"])
+        _browser_context = _browser.new_context(
+            user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+            locale="nl-NL",
+        )
+    return _browser_context
+
+
 def _check_url_verkocht(url: str) -> bool:
-    """Fetch de listing URL en check of er 'verkocht' op de pagina staat.
-    Returns True als het pand VERKOCHT is."""
+    """Open de listing URL in een echte browser en check of er
+    'verkocht' zichtbaar op de pagina staat. Returns True als VERKOCHT."""
     if not url:
         return False
     try:
-        import requests as req
-        r = req.get(url, headers={
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
-            "Accept-Language": "nl-NL,nl;q=0.9",
-        }, timeout=10, allow_redirects=True)
-        if r.status_code != 200:
-            return False  # pagina laadt niet, kan niet checken
-        tekst = r.text.lower()
+        ctx = _get_browser()
+        page = ctx.new_page()
+        page.goto(url, wait_until="domcontentloaded", timeout=15_000)
+        time.sleep(1.5)  # wacht op JS rendering
+
+        # Haal alle zichtbare tekst op (na JS rendering)
+        body_text = page.inner_text("body").lower()
+        page.close()
+
+        # Check op verkocht-keywords in de zichtbare tekst
         for kw in VERKOCHT_KEYWORDS:
-            # Check in relevante HTML elementen (niet in footer/nav)
-            # Zoek naar het keyword in de buurt van prijs/status elementen
-            if f'class="status">{kw}' in tekst:
+            if kw in body_text:
                 return True
-            if f'class="label">{kw}' in tekst:
-                return True
-            if f'"status":"{kw}"' in tekst:
-                return True
-            if f'verkocht' in tekst and ('onder voorbehoud' in tekst or 'status' in tekst):
-                # Generieke check: als "verkocht" EN "status" of "voorbehoud" op de pagina
-                import re as _re
-                # Check of "verkocht" voorkomt in een status/label context
-                if _re.search(r'(?:status|label|badge|tag)[^>]*>.*?verkocht', tekst):
-                    return True
-                if _re.search(r'verkocht\s*(onder\s*voorbehoud)?', tekst[:5000]):
-                    # In de eerste 5000 chars (boven de fold) = waarschijnlijk status
-                    return True
         return False
-    except Exception:
-        return False  # bij fout: niet blokkeren
+    except Exception as e:
+        logger.debug("URL verkocht-check fout voor %s: %s", url[:60], e)
+        return False
 
 
 def _check_funda_api(prop: Property) -> bool:
