@@ -1,155 +1,108 @@
 """
-Funda In Business scraper — commercieel vastgoed voor transformatie.
-Gebruikt Playwright (Funda blokkeert headless requests met Akamai).
-Selectors: li.search-result met data-test-* attributen.
+Funda In Business scraper — commercieel vastgoed via pyfunda mobile API.
+Zoekt kantoren, winkels en bedrijfsruimtes voor transformatie.
 """
 import logging
 import re
-import time
-import random
 from typing import List
+from datetime import date
 
-from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
+from funda import Funda
 from models import Property
 from config import STEDEN_FUNDA, TRANSFORMATIE
 
 logger = logging.getLogger(__name__)
 
-BASE = "https://www.fundainbusiness.nl"
-TYPES = ["kantoor", "winkel", "bedrijfsruimte"]
+FUNDA_BASE = "https://www.funda.nl"
 
 
-def _parse_prijs(tekst: str) -> int:
-    t = tekst.lower()
-    if not tekst or "aanvraag" in t or "n.o.t.k" in t:
-        return 0
-    # Huurprijzen uitsluiten
-    if any(kw in t for kw in ["maand", "jaar", "p.j.", "p.m.", "per m", "/ m", "/m", "huur"]):
-        return 0
-    schoon = tekst.replace(".", "").replace(",", "").replace("\u20ac", "").replace("k.k.", "").strip()
-    match = re.search(r'\d+', schoon)
-    prijs = int(match.group()) if match else 0
-    if prijs < 25_000:
-        return 0
-    return prijs
+def _listing_to_property(listing: dict, stad: str) -> Property:
+    """Converteer een pyfunda listing naar Property."""
+    prijs = listing.get("price") or listing.get("asking_price") or 0
+    if isinstance(prijs, str):
+        prijs_clean = re.sub(r'[^\d]', '', prijs)
+        prijs = int(prijs_clean) if prijs_clean else 0
+
+    opp = listing.get("living_area") or listing.get("area") or listing.get("floor_area") or 0
+    if isinstance(opp, str):
+        opp_match = re.search(r'(\d+)', str(opp))
+        opp = int(opp_match.group(1)) if opp_match else 0
+
+    adres = listing.get("address") or listing.get("title") or ""
+    url = listing.get("url") or ""
+    type_w = listing.get("property_type") or listing.get("object_type") or ""
+
+    return Property(
+        source="funda_ib",
+        url=url,
+        adres=adres,
+        stad=stad.replace("-", " ").title(),
+        prijs=int(prijs),
+        opp_m2=int(opp),
+        prijs_per_m2=round(prijs / opp, 0) if opp > 0 else 0,
+        type_woning=str(type_w),
+        is_commercieel=True,
+        datum_online=date.today(),
+    )
 
 
-def _parse_opp(tekst: str) -> int:
-    schoon = tekst.replace(".", "")
-    match = re.search(r'(\d+)\s*m', schoon)
-    return int(match.group(1)) if match else 0
-
-
-def scrape_funda_ib(max_pages: int = 3) -> List[Property]:
+def scrape_funda_ib(max_pages: int = 2) -> List[Property]:
+    """Scrape Funda zakelijk via mobile API voor transformatie kansen."""
     results: List[Property] = []
+    max_prijs = TRANSFORMATIE["max_aankoopprijs"]
+    min_m2 = TRANSFORMATIE["min_opp_m2"]
 
-    with sync_playwright() as pw:
-        browser = pw.chromium.launch(
-            headless=True,
-            args=["--no-sandbox", "--disable-dev-shm-usage",
-                   "--disable-blink-features=AutomationControlled"],
-        )
-        context = browser.new_context(
-            user_agent=(
-                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-                "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/124.0.0.0 Safari/537.36"
-            ),
-            viewport={"width": 1440, "height": 900},
-            locale="nl-NL",
-        )
-        context.add_init_script("""
-            Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
-        """)
-        page = context.new_page()
+    f = Funda()
 
-        for stad in STEDEN_FUNDA[:6]:
-            for obj_type in TYPES:
-                for p_num in range(1, max_pages + 1):
-                    url = f"{BASE}/{obj_type}/{stad}/koop/p{p_num}/"
+    for stad in STEDEN_FUNDA[:6]:
+        for page_num in range(max_pages):
+            try:
+                logger.info("Funda IB API: zoeken in %s pagina %d", stad, page_num + 1)
+
+                # Probeer zakelijk zoeken
+                listings = f.search_listing(
+                    location=stad,
+                    offering_type='buy',
+                    price_max=max_prijs,
+                    area_min=min_m2,
+                    object_type=['office', 'retail', 'industrial'],
+                    sort='newest',
+                    page=page_num,
+                )
+
+                if not listings:
+                    break
+
+                items = listings if isinstance(listings, list) else listings.get("objects", listings.get("results", []))
+                if not items:
+                    break
+
+                for listing in items:
                     try:
-                        logger.info("FiB: scraping %s/%s pagina %d", stad, obj_type, p_num)
-                        page.goto(url, wait_until="domcontentloaded", timeout=25_000)
-                        time.sleep(random.uniform(1.5, 3.0))
+                        if isinstance(listing, dict):
+                            ld = listing
+                        else:
+                            ld = listing.__dict__ if hasattr(listing, '__dict__') else {}
 
-                        # Cookie banner
-                        try:
-                            page.click('button:has-text("Accepteren")', timeout=3_000)
-                            time.sleep(0.5)
-                        except PWTimeout:
-                            pass
+                        prop = _listing_to_property(ld, stad)
 
-                        # CAPTCHA check
-                        if page.query_selector('#fundaCaptchaInput'):
-                            logger.warning("FiB CAPTCHA voor %s/%s — skip", stad, obj_type)
-                            break
+                        # Filter: alleen koopprijzen, niet te duur
+                        if prop.prijs < 25_000:
+                            continue
+                        if prop.prijs > max_prijs:
+                            continue
+                        if prop.opp_m2 < min_m2:
+                            continue
+                        if prop.opp_m2 > 0 and (prop.prijs / prop.opp_m2) > TRANSFORMATIE["max_prijs_per_m2"]:
+                            continue
 
-                        listings = page.query_selector_all('li.search-result')
-                        if not listings:
-                            break
-
-                        for li in listings:
-                            try:
-                                # URL
-                                a_tag = li.query_selector('a[data-search-result-item-anchor]')
-                                if not a_tag:
-                                    a_tag = li.query_selector('a[data-object-url-tracking]')
-                                if not a_tag:
-                                    continue
-                                href = a_tag.get_attribute('href') or ''
-                                full_url = href if href.startswith('http') else BASE + href
-
-                                # Adres
-                                adres_el = li.query_selector('h2.search-result__header-title, [data-test-search-result-header-title]')
-                                adres = adres_el.inner_text().strip() if adres_el else ""
-
-                                # Subtype
-                                type_el = li.query_selector('h4.search-result__header-subtitle, [data-test-search-result-header-subtitle]')
-                                type_txt = type_el.inner_text().strip() if type_el else obj_type
-
-                                # Prijs
-                                prijs_el = li.query_selector('span.search-result-price')
-                                prijs_txt = prijs_el.inner_text().strip() if prijs_el else ""
-                                prijs = _parse_prijs(prijs_txt)
-
-                                # Oppervlakte
-                                opp_el = li.query_selector('ul.search-result-kenmerken span[title="Oppervlakte"]')
-                                if not opp_el:
-                                    opp_el = li.query_selector('ul.search-result-kenmerken span')
-                                opp_txt = opp_el.inner_text().strip() if opp_el else ""
-                                opp = _parse_opp(opp_txt)
-
-                                if prijs <= 0 or opp < TRANSFORMATIE["min_opp_m2"]:
-                                    continue
-                                if prijs > TRANSFORMATIE["max_aankoopprijs"]:
-                                    continue
-                                if opp > 0 and (prijs / opp) > TRANSFORMATIE["max_prijs_per_m2"]:
-                                    continue
-
-                                prop = Property(
-                                    source="funda_ib",
-                                    url=full_url,
-                                    adres=adres,
-                                    stad=stad,
-                                    prijs=prijs,
-                                    opp_m2=opp,
-                                    prijs_per_m2=round(prijs / opp, 0) if opp > 0 else 0,
-                                    type_woning=type_txt,
-                                    is_commercieel=True,
-                                )
-                                results.append(prop)
-
-                            except Exception as e:
-                                logger.debug("FiB parse fout: %s", e)
-
-                        time.sleep(random.uniform(1.5, 3.0))
-
-                    except PWTimeout:
-                        logger.warning("FiB timeout %s/%s pagina %d", stad, obj_type, p_num)
+                        results.append(prop)
                     except Exception as e:
-                        logger.error("FiB fout %s/%s: %s", stad, obj_type, e)
+                        logger.debug("FiB listing parse fout: %s", e)
 
-        browser.close()
+            except Exception as e:
+                logger.error("Funda IB API fout %s: %s", stad, e)
+                break
 
     logger.info("FiB: %d panden gevonden", len(results))
     return results
