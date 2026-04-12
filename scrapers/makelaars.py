@@ -99,6 +99,10 @@ def _scrape_ogonline(config: dict) -> List[Property]:
                 opp = item.get("livingSurface", 0) or 0
                 kamers = item.get("rooms", 0) or 0
                 url = item.get("url", "")
+                # OGonline URLs zijn relatief — base URL toevoegen
+                if url and not url.startswith("http"):
+                    base = config["url"].split("/nl/")[0]
+                    url = base + url
                 if sales_price < 25_000 or opp <= 0:
                     continue
 
@@ -171,7 +175,7 @@ def _scrape_ooms() -> List[Property]:
 
                 prop = Property(
                     source="mkl_ooms",
-                    url=f"https://ooms.com/wonen/{item.get('slug', '')}",
+                    url=item.get("url", f"https://ooms.com/wonen/aanbod/{item.get('slug', '')}"),
                     adres=adres,
                     stad=stad,
                     postcode=item.get("zip_code", "") or "",

@@ -108,6 +108,11 @@ def _check_funda_api(prop: Property) -> bool:
         if d.get("price_per_m2"):
             prop.calc["funda_prijs_per_m2"] = d["price_per_m2"]
 
+        # Fix de URL naar de juiste Funda link
+        correct_url = d.get("url", "")
+        if correct_url and correct_url.startswith("http"):
+            prop.url = correct_url
+
         time.sleep(0.2)
         return True
     except Exception as e:

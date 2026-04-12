@@ -26,9 +26,16 @@ def _listing_to_property(listing, stad: str) -> Property:
     adres = d.get("title", "") or f"{d.get('street_name', '')} {d.get('house_number', '')}".strip()
     city = d.get("city", stad.replace("-", " ").title())
     postcode = d.get("postcode", "") or ""
-    url = d.get("detail_url", "")
-    if url and not url.startswith("http"):
-        url = FUNDA_BASE + url
+    # URL: detail_url van search API + wordt later overschreven
+    # door correcte URL uit detail API (in _check_funda_api)
+    detail_url = d.get("detail_url", "")
+    global_id = d.get("global_id", "")
+    if detail_url:
+        url = FUNDA_BASE + detail_url if not detail_url.startswith("http") else detail_url
+    elif global_id:
+        url = f"{FUNDA_BASE}/detail/{global_id}/"
+    else:
+        url = ""
 
     energie = d.get("energy_label", "") or ""
     bouwjaar = d.get("construction_year", 0) or 0
