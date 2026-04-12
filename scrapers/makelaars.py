@@ -244,9 +244,15 @@ def _scrape_kolpa() -> List[Property]:
                     adres = f"{addr.get('street', '')} {addr.get('houseNumber', '')}".strip()
                     kamers = details.get("rooms", {}).get("amount", 0) or 0
 
+                    # Kolpa URL: /aanbod/{city}/{slug}/{id}
+                    kolpa_city = stad.lower().replace(" ", "-")
+                    kolpa_slug = doc.get("slug", "")
+                    kolpa_id = doc.get("id", "")
+                    kolpa_url = f"https://www.kolpa.nl/aanbod/{kolpa_city}/{kolpa_slug}/{kolpa_id}"
+
                     prop = Property(
                         source="mkl_kolpa",
-                        url=f"https://www.kolpa.nl/aanbod/{doc.get('slug', '')}",
+                        url=kolpa_url,
                         adres=adres,
                         stad=stad,
                         postcode=addr.get("postalCode", "") or "",
