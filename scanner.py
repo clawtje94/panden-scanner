@@ -37,15 +37,15 @@ def _get_funda():
 
 
 def _check_funda_listing(listing_id: int, prop: Property) -> bool:
-    """Check status van een Funda listing. Returns True als beschikbaar."""
+    """Check status van een Funda listing. Returns True ALLEEN als status=available."""
     try:
         f = _get_funda()
         detail = f.get_listing(listing_id)
         d = detail.data if hasattr(detail, 'data') else {}
-        status = str(d.get("status", "")).lower()
+        status = str(d.get("status", "")).lower().strip()
 
-        if status in ("sold", "verkocht", "sold_under_conditions",
-                      "sold_stc", "under_negotiation", "unavailable"):
+        # ALLEEN available doorlaten — alles anders is niet beschikbaar
+        if status != "available":
             logger.info("SKIP %s — status: %s", prop.adres, status)
             return False
 

@@ -88,13 +88,10 @@ def _scrape_ogonline(config: dict) -> List[Property]:
                 if not is_koop or sales_price <= 0:
                     continue
 
-                # Filter: alleen beschikbaar (niet verkocht/onder bod/verhuurd)
-                status = str(item.get("status", "")).lower()
-                if any(kw in status for kw in [
-                    "verkocht", "sold", "verhuurd", "onder optie",
-                    "onder bod", "in onderhandeling", "niet beschikbaar",
-                ]):
-                    continue
+                # Filter: ALLEEN status "Beschikbaar" doorlaten
+                status = str(item.get("status", "")).lower().strip()
+                if status != "beschikbaar" and status != "available" and status != "nieuw" and status != "":
+                    continue  # alles behalve beschikbaar/nieuw → skip
 
                 adres = item.get("address", "") or ""
                 stad = item.get("city", config["stad"]) or config["stad"]
@@ -152,9 +149,9 @@ def _scrape_ooms() -> List[Property]:
 
         for item in objects:
             try:
-                # Status check: alleen beschikbaar
-                status = str(item.get("availability_status", item.get("status", ""))).lower()
-                if any(kw in status for kw in ["verkocht", "sold", "verhuurd", "onder bod", "onder optie"]):
+                # Status check: ALLEEN beschikbaar doorlaten
+                status = str(item.get("availability_status", item.get("status", ""))).lower().strip()
+                if status != "beschikbaar" and status != "available" and status != "":
                     continue
 
                 buy_price = item.get("buy_price", 0) or 0
