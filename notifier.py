@@ -124,7 +124,14 @@ def stuur_property_notificatie(prop: Property) -> bool:
     verkoop_m2 = c["verkoop_m2"]
     if verkoop_bron == "referentie":
         tekst += f"Verkoopprijs/m\u00b2: <b>{_eur(verkoop_m2)}</b>\n"
-        tekst += f"  (gem. van vergelijkbare panden)\n"
+        # Toon welk type vergeleken is
+        refs = c.get("referenties", [])
+        if refs:
+            ref_type = refs[0].get("type", "")
+            type_nl = "appartementen" if ref_type == "apartment" else "huizen" if ref_type == "house" else "panden"
+            tekst += f"  (gem. vergelijkbare {type_nl})\n"
+        else:
+            tekst += f"  (gem. vergelijkbare panden)\n"
     else:
         tekst += f"Verkoopprijs/m\u00b2: {_eur(verkoop_m2)} (standaard)\n"
 

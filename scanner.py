@@ -149,7 +149,9 @@ def evalueer_property(prop: Property) -> List[Property]:
     kansen = []
 
     # Zoek referentieprijzen in dezelfde stad
-    ref_pm2, ref_panden = zoek_vergelijkbare(prop.stad, prop.opp_m2, "fix_flip")
+    ref_pm2, ref_panden = zoek_vergelijkbare(
+        prop.stad, prop.opp_m2, "fix_flip", type_woning=prop.type_woning,
+    )
 
     # Slimme renovatie-schatting op basis van pandkenmerken
     is_opknapper = prop.calc.get("is_opknapper", False) if prop.calc else False
