@@ -106,11 +106,34 @@ def stuur_property_notificatie(prop: Property) -> bool:
         tekst += f"GBO per unit:     {c.get('gbo_per_unit', 0)} m\u00b2\n"
         tekst += f"GBO totaal:       {c.get('gbo_totaal', 0)} m\u00b2\n"
 
-    tekst += f"Verkoopprijs/m\u00b2: {_eur(c['verkoop_m2'])}\n"
+    verkoop_bron = c.get("verkoop_bron", "config")
+    verkoop_m2 = c["verkoop_m2"]
+    if verkoop_bron == "referentie":
+        tekst += f"Verkoopprijs/m\u00b2: <b>{_eur(verkoop_m2)}</b>\n"
+        tekst += f"  (gem. van vergelijkbare panden)\n"
+    else:
+        tekst += f"Verkoopprijs/m\u00b2: {_eur(verkoop_m2)} (standaard)\n"
+
     tekst += f"Bruto verkoop:    {_eur(c['bruto_verkoopprijs'])}\n"
     tekst += f"Makelaar 1.5%:    -{_eur(c['makelaar_verkoop'])}\n"
     tekst += f"Notaris:          -{_eur(c['notaris_verkoop'])}\n"
     tekst += f"<b>Netto opbrengst: {_eur(c['netto_opbrengst'])}</b>\n"
+
+    # ── REFERENTIE PANDEN ──
+    refs = c.get("referenties", [])
+    if refs:
+        tekst += f"\n<b>REFERENTIE PANDEN</b>\n"
+        tekst += f"{'─' * 32}\n"
+        tekst += f"(basis voor {_eur(verkoop_m2)}/m\u00b2)\n"
+        for i, ref in enumerate(refs[:3], 1):
+            tekst += (
+                f"{i}. {ref['adres']}\n"
+                f"   {_eur(ref['prijs'])} | {ref['opp_m2']}m\u00b2 | "
+                f"{_eur(ref['prijs_per_m2'])}/m\u00b2 | label {ref['energie_label']}\n"
+            )
+    else:
+        tekst += f"\n<i>Geen vergelijkbare panden gevonden\n"
+        tekst += f"Verkoopprijs is standaard schatting</i>\n"
 
     # ── RESULTAAT ──
     tekst += f"\n<b>RESULTAAT OP VRAAGPRIJS</b>\n"

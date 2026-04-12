@@ -39,7 +39,7 @@ class Property:
     calc: dict = field(default_factory=dict)
 
 
-def bereken_fix_flip(prop: Property, cfg: dict) -> Property:
+def bereken_fix_flip(prop: Property, cfg: dict, verkoop_m2_override: float = 0, referenties: list = None) -> Property:
     m2 = max(prop.opp_m2, 1)
     koop = prop.prijs
 
@@ -63,7 +63,8 @@ def bereken_fix_flip(prop: Property, cfg: dict) -> Property:
     totaal_kosten = aankoop_totaal + bouw_totaal + rente
 
     # ── VERKOOP ──
-    verkoop_m2 = cfg["verwacht_verkoop_m2"]
+    verkoop_m2 = verkoop_m2_override if verkoop_m2_override > 0 else cfg["verwacht_verkoop_m2"]
+    verkoop_bron = "referentie" if verkoop_m2_override > 0 else "config"
     omzet = m2 * verkoop_m2
     makelaar_verkoop = omzet * 0.015
     notaris_verkoop = 2_500
@@ -114,6 +115,8 @@ def bereken_fix_flip(prop: Property, cfg: dict) -> Property:
         "totaal_kosten": int(totaal_kosten),
         # Verkoop
         "verkoop_m2": verkoop_m2,
+        "verkoop_bron": verkoop_bron,
+        "referenties": referenties or [],
         "bruto_verkoopprijs": int(omzet),
         "makelaar_verkoop": int(makelaar_verkoop),
         "notaris_verkoop": notaris_verkoop,
@@ -133,7 +136,7 @@ def bereken_fix_flip(prop: Property, cfg: dict) -> Property:
     return prop
 
 
-def bereken_splitsing(prop: Property, cfg: dict, n_units: int = 2) -> Property:
+def bereken_splitsing(prop: Property, cfg: dict, n_units: int = 2, verkoop_m2_override: float = 0, referenties: list = None) -> Property:
     m2 = max(prop.opp_m2, 1)
     koop = prop.prijs
 
@@ -156,7 +159,8 @@ def bereken_splitsing(prop: Property, cfg: dict, n_units: int = 2) -> Property:
 
     gbo_per_unit = (m2 * 0.80) / n_units
     gbo_totaal = m2 * 0.80
-    verkoop_m2 = cfg["verwacht_verkoop_m2"]
+    verkoop_m2 = verkoop_m2_override if verkoop_m2_override > 0 else cfg["verwacht_verkoop_m2"]
+    verkoop_bron = "referentie" if verkoop_m2_override > 0 else "config"
     omzet = n_units * gbo_per_unit * verkoop_m2
     makelaar_verkoop = omzet * 0.015
     notaris_verkoop = n_units * 2_500
@@ -205,6 +209,8 @@ def bereken_splitsing(prop: Property, cfg: dict, n_units: int = 2) -> Property:
         "gbo_totaal": int(gbo_totaal),
         "gbo_per_unit": int(gbo_per_unit),
         "verkoop_m2": verkoop_m2,
+        "verkoop_bron": verkoop_bron,
+        "referenties": referenties or [],
         "bruto_verkoopprijs": int(omzet),
         "makelaar_verkoop": int(makelaar_verkoop),
         "notaris_verkoop": int(notaris_verkoop),
@@ -222,7 +228,7 @@ def bereken_splitsing(prop: Property, cfg: dict, n_units: int = 2) -> Property:
     return prop
 
 
-def bereken_transformatie(prop: Property, cfg: dict) -> Property:
+def bereken_transformatie(prop: Property, cfg: dict, verkoop_m2_override: float = 0, referenties: list = None) -> Property:
     m2 = max(prop.opp_m2, 1)
     koop = prop.prijs
 
@@ -247,7 +253,8 @@ def bereken_transformatie(prop: Property, cfg: dict) -> Property:
 
     n_units = max(1, int(m2 * 0.75 / 75))
     gbo_totaal = m2 * 0.75
-    verkoop_m2 = cfg["verwacht_verkoop_m2"]
+    verkoop_m2 = verkoop_m2_override if verkoop_m2_override > 0 else cfg["verwacht_verkoop_m2"]
+    verkoop_bron = "referentie" if verkoop_m2_override > 0 else "config"
     omzet = gbo_totaal * verkoop_m2
     makelaar_verkoop = omzet * 0.015
     notaris_verkoop = n_units * 2_500
@@ -298,6 +305,8 @@ def bereken_transformatie(prop: Property, cfg: dict) -> Property:
         "gbo_totaal": int(gbo_totaal),
         "gbo_per_unit": int(gbo_totaal / n_units) if n_units > 0 else 0,
         "verkoop_m2": verkoop_m2,
+        "verkoop_bron": verkoop_bron,
+        "referenties": referenties or [],
         "bruto_verkoopprijs": int(omzet),
         "makelaar_verkoop": int(makelaar_verkoop),
         "notaris_verkoop": int(notaris_verkoop),

@@ -13,6 +13,7 @@ from models import (
 from database import init_db, is_nieuw, sla_op, haal_stats_op
 from notifier import stuur_property_notificatie, stuur_dagelijks_rapport
 from scrapers import scrape_funda, scrape_funda_ib, scrape_pararius, scrape_bedrijfspand, scrape_makelaars
+from referentie import zoek_vergelijkbare
 from config import FIX_FLIP, SPLITSING, TRANSFORMATIE
 
 logging.basicConfig(
@@ -26,11 +27,18 @@ def evalueer_property(prop: Property) -> List[Property]:
     """Bereken alle strategieen voor een pand en retourneer degene die kansen bieden."""
     kansen = []
 
+    # Zoek referentieprijzen in dezelfde stad
+    ref_pm2, ref_panden = zoek_vergelijkbare(prop.stad, prop.opp_m2, "fix_flip")
+
     if not prop.is_commercieel:
         # Fix & Flip
         if (prop.prijs <= FIX_FLIP["max_aankoopprijs"]
                 and prop.opp_m2 >= FIX_FLIP["min_opp_m2"]):
-            p = bereken_fix_flip(Property(**prop.__dict__), FIX_FLIP)
+            p = bereken_fix_flip(
+                Property(**prop.__dict__), FIX_FLIP,
+                verkoop_m2_override=ref_pm2,
+                referenties=ref_panden,
+            )
             if p.marge_pct >= FIX_FLIP["min_marge_pct"]:
                 score_property(p)
                 kansen.append(p)
@@ -39,7 +47,11 @@ def evalueer_property(prop: Property) -> List[Property]:
         if (prop.opp_m2 >= SPLITSING["min_opp_m2"]
                 and prop.prijs <= SPLITSING["max_aankoopprijs"]):
             n_units = 3 if prop.opp_m2 >= 220 else 2
-            p = bereken_splitsing(Property(**prop.__dict__), SPLITSING, n_units)
+            p = bereken_splitsing(
+                Property(**prop.__dict__), SPLITSING, n_units,
+                verkoop_m2_override=ref_pm2,
+                referenties=ref_panden,
+            )
             if p.marge_pct >= SPLITSING["min_marge_pct"]:
                 score_property(p)
                 kansen.append(p)
@@ -49,7 +61,11 @@ def evalueer_property(prop: Property) -> List[Property]:
         if (prop.prijs <= TRANSFORMATIE["max_aankoopprijs"]
                 and prop.opp_m2 >= TRANSFORMATIE["min_opp_m2"]):
             if prop.opp_m2 > 0 and (prop.prijs / prop.opp_m2) <= TRANSFORMATIE["max_prijs_per_m2"]:
-                p = bereken_transformatie(Property(**prop.__dict__), TRANSFORMATIE)
+                p = bereken_transformatie(
+                    Property(**prop.__dict__), TRANSFORMATIE,
+                    verkoop_m2_override=ref_pm2,
+                    referenties=ref_panden,
+                )
                 if p.marge_pct >= TRANSFORMATIE["min_marge_pct"]:
                     score_property(p)
                     kansen.append(p)
