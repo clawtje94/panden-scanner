@@ -67,7 +67,11 @@ def stuur_property_notificatie(prop: Property) -> bool:
     if c.get("is_opknapper"):
         tekst += " | OPKNAPPER"
     if c.get("funda_prijs_per_m2"):
-        tekst += f" | Funda: \u20ac{c['funda_prijs_per_m2']:,.0f}/m\u00b2".replace(",", ".")
+        try:
+            fpm2 = int(float(str(c['funda_prijs_per_m2']).replace('.', '').replace(',', '').replace('\u20ac', '').strip()))
+            tekst += f" | Funda: {_eur(fpm2)}/m\u00b2"
+        except (ValueError, TypeError):
+            pass
     tekst += "\n"
 
     # ── AANKOOP ──
