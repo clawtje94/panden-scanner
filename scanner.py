@@ -36,20 +36,68 @@ def _get_funda():
     return _funda
 
 
-def _check_funda_listing(listing_id: int, prop: Property) -> bool:
-    """Check status van een Funda listing. Returns True ALLEEN als status=available."""
+VERKOCHT_KEYWORDS = [
+    "verkocht", "sold", "onder bod", "onder optie", "in onderhandeling",
+    "niet beschikbaar", "unavailable", "voorbehoud",
+]
+
+
+def _check_url_verkocht(url: str) -> bool:
+    """Fetch de listing URL en check of er 'verkocht' op de pagina staat.
+    Returns True als het pand VERKOCHT is."""
+    if not url:
+        return False
     try:
+        import requests as req
+        r = req.get(url, headers={
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+            "Accept-Language": "nl-NL,nl;q=0.9",
+        }, timeout=10, allow_redirects=True)
+        if r.status_code != 200:
+            return False  # pagina laadt niet, kan niet checken
+        tekst = r.text.lower()
+        for kw in VERKOCHT_KEYWORDS:
+            # Check in relevante HTML elementen (niet in footer/nav)
+            # Zoek naar het keyword in de buurt van prijs/status elementen
+            if f'class="status">{kw}' in tekst:
+                return True
+            if f'class="label">{kw}' in tekst:
+                return True
+            if f'"status":"{kw}"' in tekst:
+                return True
+            if f'verkocht' in tekst and ('onder voorbehoud' in tekst or 'status' in tekst):
+                # Generieke check: als "verkocht" EN "status" of "voorbehoud" op de pagina
+                import re as _re
+                # Check of "verkocht" voorkomt in een status/label context
+                if _re.search(r'(?:status|label|badge|tag)[^>]*>.*?verkocht', tekst):
+                    return True
+                if _re.search(r'verkocht\s*(onder\s*voorbehoud)?', tekst[:5000]):
+                    # In de eerste 5000 chars (boven de fold) = waarschijnlijk status
+                    return True
+        return False
+    except Exception:
+        return False  # bij fout: niet blokkeren
+
+
+def _check_funda_api(prop: Property) -> bool:
+    """Check Funda detail API voor status. Returns True als beschikbaar."""
+    try:
+        url = prop.url
+        match = re.search(r'/(\d+)/?$', url)
+        if not match:
+            match = re.search(r'-(\d+)/', url)
+        if not match:
+            return True
+
         f = _get_funda()
-        detail = f.get_listing(listing_id)
+        detail = f.get_listing(int(match.group(1)))
         d = detail.data if hasattr(detail, 'data') else {}
         status = str(d.get("status", "")).lower().strip()
 
-        # ALLEEN available doorlaten — alles anders is niet beschikbaar
         if status != "available":
-            logger.info("SKIP %s — status: %s", prop.adres, status)
+            logger.info("SKIP %s — Funda status: %s", prop.adres, status)
             return False
 
-        # Bonus info
         if d.get("is_fixer_upper"):
             prop.calc["is_opknapper"] = True
         if d.get("price_per_m2"):
@@ -58,81 +106,30 @@ def _check_funda_listing(listing_id: int, prop: Property) -> bool:
         time.sleep(0.2)
         return True
     except Exception as e:
-        logger.debug("Funda detail check mislukt: %s", e)
-        return True  # bij fout: doorlaten
-
-
-def _zoek_op_funda(adres: str, stad: str) -> bool:
-    """Zoek een pand op Funda via adres om status te checken.
-    Gebruikt voor panden van makelaar-websites."""
-    try:
-        f = _get_funda()
-        # Zoek in de stad
-        stad_clean = stad.lower().replace(" ", "-")
-        results = f.search_listing(
-            location=stad_clean,
-            offering_type='buy',
-            sort='newest',
-            page=0,
-        )
-        if not results:
-            return True  # niet gevonden = kan niet checken
-
-        # Zoek match op straatnaam
-        adres_lower = adres.lower().strip()
-        # Pak eerste woord(en) van adres als straatnaam
-        straat_parts = re.split(r'\d', adres_lower)[0].strip().split()
-        if not straat_parts:
-            return True
-
-        for listing in results:
-            d = listing.data if hasattr(listing, 'data') else {}
-            title = str(d.get("title", "")).lower()
-            street = str(d.get("street_name", "")).lower()
-
-            # Match op straatnaam
-            if straat_parts[0] in title or straat_parts[0] in street:
-                # Mogelijke match — check huisnummer
-                huisnr_match = re.search(r'(\d+)', adres)
-                funda_nr = str(d.get("house_number", ""))
-                if huisnr_match and huisnr_match.group(1) == funda_nr:
-                    # Match! Check status via detail
-                    listing_id = d.get("global_id")
-                    if listing_id:
-                        return _check_funda_listing(listing_id, Property(
-                            source="check", url="", adres=adres, stad=stad))
-
-        time.sleep(0.3)
-        logger.info("SKIP %s — niet gevonden op Funda (waarschijnlijk al weg)", adres)
-        return False  # niet op Funda = waarschijnlijk al verkocht
-
-    except Exception as e:
-        logger.debug("Funda zoek-check mislukt voor %s: %s", adres, e)
-        return True  # bij API fout: doorlaten
+        logger.debug("Funda API check mislukt voor %s: %s", prop.adres, e)
+        return True
 
 
 def is_beschikbaar(prop: Property) -> bool:
-    """Check of een pand nog daadwerkelijk te koop is (niet verkocht/onder bod)."""
-
-    # Tekst-check: als "verkocht" in data staat
+    """Check of een pand nog te koop is. Twee checks:
+    1. Funda API (voor Funda-panden)
+    2. Listing URL ophalen en checken op 'verkocht' tekst (voor alles)
+    """
+    # Tekst-check in bestaande data
     if hasattr(prop, 'type_woning') and prop.type_woning:
-        if "verkocht" in prop.type_woning.lower():
-            logger.info("SKIP %s — verkocht in type", prop.adres)
+        if any(kw in prop.type_woning.lower() for kw in VERKOCHT_KEYWORDS):
+            logger.info("SKIP %s — verkocht in type_woning", prop.adres)
             return False
 
-    # Funda panden: check via listing ID
+    # Check 1: Funda API (voor Funda-bron panden)
     if prop.source in ("funda", "funda_ib"):
-        url = prop.url
-        match = re.search(r'/(\d+)/?$', url)
-        if not match:
-            match = re.search(r'-(\d+)/', url)
-        if match:
-            return _check_funda_listing(int(match.group(1)), prop)
-        return True
+        if not _check_funda_api(prop):
+            return False
 
-    # Makelaar-panden: zoek op Funda via adres+stad
-    if prop.source.startswith("mkl_") or prop.source in ("pararius", "meesters_makelaars", "waltmann", "cog_makelaars"):
-        return _zoek_op_funda(prop.adres, prop.stad)
+    # Check 2: Haal de listing URL op en zoek naar "verkocht" op de pagina
+    if prop.url and _check_url_verkocht(prop.url):
+        logger.info("SKIP %s — 'verkocht' gevonden op pagina %s", prop.adres, prop.url[:60])
+        return False
 
     return True
 
