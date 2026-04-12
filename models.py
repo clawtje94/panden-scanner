@@ -1,7 +1,7 @@
 """
 Property dataclass en financieel model.
 """
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 from datetime import date
 
@@ -9,15 +9,15 @@ from datetime import date
 @dataclass
 class Property:
     """Vastgoedobject gevonden door de scanner."""
-    source: str               # "funda", "funda_ib", "pararius", "bedrijfspand"
+    source: str
     url: str
     adres: str
     stad: str
     postcode: str = ""
-    prijs: int = 0            # Vraagprijs in €
-    opp_m2: int = 0           # Woonoppervlak in m²
+    prijs: int = 0
+    opp_m2: int = 0
     prijs_per_m2: float = 0.0
-    type_woning: str = ""     # "appartement", "woonhuis", "kantoor", etc.
+    type_woning: str = ""
     bouwjaar: int = 0
     energie_label: str = ""
     kamers: int = 0
@@ -27,38 +27,63 @@ class Property:
     foto_url: str = ""
 
     # Berekende velden
-    strategie: str = ""       # "fix_flip", "splitsing", "transformatie"
+    strategie: str = ""
     marge_pct: float = 0.0
     winst_euro: int = 0
     roi_pct: float = 0.0
     totale_kosten: int = 0
     verwachte_opbrengst: int = 0
-    score: int = 0            # 0-10 totaalscore
+    score: int = 0
+
+    # Volledige calculatie breakdown
+    calc: dict = field(default_factory=dict)
 
 
 def bereken_fix_flip(prop: Property, cfg: dict) -> Property:
-    """Bereken rendement voor fix & flip strategie."""
     m2 = max(prop.opp_m2, 1)
     koop = prop.prijs
-    ovb = koop * (cfg["ovb_pct"] / 100)
-    aankoop_totaal = koop + ovb + koop * 0.013  # notaris + makelaar
 
+    # ── AANKOOP ──
+    ovb = koop * (cfg["ovb_pct"] / 100)
+    notaris_makelaar = koop * 0.013
+    aankoop_totaal = koop + ovb + notaris_makelaar
+
+    # ── VERBOUWING ──
     renovatie = m2 * cfg["renovatie_per_m2"]
     arch_leges = renovatie * 0.08
-    bouw_totaal = renovatie + arch_leges + renovatie * 0.10  # 10% onvoorzien
+    onvoorzien = renovatie * 0.10
+    bouw_totaal = renovatie + arch_leges + onvoorzien
 
-    looptijd_jr = cfg["looptijd_maanden"] / 12
-    rente = (aankoop_totaal + bouw_totaal * 0.5) * (cfg["rente_pct"] / 100) * looptijd_jr
+    # ── FINANCIERING ──
+    looptijd_mnd = cfg["looptijd_maanden"]
+    looptijd_jr = looptijd_mnd / 12
+    financiering_basis = aankoop_totaal + bouw_totaal * 0.5
+    rente = financiering_basis * (cfg["rente_pct"] / 100) * looptijd_jr
 
     totaal_kosten = aankoop_totaal + bouw_totaal + rente
 
-    omzet = m2 * cfg["verwacht_verkoop_m2"]
-    verkoop_kosten = omzet * 0.015 + 2_500  # makelaar + notaris
+    # ── VERKOOP ──
+    verkoop_m2 = cfg["verwacht_verkoop_m2"]
+    omzet = m2 * verkoop_m2
+    makelaar_verkoop = omzet * 0.015
+    notaris_verkoop = 2_500
+    verkoop_kosten = makelaar_verkoop + notaris_verkoop
     netto_omzet = omzet - verkoop_kosten
 
     winst = netto_omzet - totaal_kosten
     marge = (winst / netto_omzet * 100) if netto_omzet > 0 else -99
     roi = (winst / totaal_kosten * 100) if totaal_kosten > 0 else -99
+
+    # ── BOD BEREKENING ──
+    bod_korting_pct = 10
+    bod = int(koop * (1 - bod_korting_pct / 100))
+    bod_ovb = bod * (cfg["ovb_pct"] / 100)
+    bod_notaris = bod * 0.013
+    bod_aankoop = bod + bod_ovb + bod_notaris
+    bod_financiering = (bod_aankoop + bouw_totaal * 0.5) * (cfg["rente_pct"] / 100) * looptijd_jr
+    bod_totaal = bod_aankoop + bouw_totaal + bod_financiering
+    bod_winst = netto_omzet - bod_totaal
+    bod_marge = (bod_winst / netto_omzet * 100) if netto_omzet > 0 else -99
 
     prop.strategie = "fix_flip"
     prop.totale_kosten = int(totaal_kosten)
@@ -66,35 +91,91 @@ def bereken_fix_flip(prop: Property, cfg: dict) -> Property:
     prop.winst_euro = int(winst)
     prop.marge_pct = round(marge, 1)
     prop.roi_pct = round(roi, 1)
+    prop.calc = {
+        # Aankoop
+        "vraagprijs": koop,
+        "ovb_pct": cfg["ovb_pct"],
+        "ovb": int(ovb),
+        "notaris_makelaar_aankoop": int(notaris_makelaar),
+        "aankoop_totaal": int(aankoop_totaal),
+        # Verbouwing
+        "renovatie_per_m2": cfg["renovatie_per_m2"],
+        "renovatie": int(renovatie),
+        "architect_leges": int(arch_leges),
+        "onvoorzien_pct": 10,
+        "onvoorzien": int(onvoorzien),
+        "bouw_totaal": int(bouw_totaal),
+        # Financiering
+        "looptijd_maanden": looptijd_mnd,
+        "rente_pct": cfg["rente_pct"],
+        "financiering_basis": int(financiering_basis),
+        "rente": int(rente),
+        # Totaal investering
+        "totaal_kosten": int(totaal_kosten),
+        # Verkoop
+        "verkoop_m2": verkoop_m2,
+        "bruto_verkoopprijs": int(omzet),
+        "makelaar_verkoop": int(makelaar_verkoop),
+        "notaris_verkoop": notaris_verkoop,
+        "verkoop_kosten": int(verkoop_kosten),
+        "netto_opbrengst": int(netto_omzet),
+        # Resultaat op vraagprijs
+        "winst": int(winst),
+        "marge_pct": round(marge, 1),
+        "roi_pct": round(roi, 1),
+        # Bod
+        "bod_korting_pct": bod_korting_pct,
+        "bod": bod,
+        "bod_totaal_investering": int(bod_totaal),
+        "bod_winst": int(bod_winst),
+        "bod_marge_pct": round(bod_marge, 1),
+    }
     return prop
 
 
 def bereken_splitsing(prop: Property, cfg: dict, n_units: int = 2) -> Property:
-    """Bereken rendement voor splitsing naar meerdere appartementen."""
     m2 = max(prop.opp_m2, 1)
     koop = prop.prijs
+
     ovb = koop * (cfg["ovb_pct"] / 100)
-    aankoop_totaal = koop + ovb + koop * 0.013
+    notaris_makelaar = koop * 0.013
+    aankoop_totaal = koop + ovb + notaris_makelaar
 
     renovatie = m2 * cfg["renovatie_per_m2"]
-    splitsing_kosten = n_units * 15_000   # vergunning + architect per unit
-    arch_leges = renovatie * 0.155        # architect 10% + leges 4.5% + constructeur
+    splitsing_kosten = n_units * 15_000
+    arch_leges = renovatie * 0.155
     onvoorzien = renovatie * 0.12
     bouw_totaal = renovatie + splitsing_kosten + arch_leges + onvoorzien
 
-    looptijd_jr = cfg["looptijd_maanden"] / 12
-    rente = (aankoop_totaal + bouw_totaal * 0.55) * (cfg["rente_pct"] / 100) * looptijd_jr
+    looptijd_mnd = cfg["looptijd_maanden"]
+    looptijd_jr = looptijd_mnd / 12
+    financiering_basis = aankoop_totaal + bouw_totaal * 0.55
+    rente = financiering_basis * (cfg["rente_pct"] / 100) * looptijd_jr
 
     totaal_kosten = aankoop_totaal + bouw_totaal + rente
 
     gbo_per_unit = (m2 * 0.80) / n_units
-    omzet = n_units * gbo_per_unit * cfg["verwacht_verkoop_m2"]
-    verkoop_kosten = omzet * 0.015 + n_units * 2_500
+    gbo_totaal = m2 * 0.80
+    verkoop_m2 = cfg["verwacht_verkoop_m2"]
+    omzet = n_units * gbo_per_unit * verkoop_m2
+    makelaar_verkoop = omzet * 0.015
+    notaris_verkoop = n_units * 2_500
+    verkoop_kosten = makelaar_verkoop + notaris_verkoop
     netto_omzet = omzet - verkoop_kosten
 
     winst = netto_omzet - totaal_kosten
     marge = (winst / netto_omzet * 100) if netto_omzet > 0 else -99
     roi = (winst / totaal_kosten * 100) if totaal_kosten > 0 else -99
+
+    bod_korting_pct = 10
+    bod = int(koop * (1 - bod_korting_pct / 100))
+    bod_ovb = bod * (cfg["ovb_pct"] / 100)
+    bod_notaris = bod * 0.013
+    bod_aankoop = bod + bod_ovb + bod_notaris
+    bod_financiering = (bod_aankoop + bouw_totaal * 0.55) * (cfg["rente_pct"] / 100) * looptijd_jr
+    bod_totaal = bod_aankoop + bouw_totaal + bod_financiering
+    bod_winst = netto_omzet - bod_totaal
+    bod_marge = (bod_winst / netto_omzet * 100) if netto_omzet > 0 else -99
 
     prop.strategie = f"splitsing_{n_units}units"
     prop.totale_kosten = int(totaal_kosten)
@@ -102,15 +183,52 @@ def bereken_splitsing(prop: Property, cfg: dict, n_units: int = 2) -> Property:
     prop.winst_euro = int(winst)
     prop.marge_pct = round(marge, 1)
     prop.roi_pct = round(roi, 1)
+    prop.calc = {
+        "vraagprijs": koop,
+        "ovb_pct": cfg["ovb_pct"],
+        "ovb": int(ovb),
+        "notaris_makelaar_aankoop": int(notaris_makelaar),
+        "aankoop_totaal": int(aankoop_totaal),
+        "renovatie_per_m2": cfg["renovatie_per_m2"],
+        "renovatie": int(renovatie),
+        "splitsing_kosten": int(splitsing_kosten),
+        "n_units": n_units,
+        "architect_leges": int(arch_leges),
+        "onvoorzien_pct": 12,
+        "onvoorzien": int(onvoorzien),
+        "bouw_totaal": int(bouw_totaal),
+        "looptijd_maanden": looptijd_mnd,
+        "rente_pct": cfg["rente_pct"],
+        "financiering_basis": int(financiering_basis),
+        "rente": int(rente),
+        "totaal_kosten": int(totaal_kosten),
+        "gbo_totaal": int(gbo_totaal),
+        "gbo_per_unit": int(gbo_per_unit),
+        "verkoop_m2": verkoop_m2,
+        "bruto_verkoopprijs": int(omzet),
+        "makelaar_verkoop": int(makelaar_verkoop),
+        "notaris_verkoop": int(notaris_verkoop),
+        "verkoop_kosten": int(verkoop_kosten),
+        "netto_opbrengst": int(netto_omzet),
+        "winst": int(winst),
+        "marge_pct": round(marge, 1),
+        "roi_pct": round(roi, 1),
+        "bod_korting_pct": bod_korting_pct,
+        "bod": bod,
+        "bod_totaal_investering": int(bod_totaal),
+        "bod_winst": int(bod_winst),
+        "bod_marge_pct": round(bod_marge, 1),
+    }
     return prop
 
 
 def bereken_transformatie(prop: Property, cfg: dict) -> Property:
-    """Bereken rendement voor transformatie commercieel → wonen."""
     m2 = max(prop.opp_m2, 1)
     koop = prop.prijs
+
     ovb = koop * (cfg["ovb_pct"] / 100)
-    aankoop_totaal = koop + ovb + koop * 0.013
+    notaris_makelaar = koop * 0.013
+    aankoop_totaal = koop + ovb + notaris_makelaar
 
     bouw = m2 * cfg["renovatie_per_m2"]
     arch_leges = bouw * 0.155
@@ -120,20 +238,35 @@ def bereken_transformatie(prop: Property, cfg: dict) -> Property:
     proj_mgmt = (aankoop_totaal + bouw_totaal) * 0.035
     overig = 25_000
 
-    looptijd_jr = cfg["looptijd_maanden"] / 12
-    rente = (aankoop_totaal + (bouw_totaal + proj_mgmt) * 0.55) * (cfg["rente_pct"] / 100) * looptijd_jr
+    looptijd_mnd = cfg["looptijd_maanden"]
+    looptijd_jr = looptijd_mnd / 12
+    financiering_basis = aankoop_totaal + (bouw_totaal + proj_mgmt) * 0.55
+    rente = financiering_basis * (cfg["rente_pct"] / 100) * looptijd_jr
 
     totaal_kosten = aankoop_totaal + bouw_totaal + proj_mgmt + overig + rente
 
-    n_units = max(1, int(m2 * 0.75 / 75))  # schat aantal units (75m² per unit)
+    n_units = max(1, int(m2 * 0.75 / 75))
     gbo_totaal = m2 * 0.75
-    omzet = gbo_totaal * cfg["verwacht_verkoop_m2"]
-    verkoop_kosten = omzet * 0.015 + n_units * 2_500
+    verkoop_m2 = cfg["verwacht_verkoop_m2"]
+    omzet = gbo_totaal * verkoop_m2
+    makelaar_verkoop = omzet * 0.015
+    notaris_verkoop = n_units * 2_500
+    verkoop_kosten = makelaar_verkoop + notaris_verkoop
     netto_omzet = omzet - verkoop_kosten
 
     winst = netto_omzet - totaal_kosten
     marge = (winst / netto_omzet * 100) if netto_omzet > 0 else -99
     roi = (winst / totaal_kosten * 100) if totaal_kosten > 0 else -99
+
+    bod_korting_pct = 12
+    bod = int(koop * (1 - bod_korting_pct / 100))
+    bod_ovb = bod * (cfg["ovb_pct"] / 100)
+    bod_notaris = bod * 0.013
+    bod_aankoop = bod + bod_ovb + bod_notaris
+    bod_financiering = (bod_aankoop + (bouw_totaal + proj_mgmt) * 0.55) * (cfg["rente_pct"] / 100) * looptijd_jr
+    bod_totaal = bod_aankoop + bouw_totaal + proj_mgmt + overig + bod_financiering
+    bod_winst = netto_omzet - bod_totaal
+    bod_marge = (bod_winst / netto_omzet * 100) if netto_omzet > 0 else -99
 
     prop.strategie = f"transformatie_{n_units}units"
     prop.totale_kosten = int(totaal_kosten)
@@ -141,11 +274,48 @@ def bereken_transformatie(prop: Property, cfg: dict) -> Property:
     prop.winst_euro = int(winst)
     prop.marge_pct = round(marge, 1)
     prop.roi_pct = round(roi, 1)
+    prop.calc = {
+        "vraagprijs": koop,
+        "ovb_pct": cfg["ovb_pct"],
+        "ovb": int(ovb),
+        "notaris_makelaar_aankoop": int(notaris_makelaar),
+        "aankoop_totaal": int(aankoop_totaal),
+        "renovatie_per_m2": cfg["renovatie_per_m2"],
+        "renovatie": int(bouw),
+        "architect_leges": int(arch_leges),
+        "onvoorzien_pct": 12,
+        "onvoorzien": int(onvoorzien),
+        "bouw_totaal": int(bouw_totaal),
+        "projectmanagement": int(proj_mgmt),
+        "overige_kosten": overig,
+        "looptijd_maanden": looptijd_mnd,
+        "rente_pct": cfg["rente_pct"],
+        "financiering_basis": int(financiering_basis),
+        "rente": int(rente),
+        "totaal_kosten": int(totaal_kosten),
+        "n_units": n_units,
+        "bvo_m2": m2,
+        "gbo_totaal": int(gbo_totaal),
+        "gbo_per_unit": int(gbo_totaal / n_units) if n_units > 0 else 0,
+        "verkoop_m2": verkoop_m2,
+        "bruto_verkoopprijs": int(omzet),
+        "makelaar_verkoop": int(makelaar_verkoop),
+        "notaris_verkoop": int(notaris_verkoop),
+        "verkoop_kosten": int(verkoop_kosten),
+        "netto_opbrengst": int(netto_omzet),
+        "winst": int(winst),
+        "marge_pct": round(marge, 1),
+        "roi_pct": round(roi, 1),
+        "bod_korting_pct": bod_korting_pct,
+        "bod": bod,
+        "bod_totaal_investering": int(bod_totaal),
+        "bod_winst": int(bod_winst),
+        "bod_marge_pct": round(bod_marge, 1),
+    }
     return prop
 
 
 def score_property(prop: Property) -> int:
-    """Geef een score 0-10 aan een property op basis van aantrekkelijkheid."""
     score = 0
     if prop.marge_pct >= 20: score += 4
     elif prop.marge_pct >= 15: score += 3
@@ -153,11 +323,11 @@ def score_property(prop: Property) -> int:
     elif prop.marge_pct >= 8: score += 1
 
     if prop.eigen_grond: score += 1
-    if prop.energie_label in ("F", "G", "Geen label"): score += 1  # extra korting mogelijk
-    if prop.bouwjaar and 1900 <= prop.bouwjaar <= 1940: score += 1  # karakteristiek
-    if prop.opp_m2 >= 150: score += 1  # splitsbaar
+    if prop.energie_label in ("F", "G", "Geen label"): score += 1
+    if prop.bouwjaar and 1900 <= prop.bouwjaar <= 1940: score += 1
+    if prop.opp_m2 >= 150: score += 1
     if prop.prijs > 0 and prop.opp_m2 > 0:
-        if (prop.prijs / prop.opp_m2) < 3_000: score += 1  # goedkoop per m²
+        if (prop.prijs / prop.opp_m2) < 3_000: score += 1
 
     prop.score = min(score, 10)
     return prop.score
