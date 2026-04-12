@@ -3,6 +3,7 @@ Funda.nl scraper — via pyfunda (mobile app API, geen CAPTCHA).
 Zoekt naar woningen voor fix & flip en splitsing.
 """
 import logging
+import time
 from typing import List
 from datetime import date
 
@@ -14,60 +15,37 @@ logger = logging.getLogger(__name__)
 
 FUNDA_BASE = "https://www.funda.nl"
 
-# Mapping van config steden naar funda location format
-STAD_MAPPING = {
-    "den-haag": "den-haag",
-    "rotterdam": "rotterdam",
-    "delft": "delft",
-    "leiden": "leiden",
-    "zoetermeer": "zoetermeer",
-    "schiedam": "schiedam",
-    "rijswijk": "rijswijk",
-    "dordrecht": "dordrecht",
-    "westland": "westland",
-    "pijnacker-nootdorp": "pijnacker-nootdorp",
-}
 
+def _listing_to_property(listing, stad: str) -> Property:
+    """Converteer een pyfunda Listing object naar een Property."""
+    # pyfunda retourneert Listing objects met een .data dict
+    d = listing.data if hasattr(listing, 'data') else listing
 
-def _listing_to_property(listing: dict, stad: str) -> Property:
-    """Converteer een pyfunda listing dict naar een Property."""
-    prijs = listing.get("price") or listing.get("asking_price") or 0
-    if isinstance(prijs, str):
-        import re
-        prijs_clean = re.sub(r'[^\d]', '', prijs)
-        prijs = int(prijs_clean) if prijs_clean else 0
+    prijs = d.get("price", 0) or 0
+    opp = d.get("living_area", 0) or 0
+    adres = d.get("title", "") or f"{d.get('street_name', '')} {d.get('house_number', '')}".strip()
+    city = d.get("city", stad.replace("-", " ").title())
+    postcode = d.get("postcode", "") or ""
+    url = d.get("detail_url", "")
+    if url and not url.startswith("http"):
+        url = FUNDA_BASE + url
 
-    opp = listing.get("living_area") or listing.get("area") or 0
-    if isinstance(opp, str):
-        import re
-        opp_match = re.search(r'(\d+)', opp)
-        opp = int(opp_match.group(1)) if opp_match else 0
+    energie = d.get("energy_label", "") or ""
+    bouwjaar = d.get("construction_year", 0) or 0
+    kamers = d.get("rooms", 0) or 0
+    slaapkamers = d.get("bedrooms", 0) or 0
+    type_w = d.get("object_type", "") or ""
 
-    adres = listing.get("address") or listing.get("title") or ""
-    url = listing.get("url") or ""
-    if not url and listing.get("id"):
-        url = f"{FUNDA_BASE}/detail/koop/{stad}/{listing['id']}/"
-
-    postcode = listing.get("postal_code") or listing.get("zip_code") or ""
-    energie = listing.get("energy_label") or ""
-    bouwjaar = listing.get("construction_year") or listing.get("year_built") or 0
-    kamers = listing.get("rooms") or listing.get("number_of_rooms") or 0
-    type_w = listing.get("property_type") or listing.get("object_type") or ""
-
-    if isinstance(bouwjaar, str):
-        import re
-        bj_match = re.search(r'(\d{4})', str(bouwjaar))
-        bouwjaar = int(bj_match.group(1)) if bj_match else 0
-    if isinstance(kamers, str):
-        import re
-        k_match = re.search(r'(\d+)', str(kamers))
-        kamers = int(k_match.group(1)) if k_match else 0
+    # Alleen koop (check price_condition)
+    price_cond = d.get("price_condition", "")
+    if price_cond and "huur" in str(price_cond).lower():
+        return None
 
     return Property(
         source="funda",
         url=url,
         adres=adres,
-        stad=stad.replace("-", " ").title(),
+        stad=city,
         postcode=str(postcode),
         prijs=int(prijs),
         opp_m2=int(opp),
@@ -75,12 +53,12 @@ def _listing_to_property(listing: dict, stad: str) -> Property:
         type_woning=str(type_w),
         bouwjaar=int(bouwjaar) if bouwjaar else 0,
         energie_label=str(energie),
-        kamers=int(kamers) if kamers else 0,
+        kamers=int(kamers or slaapkamers) if (kamers or slaapkamers) else 0,
         datum_online=date.today(),
     )
 
 
-def scrape_funda(max_pages: int = 3) -> List[Property]:
+def scrape_funda(max_pages: int = 5) -> List[Property]:
     """Scrape Funda via mobile API voor fix & flip en splitsing kansen."""
     results: List[Property] = []
     max_prijs = max(FIX_FLIP["max_aankoopprijs"], SPLITSING["max_aankoopprijs"])
@@ -89,12 +67,11 @@ def scrape_funda(max_pages: int = 3) -> List[Property]:
     f = Funda()
 
     for stad in STEDEN_FUNDA:
-        location = STAD_MAPPING.get(stad, stad)
         for page_num in range(max_pages):
             try:
-                logger.info("Funda API: zoeken in %s pagina %d", stad, page_num + 1)
+                logger.info("Funda API: %s pagina %d", stad, page_num + 1)
                 listings = f.search_listing(
-                    location=location,
+                    location=stad,
                     offering_type='buy',
                     price_max=max_prijs,
                     area_min=min_m2,
@@ -106,35 +83,27 @@ def scrape_funda(max_pages: int = 3) -> List[Property]:
                     logger.info("Funda API: geen resultaten meer voor %s", stad)
                     break
 
-                # listings kan een list of dict zijn
-                if isinstance(listings, dict):
-                    items = listings.get("objects", listings.get("results", []))
-                elif isinstance(listings, list):
-                    items = listings
-                else:
-                    logger.warning("Funda API: onverwacht type %s", type(listings))
-                    break
-
-                if not items:
-                    break
-
-                for listing in items:
+                for listing in listings:
                     try:
-                        if isinstance(listing, dict):
-                            prop = _listing_to_property(listing, stad)
-                        else:
-                            # Als het een object is met attributen
-                            listing_dict = listing.__dict__ if hasattr(listing, '__dict__') else {}
-                            prop = _listing_to_property(listing_dict, stad)
-
-                        if prop.prijs >= 25_000 and prop.opp_m2 > 0:
+                        prop = _listing_to_property(listing, stad)
+                        if prop and prop.prijs >= 25_000 and prop.opp_m2 > 0:
                             results.append(prop)
                     except Exception as e:
                         logger.debug("Funda listing parse fout: %s", e)
 
+                # Kleine pauze om rate limiting te voorkomen
+                time.sleep(0.3)
+
+            except RuntimeError as e:
+                if "403" in str(e):
+                    logger.warning("Funda API rate limit voor %s — even wachten", stad)
+                    time.sleep(5)
+                    break
+                logger.error("Funda API fout %s: %s", stad, e)
+                break
             except Exception as e:
-                logger.error("Funda API fout %s pagina %d: %s", stad, page_num + 1, e)
-                break  # stop met deze stad bij API fouten
+                logger.error("Funda API fout %s: %s", stad, e)
+                break
 
     logger.info("Funda: %d panden gevonden", len(results))
     return results
