@@ -83,17 +83,22 @@ def stuur_property_notificatie(prop: Property) -> bool:
     tekst += f"<b>Totaal aankoop:  {_eur(c['aankoop_totaal'])}</b>\n"
 
     # ── VERBOUWING ──
-    tekst += f"\n<b>VERBOUWING</b>\n"
+    tekst += f"\n<b>VERBOUWING ({_eur(c['renovatie_per_m2'])}/m\u00b2)</b>\n"
     tekst += f"{'─' * 32}\n"
-    tekst += f"Renovatie ({_eur(c['renovatie_per_m2'])}/m\u00b2): {_eur(c['renovatie'])}\n"
 
-    if "splitsing_kosten" in c:
-        tekst += f"Splitsing ({c['n_units']}x):   {_eur(c['splitsing_kosten'])}\n"
-    tekst += f"Architect+leges:  {_eur(c['architect_leges'])}\n"
-    tekst += f"Onvoorzien {c['onvoorzien_pct']}%:   {_eur(c['onvoorzien'])}\n"
-    if "projectmanagement" in c:
-        tekst += f"Projectmanagement: {_eur(c['projectmanagement'])}\n"
-        tekst += f"Overig:           {_eur(c['overige_kosten'])}\n"
+    reno = c.get("renovatie_detail")
+    if reno and reno.get("componenten"):
+        # Slimme renovatie — toon top componenten
+        comps = reno["componenten"]
+        for comp in comps:
+            if comp["kosten"] >= 1_000:  # toon alleen posten >= 1k
+                tekst += f"{comp['naam']}: {_eur(comp['kosten'])}\n"
+    else:
+        # Flat rate fallback
+        tekst += f"Renovatie: {_eur(c.get('renovatie', c['bouw_totaal']))}\n"
+        if "splitsing_kosten" in c:
+            tekst += f"Splitsing ({c['n_units']}x): {_eur(c['splitsing_kosten'])}\n"
+
     tekst += f"<b>Totaal bouw:     {_eur(c['bouw_totaal'])}</b>\n"
 
     # ── FINANCIERING ──

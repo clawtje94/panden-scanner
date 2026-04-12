@@ -16,6 +16,7 @@ from database import init_db, is_nieuw, sla_op, haal_stats_op
 from notifier import stuur_property_notificatie, stuur_dagelijks_rapport
 from scrapers import scrape_funda, scrape_funda_ib, scrape_pararius, scrape_bedrijfspand, scrape_makelaars
 from referentie import zoek_vergelijkbare
+from renovatie import schat_renovatie
 from config import FIX_FLIP, SPLITSING, TRANSFORMATIE
 
 logging.basicConfig(
@@ -89,6 +90,16 @@ def evalueer_property(prop: Property) -> List[Property]:
     # Zoek referentieprijzen in dezelfde stad
     ref_pm2, ref_panden = zoek_vergelijkbare(prop.stad, prop.opp_m2, "fix_flip")
 
+    # Slimme renovatie-schatting op basis van pandkenmerken
+    is_opknapper = prop.calc.get("is_opknapper", False) if prop.calc else False
+    reno = schat_renovatie(
+        opp_m2=prop.opp_m2,
+        bouwjaar=prop.bouwjaar,
+        energie_label=prop.energie_label,
+        type_woning=prop.type_woning,
+        is_opknapper=is_opknapper,
+    )
+
     if not prop.is_commercieel:
         # Fix & Flip
         if (prop.prijs <= FIX_FLIP["max_aankoopprijs"]
@@ -97,6 +108,7 @@ def evalueer_property(prop: Property) -> List[Property]:
                 Property(**prop.__dict__), FIX_FLIP,
                 verkoop_m2_override=ref_pm2,
                 referenties=ref_panden,
+                renovatie_detail=reno,
             )
             if p.marge_pct >= FIX_FLIP["min_marge_pct"]:
                 score_property(p)

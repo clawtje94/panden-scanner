@@ -39,7 +39,7 @@ class Property:
     calc: dict = field(default_factory=dict)
 
 
-def bereken_fix_flip(prop: Property, cfg: dict, verkoop_m2_override: float = 0, referenties: list = None) -> Property:
+def bereken_fix_flip(prop: Property, cfg: dict, verkoop_m2_override: float = 0, referenties: list = None, renovatie_detail: dict = None) -> Property:
     m2 = max(prop.opp_m2, 1)
     koop = prop.prijs
 
@@ -48,11 +48,16 @@ def bereken_fix_flip(prop: Property, cfg: dict, verkoop_m2_override: float = 0, 
     notaris_makelaar = koop * 0.013
     aankoop_totaal = koop + ovb + notaris_makelaar
 
-    # ── VERBOUWING ──
-    renovatie = m2 * cfg["renovatie_per_m2"]
-    arch_leges = renovatie * 0.08
-    onvoorzien = renovatie * 0.10
-    bouw_totaal = renovatie + arch_leges + onvoorzien
+    # ── VERBOUWING (slim of flat rate) ──
+    if renovatie_detail:
+        bouw_totaal = renovatie_detail["totaal"]
+        renovatie_per_m2_actueel = renovatie_detail["per_m2"]
+    else:
+        renovatie = m2 * cfg["renovatie_per_m2"]
+        arch_leges = renovatie * 0.08
+        onvoorzien = renovatie * 0.10
+        bouw_totaal = renovatie + arch_leges + onvoorzien
+        renovatie_per_m2_actueel = cfg["renovatie_per_m2"]
 
     # ── FINANCIERING ──
     looptijd_mnd = cfg["looptijd_maanden"]
@@ -100,11 +105,8 @@ def bereken_fix_flip(prop: Property, cfg: dict, verkoop_m2_override: float = 0, 
         "notaris_makelaar_aankoop": int(notaris_makelaar),
         "aankoop_totaal": int(aankoop_totaal),
         # Verbouwing
-        "renovatie_per_m2": cfg["renovatie_per_m2"],
-        "renovatie": int(renovatie),
-        "architect_leges": int(arch_leges),
-        "onvoorzien_pct": 10,
-        "onvoorzien": int(onvoorzien),
+        "renovatie_per_m2": renovatie_per_m2_actueel,
+        "renovatie_detail": renovatie_detail,  # None of volledige breakdown
         "bouw_totaal": int(bouw_totaal),
         # Financiering
         "looptijd_maanden": looptijd_mnd,
