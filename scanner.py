@@ -2,6 +2,8 @@
 Hoofdorchestrator — voert alle scrapers uit en filtert kansen.
 """
 import logging
+import re
+import time
 from typing import List
 from models import (
     Property,
@@ -21,6 +23,63 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
 logger = logging.getLogger(__name__)
+
+# Funda instance voor status checks
+_funda = None
+
+def _get_funda():
+    global _funda
+    if _funda is None:
+        from funda import Funda
+        _funda = Funda()
+    return _funda
+
+
+def is_beschikbaar(prop: Property) -> bool:
+    """Check of een pand nog daadwerkelijk te koop is (niet verkocht/onder bod)."""
+    # Funda panden: check via detail API
+    if prop.source in ("funda", "funda_ib"):
+        try:
+            # Haal listing ID uit URL
+            url = prop.url
+            match = re.search(r'/(\d+)/?$', url)
+            if not match:
+                # Probeer global_id uit URL
+                match = re.search(r'-(\d+)/', url)
+            if not match:
+                logger.debug("Kan listing ID niet vinden in %s", url)
+                return True  # bij twijfel: doorlaten
+
+            listing_id = int(match.group(1))
+            f = _get_funda()
+            detail = f.get_listing(listing_id)
+            d = detail.data if hasattr(detail, 'data') else {}
+            status = str(d.get("status", "")).lower()
+
+            if status in ("sold", "verkocht", "sold_under_conditions",
+                          "sold_stc", "under_negotiation", "unavailable"):
+                logger.info("SKIP %s — status: %s", prop.adres, status)
+                return False
+
+            # Bonus: sla extra detail info op
+            if d.get("is_fixer_upper"):
+                prop.calc["is_opknapper"] = True
+            if d.get("price_per_m2"):
+                prop.calc["funda_prijs_per_m2"] = d["price_per_m2"]
+
+            time.sleep(0.2)
+            return True
+
+        except Exception as e:
+            logger.debug("Status check mislukt voor %s: %s", prop.adres, e)
+            return True  # bij fout: doorlaten
+
+    # Pararius/makelaars: check via "verkocht" in bestaande data
+    if hasattr(prop, 'type_woning') and prop.type_woning:
+        if "verkocht" in prop.type_woning.lower():
+            return False
+
+    return True
 
 
 def evalueer_property(prop: Property) -> List[Property]:
@@ -126,6 +185,12 @@ def run_scan():
 
         kansen = evalueer_property(prop)
         for kans in kansen:
+            # Check of pand nog beschikbaar is (niet verkocht)
+            if not is_beschikbaar(kans):
+                logger.info("OVERGESLAGEN (verkocht): %s", kans.adres)
+                sla_op(kans)  # sla op zodat we 'm niet opnieuw checken
+                continue
+
             sla_op(kans)
             logger.info(
                 "KANS: %s | %s | marge %.1f%% | winst EUR%d",

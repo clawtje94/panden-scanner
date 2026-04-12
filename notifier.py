@@ -63,7 +63,12 @@ def stuur_property_notificatie(prop: Property) -> bool:
         tekst += f" | bj {prop.bouwjaar}"
     if prop.energie_label:
         tekst += f" | label {prop.energie_label}"
-    tekst += f"\nBron: {prop.source}\n"
+    tekst += f"\nBron: {prop.source}"
+    if c.get("is_opknapper"):
+        tekst += " | OPKNAPPER"
+    if c.get("funda_prijs_per_m2"):
+        tekst += f" | Funda: \u20ac{c['funda_prijs_per_m2']:,.0f}/m\u00b2".replace(",", ".")
+    tekst += "\n"
 
     # ── AANKOOP ──
     tekst += f"\n<b>AANKOOP</b>\n"
