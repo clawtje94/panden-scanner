@@ -103,11 +103,12 @@ def _zoek_op_funda(adres: str, stad: str) -> bool:
                             source="check", url="", adres=adres, stad=stad))
 
         time.sleep(0.3)
-        return True  # niet gevonden op Funda = kan niet checken, doorlaten
+        logger.info("SKIP %s — niet gevonden op Funda (waarschijnlijk al weg)", adres)
+        return False  # niet op Funda = waarschijnlijk al verkocht
 
     except Exception as e:
         logger.debug("Funda zoek-check mislukt voor %s: %s", adres, e)
-        return True
+        return True  # bij API fout: doorlaten
 
 
 def is_beschikbaar(prop: Property) -> bool:
