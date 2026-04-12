@@ -21,11 +21,19 @@ TYPES = ["winkelruimte", "kantoorruimte", "bedrijfsruimte"]
 
 
 def _parse_prijs(tekst: str) -> int:
-    if "maand" in tekst.lower() or "jaar" in tekst.lower() or "p.j." in tekst.lower():
-        return 0  # huur, niet koop
+    t = tekst.lower()
+    # Huurprijzen uitsluiten
+    if any(kw in t for kw in [
+        "maand", "jaar", "p.j.", "p.m.", "per m", "/ m", "/m",
+        "huur", "aanvraag", "n.o.t.k",
+    ]):
+        return 0
     schoon = tekst.replace(".", "").replace(",", "").replace("\u20ac", "").replace("k.k.", "").strip()
     match = re.search(r'\d+', schoon)
-    return int(match.group()) if match else 0
+    prijs = int(match.group()) if match else 0
+    if prijs < 25_000:
+        return 0
+    return prijs
 
 
 def _parse_opp(tekst: str) -> int:

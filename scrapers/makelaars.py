@@ -33,14 +33,31 @@ HEADERS = {
 }
 
 
+def _is_huur(tekst: str) -> bool:
+    """Detecteer of een prijs een huurprijs is (niet koop)."""
+    t = tekst.lower()
+    return any(kw in t for kw in [
+        "/maand", "/jaar", "p.m.", "p.j.", "per maand", "per jaar",
+        "/ m²", "/ m2", "/m²", "/m2", "huur", "per m",
+    ])
+
+
 def _parse_prijs(tekst: str) -> int:
+    """Parse koopprijs. Retourneert 0 voor huur, op aanvraag, of ongeldig."""
     if not tekst or "aanvraag" in tekst.lower() or "n.o.t.k" in tekst.lower():
+        return 0
+    # Huurprijzen uitsluiten
+    if _is_huur(tekst):
         return 0
     schoon = tekst.replace(".", "").replace(",", "").replace("\u20ac", "")
     schoon = schoon.replace("EUR", "").replace("k.k.", "").replace("v.o.n.", "")
     schoon = schoon.replace(",-", "").replace("-", "").strip()
     match = re.search(r'\d+', schoon)
-    return int(match.group()) if match else 0
+    prijs = int(match.group()) if match else 0
+    # Sanity check: een kooppand kost minimaal €25.000
+    if prijs < 25_000:
+        return 0
+    return prijs
 
 
 def _parse_opp(tekst: str) -> int:

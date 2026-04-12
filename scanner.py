@@ -89,7 +89,18 @@ def run_scan():
     except Exception as e:
         logger.error("Makelaars scraper gefaald: %s", e)
 
-    logger.info("Totaal gescand: %d panden", len(alle_panden))
+    totaal_ruw = len(alle_panden)
+    logger.info("Totaal gescand: %d panden", totaal_ruw)
+
+    # ── Sanity filter: verwijder onzin-data ──────────────────────────────
+    alle_panden = [
+        p for p in alle_panden
+        if p.prijs >= 25_000         # geen huurprijzen of parse-fouten
+        and p.opp_m2 >= 10           # minimaal 10m²
+        and p.prijs_per_m2 >= 500    # minimaal €500/m² (anders is het geen koop)
+        and p.url                    # moet een URL hebben
+    ]
+    logger.info("Na sanity filter: %d panden (van %d gescand)", len(alle_panden), totaal_ruw)
 
     # ── Evalueer en filter ────────────────────────────────────────────────
     nieuw_gevonden = 0
