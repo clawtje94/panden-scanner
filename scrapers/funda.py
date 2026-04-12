@@ -1,6 +1,6 @@
 """
-Funda.nl scraper — gebruikt Playwright om bot-detectie te omzeilen.
-Zoekt naar woningen voor fix & flip en splitsing.
+Funda.nl scraper — gebruikt Playwright voor bot-detectie.
+Zoekt via JSON-LD listing URLs + HTML selectors voor data.
 """
 import json
 import logging
@@ -23,85 +23,118 @@ def _bouw_url(stad: str, max_prijs: int, min_m2: int, page: int = 1) -> str:
     return (
         f"{FUNDA_BASE}/zoeken/koop/"
         f"?selected_area=%5B%22{stad}%22%5D"
-        f"&price=%22-%7B{max_prijs}%7D%22"
+        f"&price=%22-{max_prijs}%22"
         f"&floor_area=%22{min_m2}-%22"
         f"&sort=%22date_down%22"
         f"&search_result={page}"
     )
 
 
-def _parse_next_data(html: str) -> List[dict]:
-    """Haal listings uit __NEXT_DATA__ JSON."""
-    match = re.search(r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>', html, re.DOTALL)
-    if not match:
-        return []
-    try:
-        data = json.loads(match.group(1))
-        props = (
-            data.get("props", {})
-                .get("pageProps", {})
-                .get("searchResult", {})
-                .get("Properties", [])
-        )
-        return props or []
-    except (json.JSONDecodeError, KeyError):
-        return []
+def _extract_json_ld_urls(html: str) -> List[str]:
+    """Haal listing URLs uit JSON-LD itemListElement."""
+    urls = []
+    for match in re.finditer(r'<script type="application/ld\+json">(.*?)</script>', html, re.DOTALL):
+        try:
+            data = json.loads(match.group(1))
+            items = data.get("itemListElement", [])
+            for item in items:
+                url = item.get("url", "")
+                if url and "/koop/" in url:
+                    urls.append(url)
+        except (json.JSONDecodeError, AttributeError):
+            continue
+    return urls
 
 
-def _raw_to_property(raw: dict, stad: str) -> Property:
-    prijs = raw.get("Price", {}).get("Sale", {}).get("Price", 0) or 0
-    opp = raw.get("LivingArea", 0) or 0
-    adres = f"{raw.get('Address', '')} {raw.get('HouseNumber', '')}".strip()
-    pc = raw.get("ZipCode", "")
-    url = FUNDA_BASE + "/detail/koop/" + raw.get("GlobalId", "")
-    label = raw.get("EnergyLabel", "") or ""
-    bouwjaar = raw.get("ConstructionYear") or 0
-    kamers = raw.get("RoomCount") or 0
-    foto = (raw.get("Photos") or [{}])[0].get("Uri", "")
-    type_w = raw.get("ObjectType", "")
+def _parse_listing_cards(page) -> List[dict]:
+    """Parse listing cards uit de zoekresultaten pagina."""
+    listings = []
+    cards = page.query_selector_all('[data-test-id="search-result-item"], .flex.flex-col.sm\\:flex-row')
+    if not cards:
+        cards = page.query_selector_all('div.border-b.pb-3')
 
-    p = Property(
-        source="funda",
-        url=url,
-        adres=adres,
-        stad=stad,
-        postcode=pc,
-        prijs=int(prijs),
-        opp_m2=int(opp),
-        prijs_per_m2=round(prijs / opp, 0) if opp > 0 else 0,
-        type_woning=type_w,
-        bouwjaar=int(bouwjaar) if bouwjaar else 0,
-        energie_label=label,
-        kamers=int(kamers) if kamers else 0,
-        eigen_grond=raw.get("IsGroundFloor", True),
-        datum_online=date.today(),
-        foto_url=foto,
-    )
-    return p
+    for card in cards:
+        try:
+            info = {}
+
+            # Adres
+            title_el = card.query_selector('h2 a span.truncate')
+            if title_el:
+                info["adres"] = title_el.inner_text().strip()
+
+            # Postcode + stad
+            sub_el = card.query_selector('h2 a div.truncate.text-neutral-80')
+            if sub_el:
+                sub_text = sub_el.inner_text().strip()
+                pc_match = re.match(r'(\d{4}\s*[A-Z]{2})\s+(.*)', sub_text)
+                if pc_match:
+                    info["postcode"] = pc_match.group(1)
+                    info["stad"] = pc_match.group(2)
+
+            # Prijs
+            prijs_el = card.query_selector('div.font-semibold div.truncate')
+            if prijs_el:
+                prijs_txt = prijs_el.inner_text().strip()
+                prijs_clean = re.sub(r'[^\d]', '', prijs_txt.split('k.k.')[0].split('v.o.n.')[0])
+                if prijs_clean:
+                    info["prijs"] = int(prijs_clean)
+
+            # URL
+            link_el = card.query_selector('h2 a')
+            if link_el:
+                href = link_el.get_attribute('href') or ''
+                info["url"] = FUNDA_BASE + href if href.startswith('/') else href
+
+            # Features (m², kamers, energielabel)
+            features = card.query_selector_all('ul.flex.flex-wrap li')
+            for feat in features:
+                txt = feat.inner_text().strip()
+                m2_match = re.search(r'(\d+)\s*m', txt)
+                if m2_match and "opp_m2" not in info:
+                    info["opp_m2"] = int(m2_match.group(1))
+                label_match = re.match(r'^[A-G][+\-]*$', txt.strip())
+                if label_match:
+                    info["energie_label"] = txt.strip()
+
+            # Status (verkocht = skip)
+            status_el = card.query_selector('span.rounded.px-2.py-0\\.5.text-xs.font-semibold')
+            if status_el:
+                status_txt = status_el.inner_text().strip().lower()
+                if 'verkocht' in status_txt or 'verhuurd' in status_txt:
+                    continue
+
+            if info.get("prijs") and info.get("url"):
+                listings.append(info)
+
+        except Exception as e:
+            logger.debug("Funda card parse fout: %s", e)
+
+    return listings
 
 
 def scrape_funda(max_pages: int = 3) -> List[Property]:
     """Scrape Funda voor fix & flip en splitsing kansen."""
     results: List[Property] = []
-
-    # Combineer criteria: neem ruimste range
     max_prijs = max(FIX_FLIP["max_aankoopprijs"], SPLITSING["max_aankoopprijs"])
     min_m2 = min(FIX_FLIP["min_opp_m2"], SPLITSING["min_opp_m2"])
 
     with sync_playwright() as pw:
         browser = pw.chromium.launch(
             headless=True,
-            args=["--no-sandbox", "--disable-dev-shm-usage", "--disable-blink-features=AutomationControlled"],
+            args=["--no-sandbox", "--disable-dev-shm-usage",
+                   "--disable-blink-features=AutomationControlled"],
         )
         context = browser.new_context(
-            user_agent="Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1",
-            viewport={"width": 390, "height": 844},
+            user_agent=(
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/124.0.0.0 Safari/537.36"
+            ),
+            viewport={"width": 1440, "height": 900},
             locale="nl-NL",
         )
-        # Verberg Playwright-fingerprint
         context.add_init_script("""
             Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
-            Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3] });
         """)
         page = context.new_page()
 
@@ -110,31 +143,57 @@ def scrape_funda(max_pages: int = 3) -> List[Property]:
                 url = _bouw_url(stad, max_prijs, min_m2, p_num)
                 try:
                     logger.info("Funda: scraping %s pagina %d", stad, p_num)
-                    page.goto(url, wait_until="domcontentloaded", timeout=20_000)
-                    time.sleep(random.uniform(1.5, 3.0))  # menselijk gedrag
+                    page.goto(url, wait_until="domcontentloaded", timeout=25_000)
+                    time.sleep(random.uniform(2.0, 4.0))
 
-                    # Sluit cookie-banner als aanwezig
+                    # Cookie banner
                     try:
-                        page.click('[data-testid="accept-cookies"]', timeout=2_000)
+                        page.click('button:has-text("Accepteren")', timeout=3_000)
+                        time.sleep(0.5)
                     except PWTimeout:
                         pass
 
-                    html = page.content()
-                    raws = _parse_next_data(html)
-
-                    if not raws:
-                        logger.info("Geen resultaten voor %s pagina %d — stop", stad, p_num)
+                    # Check voor CAPTCHA
+                    if page.query_selector('#fundaCaptchaInput'):
+                        logger.warning("Funda CAPTCHA gedetecteerd voor %s — skip", stad)
                         break
 
-                    for raw in raws:
+                    # Methode 1: parse listing cards
+                    listings = _parse_listing_cards(page)
+
+                    # Methode 2: fallback naar JSON-LD URLs
+                    if not listings:
+                        html = page.content()
+                        ld_urls = _extract_json_ld_urls(html)
+                        for ld_url in ld_urls:
+                            listings.append({"url": ld_url, "stad": stad})
+
+                    if not listings:
+                        logger.info("Geen resultaten voor %s pagina %d", stad, p_num)
+                        break
+
+                    for info in listings:
                         try:
-                            prop = _raw_to_property(raw, stad)
+                            prijs = info.get("prijs", 0)
+                            opp = info.get("opp_m2", 0)
+                            prop = Property(
+                                source="funda",
+                                url=info.get("url", ""),
+                                adres=info.get("adres", ""),
+                                stad=info.get("stad", stad),
+                                postcode=info.get("postcode", ""),
+                                prijs=prijs,
+                                opp_m2=opp,
+                                prijs_per_m2=round(prijs / opp, 0) if opp > 0 else 0,
+                                energie_label=info.get("energie_label", ""),
+                                datum_online=date.today(),
+                            )
                             if prop.prijs > 0 and prop.opp_m2 > 0:
                                 results.append(prop)
                         except Exception as e:
-                            logger.debug("Parse fout: %s", e)
+                            logger.debug("Funda property fout: %s", e)
 
-                    time.sleep(random.uniform(2.0, 4.0))
+                    time.sleep(random.uniform(2.0, 5.0))
 
                 except PWTimeout:
                     logger.warning("Timeout voor %s pagina %d", stad, p_num)

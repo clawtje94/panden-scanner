@@ -12,7 +12,7 @@ from models import (
 )
 from database import init_db, is_nieuw, sla_op, haal_stats_op
 from notifier import stuur_property_notificatie, stuur_dagelijks_rapport
-from scrapers import scrape_funda, scrape_funda_ib, scrape_pararius, scrape_bedrijfspand
+from scrapers import scrape_funda, scrape_funda_ib, scrape_pararius, scrape_bedrijfspand, scrape_makelaars
 from config import FIX_FLIP, SPLITSING, TRANSFORMATIE
 
 logging.basicConfig(
@@ -83,6 +83,11 @@ def run_scan():
         alle_panden += scrape_bedrijfspand()
     except Exception as e:
         logger.error("Bedrijfspand scraper gefaald: %s", e)
+
+    try:
+        alle_panden += scrape_makelaars()
+    except Exception as e:
+        logger.error("Makelaars scraper gefaald: %s", e)
 
     logger.info("Totaal gescand: %d panden", len(alle_panden))
 
