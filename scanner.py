@@ -150,7 +150,9 @@ def evalueer_property(prop: Property) -> List[Property]:
 
     # Zoek referentieprijzen in dezelfde stad
     ref_pm2, ref_panden = zoek_vergelijkbare(
-        prop.stad, prop.opp_m2, "fix_flip", type_woning=prop.type_woning,
+        prop.stad, prop.opp_m2, "fix_flip",
+        type_woning=prop.type_woning,
+        postcode=prop.postcode,
     )
 
     # Slimme renovatie-schatting op basis van pandkenmerken

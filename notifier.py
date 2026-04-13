@@ -143,10 +143,13 @@ def stuur_property_notificatie(prop: Property) -> bool:
     # ── REFERENTIE PANDEN ──
     refs = c.get("referenties", [])
     if refs:
+        wijk = refs[0].get("wijk", "")
         tekst += f"\n<b>REFERENTIE PANDEN</b>\n"
         tekst += f"{'─' * 32}\n"
+        if wijk:
+            tekst += f"(wijk: {wijk})\n"
         tekst += f"(basis voor {_eur(verkoop_m2)}/m\u00b2)\n"
-        for i, ref in enumerate(refs[:3], 1):
+        for i, ref in enumerate(refs[:5], 1):
             tekst += (
                 f"{i}. {ref['adres']}\n"
                 f"   {_eur(ref['prijs'])} | {ref['opp_m2']}m\u00b2 | "
