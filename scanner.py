@@ -14,7 +14,11 @@ from models import (
 )
 from database import init_db, is_nieuw, sla_op, haal_stats_op
 from notifier import stuur_property_notificatie, stuur_dagelijks_rapport
-from scrapers import scrape_funda, scrape_funda_ib, scrape_pararius, scrape_bedrijfspand, scrape_makelaars
+from scrapers import (
+    scrape_funda, scrape_funda_ib, scrape_pararius,
+    scrape_bedrijfspand, scrape_makelaars,
+    scrape_trovit, scrape_biedboek,
+)
 from referentie import zoek_vergelijkbare
 from renovatie import schat_renovatie
 from config import FIX_FLIP, SPLITSING, TRANSFORMATIE
@@ -241,6 +245,19 @@ def run_scan():
     except Exception as e:
         logger.error("Makelaars scraper gefaald: %s", e)
 
+    try:
+        alle_panden += scrape_trovit(max_pages=3)
+    except Exception as e:
+        logger.error("Trovit scraper gefaald: %s", e)
+
+    # Biedboek: aparte lijst, geen standaard calc (veilingen)
+    biedboek_panden = []
+    try:
+        biedboek_panden = scrape_biedboek()
+        logger.info("Biedboek: %d panden (info-only, geen calc)", len(biedboek_panden))
+    except Exception as e:
+        logger.error("Biedboek scraper gefaald: %s", e)
+
     totaal_ruw = len(alle_panden)
     logger.info("Totaal gescand: %d panden", totaal_ruw)
 
@@ -256,29 +273,84 @@ def run_scan():
 
     # ── Evalueer en filter ────────────────────────────────────────────────
     nieuw_gevonden = 0
+    alle_kansen = []  # voor leads.json export
     for prop in alle_panden:
-        if not is_nieuw(prop.url):
-            continue  # al eerder gezien
-
         kansen = evalueer_property(prop)
         for kans in kansen:
             # Check of pand nog beschikbaar is (niet verkocht)
             if not is_beschikbaar(kans):
                 logger.info("OVERGESLAGEN (verkocht): %s", kans.adres)
-                sla_op(kans)  # sla op zodat we 'm niet opnieuw checken
+                sla_op(kans)
                 continue
 
+            alle_kansen.append(kans)  # ook oude kansen in dashboard
             sla_op(kans)
-            logger.info(
-                "KANS: %s | %s | marge %.1f%% | winst EUR%d",
-                kans.adres, kans.strategie, kans.marge_pct, kans.winst_euro,
-            )
-            stuur_property_notificatie(kans)
-            nieuw_gevonden += 1
 
-        # Sla alle geziene panden op (ook als geen kans, om duplicaten te voorkomen)
+            # Alleen Telegram notificatie voor NIEUWE kansen
+            if is_nieuw(kans.url):
+                logger.info(
+                    "KANS NIEUW: %s | %s | marge %.1f%% | winst EUR%d",
+                    kans.adres, kans.strategie, kans.marge_pct, kans.winst_euro,
+                )
+                stuur_property_notificatie(kans)
+                nieuw_gevonden += 1
+
         if not kansen:
             sla_op(prop)
+
+    # ── Biedboek info-only toevoegen aan dashboard ────────────────────────
+    biedboek_dashboard = []
+    for bp in biedboek_panden:
+        biedboek_dashboard.append({
+            "adres": bp.adres, "stad": bp.stad, "postcode": bp.postcode,
+            "prijs": bp.prijs, "opp_m2": bp.opp_m2, "prijs_per_m2": bp.prijs_per_m2,
+            "type_woning": bp.type_woning, "url": bp.url,
+            "source": "biedboek", "is_commercieel": bp.is_commercieel,
+            "bouwjaar": bp.bouwjaar,
+        })
+
+    # ── Export naar leads.json voor dashboard ─────────────────────────────
+    import json
+    from datetime import datetime
+    leads_export = {
+        "scan_datum": datetime.now().isoformat(),
+        "totaal_gescand": totaal_ruw,
+        "na_filter": len(alle_panden),
+        "kansen": [],
+        "biedboek": biedboek_dashboard,
+    }
+    for k in alle_kansen:
+        leads_export["kansen"].append({
+            "adres": k.adres,
+            "stad": k.stad,
+            "postcode": k.postcode,
+            "wijk": k.calc.get("referenties", [{}])[0].get("wijk", "") if k.calc.get("referenties") else "",
+            "prijs": k.prijs,
+            "opp_m2": k.opp_m2,
+            "prijs_per_m2": k.prijs_per_m2,
+            "type_woning": k.type_woning,
+            "bouwjaar": k.bouwjaar,
+            "energie_label": k.energie_label,
+            "kamers": k.kamers,
+            "source": k.source,
+            "url": k.url,
+            "strategie": k.strategie,
+            "marge_pct": k.marge_pct,
+            "winst_euro": k.winst_euro,
+            "roi_pct": k.roi_pct,
+            "totale_kosten": k.totale_kosten,
+            "verwachte_opbrengst": k.verwachte_opbrengst,
+            "score": k.score,
+            "is_opknapper": k.calc.get("is_opknapper", False),
+            "calc": k.calc,
+        })
+    # Sorteer op marge (hoogste eerst)
+    leads_export["kansen"].sort(key=lambda x: -x["marge_pct"])
+
+    with open("leads.json", "w", encoding="utf-8") as f:
+        json.dump(leads_export, f, indent=2, ensure_ascii=False, default=str)
+    logger.info("leads.json geschreven: %d kansen + %d biedboek",
+                len(leads_export["kansen"]), len(biedboek_dashboard))
 
     # ── Dagelijks rapport ─────────────────────────────────────────────────
     stats = haal_stats_op()

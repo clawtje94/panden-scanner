@@ -38,3 +38,18 @@ jobs:
           name: panden-database
           path: panden.db
           retention-days: 30
+
+      - name: Commit leads.json naar data branch
+        if: always()
+        run: |
+          if [ -f leads.json ]; then
+            git config user.name "github-actions"
+            git config user.email "actions@github.com"
+            git fetch origin data || git checkout --orphan data
+            git checkout data 2>/dev/null || git checkout -b data
+            git rm -rf . 2>/dev/null || true
+            git checkout main -- leads.json
+            git add leads.json
+            git commit -m "Update leads $(date -u +%Y-%m-%dT%H:%M:%SZ)" || echo "No changes"
+            git push origin data --force
+          fi
