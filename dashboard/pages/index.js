@@ -1,294 +1,528 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
 
 const DATA_URL = "https://raw.githubusercontent.com/clawtje94/panden-scanner/data/leads.json";
 
 const eur = (n) => n ? `€${Math.round(n).toLocaleString('nl-NL')}` : '-';
 
+const STATUS = {
+  NEW: 'new',
+  SAVED: 'saved',
+  HOT: 'hot',
+  REJECTED: 'rejected',
+  VIEWED: 'viewed',
+  CONTACTED: 'contacted',
+  ARCHIVED: 'archived',
+};
+
+const STATUS_LABELS = {
+  new: 'Nieuw',
+  saved: 'Opgeslagen',
+  hot: 'Top deal',
+  rejected: 'Afgewezen',
+  viewed: 'Bezichtigd',
+  contacted: 'Contact gehad',
+  archived: 'Gearchiveerd',
+};
+
+const STATUS_COLORS = {
+  new: '#888',
+  saved: '#00b894',
+  hot: '#ff6b00',
+  rejected: '#666',
+  viewed: '#0984e3',
+  contacted: '#fdcb6e',
+  archived: '#444',
+};
+
 export default function Home() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState('kansen');
-  const [stad, setStad] = useState('alle');
+  const [userState, setUserState] = useState({}); // {url: {status, notes, updated}}
+  const [view, setView] = useState('swipe'); // swipe, saved, rejected, all
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [stadFilter, setStadFilter] = useState('alle');
   const [minMarge, setMinMarge] = useState(0);
-  const [search, setSearch] = useState('');
-  const [selected, setSelected] = useState(null);
+  const [swipeDir, setSwipeDir] = useState(null);
+  const [showNotes, setShowNotes] = useState(false);
+  const [notesText, setNotesText] = useState('');
+  const touchStart = useRef({ x: 0, y: 0 });
 
+  // Laad data + user state
   useEffect(() => {
     fetch(DATA_URL)
       .then(r => r.json())
       .then(d => { setData(d); setLoading(false); })
       .catch(e => { console.error(e); setLoading(false); });
+
+    const saved = localStorage.getItem('panden_state');
+    if (saved) {
+      try { setUserState(JSON.parse(saved)); } catch {}
+    }
   }, []);
 
-  if (loading) return <div className="container"><p>Laden...</p></div>;
-  if (!data) return <div className="container"><p>Geen data beschikbaar. Scan moet eerst draaien.</p></div>;
+  // Sla user state op
+  const updateStatus = (url, status, extraData = {}) => {
+    const newState = {
+      ...userState,
+      [url]: {
+        ...userState[url],
+        status,
+        updated: new Date().toISOString(),
+        ...extraData,
+      },
+    };
+    setUserState(newState);
+    localStorage.setItem('panden_state', JSON.stringify(newState));
+  };
 
-  const kansen = data.kansen || [];
-  const biedboek = data.biedboek || [];
+  const getStatus = (url) => userState[url]?.status || STATUS.NEW;
 
-  const steden = ['alle', ...new Set(kansen.map(k => k.stad))].slice(0, 10);
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handler = (e) => {
+      if (view !== 'swipe' || showNotes) return;
+      if (e.key === 'ArrowLeft') { e.preventDefault(); doAction(STATUS.REJECTED); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); doAction(STATUS.SAVED); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); doAction(STATUS.HOT); }
+      else if (e.key === ' ') { e.preventDefault(); skipNext(); }
+      else if (e.key === 'n' || e.key === 'N') { e.preventDefault(); setShowNotes(true); }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [view, currentIdx, showNotes, userState]);
 
-  const gefilterdeKansen = kansen
-    .filter(k => stad === 'alle' || k.stad === stad)
-    .filter(k => k.marge_pct >= minMarge)
-    .filter(k => !search || k.adres.toLowerCase().includes(search.toLowerCase()) || k.stad.toLowerCase().includes(search.toLowerCase()));
+  if (loading) return <div className="loading">Laden...</div>;
+  if (!data) return <div className="loading">Geen data beschikbaar. Scan moet eerst draaien.</div>;
 
-  const gefilterdeBiedboek = biedboek
-    .filter(b => !search || (b.adres || '').toLowerCase().includes(search.toLowerCase()) || (b.stad || '').toLowerCase().includes(search.toLowerCase()));
+  const kansen = (data.kansen || []).map(k => ({
+    ...k,
+    _status: getStatus(k.url),
+    _notes: userState[k.url]?.notes || '',
+  }));
 
-  const topScore = kansen.filter(k => k.score >= 6).length;
-  const gemMarge = kansen.length ? (kansen.reduce((s, k) => s + k.marge_pct, 0) / kansen.length).toFixed(1) : 0;
-  const scanDatum = new Date(data.scan_datum).toLocaleString('nl-NL');
+  const steden = ['alle', ...new Set(kansen.map(k => k.stad))].sort();
+
+  // Filter voor elk scherm
+  const swipeList = kansen
+    .filter(k => k._status === STATUS.NEW)
+    .filter(k => stadFilter === 'alle' || k.stad === stadFilter)
+    .filter(k => k.marge_pct >= minMarge);
+
+  const savedList = kansen.filter(k => [STATUS.SAVED, STATUS.HOT, STATUS.VIEWED, STATUS.CONTACTED].includes(k._status));
+  const rejectedList = kansen.filter(k => k._status === STATUS.REJECTED);
+  const hotList = kansen.filter(k => k._status === STATUS.HOT);
+
+  const current = swipeList[currentIdx];
+
+  const doAction = (status) => {
+    if (!current) return;
+    setSwipeDir(status === STATUS.REJECTED ? 'left' : status === STATUS.SAVED ? 'right' : 'up');
+    setTimeout(() => {
+      updateStatus(current.url, status);
+      setSwipeDir(null);
+      // currentIdx blijft gelijk want swipeList krimpt
+    }, 250);
+  };
+
+  const skipNext = () => {
+    if (currentIdx < swipeList.length - 1) setCurrentIdx(currentIdx + 1);
+  };
+
+  const prev = () => {
+    if (currentIdx > 0) setCurrentIdx(currentIdx - 1);
+  };
+
+  // Touch gestures
+  const onTouchStart = (e) => {
+    touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  };
+  const onTouchEnd = (e) => {
+    const dx = e.changedTouches[0].clientX - touchStart.current.x;
+    const dy = e.changedTouches[0].clientY - touchStart.current.y;
+    if (Math.abs(dx) > 80 && Math.abs(dx) > Math.abs(dy)) {
+      doAction(dx > 0 ? STATUS.SAVED : STATUS.REJECTED);
+    } else if (dy < -80 && Math.abs(dy) > Math.abs(dx)) {
+      doAction(STATUS.HOT);
+    }
+  };
+
+  const saveNotes = () => {
+    if (!current) return;
+    updateStatus(current.url, current._status, { notes: notesText });
+    setShowNotes(false);
+    setNotesText('');
+  };
 
   return (
     <>
       <Head>
-        <title>Panden Scanner — Dashboard</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Panden Scanner</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>
 
-      <div className="container">
-        <header>
-          <h1>Panden <span>Scanner</span></h1>
-          <p className="subtitle">Fix & flip kansen Zuid-Holland · Laatst gescand: {scanDatum}</p>
-          <div className="stats">
-            <div className="stat">
-              <div className="stat-label">Kansen</div>
-              <div className="stat-value">{kansen.length}</div>
-            </div>
-            <div className="stat">
-              <div className="stat-label">Score 6+</div>
-              <div className="stat-value">{topScore}</div>
-            </div>
-            <div className="stat">
-              <div className="stat-label">Gem. marge</div>
-              <div className="stat-value">{gemMarge}%</div>
-            </div>
-            <div className="stat">
-              <div className="stat-label">Biedboek</div>
-              <div className="stat-value">{biedboek.length}</div>
-            </div>
-            <div className="stat">
-              <div className="stat-label">Gescand</div>
-              <div className="stat-value">{data.totaal_gescand}</div>
-            </div>
+      <div className="app">
+        <nav className="nav">
+          <div className="nav-brand">Panden <span>Scanner</span></div>
+          <div className="nav-tabs">
+            <button className={`nav-tab ${view === 'swipe' ? 'active' : ''}`} onClick={() => { setView('swipe'); setCurrentIdx(0); }}>
+              Nieuw
+              <span className="count">{kansen.filter(k => k._status === STATUS.NEW).length}</span>
+            </button>
+            <button className={`nav-tab ${view === 'hot' ? 'active' : ''}`} onClick={() => setView('hot')}>
+              🔥 Top
+              <span className="count">{hotList.length}</span>
+            </button>
+            <button className={`nav-tab ${view === 'saved' ? 'active' : ''}`} onClick={() => setView('saved')}>
+              💾 Opgeslagen
+              <span className="count">{savedList.length}</span>
+            </button>
+            <button className={`nav-tab ${view === 'rejected' ? 'active' : ''}`} onClick={() => setView('rejected')}>
+              Prullenbak
+              <span className="count">{rejectedList.length}</span>
+            </button>
           </div>
-        </header>
+        </nav>
 
-        <div className="tabs">
-          <div className={`tab ${tab === 'kansen' ? 'active' : ''}`} onClick={() => setTab('kansen')}>
-            Kansen ({kansen.length})
-          </div>
-          <div className={`tab ${tab === 'biedboek' ? 'active' : ''}`} onClick={() => setTab('biedboek')}>
-            Biedboek ({biedboek.length})
-          </div>
-        </div>
+        {view === 'swipe' && (
+          <div className="swipe-screen">
+            <div className="swipe-filters">
+              <select value={stadFilter} onChange={e => { setStadFilter(e.target.value); setCurrentIdx(0); }}>
+                {steden.map(s => <option key={s}>{s}</option>)}
+              </select>
+              <select value={minMarge} onChange={e => { setMinMarge(Number(e.target.value)); setCurrentIdx(0); }}>
+                <option value={0}>Alle marges</option>
+                <option value={10}>≥ 10%</option>
+                <option value={15}>≥ 15%</option>
+                <option value={20}>≥ 20%</option>
+              </select>
+              <div className="progress">
+                {currentIdx + 1} / {swipeList.length}
+              </div>
+            </div>
 
-        {tab === 'kansen' && (
-          <>
-            <div className="filters">
-              <input
-                className="search"
-                placeholder="Zoek adres of stad..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-              />
-              {steden.map(s => (
-                <button
-                  key={s}
-                  className={`filter-btn ${stad === s ? 'active' : ''}`}
-                  onClick={() => setStad(s)}
+            {!current ? (
+              <div className="empty-state">
+                <h2>🎉 Alles doorlopen!</h2>
+                <p>Geen nieuwe panden met deze filters.</p>
+                <p>Nieuwe kansen verschijnen na de volgende scan (dagelijks 09:00).</p>
+              </div>
+            ) : (
+              <>
+                <div
+                  className={`swipe-card ${swipeDir ? `swipe-${swipeDir}` : ''}`}
+                  onTouchStart={onTouchStart}
+                  onTouchEnd={onTouchEnd}
                 >
-                  {s}
-                </button>
-              ))}
-              <button className={`filter-btn ${minMarge === 0 ? 'active' : ''}`} onClick={() => setMinMarge(0)}>Alle marges</button>
-              <button className={`filter-btn ${minMarge === 10 ? 'active' : ''}`} onClick={() => setMinMarge(10)}>≥10%</button>
-              <button className={`filter-btn ${minMarge === 15 ? 'active' : ''}`} onClick={() => setMinMarge(15)}>≥15%</button>
-              <button className={`filter-btn ${minMarge === 20 ? 'active' : ''}`} onClick={() => setMinMarge(20)}>≥20%</button>
-            </div>
+                  <div className="card-hero">
+                    <div className="card-score-big">{current.score}/10</div>
+                    <h1>{current.adres}</h1>
+                    <div className="card-location">
+                      📍 {current.stad}{current.wijk ? ` · ${current.wijk}` : ''}{current.postcode ? ` · ${current.postcode}` : ''}
+                    </div>
+                  </div>
 
-            {gefilterdeKansen.length === 0 ? (
-              <div className="empty">Geen kansen met deze filters</div>
-            ) : (
-              <div className="grid">
-                {gefilterdeKansen.map((k, i) => (
-                  <div key={i} className={`card ${k.score >= 6 ? 'high-score' : ''}`} onClick={() => setSelected(k)}>
-                    <div className="card-header">
-                      <div>
-                        <div className="card-title">{k.adres}</div>
-                        <div className="card-location">
-                          {k.stad}{k.wijk ? ` · ${k.wijk}` : ''}
+                  <div className="card-quick">
+                    <div className="quick-item">
+                      <div className="quick-label">Vraagprijs</div>
+                      <div className="quick-value">{eur(current.prijs)}</div>
+                      <div className="quick-sub">{eur(current.prijs_per_m2)}/m²</div>
+                    </div>
+                    <div className="quick-item green">
+                      <div className="quick-label">Winst</div>
+                      <div className="quick-value">{eur(current.winst_euro)}</div>
+                      <div className="quick-sub">{current.marge_pct}% marge</div>
+                    </div>
+                    <div className="quick-item">
+                      <div className="quick-label">ROI</div>
+                      <div className="quick-value">{current.roi_pct}%</div>
+                      <div className="quick-sub">over looptijd</div>
+                    </div>
+                  </div>
+
+                  <div className="badges">
+                    {current.energie_label && <span className="badge label">Label {current.energie_label}</span>}
+                    {current.bouwjaar > 0 && <span className="badge">bj {current.bouwjaar}</span>}
+                    {current.kamers > 0 && <span className="badge">{current.kamers} kamers</span>}
+                    <span className="badge">{current.opp_m2} m²</span>
+                    {current.type_woning && <span className="badge">{current.type_woning}</span>}
+                    {current.is_opknapper && <span className="badge hot">OPKNAPPER</span>}
+                    <span className="badge src">{current.source}</span>
+                  </div>
+
+                  <div className="card-calc">
+                    <h3>Businesscase</h3>
+                    <div className="calc-grid">
+                      <div><span>Aankoop totaal</span><b>{eur(current.calc?.aankoop_totaal)}</b></div>
+                      <div><span>Verbouwing ({eur(current.calc?.renovatie_per_m2)}/m²)</span><b>{eur(current.calc?.bouw_totaal)}</b></div>
+                      <div><span>Rente ({current.calc?.looptijd_maanden} mnd)</span><b>{eur(current.calc?.rente)}</b></div>
+                      <div className="total"><span>Totale investering</span><b>{eur(current.calc?.totaal_kosten)}</b></div>
+                      <div><span>Verkoop ({eur(current.calc?.verkoop_m2)}/m²)</span><b>{eur(current.calc?.netto_opbrengst)}</b></div>
+                      <div className="profit"><span>Winst</span><b>{eur(current.winst_euro)}</b></div>
+                    </div>
+
+                    {current.calc?.bod && (
+                      <div className="bod-teaser">
+                        💡 <b>Bod {eur(current.calc.bod)} (-{current.calc.bod_korting_pct}%)</b> → winst {eur(current.calc.bod_winst)} · marge {current.calc.bod_marge_pct}%
+                      </div>
+                    )}
+                  </div>
+
+                  {current.calc?.referenties?.length > 0 && (
+                    <div className="card-refs">
+                      <h3>Referentie panden {current.calc.referenties[0]?.wijk && `(${current.calc.referenties[0].wijk})`}</h3>
+                      {current.calc.referenties.slice(0, 3).map((r, i) => (
+                        <div key={i} className="ref">
+                          <div className="ref-addr">{r.adres}</div>
+                          <div className="ref-details">
+                            {eur(r.prijs)} · {r.opp_m2}m² · <b>{eur(r.prijs_per_m2)}/m²</b> · label {r.energie_label}
+                          </div>
                         </div>
-                      </div>
-                      <div className="card-score">{k.score}/10</div>
+                      ))}
                     </div>
+                  )}
 
-                    <div className="card-details">
-                      <div className="detail">Vraagprijs<b>{eur(k.prijs)}</b></div>
-                      <div className="detail">Oppervlak<b>{k.opp_m2} m²</b></div>
-                      <div className="detail">Per m²<b>{eur(k.prijs_per_m2)}</b></div>
-                    </div>
+                  <a href={current.url} target="_blank" rel="noopener noreferrer" className="view-link">
+                    Bekijk op {current.source} →
+                  </a>
+                </div>
 
-                    <div className="metrics">
-                      <div className="metric">
-                        <div className="metric-label">Winst</div>
-                        <div className="metric-value">{eur(k.winst_euro)}</div>
-                      </div>
-                      <div className="metric">
-                        <div className="metric-label">Marge</div>
-                        <div className="metric-value">{k.marge_pct}%</div>
-                      </div>
-                      <div className="metric">
-                        <div className="metric-label">ROI</div>
-                        <div className="metric-value">{k.roi_pct}%</div>
-                      </div>
-                    </div>
+                <div className="swipe-actions">
+                  <button className="action reject" onClick={() => doAction(STATUS.REJECTED)} title="Afwijzen (←)">
+                    ✕
+                  </button>
+                  <button className="action skip" onClick={skipNext} title="Overslaan (space)">
+                    →
+                  </button>
+                  <button className="action note" onClick={() => { setNotesText(current._notes); setShowNotes(true); }} title="Notitie (N)">
+                    📝
+                  </button>
+                  <button className="action save" onClick={() => doAction(STATUS.SAVED)} title="Opslaan (→)">
+                    💾
+                  </button>
+                  <button className="action hot" onClick={() => doAction(STATUS.HOT)} title="Top deal (↑)">
+                    🔥
+                  </button>
+                </div>
 
-                    <div className="badges">
-                      {k.energie_label && <span className="badge label">{k.energie_label}</span>}
-                      {k.bouwjaar > 0 && <span className="badge">bj {k.bouwjaar}</span>}
-                      {k.kamers > 0 && <span className="badge">{k.kamers} kamers</span>}
-                      {k.type_woning && <span className="badge">{k.type_woning}</span>}
-                      {k.is_opknapper && <span className="badge opknapper">OPKNAPPER</span>}
-                      <span className="badge">{k.source}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                <div className="swipe-hints">
+                  <span>← afwijzen</span>
+                  <span>→ opslaan</span>
+                  <span>↑ top deal</span>
+                  <span>space skip</span>
+                  <span>N notitie</span>
+                </div>
+              </>
             )}
-          </>
+          </div>
         )}
 
-        {tab === 'biedboek' && (
-          <>
-            <div className="filters">
-              <input
-                className="search"
-                placeholder="Zoek adres of stad..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
+        {(view === 'saved' || view === 'hot' || view === 'rejected') && (
+          <ListView
+            title={
+              view === 'saved' ? `💾 Opgeslagen (${savedList.length})` :
+              view === 'hot' ? `🔥 Top deals (${hotList.length})` :
+              `🗑️ Prullenbak (${rejectedList.length})`
+            }
+            items={view === 'saved' ? savedList : view === 'hot' ? hotList : rejectedList}
+            userState={userState}
+            updateStatus={updateStatus}
+            showRestore={view === 'rejected'}
+          />
+        )}
+
+        {showNotes && current && (
+          <div className="modal-overlay" onClick={() => setShowNotes(false)}>
+            <div className="modal" onClick={e => e.stopPropagation()}>
+              <h3>Notitie voor {current.adres}</h3>
+              <textarea
+                value={notesText}
+                onChange={e => setNotesText(e.target.value)}
+                placeholder="Jouw aantekeningen..."
+                autoFocus
               />
-            </div>
-
-            {gefilterdeBiedboek.length === 0 ? (
-              <div className="empty">Geen biedboek panden</div>
-            ) : (
-              <div className="grid">
-                {gefilterdeBiedboek.map((b, i) => (
-                  <div key={i} className="card">
-                    <div className="card-title">{b.adres || 'Onbekend adres'}</div>
-                    <div className="card-location">{b.stad} {b.postcode && `· ${b.postcode}`}</div>
-
-                    <div className="card-details">
-                      {b.prijs > 0 && <div className="detail">Prijs<b>{eur(b.prijs)}</b></div>}
-                      {b.opp_m2 > 0 && <div className="detail">Oppervlak<b>{b.opp_m2} m²</b></div>}
-                      {b.prijs_per_m2 > 0 && <div className="detail">Per m²<b>{eur(b.prijs_per_m2)}</b></div>}
-                    </div>
-
-                    <div className="badges">
-                      {b.type_woning && <span className="badge">{b.type_woning}</span>}
-                      {b.is_commercieel && <span className="badge">commercieel</span>}
-                      {b.bouwjaar > 0 && <span className="badge">bj {b.bouwjaar}</span>}
-                    </div>
-
-                    <div style={{ marginTop: 12 }}>
-                      <a href={b.url} target="_blank" rel="noopener noreferrer">Bekijk op Biedboek →</a>
-                    </div>
-                  </div>
-                ))}
+              <div className="modal-actions">
+                <button className="btn-secondary" onClick={() => setShowNotes(false)}>Annuleren</button>
+                <button className="btn-primary" onClick={saveNotes}>Opslaan</button>
               </div>
-            )}
-          </>
-        )}
-
-        {selected && (
-          <div className="detail-modal" onClick={() => setSelected(null)}>
-            <div className="detail-content" onClick={e => e.stopPropagation()}>
-              <button className="detail-close" onClick={() => setSelected(null)}>×</button>
-              <h2>{selected.adres}</h2>
-              <p className="card-location">{selected.stad}{selected.wijk ? ` · ${selected.wijk}` : ''}</p>
-
-              <div style={{ marginTop: 16 }}>
-                <a href={selected.url} target="_blank" rel="noopener noreferrer">Bekijk op {selected.source} →</a>
-              </div>
-
-              <div className="calc-section">
-                <h3>Aankoop</h3>
-                {selected.calc?.vraagprijs && (
-                  <>
-                    <div className="calc-row"><span>Vraagprijs</span><b>{eur(selected.calc.vraagprijs)}</b></div>
-                    <div className="calc-row"><span>OVB {selected.calc.ovb_pct}%</span><b>{eur(selected.calc.ovb)}</b></div>
-                    <div className="calc-row"><span>Notaris + makelaar</span><b>{eur(selected.calc.notaris_makelaar_aankoop)}</b></div>
-                    <div className="calc-row total"><span>Totaal aankoop</span><b>{eur(selected.calc.aankoop_totaal)}</b></div>
-                  </>
-                )}
-              </div>
-
-              <div className="calc-section">
-                <h3>Verbouwing ({eur(selected.calc?.renovatie_per_m2)}/m²)</h3>
-                {selected.calc?.renovatie_detail?.componenten?.map((c, i) => (
-                  c.kosten >= 1000 && (
-                    <div key={i} className="calc-row">
-                      <span>{c.naam}</span>
-                      <b>{eur(c.kosten)}</b>
-                    </div>
-                  )
-                ))}
-                <div className="calc-row total"><span>Totaal bouw</span><b>{eur(selected.calc?.bouw_totaal)}</b></div>
-              </div>
-
-              <div className="calc-section">
-                <h3>Financiering</h3>
-                <div className="calc-row"><span>Looptijd</span><b>{selected.calc?.looptijd_maanden} mnd</b></div>
-                <div className="calc-row"><span>Rente {selected.calc?.rente_pct}%</span><b>{eur(selected.calc?.rente)}</b></div>
-              </div>
-
-              <div className="calc-section" style={{ background: '#1a0f00', borderLeft: '3px solid #ff6b00' }}>
-                <h3>Totaal investering</h3>
-                <div className="calc-row total"><span>Totaal</span><b>{eur(selected.calc?.totaal_kosten)}</b></div>
-              </div>
-
-              <div className="calc-section">
-                <h3>Verkoop na renovatie</h3>
-                <div className="calc-row"><span>Prijs/m² (ref)</span><b>{eur(selected.calc?.verkoop_m2)}</b></div>
-                <div className="calc-row"><span>Bruto verkoop</span><b>{eur(selected.calc?.bruto_verkoopprijs)}</b></div>
-                <div className="calc-row"><span>Kosten (makelaar + notaris)</span><b>-{eur(selected.calc?.verkoop_kosten)}</b></div>
-                <div className="calc-row total"><span>Netto opbrengst</span><b>{eur(selected.calc?.netto_opbrengst)}</b></div>
-              </div>
-
-              {selected.calc?.referenties?.length > 0 && (
-                <div className="calc-section">
-                  <h3>Referentie panden {selected.calc.referenties[0]?.wijk && `(${selected.calc.referenties[0].wijk})`}</h3>
-                  {selected.calc.referenties.map((r, i) => (
-                    <div key={i} className="ref-item">
-                      <b>{r.adres}</b><br />
-                      {eur(r.prijs)} · {r.opp_m2}m² · {eur(r.prijs_per_m2)}/m² · label {r.energie_label}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              <div className="calc-section" style={{ background: '#001a00', borderLeft: '3px solid #00b894' }}>
-                <h3>Resultaat</h3>
-                <div className="calc-row"><span>Winst</span><b style={{color: '#00b894'}}>{eur(selected.winst_euro)}</b></div>
-                <div className="calc-row"><span>Marge</span><b>{selected.marge_pct}%</b></div>
-                <div className="calc-row"><span>ROI</span><b>{selected.roi_pct}%</b></div>
-              </div>
-
-              {selected.calc?.bod && (
-                <div className="calc-section">
-                  <h3>Bij bod {eur(selected.calc.bod)} (-{selected.calc.bod_korting_pct}%)</h3>
-                  <div className="calc-row"><span>Investering</span><b>{eur(selected.calc.bod_totaal_investering)}</b></div>
-                  <div className="calc-row"><span>Winst</span><b>{eur(selected.calc.bod_winst)}</b></div>
-                  <div className="calc-row"><span>Marge</span><b>{selected.calc.bod_marge_pct}%</b></div>
-                </div>
-              )}
             </div>
           </div>
         )}
       </div>
     </>
+  );
+}
+
+function ListView({ title, items, userState, updateStatus, showRestore }) {
+  const [selected, setSelected] = useState(null);
+  const [notesText, setNotesText] = useState('');
+  const [editNotes, setEditNotes] = useState(null);
+
+  return (
+    <div className="list-screen">
+      <h2 className="list-title">{title}</h2>
+      {items.length === 0 ? (
+        <div className="empty-state">Geen panden in deze lijst</div>
+      ) : (
+        <div className="list-grid">
+          {items.map((k, i) => (
+            <div key={i} className="list-card" onClick={() => setSelected(k)}>
+              <div className="list-card-header">
+                <div>
+                  <div className="list-card-title">{k.adres}</div>
+                  <div className="list-card-sub">{k.stad}{k.wijk ? ` · ${k.wijk}` : ''}</div>
+                </div>
+                <div className="list-card-score">{k.score}/10</div>
+              </div>
+
+              <div className="list-card-metrics">
+                <div><span>Prijs</span><b>{eur(k.prijs)}</b></div>
+                <div><span>Winst</span><b className="green">{eur(k.winst_euro)}</b></div>
+                <div><span>Marge</span><b>{k.marge_pct}%</b></div>
+              </div>
+
+              {userState[k.url]?.notes && (
+                <div className="list-card-notes">📝 {userState[k.url].notes}</div>
+              )}
+
+              <div className="list-card-actions" onClick={e => e.stopPropagation()}>
+                <select
+                  value={userState[k.url]?.status || STATUS.SAVED}
+                  onChange={e => updateStatus(k.url, e.target.value)}
+                  style={{ borderColor: STATUS_COLORS[userState[k.url]?.status || STATUS.SAVED] }}
+                >
+                  <option value={STATUS.SAVED}>💾 Opgeslagen</option>
+                  <option value={STATUS.HOT}>🔥 Top deal</option>
+                  <option value={STATUS.VIEWED}>👀 Bezichtigd</option>
+                  <option value={STATUS.CONTACTED}>📞 Contact gehad</option>
+                  <option value={STATUS.REJECTED}>✕ Afwijzen</option>
+                  <option value={STATUS.ARCHIVED}>📦 Archief</option>
+                </select>
+                {showRestore && (
+                  <button className="btn-restore" onClick={() => updateStatus(k.url, STATUS.NEW)}>
+                    ↺ Terug
+                  </button>
+                )}
+                <button className="btn-notes" onClick={() => {
+                  setEditNotes(k.url);
+                  setNotesText(userState[k.url]?.notes || '');
+                }}>
+                  📝
+                </button>
+                <a href={k.url} target="_blank" rel="noopener noreferrer" className="btn-link">🔗</a>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {selected && (
+        <DetailModal pand={selected} onClose={() => setSelected(null)} />
+      )}
+
+      {editNotes && (
+        <div className="modal-overlay" onClick={() => setEditNotes(null)}>
+          <div className="modal" onClick={e => e.stopPropagation()}>
+            <h3>Notitie</h3>
+            <textarea
+              value={notesText}
+              onChange={e => setNotesText(e.target.value)}
+              autoFocus
+            />
+            <div className="modal-actions">
+              <button className="btn-secondary" onClick={() => setEditNotes(null)}>Annuleren</button>
+              <button className="btn-primary" onClick={() => {
+                updateStatus(editNotes, userState[editNotes]?.status || STATUS.SAVED, { notes: notesText });
+                setEditNotes(null);
+              }}>Opslaan</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DetailModal({ pand, onClose }) {
+  const c = pand.calc || {};
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal detail-modal" onClick={e => e.stopPropagation()}>
+        <button className="modal-close" onClick={onClose}>×</button>
+        <h2>{pand.adres}</h2>
+        <p className="card-location">{pand.stad}{pand.wijk ? ` · ${pand.wijk}` : ''}</p>
+
+        <a href={pand.url} target="_blank" rel="noopener noreferrer" className="view-link">
+          Bekijk op {pand.source} →
+        </a>
+
+        <div className="detail-section">
+          <h3>Aankoop</h3>
+          <div className="calc-row"><span>Vraagprijs</span><b>{eur(c.vraagprijs)}</b></div>
+          <div className="calc-row"><span>OVB {c.ovb_pct}%</span><b>{eur(c.ovb)}</b></div>
+          <div className="calc-row"><span>Notaris + makelaar</span><b>{eur(c.notaris_makelaar_aankoop)}</b></div>
+          <div className="calc-row total"><span>Totaal</span><b>{eur(c.aankoop_totaal)}</b></div>
+        </div>
+
+        {c.renovatie_detail?.componenten && (
+          <div className="detail-section">
+            <h3>Verbouwing ({eur(c.renovatie_per_m2)}/m²)</h3>
+            {c.renovatie_detail.componenten.filter(x => x.kosten >= 1000).map((comp, i) => (
+              <div key={i} className="calc-row">
+                <span>{comp.naam}</span><b>{eur(comp.kosten)}</b>
+              </div>
+            ))}
+            <div className="calc-row total"><span>Totaal bouw</span><b>{eur(c.bouw_totaal)}</b></div>
+          </div>
+        )}
+
+        <div className="detail-section">
+          <h3>Financiering</h3>
+          <div className="calc-row"><span>Looptijd</span><b>{c.looptijd_maanden} mnd</b></div>
+          <div className="calc-row"><span>Rente {c.rente_pct}%</span><b>{eur(c.rente)}</b></div>
+        </div>
+
+        <div className="detail-section highlight">
+          <h3>Totaal investering</h3>
+          <div className="calc-row total"><b>{eur(c.totaal_kosten)}</b></div>
+        </div>
+
+        <div className="detail-section">
+          <h3>Verkoop na renovatie</h3>
+          <div className="calc-row"><span>Prijs/m² (ref)</span><b>{eur(c.verkoop_m2)}</b></div>
+          <div className="calc-row"><span>Bruto</span><b>{eur(c.bruto_verkoopprijs)}</b></div>
+          <div className="calc-row"><span>Kosten</span><b>-{eur(c.verkoop_kosten)}</b></div>
+          <div className="calc-row total"><span>Netto</span><b>{eur(c.netto_opbrengst)}</b></div>
+        </div>
+
+        {c.referenties?.length > 0 && (
+          <div className="detail-section">
+            <h3>Referentie {c.referenties[0]?.wijk && `(${c.referenties[0].wijk})`}</h3>
+            {c.referenties.map((r, i) => (
+              <div key={i} className="ref-item">
+                <b>{r.adres}</b><br />
+                {eur(r.prijs)} · {r.opp_m2}m² · {eur(r.prijs_per_m2)}/m² · label {r.energie_label}
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="detail-section profit-section">
+          <h3>Resultaat</h3>
+          <div className="calc-row"><span>Winst</span><b style={{color: '#00b894'}}>{eur(pand.winst_euro)}</b></div>
+          <div className="calc-row"><span>Marge</span><b>{pand.marge_pct}%</b></div>
+          <div className="calc-row"><span>ROI</span><b>{pand.roi_pct}%</b></div>
+        </div>
+
+        {c.bod && (
+          <div className="detail-section">
+            <h3>Bij bod {eur(c.bod)} (-{c.bod_korting_pct}%)</h3>
+            <div className="calc-row"><span>Investering</span><b>{eur(c.bod_totaal_investering)}</b></div>
+            <div className="calc-row"><span>Winst</span><b>{eur(c.bod_winst)}</b></div>
+            <div className="calc-row"><span>Marge</span><b>{c.bod_marge_pct}%</b></div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
