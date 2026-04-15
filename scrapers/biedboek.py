@@ -72,15 +72,8 @@ def scrape_biedboek() -> List[Property]:
                 postcode = t.get("postalCode", "") or ""
                 short_id = x.get("shortId", "")
 
-                # Filter op stad: alleen Zuid-Holland steden
-                zh_steden = [
-                    "den haag", "rotterdam", "delft", "leiden", "zoetermeer",
-                    "schiedam", "rijswijk", "dordrecht", "westland",
-                    "pijnacker", "nootdorp", "capelle", "vlaardingen",
-                    "gouda", "alphen", "wassenaar", "voorburg", "leidschendam",
-                ]
-                if stad and not any(s in stad.lower() for s in zh_steden):
-                    continue
+                # Provincie 12 = Zuid-Holland, geen extra stad-filter nodig
+                # (die is al gedaan via provincies filter hierboven)
 
                 # Prijs: askingPrice of price of appraisedMarketValue
                 prijs = x.get("askingPrice") or x.get("price") or x.get("appraisedMarketValue") or 0

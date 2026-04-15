@@ -43,12 +43,21 @@ jobs:
         if: always()
         run: |
           if [ -f leads.json ]; then
+            # Kopieer leads.json naar veilige plek
+            cp leads.json /tmp/leads.json
             git config user.name "github-actions"
             git config user.email "actions@github.com"
-            git fetch origin data || git checkout --orphan data
-            git checkout data 2>/dev/null || git checkout -b data
-            git rm -rf . 2>/dev/null || true
-            git checkout main -- leads.json
+            # Check of data branch bestaat
+            if git ls-remote --exit-code --heads origin data >/dev/null 2>&1; then
+              git fetch origin data:data
+              git checkout data
+              git rm -rf . 2>/dev/null || true
+            else
+              git checkout --orphan data
+              git rm -rf . 2>/dev/null || true
+            fi
+            # Zet leads.json terug
+            cp /tmp/leads.json leads.json
             git add leads.json
             git commit -m "Update leads $(date -u +%Y-%m-%dT%H:%M:%SZ)" || echo "No changes"
             git push origin data --force
