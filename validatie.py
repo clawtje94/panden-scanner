@@ -150,10 +150,12 @@ def valideer_verkoopprijs(
         bronnen["woz_raw"] = round(woz / opp_m2)
 
     # 3. Funda eigen prijs/m² (als beschikbaar)
-    if funda_pm2 and funda_pm2 > 0:
+    if funda_pm2:
         try:
-            bronnen["funda_pm2"] = int(float(str(funda_pm2).replace("€", "").replace(".", "").replace(",", "").strip()))
-        except:
+            fpm2 = int(float(str(funda_pm2).replace("€", "").replace(".", "").replace(",", "").replace(" ", "").strip()))
+            if fpm2 > 0:
+                bronnen["funda_pm2"] = fpm2
+        except (ValueError, TypeError):
             pass
 
     # Bereken gemiddelde van externe bronnen (excl woz_raw)
