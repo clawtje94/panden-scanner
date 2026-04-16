@@ -21,6 +21,7 @@ from scrapers import (
 )
 from referentie import zoek_vergelijkbare
 from renovatie import schat_renovatie
+from validatie import valideer_verkoopprijs
 from config import FIX_FLIP, SPLITSING, TRANSFORMATIE
 
 logging.basicConfig(
@@ -116,6 +117,12 @@ def _check_funda_api(prop: Property) -> bool:
         correct_url = d.get("url", "")
         if correct_url and correct_url.startswith("http"):
             prop.url = correct_url
+
+        # Foto URLs uit detail API (eerste = hoofdfoto/gevel)
+        photo_urls = d.get("photo_urls", [])
+        if photo_urls:
+            prop.foto_url = photo_urls[0]
+            prop.calc["foto_urls"] = photo_urls[:6]
 
         time.sleep(0.2)
         return True
@@ -271,19 +278,69 @@ def run_scan():
     ]
     logger.info("Na sanity filter: %d panden (van %d gescand)", len(alle_panden), totaal_ruw)
 
-    # ── Evalueer en filter ────────────────────────────────────────────────
+    # ── Evalueer, valideer en filter ─────────────────────────────────────
     nieuw_gevonden = 0
     alle_kansen = []  # voor leads.json export
+    validatie_skips = 0
     for prop in alle_panden:
         kansen = evalueer_property(prop)
         for kans in kansen:
-            # Check of pand nog beschikbaar is (niet verkocht)
+            # Stap 1: Check of pand nog beschikbaar is (niet verkocht)
             if not is_beschikbaar(kans):
                 logger.info("OVERGESLAGEN (verkocht): %s", kans.adres)
                 sla_op(kans)
                 continue
 
-            alle_kansen.append(kans)  # ook oude kansen in dashboard
+            # Stap 2: Valideer verkoopprijs tegen externe bronnen
+            calc = kans.calc or {}
+            verkoop_pm2 = calc.get("verkoop_m2", 0)
+            bruto = calc.get("bruto_verkoopprijs", 0)
+            funda_pm2 = calc.get("funda_prijs_per_m2", 0)
+
+            if verkoop_pm2 > 0 and kans.opp_m2 > 0:
+                validatie = valideer_verkoopprijs(
+                    onze_pm2=verkoop_pm2,
+                    onze_bruto=bruto,
+                    opp_m2=kans.opp_m2,
+                    postcode=kans.postcode,
+                    adres=kans.adres,
+                    stad=kans.stad,
+                    funda_pm2=funda_pm2,
+                )
+                kans.calc["validatie"] = validatie
+
+                # Als prijs te optimistisch: herbereken met gecorrigeerde prijs
+                if not validatie["goedgekeurd"]:
+                    gecorrigeerde_pm2 = validatie["gecorrigeerde_pm2"]
+                    logger.info(
+                        "PRIJSCORRECTIE %s: %d/m2 → %d/m2 (%s)",
+                        kans.adres, verkoop_pm2, gecorrigeerde_pm2, validatie["reden"],
+                    )
+
+                    # Herbereken met lagere verkoopprijs
+                    netto_nieuw = kans.opp_m2 * gecorrigeerde_pm2 - kans.opp_m2 * gecorrigeerde_pm2 * 0.015 - 4500
+                    totaal = calc.get("totaal_kosten", 0)
+                    winst_nieuw = netto_nieuw - totaal
+                    marge_nieuw = (winst_nieuw / netto_nieuw * 100) if netto_nieuw > 0 else -99
+
+                    # Update kans met gecorrigeerde waarden
+                    kans.calc["verkoop_m2"] = gecorrigeerde_pm2
+                    kans.calc["bruto_verkoopprijs"] = int(kans.opp_m2 * gecorrigeerde_pm2)
+                    kans.calc["netto_opbrengst"] = int(netto_nieuw)
+                    kans.calc["winst"] = int(winst_nieuw)
+                    kans.calc["marge_pct"] = round(marge_nieuw, 1)
+                    kans.winst_euro = int(winst_nieuw)
+                    kans.marge_pct = round(marge_nieuw, 1)
+                    kans.verwachte_opbrengst = int(netto_nieuw)
+
+                    # Als marge na correctie <8%: skip
+                    if marge_nieuw < 8:
+                        logger.info("OVERGESLAGEN (marge na correctie %.1f%%): %s", marge_nieuw, kans.adres)
+                        validatie_skips += 1
+                        sla_op(kans)
+                        continue
+
+            alle_kansen.append(kans)
             sla_op(kans)
 
             # Alleen Telegram notificatie voor NIEUWE kansen
@@ -297,6 +354,9 @@ def run_scan():
 
         if not kansen:
             sla_op(prop)
+
+    if validatie_skips > 0:
+        logger.info("Validatie: %d kansen afgekeurd (prijs te optimistisch)", validatie_skips)
 
     # ── Biedboek info-only toevoegen aan dashboard ────────────────────────
     biedboek_dashboard = []
@@ -335,6 +395,7 @@ def run_scan():
             "source": k.source,
             "url": k.url,
             "foto_url": k.foto_url or "",
+            "foto_urls": k.calc.get("foto_urls", [k.foto_url] if k.foto_url else []),
             "strategie": k.strategie,
             "marge_pct": k.marge_pct,
             "winst_euro": k.winst_euro,
