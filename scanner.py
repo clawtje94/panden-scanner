@@ -21,6 +21,7 @@ from scrapers import (
 )
 from referentie import zoek_vergelijkbare
 from renovatie import schat_renovatie
+from looptijd import bereken_looptijd
 from validatie import valideer_verkoopprijs
 from bestemmingsplan import mag_splitsen, mag_opbouwen
 from config import FIX_FLIP, SPLITSING, TRANSFORMATIE
@@ -254,24 +255,34 @@ def evalueer_property(prop: Property) -> List[Property]:
         is_opknapper=is_opknapper,
     )
 
+    # Dynamische looptijd op basis van renovatietype
+    looptijd_info = bereken_looptijd(
+        renovatie_per_m2=reno["per_m2"],
+        opp_m2=prop.opp_m2,
+        stad=prop.stad,
+        type_woning=prop.type_woning,
+        is_opknapper=is_opknapper,
+    )
+
     # Splitsen/opbouwen mogelijkheden
     splitsen_info = mag_splitsen(prop.stad, prop.opp_m2)
     opbouwen_info = mag_opbouwen(prop.stad, prop.type_woning)
 
     if not prop.is_commercieel:
-        # Fix & Flip
+        # Fix & Flip — gebruik dynamische looptijd
+        cfg_dynamic = {**FIX_FLIP, "looptijd_maanden": looptijd_info["totaal_maanden"]}
         if (prop.prijs <= FIX_FLIP["max_aankoopprijs"]
                 and prop.opp_m2 >= FIX_FLIP["min_opp_m2"]):
             p = bereken_fix_flip(
-                Property(**prop.__dict__), FIX_FLIP,
+                Property(**prop.__dict__), cfg_dynamic,
                 verkoop_m2_override=ref_pm2,
                 referenties=ref_panden,
                 renovatie_detail=reno,
             )
             if p.marge_pct >= FIX_FLIP["min_marge_pct"]:
-                # Voeg splitsen/opbouwen info toe
                 p.calc["splitsen"] = splitsen_info
                 p.calc["opbouwen"] = opbouwen_info
+                p.calc["looptijd_detail"] = looptijd_info
                 score_property(p)
                 kansen.append(p)
 
