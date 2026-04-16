@@ -323,19 +323,40 @@ export default function Home() {
                   </div>
 
                   <div className="card-calc">
-                    <h3>Businesscase</h3>
+                    <h3>Aankoop</h3>
                     <div className="calc-grid">
-                      <div><span>Aankoop totaal</span><b>{eur(current.calc?.aankoop_totaal)}</b></div>
-                      <div><span>Verbouwing ({eur(current.calc?.renovatie_per_m2)}/m²)</span><b>{eur(current.calc?.bouw_totaal)}</b></div>
-                      <div><span>Rente ({current.calc?.looptijd_maanden} mnd)</span><b>{eur(current.calc?.rente)}</b></div>
+                      <div><span>Vraagprijs</span><b>{eur(current.calc?.vraagprijs)}</b></div>
+                      <div><span>OVB + notaris</span><b>{eur((current.calc?.ovb || 0) + (current.calc?.notaris_makelaar_aankoop || 0))}</b></div>
+                      <div className="total"><span>Totaal aankoop</span><b>{eur(current.calc?.aankoop_totaal)}</b></div>
+                    </div>
+                  </div>
+
+                  <div className="card-calc">
+                    <h3>Verbouwing ({eur(current.calc?.renovatie_per_m2)}/m²)</h3>
+                    <div className="calc-grid">
+                      {current.calc?.renovatie_detail?.componenten?.map((comp, i) => (
+                        comp.kosten >= 1000 && (
+                          <div key={i}><span>{comp.naam}</span><b>{eur(comp.kosten)}</b></div>
+                        )
+                      ))}
+                      <div className="total"><span>Totaal verbouwing</span><b>{eur(current.calc?.bouw_totaal)}</b></div>
+                    </div>
+                  </div>
+
+                  <div className="card-calc">
+                    <h3>Financiering + Verkoop</h3>
+                    <div className="calc-grid">
+                      <div><span>Rente {current.calc?.rente_pct}% ({current.calc?.looptijd_maanden} mnd)</span><b>{eur(current.calc?.rente)}</b></div>
                       <div className="total"><span>Totale investering</span><b>{eur(current.calc?.totaal_kosten)}</b></div>
-                      <div><span>Verkoop ({eur(current.calc?.verkoop_m2)}/m²)</span><b>{eur(current.calc?.netto_opbrengst)}</b></div>
+                      <div><span>Verkoop ({eur(current.calc?.verkoop_m2)}/m²)</span><b>{eur(current.calc?.bruto_verkoopprijs)}</b></div>
+                      <div><span>Kosten makelaar + notaris</span><b>-{eur(current.calc?.verkoop_kosten)}</b></div>
+                      <div className="total"><span>Netto opbrengst</span><b>{eur(current.calc?.netto_opbrengst)}</b></div>
                       <div className="profit"><span>Winst</span><b>{eur(current.winst_euro)}</b></div>
                     </div>
 
                     {current.calc?.bod && (
                       <div className="bod-teaser">
-                        💡 <b>Bod {eur(current.calc.bod)} (-{current.calc.bod_korting_pct}%)</b> → winst {eur(current.calc.bod_winst)} · marge {current.calc.bod_marge_pct}%
+                        Bod {eur(current.calc.bod)} (-{current.calc.bod_korting_pct}%) → winst {eur(current.calc.bod_winst)} · marge {current.calc.bod_marge_pct}%
                       </div>
                     )}
                   </div>
@@ -553,8 +574,8 @@ function DetailModal({ pand, onClose }) {
         {c.renovatie_detail?.componenten && (
           <div className="detail-section">
             <h3>Verbouwing ({eur(c.renovatie_per_m2)}/m²)</h3>
-            {c.renovatie_detail.componenten.filter(x => x.kosten >= 1000).map((comp, i) => (
-              <div key={i} className="calc-row">
+            {c.renovatie_detail.componenten.map((comp, i) => (
+              <div key={i} className="calc-row" title={comp.reden || ''}>
                 <span>{comp.naam}</span><b>{eur(comp.kosten)}</b>
               </div>
             ))}
@@ -656,13 +677,20 @@ function DetailModal({ pand, onClose }) {
           </div>
         )}
 
-        {c.plattegrond_urls?.length > 0 && (
+        {c.plattegrond_urls?.length > 0 ? (
           <div className="detail-section">
             <h3>Plattegronden</h3>
             <div className="plattegrond-grid">
               {c.plattegrond_urls.map((url, i) => (
                 <img key={i} src={url} alt={`Plattegrond ${i + 1}`} className="plattegrond-img" />
               ))}
+            </div>
+          </div>
+        ) : pand.url && (
+          <div className="detail-section">
+            <h3>Plattegrond</h3>
+            <div style={{fontSize: 13, color: '#888'}}>
+              Niet beschikbaar via API — <a href={pand.url} target="_blank" rel="noopener noreferrer">bekijk op Funda</a>
             </div>
           </div>
         )}
