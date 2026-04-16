@@ -337,10 +337,11 @@ def run_scan():
     except Exception as e:
         logger.error("Makelaars scraper gefaald: %s", e)
 
-    try:
-        alle_panden += scrape_trovit(max_pages=3)
-    except Exception as e:
-        logger.error("Trovit scraper gefaald: %s", e)
+    # Trovit tijdelijk uit — aggregator data te ruw, dupliceert Funda
+    # try:
+    #     alle_panden += scrape_trovit(max_pages=3)
+    # except Exception as e:
+    #     logger.error("Trovit scraper gefaald: %s", e)
 
     # Biedboek: aparte lijst, geen standaard calc (veilingen)
     biedboek_panden = []
@@ -382,48 +383,27 @@ def run_scan():
             bruto = calc.get("bruto_verkoopprijs", 0)
             funda_pm2 = calc.get("funda_prijs_per_m2", 0)
 
-            if verkoop_pm2 > 0 and kans.opp_m2 > 0:
-                validatie = valideer_verkoopprijs(
-                    onze_pm2=verkoop_pm2,
-                    onze_bruto=bruto,
-                    opp_m2=kans.opp_m2,
-                    postcode=kans.postcode,
-                    adres=kans.adres,
-                    stad=kans.stad,
-                    funda_pm2=funda_pm2,
-                )
-                kans.calc["validatie"] = validatie
-
-                # Als prijs te optimistisch: herbereken met gecorrigeerde prijs
-                if not validatie["goedgekeurd"]:
-                    gecorrigeerde_pm2 = validatie["gecorrigeerde_pm2"]
-                    logger.info(
-                        "PRIJSCORRECTIE %s: %d/m2 → %d/m2 (%s)",
-                        kans.adres, verkoop_pm2, gecorrigeerde_pm2, validatie["reden"],
+            # Validatie: log voor info maar blokkeer NIET
+            # (Huispedia/WOZ geeft huidige waarde, niet na-renovatie waarde)
+            if verkoop_pm2 > 0 and kans.opp_m2 > 0 and kans.postcode:
+                try:
+                    validatie = valideer_verkoopprijs(
+                        onze_pm2=verkoop_pm2,
+                        onze_bruto=bruto,
+                        opp_m2=kans.opp_m2,
+                        postcode=kans.postcode,
+                        adres=kans.adres,
+                        stad=kans.stad,
+                        funda_pm2=funda_pm2,
                     )
-
-                    # Herbereken met lagere verkoopprijs
-                    netto_nieuw = kans.opp_m2 * gecorrigeerde_pm2 - kans.opp_m2 * gecorrigeerde_pm2 * 0.015 - 4500
-                    totaal = calc.get("totaal_kosten", 0)
-                    winst_nieuw = netto_nieuw - totaal
-                    marge_nieuw = (winst_nieuw / netto_nieuw * 100) if netto_nieuw > 0 else -99
-
-                    # Update kans met gecorrigeerde waarden
-                    kans.calc["verkoop_m2"] = gecorrigeerde_pm2
-                    kans.calc["bruto_verkoopprijs"] = int(kans.opp_m2 * gecorrigeerde_pm2)
-                    kans.calc["netto_opbrengst"] = int(netto_nieuw)
-                    kans.calc["winst"] = int(winst_nieuw)
-                    kans.calc["marge_pct"] = round(marge_nieuw, 1)
-                    kans.winst_euro = int(winst_nieuw)
-                    kans.marge_pct = round(marge_nieuw, 1)
-                    kans.verwachte_opbrengst = int(netto_nieuw)
-
-                    # Als marge na correctie <8%: skip
-                    if marge_nieuw < 8:
-                        logger.info("OVERGESLAGEN (marge na correctie %.1f%%): %s", marge_nieuw, kans.adres)
-                        validatie_skips += 1
-                        sla_op(kans)
-                        continue
+                    kans.calc["validatie"] = validatie
+                    if not validatie["goedgekeurd"]:
+                        logger.info(
+                            "VALIDATIE WAARSCHUWING %s: %s",
+                            kans.adres, validatie["reden"],
+                        )
+                except Exception as e:
+                    logger.debug("Validatie fout %s: %s", kans.adres, e)
 
             alle_kansen.append(kans)
             sla_op(kans)
