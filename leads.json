@@ -1,7 +1,7 @@
 {
-  "scan_datum": "2026-04-16T15:37:16.358680",
-  "totaal_gescand": 1006,
-  "na_filter": 981,
+  "scan_datum": "2026-04-16T16:24:53.532468",
+  "totaal_gescand": 1007,
+  "na_filter": 982,
   "kansen": [
     {
       "adres": "Buys Ballotsingel 84",
@@ -27,10 +27,10 @@
         "https://cloud.funda.nl/valentina_media/226/973/771.jpg"
       ],
       "strategie": "fix_flip",
-      "marge_pct": 29.1,
-      "winst_euro": 207441,
-      "roi_pct": 40.9,
-      "totale_kosten": 506612,
+      "marge_pct": 34.5,
+      "winst_euro": 246261,
+      "roi_pct": 52.6,
+      "totale_kosten": 467792,
       "verwachte_opbrengst": 714054,
       "score": 6,
       "is_opknapper": false,
@@ -40,85 +40,80 @@
         "ovb": 28000,
         "notaris_makelaar_aankoop": 4550,
         "aankoop_totaal": 382550,
-        "renovatie_per_m2": 691,
+        "renovatie_per_m2": 522,
         "renovatie_detail": {
           "componenten": [
             {
               "naam": "Keuken renovatie",
-              "kosten": 16000,
-              "reden": "Nieuwe fronten, apparatuur, blad"
+              "kosten": 14000,
+              "reden": "Nieuwe fronten, apparatuur, blad, tegelwerk"
             },
             {
               "naam": "Badkamer renovatie",
-              "kosten": 13000,
-              "reden": "Nieuw sanitair en tegelwerk"
+              "kosten": 12000,
+              "reden": "Nieuwe tegels, sanitair, kranen"
             },
             {
               "naam": "Toilet opknappen",
-              "kosten": 1500,
-              "reden": "Nieuw toilet, kleine aanpassingen"
+              "kosten": 2500,
+              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties"
             },
             {
-              "naam": "Vloeren (75/m²)",
-              "kosten": 10650,
-              "reden": "Nieuwe vloer leggen"
+              "naam": "Vloeren (60/m²)",
+              "kosten": 8520,
+              "reden": "PVC click vloer leggen (licht egaliseren)"
             },
             {
-              "naam": "Wanden/plafonds/schilderwerk",
-              "kosten": 5396,
-              "reden": "Schilderwerk binnen + buiten (kozijnen)"
+              "naam": "Schilderwerk (20/m²)",
+              "kosten": 2840,
+              "reden": "Latex muren en plafonds"
             },
             {
               "naam": "Elektra upgraden",
-              "kosten": 5500,
+              "kosten": 3500,
               "reden": "Groepenkast + extra groepen + stopcontacten"
             },
             {
-              "naam": "Leidingwerk aanpassen",
-              "kosten": 2500,
-              "reden": "Kleine aanpassingen sanitair"
-            },
-            {
               "naam": "Isolatie verbeteren",
-              "kosten": 12780,
-              "reden": "Label C — dak + vloer isolatie bijwerken"
+              "kosten": 5680,
+              "reden": "Label C: dak + vloer bijwerken"
             },
             {
-              "naam": "Ramen deels vervangen (9x)",
+              "naam": "Ramen deels (9x)",
               "kosten": 10800,
               "reden": "Oudere ramen upgraden naar HR++"
             },
             {
-              "naam": "CV-ketel onderhoud/vervanging",
-              "kosten": 3000,
-              "reden": "Mogelijk verouderd — budget voor vervanging"
+              "naam": "CV-ketel onderhoud/reserve",
+              "kosten": 1500,
+              "reden": "Mogelijk verouderd, budget voor vervanging"
             },
             {
               "naam": "Buitenschilderwerk",
-              "kosten": 3500,
-              "reden": "Kozijnen buiten schilderen + kleine reparaties"
+              "kosten": 2500,
+              "reden": "Kozijnen buiten schilderen"
             },
             {
               "naam": "Onvoorzien (10%)",
-              "kosten": 8462,
-              "reden": "Buffer voor verrassingen tijdens verbouwing"
+              "kosten": 6384,
+              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)"
             },
             {
               "naam": "Architect + leges (6%)",
-              "kosten": 5077,
+              "kosten": 3830,
               "reden": "Ontwerp, vergunning, bouwbegeleiding"
             }
           ],
-          "totaal": 98165,
-          "per_m2": 691,
+          "totaal": 74054,
+          "per_m2": 522,
           "onvoorzien_pct": 10
         },
-        "bouw_totaal": 98165,
-        "looptijd_maanden": 9,
+        "bouw_totaal": 74054,
+        "looptijd_maanden": 4,
         "rente_pct": 8.0,
-        "financiering_basis": 431632,
-        "rente": 25897,
-        "totaal_kosten": 506612,
+        "financiering_basis": 419577,
+        "rente": 11188,
+        "totaal_kosten": 467792,
         "verkoop_m2": 5123,
         "verkoop_bron": "referentie",
         "referenties": [
@@ -178,14 +173,14 @@
         "notaris_verkoop": 2500,
         "verkoop_kosten": 13411,
         "netto_opbrengst": 714054,
-        "winst": 207441,
-        "marge_pct": 29.1,
-        "roi_pct": 40.9,
+        "winst": 246261,
+        "marge_pct": 34.5,
+        "roi_pct": 52.6,
         "bod_korting_pct": 10,
         "bod": 315000,
-        "bod_totaal_investering": 466062,
-        "bod_winst": 247991,
-        "bod_marge_pct": 34.7,
+        "bod_totaal_investering": 428517,
+        "bod_winst": 285536,
+        "bod_marge_pct": 40.0,
         "splitsen": {
           "mag_splitsen": true,
           "uitleg": "Splitsen is waarschijnlijk toegestaan in Schiedam. Oppervlak (142m2) voldoet aan minimum (90m2). Per unit: 71m2 (min: 28m2). Vereist: splitsingsvergunning.",
@@ -204,6 +199,13 @@
           "dakopbouw_toegestaan": null,
           "ruimte_over_m": null,
           "bijzonderheden": ""
+        },
+        "looptijd_detail": {
+          "totaal_maanden": 4,
+          "vergunning_maanden": 0,
+          "verbouw_maanden": 2.3,
+          "verkoop_maanden": 2,
+          "type": "cosmetisch"
         },
         "funda_prijs_per_m2": "€ 2.465",
         "foto_urls": [
@@ -263,10 +265,10 @@
         "https://cloud.funda.nl/valentina_media/227/103/104.jpg"
       ],
       "strategie": "fix_flip",
-      "marge_pct": 27.2,
-      "winst_euro": 150580,
-      "roi_pct": 37.3,
-      "totale_kosten": 403593,
+      "marge_pct": 33.2,
+      "winst_euro": 183764,
+      "roi_pct": 49.6,
+      "totale_kosten": 370410,
       "verwachte_opbrengst": 554174,
       "score": 6,
       "is_opknapper": false,
@@ -276,85 +278,80 @@
         "ovb": 21520,
         "notaris_makelaar_aankoop": 3497,
         "aankoop_totaal": 294017,
-        "renovatie_per_m2": 769,
+        "renovatie_per_m2": 583,
         "renovatie_detail": {
           "componenten": [
             {
               "naam": "Keuken renovatie",
-              "kosten": 16000,
-              "reden": "Nieuwe fronten, apparatuur, blad"
+              "kosten": 14000,
+              "reden": "Nieuwe fronten, apparatuur, blad, tegelwerk"
             },
             {
               "naam": "Badkamer renovatie",
-              "kosten": 13000,
-              "reden": "Nieuw sanitair en tegelwerk"
+              "kosten": 12000,
+              "reden": "Nieuwe tegels, sanitair, kranen"
             },
             {
               "naam": "Toilet opknappen",
-              "kosten": 1500,
-              "reden": "Nieuw toilet, kleine aanpassingen"
+              "kosten": 2500,
+              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties"
             },
             {
-              "naam": "Vloeren (75/m²)",
-              "kosten": 8700,
-              "reden": "Nieuwe vloer leggen"
+              "naam": "Vloeren (60/m²)",
+              "kosten": 6960,
+              "reden": "PVC click vloer leggen (licht egaliseren)"
             },
             {
-              "naam": "Wanden/plafonds/schilderwerk",
-              "kosten": 4408,
-              "reden": "Schilderwerk binnen + buiten (kozijnen)"
+              "naam": "Schilderwerk (20/m²)",
+              "kosten": 2320,
+              "reden": "Latex muren en plafonds"
             },
             {
               "naam": "Elektra upgraden",
-              "kosten": 5500,
+              "kosten": 3500,
               "reden": "Groepenkast + extra groepen + stopcontacten"
             },
             {
-              "naam": "Leidingwerk aanpassen",
-              "kosten": 2500,
-              "reden": "Kleine aanpassingen sanitair"
-            },
-            {
               "naam": "Isolatie verbeteren",
-              "kosten": 10440,
-              "reden": "Label C — dak + vloer isolatie bijwerken"
+              "kosten": 4640,
+              "reden": "Label C: dak + vloer bijwerken"
             },
             {
-              "naam": "Ramen deels vervangen (7x)",
+              "naam": "Ramen deels (7x)",
               "kosten": 8400,
               "reden": "Oudere ramen upgraden naar HR++"
             },
             {
-              "naam": "CV-ketel onderhoud/vervanging",
-              "kosten": 3000,
-              "reden": "Mogelijk verouderd — budget voor vervanging"
+              "naam": "CV-ketel onderhoud/reserve",
+              "kosten": 1500,
+              "reden": "Mogelijk verouderd, budget voor vervanging"
             },
             {
               "naam": "Buitenschilderwerk",
-              "kosten": 3500,
-              "reden": "Kozijnen buiten schilderen + kleine reparaties"
+              "kosten": 2500,
+              "reden": "Kozijnen buiten schilderen"
             },
             {
               "naam": "Onvoorzien (10%)",
-              "kosten": 7694,
-              "reden": "Buffer voor verrassingen tijdens verbouwing"
+              "kosten": 5832,
+              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)"
             },
             {
               "naam": "Architect + leges (6%)",
-              "kosten": 4616,
+              "kosten": 3499,
               "reden": "Ontwerp, vergunning, bouwbegeleiding"
             }
           ],
-          "totaal": 89258,
-          "per_m2": 769,
+          "totaal": 67651,
+          "per_m2": 583,
           "onvoorzien_pct": 10
         },
-        "bouw_totaal": 89258,
-        "looptijd_maanden": 9,
+        "bouw_totaal": 67651,
+        "looptijd_maanden": 4,
         "rente_pct": 8.0,
-        "financiering_basis": 338646,
-        "rente": 20318,
-        "totaal_kosten": 403593,
+        "financiering_basis": 327842,
+        "rente": 8742,
+        "totaal_kosten": 370410,
         "verkoop_m2": 4872,
         "verkoop_bron": "referentie",
         "referenties": [
@@ -414,14 +411,14 @@
         "notaris_verkoop": 2500,
         "verkoop_kosten": 10977,
         "netto_opbrengst": 554174,
-        "winst": 150580,
-        "marge_pct": 27.2,
-        "roi_pct": 37.3,
+        "winst": 183764,
+        "marge_pct": 33.2,
+        "roi_pct": 49.6,
         "bod_korting_pct": 10,
         "bod": 242100,
-        "bod_totaal_investering": 372427,
-        "bod_winst": 181746,
-        "bod_marge_pct": 32.8,
+        "bod_totaal_investering": 340224,
+        "bod_winst": 213949,
+        "bod_marge_pct": 38.6,
         "splitsen": {
           "mag_splitsen": true,
           "uitleg": "Splitsen is waarschijnlijk toegestaan in Dordrecht. Oppervlak (116m2) voldoet aan minimum (100m2). Per unit: 58m2 (min: 24m2). Vereist: splitsingsvergunning.",
@@ -440,6 +437,13 @@
           "dakopbouw_toegestaan": null,
           "ruimte_over_m": null,
           "bijzonderheden": ""
+        },
+        "looptijd_detail": {
+          "totaal_maanden": 4,
+          "vergunning_maanden": 0,
+          "verbouw_maanden": 2.2,
+          "verkoop_maanden": 2,
+          "type": "cosmetisch"
         },
         "funda_prijs_per_m2": "€ 2.319",
         "foto_urls": [
@@ -491,10 +495,10 @@
       "foto_url": "",
       "foto_urls": [],
       "strategie": "fix_flip",
-      "marge_pct": 23.7,
-      "winst_euro": 124431,
-      "roi_pct": 31.1,
-      "totale_kosten": 400149,
+      "marge_pct": 31.8,
+      "winst_euro": 166681,
+      "roi_pct": 46.6,
+      "totale_kosten": 357899,
       "verwachte_opbrengst": 524581,
       "score": 6,
       "is_opknapper": false,
@@ -504,90 +508,90 @@
         "ovb": 18000,
         "notaris_makelaar_aankoop": 2925,
         "aankoop_totaal": 245925,
-        "renovatie_per_m2": 1167,
+        "renovatie_per_m2": 847,
         "renovatie_detail": {
           "componenten": [
             {
               "naam": "Keuken renovatie",
-              "kosten": 16000,
-              "reden": "Nieuwe fronten, apparatuur, blad"
+              "kosten": 14000,
+              "reden": "Nieuwe fronten, apparatuur, blad, tegelwerk"
             },
             {
               "naam": "Badkamer renovatie",
-              "kosten": 13000,
-              "reden": "Nieuw sanitair en tegelwerk"
+              "kosten": 12000,
+              "reden": "Nieuwe tegels, sanitair, kranen"
             },
             {
               "naam": "Toilet opknappen",
-              "kosten": 1500,
-              "reden": "Nieuw toilet, kleine aanpassingen"
+              "kosten": 2500,
+              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties"
             },
             {
-              "naam": "Vloeren (95/m²)",
-              "kosten": 11020,
-              "reden": "Egaliseren + nieuwe vloer (PVC/laminaat)"
+              "naam": "Vloeren (70/m²)",
+              "kosten": 8120,
+              "reden": "Egaliseren + PVC click vloer leggen"
             },
             {
-              "naam": "Wanden/plafonds/schilderwerk",
-              "kosten": 6380,
-              "reden": "Wanden repareren + latex + houtwerk schilderen"
+              "naam": "Schilderwerk (35/m²)",
+              "kosten": 4060,
+              "reden": "Latex muren+plafonds + binnenkozijnen schilderen"
             },
             {
               "naam": "Elektra upgraden",
-              "kosten": 5500,
+              "kosten": 3500,
               "reden": "Groepenkast + extra groepen + stopcontacten"
             },
             {
-              "naam": "Leidingwerk deels vervangen",
-              "kosten": 4500,
-              "reden": "Verouderd leidingwerk upgraden"
+              "naam": "Leidingwerk aanpassen",
+              "kosten": 2000,
+              "reden": "Verouderd leidingwerk bijwerken"
             },
             {
-              "naam": "Isolatie volledig",
-              "kosten": 20880,
-              "reden": "Label ? — vloer + dak + gevel + kierdichting"
+              "naam": "Isolatie (dak+vloer+spouw)",
+              "kosten": 8700,
+              "reden": "Label ?: dak 3190, vloer 3480, spouw 2029"
             },
             {
-              "naam": "Ramen + kozijnen (14x HR++)",
+              "naam": "Ramen HR++ (14x)",
               "kosten": 21000,
-              "reden": "Enkel/dubbel glas → HR++ met nieuwe kozijnen"
+              "reden": "Enkel/dubbel glas naar HR++ incl nieuwe kozijnen"
             },
             {
-              "naam": "CV-ketel nieuw (HR107)",
-              "kosten": 5500,
-              "reden": "Verouderde ketel → nieuwe HR-combi"
+              "naam": "CV-ketel nieuw (HR-combi)",
+              "kosten": 2200,
+              "reden": "Nieuwe HR-combi ketel incl installatie"
             },
             {
-              "naam": "Radiatoren vervangen",
-              "kosten": 4060,
-              "reden": "Oude radiatoren → nieuwe convectoren"
+              "naam": "Radiatoren (7x)",
+              "kosten": 1260,
+              "reden": "Oude radiatoren vervangen (7 stuks)"
             },
             {
               "naam": "Buitenschilderwerk",
-              "kosten": 3500,
-              "reden": "Kozijnen buiten schilderen + kleine reparaties"
+              "kosten": 2500,
+              "reden": "Kozijnen buiten schilderen"
             },
             {
               "naam": "Onvoorzien (12%)",
-              "kosten": 13540,
-              "reden": "Buffer voor verrassingen tijdens verbouwing"
+              "kosten": 9820,
+              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)"
             },
             {
               "naam": "Architect + leges (8%)",
-              "kosten": 9027,
+              "kosten": 6547,
               "reden": "Ontwerp, vergunning, bouwbegeleiding"
             }
           ],
-          "totaal": 135407,
-          "per_m2": 1167,
+          "totaal": 98207,
+          "per_m2": 847,
           "onvoorzien_pct": 12
         },
-        "bouw_totaal": 135407,
-        "looptijd_maanden": 9,
+        "bouw_totaal": 98207,
+        "looptijd_maanden": 7,
         "rente_pct": 8.0,
-        "financiering_basis": 313628,
-        "rente": 18817,
-        "totaal_kosten": 400149,
+        "financiering_basis": 295028,
+        "rente": 13767,
+        "totaal_kosten": 357899,
         "verkoop_m2": 4613,
         "verkoop_bron": "referentie",
         "referenties": [
@@ -627,14 +631,14 @@
         "notaris_verkoop": 2500,
         "verkoop_kosten": 10526,
         "netto_opbrengst": 524581,
-        "winst": 124431,
-        "marge_pct": 23.7,
-        "roi_pct": 31.1,
+        "winst": 166681,
+        "marge_pct": 31.8,
+        "roi_pct": 46.6,
         "bod_korting_pct": 10,
         "bod": 202500,
-        "bod_totaal_investering": 374081,
-        "bod_winst": 150499,
-        "bod_marge_pct": 28.7,
+        "bod_totaal_investering": 332159,
+        "bod_winst": 192421,
+        "bod_marge_pct": 36.7,
         "splitsen": {
           "mag_splitsen": true,
           "uitleg": "Splitsen is waarschijnlijk toegestaan in Rotterdam. Oppervlak (116m2) voldoet aan minimum (80m2). Per unit: 58m2 (min: 18m2). Vereist: splitsingsvergunning.",
@@ -653,6 +657,13 @@
           "dakopbouw_toegestaan": null,
           "ruimte_over_m": null,
           "bijzonderheden": "Rotterdam is relatief soepel met opbouwen. Dakopbouw vergunningvrij onder voorwaarden. Welstandsnota Rotterdam: gebiedsafhankelijk."
+        },
+        "looptijd_detail": {
+          "totaal_maanden": 7,
+          "vergunning_maanden": 1,
+          "verbouw_maanden": 4.4,
+          "verkoop_maanden": 2,
+          "type": "medium"
         },
         "validatie": {
           "goedgekeurd": true,
@@ -689,12 +700,12 @@
         "https://cloud.funda.nl/valentina_media/227/363/045.jpg"
       ],
       "strategie": "fix_flip",
-      "marge_pct": 14.6,
-      "winst_euro": 75582,
-      "roi_pct": 17.2,
-      "totale_kosten": 440704,
+      "marge_pct": 19.0,
+      "winst_euro": 97948,
+      "roi_pct": 23.4,
+      "totale_kosten": 418338,
       "verwachte_opbrengst": 516286,
-      "score": 3,
+      "score": 4,
       "is_opknapper": false,
       "calc": {
         "vraagprijs": 315000,
@@ -702,85 +713,80 @@
         "ovb": 25200,
         "notaris_makelaar_aankoop": 4095,
         "aankoop_totaal": 344295,
-        "renovatie_per_m2": 1098,
+        "renovatie_per_m2": 846,
         "renovatie_detail": {
           "componenten": [
             {
               "naam": "Keuken renovatie",
-              "kosten": 16000,
-              "reden": "Nieuwe fronten, apparatuur, blad"
+              "kosten": 14000,
+              "reden": "Nieuwe fronten, apparatuur, blad, tegelwerk"
             },
             {
               "naam": "Badkamer renovatie",
-              "kosten": 13000,
-              "reden": "Nieuw sanitair en tegelwerk"
+              "kosten": 12000,
+              "reden": "Nieuwe tegels, sanitair, kranen"
             },
             {
               "naam": "Toilet opknappen",
-              "kosten": 1500,
-              "reden": "Nieuw toilet, kleine aanpassingen"
+              "kosten": 2500,
+              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties"
             },
             {
-              "naam": "Vloeren (75/m²)",
-              "kosten": 5025,
-              "reden": "Nieuwe vloer leggen"
+              "naam": "Vloeren (60/m²)",
+              "kosten": 4020,
+              "reden": "PVC click vloer leggen (licht egaliseren)"
             },
             {
-              "naam": "Wanden/plafonds/schilderwerk",
-              "kosten": 2546,
-              "reden": "Schilderwerk binnen + buiten (kozijnen)"
+              "naam": "Schilderwerk (20/m²)",
+              "kosten": 1340,
+              "reden": "Latex muren en plafonds"
             },
             {
               "naam": "Elektra upgraden",
-              "kosten": 5500,
+              "kosten": 3500,
               "reden": "Groepenkast + extra groepen + stopcontacten"
             },
             {
-              "naam": "Leidingwerk aanpassen",
-              "kosten": 2500,
-              "reden": "Kleine aanpassingen sanitair"
-            },
-            {
               "naam": "Isolatie verbeteren",
-              "kosten": 6030,
-              "reden": "Label D — dak + vloer isolatie bijwerken"
+              "kosten": 2680,
+              "reden": "Label D: dak + vloer bijwerken"
             },
             {
-              "naam": "Ramen deels vervangen (4x)",
+              "naam": "Ramen deels (4x)",
               "kosten": 4800,
               "reden": "Oudere ramen upgraden naar HR++"
             },
             {
-              "naam": "CV-ketel onderhoud/vervanging",
-              "kosten": 3000,
-              "reden": "Mogelijk verouderd — budget voor vervanging"
+              "naam": "CV-ketel onderhoud/reserve",
+              "kosten": 1500,
+              "reden": "Mogelijk verouderd, budget voor vervanging"
             },
             {
               "naam": "Buitenschilderwerk",
-              "kosten": 3500,
-              "reden": "Kozijnen buiten schilderen + kleine reparaties"
+              "kosten": 2500,
+              "reden": "Kozijnen buiten schilderen"
             },
             {
               "naam": "Onvoorzien (10%)",
-              "kosten": 6340,
-              "reden": "Buffer voor verrassingen tijdens verbouwing"
+              "kosten": 4884,
+              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)"
             },
             {
               "naam": "Architect + leges (6%)",
-              "kosten": 3804,
+              "kosten": 2930,
               "reden": "Ontwerp, vergunning, bouwbegeleiding"
             }
           ],
-          "totaal": 73545,
-          "per_m2": 1098,
+          "totaal": 56654,
+          "per_m2": 846,
           "onvoorzien_pct": 10
         },
-        "bouw_totaal": 73545,
-        "looptijd_maanden": 9,
+        "bouw_totaal": 56654,
+        "looptijd_maanden": 7,
         "rente_pct": 8.0,
-        "financiering_basis": 381067,
-        "rente": 22864,
-        "totaal_kosten": 440704,
+        "financiering_basis": 372622,
+        "rente": 17389,
+        "totaal_kosten": 418338,
         "verkoop_m2": 7861,
         "verkoop_bron": "referentie",
         "referenties": [
@@ -840,14 +846,14 @@
         "notaris_verkoop": 2500,
         "verkoop_kosten": 10400,
         "netto_opbrengst": 516286,
-        "winst": 75582,
-        "marge_pct": 14.6,
-        "roi_pct": 17.2,
+        "winst": 97948,
+        "marge_pct": 19.0,
+        "roi_pct": 23.4,
         "bod_korting_pct": 10,
         "bod": 283500,
-        "bod_totaal_investering": 404208,
-        "bod_winst": 112077,
-        "bod_marge_pct": 21.7,
+        "bod_totaal_investering": 382301,
+        "bod_winst": 133984,
+        "bod_marge_pct": 26.0,
         "splitsen": {
           "mag_splitsen": false,
           "uitleg": "Splitsen is waarschijnlijk NIET toegestaan in Den Haag. Totaal oppervlak (67m2) is kleiner dan minimaal vereist (100m2). Vereist: splitsingsvergunning.",
@@ -866,6 +872,13 @@
           "dakopbouw_toegestaan": null,
           "ruimte_over_m": null,
           "bijzonderheden": "Dakopbouw vergunningvrij mits <= 4m diep aan achterkant, kruimelregeling mogelijk. In beschermde stadsgezichten (Statenkwartier, Archipelbuurt, Zeeheldenkwartier) extra welstandseisen."
+        },
+        "looptijd_detail": {
+          "totaal_maanden": 7,
+          "vergunning_maanden": 1,
+          "verbouw_maanden": 4.0,
+          "verkoop_maanden": 2,
+          "type": "medium"
         },
         "funda_prijs_per_m2": "€ 4.701",
         "foto_urls": [
@@ -926,12 +939,12 @@
         "https://cloud.funda.nl/valentina_media/227/356/899.jpg"
       ],
       "strategie": "fix_flip",
-      "marge_pct": 14.2,
-      "winst_euro": 74006,
-      "roi_pct": 16.6,
-      "totale_kosten": 447155,
+      "marge_pct": 18.7,
+      "winst_euro": 97348,
+      "roi_pct": 23.0,
+      "totale_kosten": 423812,
       "verwachte_opbrengst": 521161,
-      "score": 3,
+      "score": 4,
       "is_opknapper": false,
       "calc": {
         "vraagprijs": 349000,
@@ -939,75 +952,65 @@
         "ovb": 27920,
         "notaris_makelaar_aankoop": 4537,
         "aankoop_totaal": 381457,
-        "renovatie_per_m2": 495,
+        "renovatie_per_m2": 378,
         "renovatie_detail": {
           "componenten": [
             {
               "naam": "Keuken opfrissen",
               "kosten": 8000,
-              "reden": "Nieuwe fronten en apparatuur"
+              "reden": "Nieuwe fronten, werkblad, apparatuur behouden"
             },
             {
               "naam": "Badkamer opfrissen",
               "kosten": 7000,
-              "reden": "Sanitair vervangen, voegen vernieuwen"
+              "reden": "Sanitair + kranen vervangen, voegen vernieuwen"
             },
             {
               "naam": "Toilet opknappen",
-              "kosten": 1500,
-              "reden": "Nieuw toilet, kleine aanpassingen"
-            },
-            {
-              "naam": "Vloeren (55/m²)",
-              "kosten": 4620,
-              "reden": "Vloer vervangen/opschuren"
-            },
-            {
-              "naam": "Wanden/plafonds/schilderwerk",
-              "kosten": 3192,
-              "reden": "Schilderwerk binnen + buiten (kozijnen)"
-            },
-            {
-              "naam": "Elektra uitbreiden",
-              "kosten": 3000,
-              "reden": "Extra stopcontacten en groepen"
-            },
-            {
-              "naam": "Leidingwerk aanpassen",
               "kosten": 2500,
-              "reden": "Kleine aanpassingen sanitair"
+              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties"
             },
             {
-              "naam": "Isolatie bijwerken",
-              "kosten": 2520,
-              "reden": "Label B — kierdichting + kleine verbeteringen"
+              "naam": "Vloeren (50/m²)",
+              "kosten": 4200,
+              "reden": "Nieuwe PVC click vloer leggen"
+            },
+            {
+              "naam": "Schilderwerk (20/m²)",
+              "kosten": 1680,
+              "reden": "Latex muren en plafonds"
+            },
+            {
+              "naam": "Elektra check + uitbreiden",
+              "kosten": 1500,
+              "reden": "Keuring + extra groepen/stopcontacten"
             },
             {
               "naam": "Buitenschilderwerk",
-              "kosten": 3500,
-              "reden": "Kozijnen buiten schilderen + kleine reparaties"
+              "kosten": 2500,
+              "reden": "Kozijnen buiten schilderen"
             },
             {
               "naam": "Onvoorzien (10%)",
-              "kosten": 3583,
-              "reden": "Buffer voor verrassingen tijdens verbouwing"
+              "kosten": 2738,
+              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)"
             },
             {
               "naam": "Architect + leges (6%)",
-              "kosten": 2149,
+              "kosten": 1642,
               "reden": "Ontwerp, vergunning, bouwbegeleiding"
             }
           ],
-          "totaal": 41564,
-          "per_m2": 495,
+          "totaal": 31760,
+          "per_m2": 378,
           "onvoorzien_pct": 10
         },
-        "bouw_totaal": 41564,
-        "looptijd_maanden": 9,
+        "bouw_totaal": 31760,
+        "looptijd_maanden": 4,
         "rente_pct": 8.0,
-        "financiering_basis": 402239,
-        "rente": 24134,
-        "totaal_kosten": 447155,
+        "financiering_basis": 397337,
+        "rente": 10595,
+        "totaal_kosten": 423812,
         "verkoop_m2": 6329,
         "verkoop_bron": "referentie",
         "referenties": [
@@ -1067,14 +1070,14 @@
         "notaris_verkoop": 2500,
         "verkoop_kosten": 10474,
         "netto_opbrengst": 521161,
-        "winst": 74006,
-        "marge_pct": 14.2,
-        "roi_pct": 16.6,
+        "winst": 97348,
+        "marge_pct": 18.7,
+        "roi_pct": 23.0,
         "bod_korting_pct": 10,
         "bod": 314100,
-        "bod_totaal_investering": 406720,
-        "bod_winst": 114440,
-        "bod_marge_pct": 22.0,
+        "bod_totaal_investering": 384649,
+        "bod_winst": 136511,
+        "bod_marge_pct": 26.2,
         "splitsen": {
           "mag_splitsen": true,
           "uitleg": "Splitsen is waarschijnlijk toegestaan in Rotterdam. Oppervlak (84m2) voldoet aan minimum (80m2). Per unit: 42m2 (min: 18m2). Vereist: splitsingsvergunning.",
@@ -1093,6 +1096,13 @@
           "dakopbouw_toegestaan": null,
           "ruimte_over_m": null,
           "bijzonderheden": "Rotterdam is relatief soepel met opbouwen. Dakopbouw vergunningvrij onder voorwaarden. Welstandsnota Rotterdam: gebiedsafhankelijk."
+        },
+        "looptijd_detail": {
+          "totaal_maanden": 4,
+          "vergunning_maanden": 0,
+          "verbouw_maanden": 2.0,
+          "verkoop_maanden": 2,
+          "type": "cosmetisch"
         },
         "funda_prijs_per_m2": "€ 4.155",
         "foto_urls": [
@@ -1151,12 +1161,12 @@
         "https://cloud.funda.nl/valentina_media/226/633/177.jpg"
       ],
       "strategie": "fix_flip",
-      "marge_pct": 12.5,
-      "winst_euro": 51855,
-      "roi_pct": 14.2,
-      "totale_kosten": 364196,
+      "marge_pct": 18.0,
+      "winst_euro": 75093,
+      "roi_pct": 22.0,
+      "totale_kosten": 340958,
       "verwachte_opbrengst": 416052,
-      "score": 4,
+      "score": 5,
       "is_opknapper": false,
       "calc": {
         "vraagprijs": 243750,
@@ -1164,85 +1174,80 @@
         "ovb": 19500,
         "notaris_makelaar_aankoop": 3168,
         "aankoop_totaal": 266418,
-        "renovatie_per_m2": 923,
+        "renovatie_per_m2": 706,
         "renovatie_detail": {
           "componenten": [
             {
               "naam": "Keuken renovatie",
-              "kosten": 16000,
-              "reden": "Nieuwe fronten, apparatuur, blad"
+              "kosten": 14000,
+              "reden": "Nieuwe fronten, apparatuur, blad, tegelwerk"
             },
             {
               "naam": "Badkamer renovatie",
-              "kosten": 13000,
-              "reden": "Nieuw sanitair en tegelwerk"
+              "kosten": 12000,
+              "reden": "Nieuwe tegels, sanitair, kranen"
             },
             {
               "naam": "Toilet opknappen",
-              "kosten": 1500,
-              "reden": "Nieuw toilet, kleine aanpassingen"
+              "kosten": 2500,
+              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties"
             },
             {
-              "naam": "Vloeren (75/m²)",
-              "kosten": 6450,
-              "reden": "Nieuwe vloer leggen"
+              "naam": "Vloeren (60/m²)",
+              "kosten": 5160,
+              "reden": "PVC click vloer leggen (licht egaliseren)"
             },
             {
-              "naam": "Wanden/plafonds/schilderwerk",
-              "kosten": 3268,
-              "reden": "Schilderwerk binnen + buiten (kozijnen)"
+              "naam": "Schilderwerk (20/m²)",
+              "kosten": 1720,
+              "reden": "Latex muren en plafonds"
             },
             {
               "naam": "Elektra upgraden",
-              "kosten": 5500,
+              "kosten": 3500,
               "reden": "Groepenkast + extra groepen + stopcontacten"
             },
             {
-              "naam": "Leidingwerk aanpassen",
-              "kosten": 2500,
-              "reden": "Kleine aanpassingen sanitair"
-            },
-            {
               "naam": "Isolatie verbeteren",
-              "kosten": 7740,
-              "reden": "Label C — dak + vloer isolatie bijwerken"
+              "kosten": 3440,
+              "reden": "Label C: dak + vloer bijwerken"
             },
             {
-              "naam": "Ramen deels vervangen (5x)",
+              "naam": "Ramen deels (5x)",
               "kosten": 6000,
               "reden": "Oudere ramen upgraden naar HR++"
             },
             {
-              "naam": "CV-ketel onderhoud/vervanging",
-              "kosten": 3000,
-              "reden": "Mogelijk verouderd — budget voor vervanging"
+              "naam": "CV-ketel onderhoud/reserve",
+              "kosten": 1500,
+              "reden": "Mogelijk verouderd, budget voor vervanging"
             },
             {
               "naam": "Buitenschilderwerk",
-              "kosten": 3500,
-              "reden": "Kozijnen buiten schilderen + kleine reparaties"
+              "kosten": 2500,
+              "reden": "Kozijnen buiten schilderen"
             },
             {
               "naam": "Onvoorzien (10%)",
-              "kosten": 6845,
-              "reden": "Buffer voor verrassingen tijdens verbouwing"
+              "kosten": 5232,
+              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)"
             },
             {
               "naam": "Architect + leges (6%)",
-              "kosten": 4107,
+              "kosten": 3139,
               "reden": "Ontwerp, vergunning, bouwbegeleiding"
             }
           ],
-          "totaal": 79410,
-          "per_m2": 923,
+          "totaal": 60691,
+          "per_m2": 706,
           "onvoorzien_pct": 10
         },
-        "bouw_totaal": 79410,
-        "looptijd_maanden": 9,
+        "bouw_totaal": 60691,
+        "looptijd_maanden": 7,
         "rente_pct": 8.0,
-        "financiering_basis": 306123,
-        "rente": 18367,
-        "totaal_kosten": 364196,
+        "financiering_basis": 296764,
+        "rente": 13848,
+        "totaal_kosten": 340958,
         "verkoop_m2": 4941,
         "verkoop_bron": "referentie",
         "referenties": [
@@ -1282,14 +1287,14 @@
         "notaris_verkoop": 2500,
         "verkoop_kosten": 8873,
         "netto_opbrengst": 416052,
-        "winst": 51855,
-        "marge_pct": 12.5,
-        "roi_pct": 14.2,
+        "winst": 75093,
+        "marge_pct": 18.0,
+        "roi_pct": 22.0,
         "bod_korting_pct": 10,
         "bod": 219375,
-        "bod_totaal_investering": 335955,
-        "bod_winst": 80096,
-        "bod_marge_pct": 19.3,
+        "bod_totaal_investering": 313073,
+        "bod_winst": 102978,
+        "bod_marge_pct": 24.8,
         "splitsen": {
           "mag_splitsen": false,
           "uitleg": "Splitsen is waarschijnlijk NIET toegestaan in Delft. Totaal oppervlak (86m2) is kleiner dan minimaal vereist (120m2). Vereist: omgevingsvergunning.",
@@ -1308,6 +1313,13 @@
           "dakopbouw_toegestaan": null,
           "ruimte_over_m": null,
           "bijzonderheden": "Binnenstad Delft is beschermd stadsgezicht — opbouw zeer beperkt. Buiten binnenstad: vergunningvrij dakopbouw onder voorwaarden. Welstandscommissie adviseert streng in historische kern."
+        },
+        "looptijd_detail": {
+          "totaal_maanden": 7,
+          "vergunning_maanden": 1,
+          "verbouw_maanden": 4.1,
+          "verkoop_maanden": 2,
+          "type": "medium"
         },
         "funda_prijs_per_m2": "€ 2.834",
         "foto_urls": [
@@ -1335,6 +1347,230 @@
           "afwijking_pct": 74.3,
           "gecorrigeerde_pm2": 2976,
           "reden": "Onze prijs 74% hoger dan extern (2834/m2). Gecorrigeerd naar 2976/m2"
+        }
+      }
+    },
+    {
+      "adres": "Boerhaavestraat 129",
+      "stad": "Den Haag",
+      "postcode": "2516GT",
+      "wijk": "Binckhorst",
+      "prijs": 270000,
+      "opp_m2": 70,
+      "prijs_per_m2": 3857.0,
+      "type_woning": "apartment",
+      "bouwjaar": 1983,
+      "energie_label": "B",
+      "kamers": 3,
+      "source": "funda",
+      "url": "https://www.funda.nl/detail/koop/den-haag/boerhaavestraat-129/43319801/",
+      "foto_url": "https://cloud.funda.nl/valentina_media/227/331/611.jpg",
+      "foto_urls": [
+        "https://cloud.funda.nl/valentina_media/227/331/611.jpg",
+        "https://cloud.funda.nl/valentina_media/227/331/497.jpg",
+        "https://cloud.funda.nl/valentina_media/227/331/515.jpg",
+        "https://cloud.funda.nl/valentina_media/227/331/608.jpg",
+        "https://cloud.funda.nl/valentina_media/227/331/581.jpg",
+        "https://cloud.funda.nl/valentina_media/227/331/510.jpg"
+      ],
+      "strategie": "fix_flip",
+      "marge_pct": 15.5,
+      "winst_euro": 61122,
+      "roi_pct": 18.3,
+      "totale_kosten": 334011,
+      "verwachte_opbrengst": 395134,
+      "score": 4,
+      "is_opknapper": false,
+      "calc": {
+        "vraagprijs": 270000,
+        "ovb_pct": 8.0,
+        "ovb": 21600,
+        "notaris_makelaar_aankoop": 3510,
+        "aankoop_totaal": 295110,
+        "renovatie_per_m2": 437,
+        "renovatie_detail": {
+          "componenten": [
+            {
+              "naam": "Keuken opfrissen",
+              "kosten": 8000,
+              "reden": "Nieuwe fronten, werkblad, apparatuur behouden"
+            },
+            {
+              "naam": "Badkamer opfrissen",
+              "kosten": 7000,
+              "reden": "Sanitair + kranen vervangen, voegen vernieuwen"
+            },
+            {
+              "naam": "Toilet opknappen",
+              "kosten": 2500,
+              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties"
+            },
+            {
+              "naam": "Vloeren (50/m²)",
+              "kosten": 3500,
+              "reden": "Nieuwe PVC click vloer leggen"
+            },
+            {
+              "naam": "Schilderwerk (20/m²)",
+              "kosten": 1400,
+              "reden": "Latex muren en plafonds"
+            },
+            {
+              "naam": "Elektra check + uitbreiden",
+              "kosten": 1500,
+              "reden": "Keuring + extra groepen/stopcontacten"
+            },
+            {
+              "naam": "Buitenschilderwerk",
+              "kosten": 2500,
+              "reden": "Kozijnen buiten schilderen"
+            },
+            {
+              "naam": "Onvoorzien (10%)",
+              "kosten": 2640,
+              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)"
+            },
+            {
+              "naam": "Architect + leges (6%)",
+              "kosten": 1584,
+              "reden": "Ontwerp, vergunning, bouwbegeleiding"
+            }
+          ],
+          "totaal": 30624,
+          "per_m2": 437,
+          "onvoorzien_pct": 10
+        },
+        "bouw_totaal": 30624,
+        "looptijd_maanden": 4,
+        "rente_pct": 8.0,
+        "financiering_basis": 310422,
+        "rente": 8277,
+        "totaal_kosten": 334011,
+        "verkoop_m2": 5767,
+        "verkoop_bron": "referentie",
+        "referenties": [
+          {
+            "adres": "Binckhorstlaan 311",
+            "prijs": 437500,
+            "opp_m2": 70,
+            "prijs_per_m2": 6250,
+            "energie_label": "A",
+            "type": "apartment",
+            "wijk": "Binckhorst",
+            "url": "https://www.funda.nl/detail/koop/den-haag/appartement-binckhorstlaan-311-m/43362365/"
+          },
+          {
+            "adres": "Binckhorstlaan 313",
+            "prijs": 450000,
+            "opp_m2": 72,
+            "prijs_per_m2": 6250,
+            "energie_label": "A",
+            "type": "apartment",
+            "wijk": "Binckhorst",
+            "url": "https://www.funda.nl/detail/koop/den-haag/appartement-binckhorstlaan-313-l/43352991/"
+          },
+          {
+            "adres": "Binckhorstlaan 311",
+            "prijs": 330000,
+            "opp_m2": 55,
+            "prijs_per_m2": 6000,
+            "energie_label": "A",
+            "type": "apartment",
+            "wijk": "Binckhorst",
+            "url": "https://www.funda.nl/detail/koop/den-haag/appartement-binckhorstlaan-311-u/43317826/"
+          },
+          {
+            "adres": "Binckhorstlaan 311",
+            "prijs": 375000,
+            "opp_m2": 63,
+            "prijs_per_m2": 5952,
+            "energie_label": "A",
+            "type": "apartment",
+            "wijk": "Binckhorst",
+            "url": "https://www.funda.nl/detail/koop/den-haag/appartement-binckhorstlaan-311-t/43377283/"
+          },
+          {
+            "adres": "Binckhorstlaan 311",
+            "prijs": 437500,
+            "opp_m2": 77,
+            "prijs_per_m2": 5682,
+            "energie_label": "A",
+            "type": "apartment",
+            "wijk": "Binckhorst",
+            "url": "https://www.funda.nl/detail/koop/den-haag/appartement-binckhorstlaan-311-b/43362256/"
+          }
+        ],
+        "bruto_verkoopprijs": 403690,
+        "makelaar_verkoop": 6055,
+        "notaris_verkoop": 2500,
+        "verkoop_kosten": 8555,
+        "netto_opbrengst": 395134,
+        "winst": 61122,
+        "marge_pct": 15.5,
+        "roi_pct": 18.3,
+        "bod_korting_pct": 10,
+        "bod": 243000,
+        "bod_totaal_investering": 303713,
+        "bod_winst": 91420,
+        "bod_marge_pct": 23.1,
+        "splitsen": {
+          "mag_splitsen": false,
+          "uitleg": "Splitsen is waarschijnlijk NIET toegestaan in Den Haag. Totaal oppervlak (70m2) is kleiner dan minimaal vereist (100m2). Vereist: splitsingsvergunning.",
+          "vergunning": "splitsingsvergunning",
+          "min_opp_m2": 100,
+          "max_units": null,
+          "min_per_unit_m2": 24,
+          "opp_per_unit": 35.0,
+          "bijzonderheden": "Splitsingsvergunning vereist. Woonoppervlak origineel >= 100m2. Elke unit minimaal 24m2. Geluidsisolatie-eisen (Bouwbesluit). Meldplicht bij gemeente."
+        },
+        "opbouwen": {
+          "mag_opbouwen": null,
+          "uitleg": "Woningtype 'apartment' niet gevonden voor Den Haag. Bekende types: tussenwoning, hoekwoning, twee_onder_een_kap, vrijstaand, appartement.",
+          "max_hoogte_m": null,
+          "max_verdiepingen": null,
+          "dakopbouw_toegestaan": null,
+          "ruimte_over_m": null,
+          "bijzonderheden": "Dakopbouw vergunningvrij mits <= 4m diep aan achterkant, kruimelregeling mogelijk. In beschermde stadsgezichten (Statenkwartier, Archipelbuurt, Zeeheldenkwartier) extra welstandseisen."
+        },
+        "looptijd_detail": {
+          "totaal_maanden": 4,
+          "vergunning_maanden": 0,
+          "verbouw_maanden": 2.0,
+          "verkoop_maanden": 2,
+          "type": "cosmetisch"
+        },
+        "funda_prijs_per_m2": "€ 3.857",
+        "foto_urls": [
+          "https://cloud.funda.nl/valentina_media/227/331/611.jpg",
+          "https://cloud.funda.nl/valentina_media/227/331/497.jpg",
+          "https://cloud.funda.nl/valentina_media/227/331/515.jpg",
+          "https://cloud.funda.nl/valentina_media/227/331/608.jpg",
+          "https://cloud.funda.nl/valentina_media/227/331/581.jpg",
+          "https://cloud.funda.nl/valentina_media/227/331/510.jpg"
+        ],
+        "has_garden": true,
+        "has_balcony": false,
+        "has_roof_terrace": false,
+        "has_parking_on_site": false,
+        "has_solar_panels": false,
+        "has_heat_pump": false,
+        "is_monument": false,
+        "beschrijving_parsed": {
+          "erfpacht": true,
+          "vve_bijdrage": 333.09
+        },
+        "erfpacht": true,
+        "vve_bijdrage": 333.09,
+        "validatie": {
+          "goedgekeurd": false,
+          "onze_pm2": 5767,
+          "bronnen": {
+            "funda_pm2": 3857
+          },
+          "gem_extern_pm2": 3857,
+          "afwijking_pct": 49.5,
+          "gecorrigeerde_pm2": 4050,
+          "reden": "Onze prijs 50% hoger dan extern (3857/m2). Gecorrigeerd naar 4050/m2"
         }
       }
     }
