@@ -96,7 +96,15 @@
             "type": "apartment"
           }
         ]
-      }
+      },
+      "foto_urls": [
+        "https://cloud.funda.nl/valentina_media/227/245/097.jpg",
+        "https://cloud.funda.nl/valentina_media/227/245/098.jpg",
+        "https://cloud.funda.nl/valentina_media/227/245/253.jpg",
+        "https://cloud.funda.nl/valentina_media/227/245/252.jpg",
+        "https://cloud.funda.nl/valentina_media/227/245/259.jpg",
+        "https://cloud.funda.nl/valentina_media/227/245/113.jpg"
+      ]
     },
     {
       "adres": "Van Vollenhovenstraat 3",
@@ -191,7 +199,15 @@
             "type": "apartment"
           }
         ]
-      }
+      },
+      "foto_urls": [
+        "https://cloud.funda.nl/valentina_media/227/186/791.jpg",
+        "https://cloud.funda.nl/valentina_media/227/186/834.jpg",
+        "https://cloud.funda.nl/valentina_media/227/186/878.jpg",
+        "https://cloud.funda.nl/valentina_media/227/186/793.jpg",
+        "https://cloud.funda.nl/valentina_media/227/186/794.jpg",
+        "https://cloud.funda.nl/valentina_media/227/186/797.jpg"
+      ]
     },
     {
       "adres": "Oranjelaan 57",
@@ -286,7 +302,15 @@
             "type": "apartment"
           }
         ]
-      }
+      },
+      "foto_urls": [
+        "https://cloud.funda.nl/valentina_media/227/102/898.jpg",
+        "https://cloud.funda.nl/valentina_media/227/102/915.jpg",
+        "https://cloud.funda.nl/valentina_media/227/103/130.jpg",
+        "https://cloud.funda.nl/valentina_media/227/102/909.jpg",
+        "https://cloud.funda.nl/valentina_media/227/102/903.jpg",
+        "https://cloud.funda.nl/valentina_media/227/103/104.jpg"
+      ]
     },
     {
       "adres": "Delfgauwseweg 109",
@@ -372,7 +396,15 @@
             "type": "house"
           }
         ]
-      }
+      },
+      "foto_urls": [
+        "https://cloud.funda.nl/valentina_media/226/514/861.jpg",
+        "https://cloud.funda.nl/valentina_media/226/514/859.jpg",
+        "https://cloud.funda.nl/valentina_media/226/514/857.jpg",
+        "https://cloud.funda.nl/valentina_media/226/514/869.jpg",
+        "https://cloud.funda.nl/valentina_media/226/514/874.jpg",
+        "https://cloud.funda.nl/valentina_media/226/514/847.jpg"
+      ]
     },
     {
       "adres": "Plantijnstraat 102",
@@ -467,7 +499,15 @@
             "type": "apartment"
           }
         ]
-      }
+      },
+      "foto_urls": [
+        "https://cloud.funda.nl/valentina_media/227/251/540.jpg",
+        "https://cloud.funda.nl/valentina_media/227/251/541.jpg",
+        "https://cloud.funda.nl/valentina_media/227/251/616.jpg",
+        "https://cloud.funda.nl/valentina_media/227/251/621.jpg",
+        "https://cloud.funda.nl/valentina_media/227/251/589.jpg",
+        "https://cloud.funda.nl/valentina_media/227/251/572.jpg"
+      ]
     },
     {
       "adres": "Hooftstraat 122",
@@ -562,7 +602,15 @@
             "type": "house"
           }
         ]
-      }
+      },
+      "foto_urls": [
+        "https://cloud.funda.nl/valentina_media/226/687/584.jpg",
+        "https://cloud.funda.nl/valentina_media/226/687/620.jpg",
+        "https://cloud.funda.nl/valentina_media/226/687/484.jpg",
+        "https://cloud.funda.nl/valentina_media/226/687/485.jpg",
+        "https://cloud.funda.nl/valentina_media/226/687/486.jpg",
+        "https://cloud.funda.nl/valentina_media/226/687/487.jpg"
+      ]
     },
     {
       "adres": "Bosboom-Toussaintstraat 109",
@@ -657,7 +705,15 @@
             "type": "house"
           }
         ]
-      }
+      },
+      "foto_urls": [
+        "https://cloud.funda.nl/valentina_media/226/814/897.jpg",
+        "https://cloud.funda.nl/valentina_media/226/815/177.jpg",
+        "https://cloud.funda.nl/valentina_media/226/814/901.jpg",
+        "https://cloud.funda.nl/valentina_media/226/815/173.jpg",
+        "https://cloud.funda.nl/valentina_media/226/814/905.jpg",
+        "https://cloud.funda.nl/valentina_media/226/815/069.jpg"
+      ]
     },
     {
       "adres": "Graaf Balderikstraat 140",
@@ -752,7 +808,15 @@
             "type": "apartment"
           }
         ]
-      }
+      },
+      "foto_urls": [
+        "https://cloud.funda.nl/valentina_media/227/084/742.jpg",
+        "https://cloud.funda.nl/valentina_media/227/084/797.jpg",
+        "https://cloud.funda.nl/valentina_media/227/084/744.jpg",
+        "https://cloud.funda.nl/valentina_media/227/084/709.jpg",
+        "https://cloud.funda.nl/valentina_media/227/084/719.jpg",
+        "https://cloud.funda.nl/valentina_media/227/084/749.jpg"
+      ]
     },
     {
       "adres": "Gevers Deynootweg 692",
@@ -847,7 +911,15 @@
             "type": "apartment"
           }
         ]
-      }
+      },
+      "foto_urls": [
+        "https://cloud.funda.nl/valentina_media/227/298/035.jpg",
+        "https://cloud.funda.nl/valentina_media/227/298/037.jpg",
+        "https://cloud.funda.nl/valentina_media/227/298/145.jpg",
+        "https://cloud.funda.nl/valentina_media/227/298/209.jpg",
+        "https://cloud.funda.nl/valentina_media/227/298/126.jpg",
+        "https://cloud.funda.nl/valentina_media/227/298/040.jpg"
+      ]
     }
   ],
   "biedboek": []
