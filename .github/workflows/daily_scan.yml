@@ -5,6 +5,9 @@ on:
     - cron: "0 7 * * *"   # Elke dag om 07:00 UTC (09:00 NL zomertijd)
   workflow_dispatch:       # Handmatig triggeren via GitHub UI
 
+permissions:
+  contents: write
+
 jobs:
   scan:
     runs-on: ubuntu-22.04
@@ -13,6 +16,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          token: ${{ github.token }}
 
       - name: Python setup
         uses: actions/setup-python@v5
