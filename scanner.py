@@ -44,7 +44,9 @@ def _get_funda():
 
 VERKOCHT_KEYWORDS = [
     "verkocht", "sold", "onder bod", "onder optie", "in onderhandeling",
-    "niet beschikbaar", "unavailable", "voorbehoud",
+    "niet beschikbaar", "unavailable", "voorbehoud", "onder bieding",
+    "bieden niet meer mogelijk", "already sold", "under offer",
+    "sold subject to contract", "bid accepted",
 ]
 
 
