@@ -334,6 +334,7 @@ def run_scan():
             "kamers": k.kamers,
             "source": k.source,
             "url": k.url,
+            "foto_url": k.foto_url or "",
             "strategie": k.strategie,
             "marge_pct": k.marge_pct,
             "winst_euro": k.winst_euro,

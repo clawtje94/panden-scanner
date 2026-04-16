@@ -214,8 +214,14 @@ export default function Home() {
                   onTouchStart={onTouchStart}
                   onTouchEnd={onTouchEnd}
                 >
+                  {current.foto_url && (
+                    <div className="card-photo">
+                      <img src={current.foto_url} alt={current.adres} />
+                      <div className="card-score-big">{current.score}/10</div>
+                    </div>
+                  )}
                   <div className="card-hero">
-                    <div className="card-score-big">{current.score}/10</div>
+                    {!current.foto_url && <div className="card-score-big">{current.score}/10</div>}
                     <h1>{current.adres}</h1>
                     <div className="card-location">
                       📍 {current.stad}{current.wijk ? ` · ${current.wijk}` : ''}{current.postcode ? ` · ${current.postcode}` : ''}
@@ -367,6 +373,11 @@ function ListView({ title, items, userState, updateStatus, showRestore }) {
         <div className="list-grid">
           {items.map((k, i) => (
             <div key={i} className="list-card" onClick={() => setSelected(k)}>
+              {k.foto_url && (
+                <div className="list-card-photo">
+                  <img src={k.foto_url} alt={k.adres} />
+                </div>
+              )}
               <div className="list-card-header">
                 <div>
                   <div className="list-card-title">{k.adres}</div>
@@ -449,6 +460,11 @@ function DetailModal({ pand, onClose }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal detail-modal" onClick={e => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose}>×</button>
+        {pand.foto_url && (
+          <div className="detail-photo">
+            <img src={pand.foto_url} alt={pand.adres} />
+          </div>
+        )}
         <h2>{pand.adres}</h2>
         <p className="card-location">{pand.stad}{pand.wijk ? ` · ${pand.wijk}` : ''}</p>
 

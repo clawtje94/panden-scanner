@@ -43,6 +43,17 @@ def _listing_to_property(listing, stad: str) -> Property:
     slaapkamers = d.get("bedrooms", 0) or 0
     type_w = d.get("object_type", "") or ""
 
+    # Eerste foto URL bouwen uit photo ID
+    photos = d.get("photos", [])
+    foto_url = ""
+    if photos:
+        pid = photos[0]
+        if isinstance(pid, int):
+            s = str(pid).zfill(9)
+            foto_url = f"https://cloud.funda.nl/valentina_media/{s[:3]}/{s[3:6]}/{s[6:9]}.jpg"
+        elif isinstance(pid, str) and "/" in pid:
+            foto_url = f"https://cloud.funda.nl/valentina_media/{pid}.jpg"
+
     # Alleen koop (check price_condition)
     price_cond = d.get("price_condition", "")
     if price_cond and "huur" in str(price_cond).lower():
@@ -62,6 +73,7 @@ def _listing_to_property(listing, stad: str) -> Property:
         energie_label=str(energie),
         kamers=int(kamers or slaapkamers) if (kamers or slaapkamers) else 0,
         datum_online=date.today(),
+        foto_url=foto_url,
     )
 
 
