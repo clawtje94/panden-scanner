@@ -5,6 +5,59 @@ const DATA_URL = "https://raw.githubusercontent.com/clawtje94/panden-scanner/dat
 
 const eur = (n) => n ? `€${Math.round(n).toLocaleString('nl-NL')}` : '-';
 
+function PhotoCarousel({ photos, alt, score }) {
+  const [idx, setIdx] = useState(0);
+  const containerRef = useRef(null);
+  const startX = useRef(0);
+
+  if (!photos || photos.length === 0) return null;
+
+  const go = (dir) => {
+    setIdx(prev => {
+      if (dir > 0) return prev < photos.length - 1 ? prev + 1 : 0;
+      return prev > 0 ? prev - 1 : photos.length - 1;
+    });
+  };
+
+  const onTouchStartPhoto = (e) => {
+    e.stopPropagation();
+    startX.current = e.touches[0].clientX;
+  };
+  const onTouchEndPhoto = (e) => {
+    e.stopPropagation();
+    const dx = e.changedTouches[0].clientX - startX.current;
+    if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+  };
+
+  return (
+    <div
+      className="card-photo"
+      ref={containerRef}
+      onTouchStart={onTouchStartPhoto}
+      onTouchEnd={onTouchEndPhoto}
+      onClick={(e) => {
+        e.stopPropagation();
+        const rect = containerRef.current.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        go(clickX > rect.width / 2 ? 1 : -1);
+      }}
+    >
+      <img src={photos[idx]} alt={alt} />
+      <div className="card-score-big">{score}/10</div>
+      {photos.length > 1 && (
+        <>
+          <div className="photo-dots">
+            {photos.map((_, i) => (
+              <span key={i} className={`dot ${i === idx ? 'active' : ''}`} />
+            ))}
+          </div>
+          <div className="photo-counter">{idx + 1}/{photos.length}</div>
+        </>
+      )}
+    </div>
+  );
+}
+
 const STATUS = {
   NEW: 'new',
   SAVED: 'saved',
@@ -214,14 +267,15 @@ export default function Home() {
                   onTouchStart={onTouchStart}
                   onTouchEnd={onTouchEnd}
                 >
-                  {current.foto_url && (
-                    <div className="card-photo">
-                      <img src={current.foto_url} alt={current.adres} />
-                      <div className="card-score-big">{current.score}/10</div>
-                    </div>
+                  {(current.foto_urls?.length > 0 || current.foto_url) && (
+                    <PhotoCarousel
+                      photos={current.foto_urls?.length > 0 ? current.foto_urls : [current.foto_url]}
+                      alt={current.adres}
+                      score={current.score}
+                    />
                   )}
                   <div className="card-hero">
-                    {!current.foto_url && <div className="card-score-big">{current.score}/10</div>}
+                    {!current.foto_url && !current.foto_urls?.length && <div className="card-score-big">{current.score}/10</div>}
                     <h1>{current.adres}</h1>
                     <div className="card-location">
                       📍 {current.stad}{current.wijk ? ` · ${current.wijk}` : ''}{current.postcode ? ` · ${current.postcode}` : ''}
@@ -460,9 +514,13 @@ function DetailModal({ pand, onClose }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal detail-modal" onClick={e => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose}>×</button>
-        {pand.foto_url && (
-          <div className="detail-photo">
-            <img src={pand.foto_url} alt={pand.adres} />
+        {(pand.foto_urls?.length > 0 || pand.foto_url) && (
+          <div className="detail-photo-wrap">
+            <PhotoCarousel
+              photos={pand.foto_urls?.length > 0 ? pand.foto_urls : [pand.foto_url]}
+              alt={pand.adres}
+              score={pand.score}
+            />
           </div>
         )}
         <h2>{pand.adres}</h2>
