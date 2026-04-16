@@ -308,6 +308,18 @@ export default function Home() {
                     {current.type_woning && <span className="badge">{current.type_woning}</span>}
                     {current.is_opknapper && <span className="badge hot">OPKNAPPER</span>}
                     <span className="badge src">{current.source}</span>
+                    {current.calc?.validatie?.goedgekeurd === true && <span className="badge validated">✓ Gevalideerd</span>}
+                    {current.calc?.validatie?.goedgekeurd === false && <span className="badge invalidated">⚠ Gecorrigeerd {current.calc.validatie.afwijking_pct}%</span>}
+                    {current.calc?.has_garden && <span className="badge extra">Tuin</span>}
+                    {current.calc?.has_balcony && <span className="badge extra">Balkon</span>}
+                    {current.calc?.has_roof_terrace && <span className="badge extra">Dakterras</span>}
+                    {current.calc?.has_parking_on_site && <span className="badge extra">Parkeren</span>}
+                    {current.calc?.has_solar_panels && <span className="badge extra">Zonnepanelen</span>}
+                    {current.calc?.erfpacht && <span className="badge warn">Erfpacht</span>}
+                    {current.calc?.vve_bijdrage > 0 && <span className="badge">VvE €{current.calc.vve_bijdrage}/mnd</span>}
+                    {current.calc?.verdieping !== undefined && <span className="badge">Verd. {current.calc.verdieping}</span>}
+                    {current.calc?.splitsen?.mag === true && <span className="badge extra">Splitsen mogelijk</span>}
+                    {current.calc?.opbouwen?.mag === true && <span className="badge extra">Opbouwen mogelijk</span>}
                   </div>
 
                   <div className="card-calc">
@@ -594,6 +606,64 @@ function DetailModal({ pand, onClose }) {
             <div className="calc-row"><span>Investering</span><b>{eur(c.bod_totaal_investering)}</b></div>
             <div className="calc-row"><span>Winst</span><b>{eur(c.bod_winst)}</b></div>
             <div className="calc-row"><span>Marge</span><b>{c.bod_marge_pct}%</b></div>
+          </div>
+        )}
+
+        {c.validatie && (
+          <div className={`detail-section ${c.validatie.goedgekeurd ? 'validated-section' : 'invalidated-section'}`}>
+            <h3>Prijs validatie</h3>
+            <div className="calc-row">
+              <span>Status</span>
+              <b style={{ color: c.validatie.goedgekeurd ? '#00b894' : '#e74c3c' }}>
+                {c.validatie.goedgekeurd ? '✓ Gevalideerd' : '⚠ Gecorrigeerd'}
+              </b>
+            </div>
+            {c.validatie.afwijking_pct !== 0 && (
+              <div className="calc-row"><span>Afwijking</span><b>{c.validatie.afwijking_pct}%</b></div>
+            )}
+            {c.validatie.bronnen && Object.entries(c.validatie.bronnen).map(([k, v]) => (
+              <div key={k} className="calc-row"><span>{k}</span><b>{eur(v)}/m²</b></div>
+            ))}
+            {c.validatie.reden && <div style={{fontSize: 11, color: '#888', marginTop: 8}}>{c.validatie.reden}</div>}
+          </div>
+        )}
+
+        {c.splitsen && (
+          <div className="detail-section">
+            <h3>Splitsen</h3>
+            <div className="calc-row">
+              <span>Mogelijk?</span>
+              <b style={{ color: c.splitsen.mag ? '#00b894' : c.splitsen.mag === false ? '#e74c3c' : '#888' }}>
+                {c.splitsen.mag ? 'Ja' : c.splitsen.mag === false ? 'Nee' : 'Onbekend'}
+              </b>
+            </div>
+            <div style={{fontSize: 12, color: '#aaa', marginTop: 4}}>{c.splitsen.reden}</div>
+            {c.splitsen.vergunning && <div style={{fontSize: 11, color: '#888', marginTop: 4}}>Vergunning: {c.splitsen.vergunning}</div>}
+            {c.splitsen.bijzonderheden && <div style={{fontSize: 11, color: '#666', marginTop: 4}}>{c.splitsen.bijzonderheden}</div>}
+          </div>
+        )}
+
+        {c.opbouwen && (
+          <div className="detail-section">
+            <h3>Opbouwen / Dakopbouw</h3>
+            <div className="calc-row">
+              <span>Mogelijk?</span>
+              <b style={{ color: c.opbouwen.mag ? '#00b894' : c.opbouwen.mag === false ? '#e74c3c' : '#888' }}>
+                {c.opbouwen.mag ? 'Ja' : c.opbouwen.mag === false ? 'Nee' : 'Onbekend'}
+              </b>
+            </div>
+            <div style={{fontSize: 12, color: '#aaa', marginTop: 4}}>{c.opbouwen.reden}</div>
+          </div>
+        )}
+
+        {c.plattegrond_urls?.length > 0 && (
+          <div className="detail-section">
+            <h3>Plattegronden</h3>
+            <div className="plattegrond-grid">
+              {c.plattegrond_urls.map((url, i) => (
+                <img key={i} src={url} alt={`Plattegrond ${i + 1}`} className="plattegrond-img" />
+              ))}
+            </div>
           </div>
         )}
       </div>

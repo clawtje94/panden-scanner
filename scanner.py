@@ -22,6 +22,7 @@ from scrapers import (
 from referentie import zoek_vergelijkbare
 from renovatie import schat_renovatie
 from validatie import valideer_verkoopprijs
+from bestemmingsplan import mag_splitsen, mag_opbouwen
 from config import FIX_FLIP, SPLITSING, TRANSFORMATIE
 
 logging.basicConfig(
@@ -45,6 +46,45 @@ VERKOCHT_KEYWORDS = [
     "verkocht", "sold", "onder bod", "onder optie", "in onderhandeling",
     "niet beschikbaar", "unavailable", "voorbehoud",
 ]
+
+
+def _parse_description(text: str) -> dict:
+    """Extraheer gestructureerde data uit Funda beschrijving."""
+    if not text:
+        return {}
+    result = {}
+    lower = text.lower()
+
+    # Erfpacht
+    if "erfpacht" in lower:
+        result["erfpacht"] = True
+    elif "eigen grond" in lower:
+        result["erfpacht"] = False
+
+    # VvE bijdrage
+    vve_match = re.search(r'v\.?v\.?e\.?[^€\d]{0,30}[€]\s*([\d.,]+)', lower)
+    if not vve_match:
+        vve_match = re.search(r'v\.?v\.?e\.?[^€\d]{0,30}([\d.,]+)\s*(?:euro|per maand|p/?m)', lower)
+    if vve_match:
+        try:
+            result["vve_bijdrage"] = round(float(vve_match.group(1).replace(".", "").replace(",", ".")), 2)
+        except ValueError:
+            pass
+
+    # Verdieping/bouwlaag
+    verd_match = re.search(r'(\d+)e?\s*(?:verdieping|bouwlaag|etage|woonlaag)', lower)
+    if verd_match:
+        result["verdieping"] = int(verd_match.group(1))
+
+    # Kelder/souterrain
+    if "souterrain" in lower or "kelder" in lower:
+        result["heeft_kelder"] = True
+
+    # Zolder/vliering
+    if "zolder" in lower or "vliering" in lower:
+        result["heeft_zolder"] = True
+
+    return result
 
 
 _browser = None
@@ -124,6 +164,42 @@ def _check_funda_api(prop: Property) -> bool:
             prop.foto_url = photo_urls[0]
             prop.calc["foto_urls"] = photo_urls[:6]
 
+        # Plattegronden
+        floorplan_urls = d.get("floorplan_urls", [])
+        if floorplan_urls:
+            prop.calc["plattegrond_urls"] = floorplan_urls
+
+        # Voorzieningen
+        for key in ("has_garden", "has_balcony", "has_roof_terrace",
+                     "has_parking_on_site", "has_solar_panels",
+                     "has_heat_pump", "is_monument"):
+            val = d.get(key)
+            if val is not None:
+                prop.calc[key] = val
+
+        # Bouwjaar verificatie
+        detail_bj = d.get("construction_year")
+        if detail_bj and isinstance(detail_bj, int) and prop.bouwjaar == 0:
+            prop.bouwjaar = detail_bj
+
+        # Perceeloppervlak
+        if d.get("plot_area"):
+            prop.calc["plot_area"] = int(d["plot_area"])
+
+        # Beschrijving parsen: erfpacht, VvE, verdieping, etc
+        description = d.get("description") or ""
+        if description:
+            parsed = _parse_description(description)
+            if parsed:
+                prop.calc["beschrijving_parsed"] = parsed
+                if "erfpacht" in parsed:
+                    prop.eigen_grond = not parsed["erfpacht"]
+                    prop.calc["erfpacht"] = parsed["erfpacht"]
+                if "vve_bijdrage" in parsed:
+                    prop.calc["vve_bijdrage"] = parsed["vve_bijdrage"]
+                if "verdieping" in parsed:
+                    prop.calc["verdieping"] = parsed["verdieping"]
+
         time.sleep(0.2)
         return True
     except Exception as e:
@@ -176,6 +252,10 @@ def evalueer_property(prop: Property) -> List[Property]:
         is_opknapper=is_opknapper,
     )
 
+    # Splitsen/opbouwen mogelijkheden
+    splitsen_info = mag_splitsen(prop.stad, prop.opp_m2)
+    opbouwen_info = mag_opbouwen(prop.stad, prop.type_woning)
+
     if not prop.is_commercieel:
         # Fix & Flip
         if (prop.prijs <= FIX_FLIP["max_aankoopprijs"]
@@ -187,6 +267,9 @@ def evalueer_property(prop: Property) -> List[Property]:
                 renovatie_detail=reno,
             )
             if p.marge_pct >= FIX_FLIP["min_marge_pct"]:
+                # Voeg splitsen/opbouwen info toe
+                p.calc["splitsen"] = splitsen_info
+                p.calc["opbouwen"] = opbouwen_info
                 score_property(p)
                 kansen.append(p)
 

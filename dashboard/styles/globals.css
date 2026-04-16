@@ -403,6 +403,16 @@ a { color: #ff6b00; text-decoration: none; }
 .ref-item:last-child { border-bottom: none; }
 .ref-item b { color: #fff; font-size: 13px; }
 
+/* ── VALIDATIE + EXTRA BADGES ── */
+.badge.validated { background: #004d3a; color: #00b894; font-weight: 600; }
+.badge.invalidated { background: #4d1a1a; color: #e74c3c; font-weight: 600; }
+.badge.extra { background: #1a2a1a; color: #81c784; }
+.badge.warn { background: #4d3a1a; color: #ffb74d; font-weight: 600; }
+.validated-section { border-left: 3px solid #00b894; }
+.invalidated-section { border-left: 3px solid #e74c3c; background: #1a0f0f; }
+.plattegrond-grid { display: grid; gap: 8px; }
+.plattegrond-img { width: 100%; border-radius: 8px; background: #222; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 480px) {
   .swipe-card { padding: 16px; border-radius: 16px; }
