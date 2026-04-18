@@ -1,246 +1,8 @@
 {
-  "scan_datum": "2026-04-17T08:59:17.806393",
-  "totaal_gescand": 1011,
-  "na_filter": 984,
+  "scan_datum": "2026-04-18T08:15:08.360829",
+  "totaal_gescand": 1016,
+  "na_filter": 989,
   "kansen": [
-    {
-      "adres": "Buys Ballotsingel 84",
-      "stad": "Schiedam",
-      "postcode": "3112JG",
-      "wijk": "Stationsbuurt",
-      "prijs": 350000,
-      "opp_m2": 142,
-      "prijs_per_m2": 2465.0,
-      "type_woning": "apartment",
-      "bouwjaar": 1937,
-      "energie_label": "C",
-      "kamers": 5,
-      "source": "funda",
-      "url": "https://www.funda.nl/detail/koop/schiedam/buys-ballotsingel-84-a/89764119/",
-      "foto_url": "https://cloud.funda.nl/valentina_media/226/973/765.jpg",
-      "foto_urls": [
-        "https://cloud.funda.nl/valentina_media/226/973/765.jpg",
-        "https://cloud.funda.nl/valentina_media/226/973/833.jpg",
-        "https://cloud.funda.nl/valentina_media/226/973/998.jpg",
-        "https://cloud.funda.nl/valentina_media/226/973/860.jpg",
-        "https://cloud.funda.nl/valentina_media/226/974/008.jpg",
-        "https://cloud.funda.nl/valentina_media/226/973/771.jpg"
-      ],
-      "strategie": "fix_flip",
-      "marge_pct": 34.5,
-      "winst_euro": 246261,
-      "roi_pct": 52.6,
-      "totale_kosten": 467792,
-      "verwachte_opbrengst": 714054,
-      "score": 6,
-      "is_opknapper": false,
-      "calc": {
-        "vraagprijs": 350000,
-        "ovb_pct": 8.0,
-        "ovb": 28000,
-        "notaris_makelaar_aankoop": 4550,
-        "aankoop_totaal": 382550,
-        "renovatie_per_m2": 522,
-        "renovatie_detail": {
-          "componenten": [
-            {
-              "naam": "Keuken renovatie",
-              "kosten": 14000,
-              "reden": "Nieuwe fronten, apparatuur, blad, tegelwerk"
-            },
-            {
-              "naam": "Badkamer renovatie",
-              "kosten": 12000,
-              "reden": "Nieuwe tegels, sanitair, kranen"
-            },
-            {
-              "naam": "Toilet opknappen",
-              "kosten": 2500,
-              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties"
-            },
-            {
-              "naam": "Vloeren (60/m²)",
-              "kosten": 8520,
-              "reden": "PVC click vloer leggen (licht egaliseren)"
-            },
-            {
-              "naam": "Schilderwerk (20/m²)",
-              "kosten": 2840,
-              "reden": "Latex muren en plafonds"
-            },
-            {
-              "naam": "Elektra upgraden",
-              "kosten": 3500,
-              "reden": "Groepenkast + extra groepen + stopcontacten"
-            },
-            {
-              "naam": "Isolatie verbeteren",
-              "kosten": 5680,
-              "reden": "Label C: dak + vloer bijwerken"
-            },
-            {
-              "naam": "Ramen deels (9x)",
-              "kosten": 10800,
-              "reden": "Oudere ramen upgraden naar HR++"
-            },
-            {
-              "naam": "CV-ketel onderhoud/reserve",
-              "kosten": 1500,
-              "reden": "Mogelijk verouderd, budget voor vervanging"
-            },
-            {
-              "naam": "Buitenschilderwerk",
-              "kosten": 2500,
-              "reden": "Kozijnen buiten schilderen"
-            },
-            {
-              "naam": "Onvoorzien (10%)",
-              "kosten": 6384,
-              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)"
-            },
-            {
-              "naam": "Architect + leges (6%)",
-              "kosten": 3830,
-              "reden": "Ontwerp, vergunning, bouwbegeleiding"
-            }
-          ],
-          "totaal": 74054,
-          "per_m2": 522,
-          "onvoorzien_pct": 10
-        },
-        "bouw_totaal": 74054,
-        "looptijd_maanden": 4,
-        "rente_pct": 8.0,
-        "financiering_basis": 419577,
-        "rente": 11188,
-        "totaal_kosten": 467792,
-        "verkoop_m2": 5123,
-        "verkoop_bron": "referentie",
-        "referenties": [
-          {
-            "adres": "Terrasappartementen 4.01",
-            "prijs": 737500,
-            "opp_m2": 108,
-            "prijs_per_m2": 6829,
-            "energie_label": "A+++",
-            "type": "apartment",
-            "wijk": "Stationsbuurt",
-            "url": "https://www.funda.nl/detail/koop/schiedam/appartement-terrasappartementen-bouwnr-401/43103877/"
-          },
-          {
-            "adres": "Atelierwoning 1.01",
-            "prijs": 577500,
-            "opp_m2": 106,
-            "prijs_per_m2": 5448,
-            "energie_label": "A+++",
-            "type": "apartment",
-            "wijk": "Stationsbuurt",
-            "url": "https://www.funda.nl/detail/koop/schiedam/appartement-atelierwoning-bouwnr-101/43103782/"
-          },
-          {
-            "adres": "Atelierwoning 1.02",
-            "prijs": 702500,
-            "opp_m2": 135,
-            "prijs_per_m2": 5204,
-            "energie_label": "A+++",
-            "type": "apartment",
-            "wijk": "Stationsbuurt",
-            "url": "https://www.funda.nl/detail/koop/schiedam/appartement-atelierwoning-bouwnr-102/43103793/"
-          },
-          {
-            "adres": "Singelappartementen 3.02",
-            "prijs": 514000,
-            "opp_m2": 99,
-            "prijs_per_m2": 5192,
-            "energie_label": "A+++",
-            "type": "apartment",
-            "wijk": "Stationsbuurt",
-            "url": "https://www.funda.nl/detail/koop/schiedam/appartement-singelappartementen-bouwnr-302/43103704/"
-          },
-          {
-            "adres": "Singelappartementen 2.02",
-            "prijs": 512000,
-            "opp_m2": 99,
-            "prijs_per_m2": 5172,
-            "energie_label": "A+++",
-            "type": "apartment",
-            "wijk": "Stationsbuurt",
-            "url": "https://www.funda.nl/detail/koop/schiedam/appartement-singelappartementen-bouwnr-202/43103794/"
-          }
-        ],
-        "bruto_verkoopprijs": 727466,
-        "makelaar_verkoop": 10911,
-        "notaris_verkoop": 2500,
-        "verkoop_kosten": 13411,
-        "netto_opbrengst": 714054,
-        "winst": 246261,
-        "marge_pct": 34.5,
-        "roi_pct": 52.6,
-        "bod_korting_pct": 10,
-        "bod": 315000,
-        "bod_totaal_investering": 428517,
-        "bod_winst": 285536,
-        "bod_marge_pct": 40.0,
-        "splitsen": {
-          "mag_splitsen": true,
-          "uitleg": "Splitsen is waarschijnlijk toegestaan in Schiedam. Oppervlak (142m2) voldoet aan minimum (90m2). Per unit: 71m2 (min: 28m2). Vereist: splitsingsvergunning.",
-          "vergunning": "splitsingsvergunning",
-          "min_opp_m2": 90,
-          "max_units": 2,
-          "min_per_unit_m2": 28,
-          "opp_per_unit": 71.0,
-          "bijzonderheden": "Splitsingsvergunning vereist. Min 90m2 totaal. In beschermd stadsgezicht extra voorwaarden."
-        },
-        "opbouwen": {
-          "mag_opbouwen": null,
-          "uitleg": "Geen opbouwbeleid bekend voor Schiedam. Check het bestemmingsplan op ruimtelijkeplannen.nl.",
-          "max_hoogte_m": null,
-          "max_verdiepingen": null,
-          "dakopbouw_toegestaan": null,
-          "ruimte_over_m": null,
-          "bijzonderheden": ""
-        },
-        "looptijd_detail": {
-          "totaal_maanden": 4,
-          "vergunning_maanden": 0,
-          "verbouw_maanden": 2.3,
-          "verkoop_maanden": 2,
-          "type": "cosmetisch"
-        },
-        "funda_prijs_per_m2": "€ 2.465",
-        "foto_urls": [
-          "https://cloud.funda.nl/valentina_media/226/973/765.jpg",
-          "https://cloud.funda.nl/valentina_media/226/973/833.jpg",
-          "https://cloud.funda.nl/valentina_media/226/973/998.jpg",
-          "https://cloud.funda.nl/valentina_media/226/973/860.jpg",
-          "https://cloud.funda.nl/valentina_media/226/974/008.jpg",
-          "https://cloud.funda.nl/valentina_media/226/973/771.jpg"
-        ],
-        "has_garden": true,
-        "has_balcony": true,
-        "has_roof_terrace": false,
-        "has_parking_on_site": false,
-        "has_solar_panels": false,
-        "has_heat_pump": false,
-        "is_monument": false,
-        "beschrijving_parsed": {
-          "vve_bijdrage": 157.0,
-          "heeft_kelder": true
-        },
-        "vve_bijdrage": 157.0,
-        "validatie": {
-          "goedgekeurd": false,
-          "onze_pm2": 5123,
-          "bronnen": {
-            "funda_pm2": 2465
-          },
-          "gem_extern_pm2": 2465,
-          "afwijking_pct": 107.8,
-          "gecorrigeerde_pm2": 2588,
-          "reden": "Onze prijs 108% hoger dan extern (2465/m2). Gecorrigeerd naar 2588/m2"
-        }
-      }
-    },
     {
       "adres": "Oranjelaan 57",
       "stad": "Dordrecht",
@@ -265,11 +27,11 @@
         "https://cloud.funda.nl/valentina_media/227/103/104.jpg"
       ],
       "strategie": "fix_flip",
-      "marge_pct": 33.2,
-      "winst_euro": 183764,
-      "roi_pct": 49.6,
+      "marge_pct": 34.0,
+      "winst_euro": 190505,
+      "roi_pct": 51.4,
       "totale_kosten": 370410,
-      "verwachte_opbrengst": 554174,
+      "verwachte_opbrengst": 560916,
       "score": 6,
       "is_opknapper": false,
       "calc": {
@@ -352,7 +114,7 @@
         "financiering_basis": 327842,
         "rente": 8742,
         "totaal_kosten": 370410,
-        "verkoop_m2": 4872,
+        "verkoop_m2": 4931,
         "verkoop_bron": "referentie",
         "referenties": [
           {
@@ -406,19 +168,19 @@
             "url": "https://www.funda.nl/detail/koop/dordrecht/appartement-sint-jacobsplein-44/43317990/"
           }
         ],
-        "bruto_verkoopprijs": 565152,
-        "makelaar_verkoop": 8477,
+        "bruto_verkoopprijs": 571996,
+        "makelaar_verkoop": 8579,
         "notaris_verkoop": 2500,
-        "verkoop_kosten": 10977,
-        "netto_opbrengst": 554174,
-        "winst": 183764,
-        "marge_pct": 33.2,
-        "roi_pct": 49.6,
+        "verkoop_kosten": 11079,
+        "netto_opbrengst": 560916,
+        "winst": 190505,
+        "marge_pct": 34.0,
+        "roi_pct": 51.4,
         "bod_korting_pct": 10,
         "bod": 242100,
         "bod_totaal_investering": 340224,
-        "bod_winst": 213949,
-        "bod_marge_pct": 38.6,
+        "bod_winst": 220691,
+        "bod_marge_pct": 39.3,
         "splitsen": {
           "mag_splitsen": true,
           "uitleg": "Splitsen is waarschijnlijk toegestaan in Dordrecht. Oppervlak (116m2) voldoet aan minimum (100m2). Per unit: 58m2 (min: 24m2). Vereist: splitsingsvergunning.",
@@ -467,14 +229,14 @@
         "vve_bijdrage": 240.0,
         "validatie": {
           "goedgekeurd": false,
-          "onze_pm2": 4872,
+          "onze_pm2": 4931,
           "bronnen": {
             "funda_pm2": 2319
           },
           "gem_extern_pm2": 2319,
-          "afwijking_pct": 110.1,
+          "afwijking_pct": 112.6,
           "gecorrigeerde_pm2": 2435,
-          "reden": "Onze prijs 110% hoger dan extern (2319/m2). Gecorrigeerd naar 2435/m2"
+          "reden": "Onze prijs 113% hoger dan extern (2319/m2). Gecorrigeerd naar 2435/m2"
         }
       }
     },
@@ -495,11 +257,11 @@
       "foto_url": "",
       "foto_urls": [],
       "strategie": "fix_flip",
-      "marge_pct": 31.8,
-      "winst_euro": 166681,
-      "roi_pct": 46.6,
+      "marge_pct": 33.3,
+      "winst_euro": 178678,
+      "roi_pct": 49.9,
       "totale_kosten": 357899,
-      "verwachte_opbrengst": 524581,
+      "verwachte_opbrengst": 536578,
       "score": 6,
       "is_opknapper": false,
       "calc": {
@@ -592,7 +354,7 @@
         "financiering_basis": 295028,
         "rente": 13767,
         "totaal_kosten": 357899,
-        "verkoop_m2": 4613,
+        "verkoop_m2": 4718,
         "verkoop_bron": "referentie",
         "referenties": [
           {
@@ -606,6 +368,16 @@
             "url": "https://www.funda.nl/detail/koop/rotterdam/appartement-aronskelkstraat-161/43351965/"
           },
           {
+            "adres": "Kastanjesingel 73",
+            "prijs": 469000,
+            "opp_m2": 100,
+            "prijs_per_m2": 4690,
+            "energie_label": "C",
+            "type": "apartment",
+            "wijk": "Schiebroek",
+            "url": "https://www.funda.nl/detail/koop/rotterdam/appartement-kastanjesingel-73-b/89771568/"
+          },
+          {
             "adres": "Kastanjesingel 98",
             "prijs": 359000,
             "opp_m2": 82,
@@ -614,31 +386,21 @@
             "type": "apartment",
             "wijk": "Schiebroek",
             "url": "https://www.funda.nl/detail/koop/rotterdam/appartement-kastanjesingel-98-b/43221889/"
-          },
-          {
-            "adres": "Spireastraat 3",
-            "prijs": 525000,
-            "opp_m2": 120,
-            "prijs_per_m2": 4375,
-            "energie_label": "A",
-            "type": "apartment",
-            "wijk": "Schiebroek",
-            "url": "https://www.funda.nl/detail/koop/rotterdam/appartement-spireastraat-3/89695817/"
           }
         ],
-        "bruto_verkoopprijs": 535108,
-        "makelaar_verkoop": 8026,
+        "bruto_verkoopprijs": 547288,
+        "makelaar_verkoop": 8209,
         "notaris_verkoop": 2500,
-        "verkoop_kosten": 10526,
-        "netto_opbrengst": 524581,
-        "winst": 166681,
-        "marge_pct": 31.8,
-        "roi_pct": 46.6,
+        "verkoop_kosten": 10709,
+        "netto_opbrengst": 536578,
+        "winst": 178678,
+        "marge_pct": 33.3,
+        "roi_pct": 49.9,
         "bod_korting_pct": 10,
         "bod": 202500,
         "bod_totaal_investering": 332159,
-        "bod_winst": 192421,
-        "bod_marge_pct": 36.7,
+        "bod_winst": 204418,
+        "bod_marge_pct": 38.1,
         "splitsen": {
           "mag_splitsen": true,
           "uitleg": "Splitsen is waarschijnlijk toegestaan in Rotterdam. Oppervlak (116m2) voldoet aan minimum (80m2). Per unit: 58m2 (min: 18m2). Vereist: splitsingsvergunning.",
@@ -667,12 +429,236 @@
         },
         "validatie": {
           "goedgekeurd": true,
-          "onze_pm2": 4613,
+          "onze_pm2": 4718,
           "bronnen": {},
           "gem_extern_pm2": 0,
           "afwijking_pct": 0,
-          "gecorrigeerde_pm2": 4613,
+          "gecorrigeerde_pm2": 4718,
           "reden": "Geen externe bronnen beschikbaar"
+        }
+      }
+    },
+    {
+      "adres": "Mauritsplaats 28",
+      "stad": "Rotterdam",
+      "postcode": "3012CD",
+      "wijk": "Cool",
+      "prijs": 325000,
+      "opp_m2": 77,
+      "prijs_per_m2": 4221.0,
+      "type_woning": "apartment",
+      "bouwjaar": 1985,
+      "energie_label": "A",
+      "kamers": 3,
+      "source": "funda",
+      "url": "https://www.funda.nl/detail/koop/rotterdam/mauritsplaats-28/89776933/",
+      "foto_url": "https://cloud.funda.nl/valentina_media/227/471/312.jpg",
+      "foto_urls": [
+        "https://cloud.funda.nl/valentina_media/227/471/312.jpg",
+        "https://cloud.funda.nl/valentina_media/227/471/081.jpg",
+        "https://cloud.funda.nl/valentina_media/227/471/083.jpg",
+        "https://cloud.funda.nl/valentina_media/227/471/191.jpg",
+        "https://cloud.funda.nl/valentina_media/227/471/235.jpg",
+        "https://cloud.funda.nl/valentina_media/227/471/085.jpg"
+      ],
+      "strategie": "fix_flip",
+      "marge_pct": 24.0,
+      "winst_euro": 125131,
+      "roi_pct": 31.6,
+      "totale_kosten": 396305,
+      "verwachte_opbrengst": 521437,
+      "score": 5,
+      "is_opknapper": false,
+      "calc": {
+        "vraagprijs": 325000,
+        "ovb_pct": 8.0,
+        "ovb": 26000,
+        "notaris_makelaar_aankoop": 4225,
+        "aankoop_totaal": 355225,
+        "renovatie_per_m2": 405,
+        "renovatie_detail": {
+          "componenten": [
+            {
+              "naam": "Keuken opfrissen",
+              "kosten": 8000,
+              "reden": "Nieuwe fronten, werkblad, apparatuur behouden"
+            },
+            {
+              "naam": "Badkamer opfrissen",
+              "kosten": 7000,
+              "reden": "Sanitair + kranen vervangen, voegen vernieuwen"
+            },
+            {
+              "naam": "Toilet opknappen",
+              "kosten": 2500,
+              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties"
+            },
+            {
+              "naam": "Vloeren (50/m²)",
+              "kosten": 3850,
+              "reden": "Nieuwe PVC click vloer leggen"
+            },
+            {
+              "naam": "Schilderwerk (20/m²)",
+              "kosten": 1540,
+              "reden": "Latex muren en plafonds"
+            },
+            {
+              "naam": "Elektra check + uitbreiden",
+              "kosten": 1500,
+              "reden": "Keuring + extra groepen/stopcontacten"
+            },
+            {
+              "naam": "Buitenschilderwerk",
+              "kosten": 2500,
+              "reden": "Kozijnen buiten schilderen"
+            },
+            {
+              "naam": "Onvoorzien (10%)",
+              "kosten": 2689,
+              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)"
+            },
+            {
+              "naam": "Architect + leges (6%)",
+              "kosten": 1613,
+              "reden": "Ontwerp, vergunning, bouwbegeleiding"
+            }
+          ],
+          "totaal": 31192,
+          "per_m2": 405,
+          "onvoorzien_pct": 10
+        },
+        "bouw_totaal": 31192,
+        "looptijd_maanden": 4,
+        "rente_pct": 8.0,
+        "financiering_basis": 370821,
+        "rente": 9888,
+        "totaal_kosten": 396305,
+        "verkoop_m2": 6908,
+        "verkoop_bron": "referentie",
+        "referenties": [
+          {
+            "adres": "Westblaak 32",
+            "prijs": 456000,
+            "opp_m2": 62,
+            "prijs_per_m2": 7355,
+            "energie_label": "A+++",
+            "type": "apartment",
+            "wijk": "Cool",
+            "url": "https://www.funda.nl/detail/koop/rotterdam/appartement-westblaak-32-q02/89726223/"
+          },
+          {
+            "adres": "Schiedamsesingel 133",
+            "prijs": 579500,
+            "opp_m2": 79,
+            "prijs_per_m2": 7335,
+            "energie_label": "A",
+            "type": "apartment",
+            "wijk": "Cool",
+            "url": "https://www.funda.nl/detail/koop/rotterdam/appartement-schiedamsesingel-133-b/89745555/"
+          },
+          {
+            "adres": "Westblaak 32",
+            "prijs": 552000,
+            "opp_m2": 76,
+            "prijs_per_m2": 7263,
+            "energie_label": "A+++",
+            "type": "apartment",
+            "wijk": "Cool",
+            "url": "https://www.funda.nl/detail/koop/rotterdam/appartement-westblaak-32-a01/89716502/"
+          },
+          {
+            "adres": "Kruisplein 986",
+            "prijs": 515000,
+            "opp_m2": 76,
+            "prijs_per_m2": 6776,
+            "energie_label": "A",
+            "type": "apartment",
+            "wijk": "Cool",
+            "url": "https://www.funda.nl/detail/koop/rotterdam/appartement-kruisplein-986/43318110/"
+          },
+          {
+            "adres": "Karel Doormanstraat 386",
+            "prijs": 615000,
+            "opp_m2": 93,
+            "prijs_per_m2": 6613,
+            "energie_label": "A+",
+            "type": "apartment",
+            "wijk": "Cool",
+            "url": "https://www.funda.nl/detail/koop/rotterdam/appartement-karel-doormanstraat-386-h/43245367/"
+          }
+        ],
+        "bruto_verkoopprijs": 531916,
+        "makelaar_verkoop": 7978,
+        "notaris_verkoop": 2500,
+        "verkoop_kosten": 10478,
+        "netto_opbrengst": 521437,
+        "winst": 125131,
+        "marge_pct": 24.0,
+        "roi_pct": 31.6,
+        "bod_korting_pct": 10,
+        "bod": 292500,
+        "bod_totaal_investering": 359835,
+        "bod_winst": 161601,
+        "bod_marge_pct": 31.0,
+        "splitsen": {
+          "mag_splitsen": false,
+          "uitleg": "Splitsen is waarschijnlijk NIET toegestaan in Rotterdam. Totaal oppervlak (77m2) is kleiner dan minimaal vereist (80m2). Vereist: splitsingsvergunning.",
+          "vergunning": "splitsingsvergunning",
+          "min_opp_m2": 80,
+          "max_units": 3,
+          "min_per_unit_m2": 18,
+          "opp_per_unit": 38.5,
+          "bijzonderheden": "Splitsingsvergunning vereist. Min 80m2 totaal, max 3 units. Elke unit min 18m2. Leefbaarheidstoets in kwetsbare wijken. Parkeereis kan van toepassing zijn."
+        },
+        "opbouwen": {
+          "mag_opbouwen": null,
+          "uitleg": "Woningtype 'apartment' niet gevonden voor Rotterdam. Bekende types: tussenwoning, hoekwoning, twee_onder_een_kap, vrijstaand, appartement.",
+          "max_hoogte_m": null,
+          "max_verdiepingen": null,
+          "dakopbouw_toegestaan": null,
+          "ruimte_over_m": null,
+          "bijzonderheden": "Rotterdam is relatief soepel met opbouwen. Dakopbouw vergunningvrij onder voorwaarden. Welstandsnota Rotterdam: gebiedsafhankelijk."
+        },
+        "looptijd_detail": {
+          "totaal_maanden": 4,
+          "vergunning_maanden": 0,
+          "verbouw_maanden": 2.0,
+          "verkoop_maanden": 2,
+          "type": "cosmetisch"
+        },
+        "funda_prijs_per_m2": "€ 4.221",
+        "foto_urls": [
+          "https://cloud.funda.nl/valentina_media/227/471/312.jpg",
+          "https://cloud.funda.nl/valentina_media/227/471/081.jpg",
+          "https://cloud.funda.nl/valentina_media/227/471/083.jpg",
+          "https://cloud.funda.nl/valentina_media/227/471/191.jpg",
+          "https://cloud.funda.nl/valentina_media/227/471/235.jpg",
+          "https://cloud.funda.nl/valentina_media/227/471/085.jpg"
+        ],
+        "has_garden": false,
+        "has_balcony": true,
+        "has_roof_terrace": false,
+        "has_parking_on_site": false,
+        "has_solar_panels": false,
+        "has_heat_pump": false,
+        "is_monument": false,
+        "beschrijving_parsed": {
+          "erfpacht": true,
+          "vve_bijdrage": 226.0
+        },
+        "erfpacht": true,
+        "vve_bijdrage": 226.0,
+        "validatie": {
+          "goedgekeurd": false,
+          "onze_pm2": 6908,
+          "bronnen": {
+            "funda_pm2": 4221
+          },
+          "gem_extern_pm2": 4221,
+          "afwijking_pct": 63.7,
+          "gecorrigeerde_pm2": 4432,
+          "reden": "Onze prijs 64% hoger dan extern (4221/m2). Gecorrigeerd naar 4432/m2"
         }
       }
     }
