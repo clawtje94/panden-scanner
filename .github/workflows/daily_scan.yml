@@ -36,6 +36,7 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           EP_ONLINE_API_KEY: ${{ secrets.EP_ONLINE_API_KEY }}
+          ALTUM_API_KEY: ${{ secrets.ALTUM_API_KEY }}
         run: python scanner.py
 
       - name: Upload database als artifact

@@ -360,6 +360,45 @@ a { color: #ff6b00; text-decoration: none; }
 }
 .ref-warnings > div { margin: 2px 0; }
 
+/* ── COMPARE ── */
+.cmp-picker {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; margin-bottom: 16px;
+}
+.cmp-picker select {
+  background: #1a1a1a; color: #fff; border: 1px solid #333;
+  padding: 10px 12px; border-radius: 8px; font-size: 13px;
+}
+.cmp-table {
+  background: #0f0f0f; border: 1px solid #222;
+  border-radius: 10px; overflow: hidden;
+}
+.cmp-row {
+  display: grid; grid-template-columns: 1.2fr 1fr 1fr;
+  padding: 10px 14px; border-bottom: 1px dashed #1a1a1a;
+  font-size: 13px;
+}
+.cmp-row:last-child { border-bottom: none; }
+.cmp-row.cmp-header {
+  background: #151515; font-weight: 700; color: #ff6b00;
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.cmp-label { color: #888; }
+.cmp-cell { color: #fff; font-weight: 600; text-align: center; }
+.cmp-cell.cmp-better {
+  color: #00b894;
+  background: rgba(0, 184, 148, 0.08);
+  border-radius: 4px;
+  margin: -4px; padding: 4px;
+}
+.cmp-links {
+  display: flex; gap: 16px; margin-top: 16px; justify-content: center;
+}
+.cmp-links a {
+  padding: 10px 16px; background: #1a1a1a; border-radius: 8px;
+  border: 1px solid #333;
+}
+
 .swipe-hints {
   position: fixed; bottom: 90px; left: 0; right: 0;
   text-align: center; display: flex; justify-content: center;

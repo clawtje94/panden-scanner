@@ -177,6 +177,27 @@ def stuur_property_notificatie(prop: Property) -> bool:
     tekst += f"Winst:  <b>{_eur(c['bod_winst'])}</b>\n"
     tekst += f"Marge:  <b>{c['bod_marge_pct']}%</b>\n"
 
+    # ── Verkoop scenarios + confidence ──
+    scen = c.get("scenarios") or {}
+    vref = c.get("verkoop_referentie") or {}
+    if scen.get("realistic"):
+        tekst += f"\n<b>VERKOOP SCENARIOS</b>\n"
+        tekst += f"{'─' * 32}\n"
+        w = scen.get("worst", {})
+        r = scen.get("realistic", {})
+        b = scen.get("best", {})
+        tekst += f"Worst  (P25): {_eur(w.get('verkoop_m2', 0))}/m² | marge {w.get('marge_pct', 0)}% | winst {_eur(w.get('winst', 0))}\n"
+        tekst += f"Real   (P50): {_eur(r.get('verkoop_m2', 0))}/m² | marge {r.get('marge_pct', 0)}% | winst {_eur(r.get('winst', 0))}\n"
+        tekst += f"Best   (P75): {_eur(b.get('verkoop_m2', 0))}/m² | marge {b.get('marge_pct', 0)}% | winst {_eur(b.get('winst', 0))}\n"
+        if vref:
+            conf = vref.get("confidence", 0)
+            lbl = vref.get("confidence_label", "?")
+            n = vref.get("n_refs", 0)
+            match = vref.get("match_niveau", "?")
+            tekst += f"\n<i>Confidence {lbl} ({conf}/100) · N={n} · {match}</i>\n"
+            for w in (vref.get("waarschuwingen") or [])[:3]:
+                tekst += f"⚠ {w}\n"
+
     # ── Risico-profiel ──
     risks = c.get("risks") or {}
     if risks.get("aantal", 0) > 0 or risks.get("kansen"):

@@ -18,6 +18,11 @@ TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "VERVANG_MET_JOUW_CHAT_ID"
 # Key in Authorization-header (geen 'Bearer' prefix).
 EP_ONLINE_API_KEY = os.environ.get("EP_ONLINE_API_KEY", "")
 
+# ── Altum AI (gratis tier Kadaster-koopsom + modelwaarde) ────────────────────
+# Registreer op https://altum.ai/sign-up, 50 calls/maand gratis.
+# Scanner roept alleen aan voor top-deals (dealscore ≥ 65) om budget te sparen.
+ALTUM_API_KEY = os.environ.get("ALTUM_API_KEY", "")
+
 # ── Zoekgebied ────────────────────────────────────────────────────────────────
 STEDEN_FUNDA = [
     "den-haag", "rotterdam", "delft", "leiden",
@@ -61,6 +66,16 @@ TRANSFORMATIE = {
     "looptijd_maanden":   24,
     "ovb_pct":            10.4,      # OVB 2026 zakelijk
     "rente_pct":          8.0,
+}
+
+# ── Verkoop-kwaliteit filter (kill-switch bij slechte data) ──────────────────
+# Als scanner alleen "onvoldoende" verkoop-data heeft EN worst-case marge
+# onder deze drempel ligt, dan skippen. Anders alleen flaggen.
+VERKOOP_KWALITEIT = {
+    "skip_bij_onvoldoende_confidence":  True,
+    "min_worst_marge_bij_onvoldoende":  5.0,     # % netto marge
+    "min_worst_marge_bij_laag":         8.0,
+    "min_refs_voor_commit":             3,
 }
 
 # ── Motion signals (motivated seller detectie) ───────────────────────────────

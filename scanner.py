@@ -37,7 +37,7 @@ from renovatie import schat_renovatie
 from looptijd import bereken_looptijd
 from validatie import valideer_verkoopprijs
 from bestemmingsplan import mag_splitsen, mag_opbouwen
-from config import FIX_FLIP, SPLITSING, TRANSFORMATIE
+from config import FIX_FLIP, SPLITSING, TRANSFORMATIE, VERKOOP_KWALITEIT
 
 logging.basicConfig(
     level=logging.INFO,
@@ -289,6 +289,8 @@ def evalueer_property(prop: Property) -> List[Property]:
         energie_label=prop.energie_label,
         type_woning=prop.type_woning,
         is_opknapper=is_opknapper,
+        postcode=prop.postcode,
+        stad=prop.stad,
     )
 
     # Dynamische looptijd op basis van renovatietype
@@ -611,6 +613,46 @@ def run_scan():
                 prop_opp_m2=kans.opp_m2,
             )
             kans.calc["risks"] = risks
+
+            # Hard-skip als verkoop-data onbetrouwbaar is én worst-case
+            # marge te krap — dat is geen deal, dat is gokken.
+            vref = kans.calc.get("verkoop_referentie") or {}
+            scen_worst = (kans.calc.get("scenarios") or {}).get("worst") or {}
+            worst_marge = scen_worst.get("marge_pct", kans.marge_pct)
+            if VERKOOP_KWALITEIT["skip_bij_onvoldoende_confidence"]:
+                conf_lbl = vref.get("confidence_label", "onvoldoende")
+                drempel = None
+                if conf_lbl == "onvoldoende":
+                    drempel = VERKOOP_KWALITEIT["min_worst_marge_bij_onvoldoende"]
+                elif conf_lbl == "laag":
+                    drempel = VERKOOP_KWALITEIT["min_worst_marge_bij_laag"]
+                if drempel is not None and worst_marge < drempel:
+                    logger.info(
+                        "SKIP %s — verkoop-data %s, worst-marge %.1f%% < %.1f%%",
+                        kans.adres, conf_lbl, worst_marge, drempel,
+                    )
+                    sla_op(kans)
+                    continue
+
+            # Altum AI — alleen voor top-deals om gratis-tier (50/mnd) te sparen.
+            # Roepen we aan op indicatieve dealscore >= 65, die weten we nog
+            # niet precies — we schatten op basis van marge.
+            if kans.marge_pct >= 12 and kans.postcode and kans.adres:
+                try:
+                    from scrapers.altum import get_koopsom, get_modelwaarde, is_available
+                    from scrapers.bag import _parse_huisnummer
+                    if is_available():
+                        hn, hl, tv = _parse_huisnummer(kans.adres)
+                        if hn:
+                            koop = get_koopsom(kans.postcode, hn, tv)
+                            mw = get_modelwaarde(kans.postcode, hn, tv)
+                            if koop or mw:
+                                kans.calc["altum"] = {
+                                    "koopsom": koop,
+                                    "modelwaarde": mw,
+                                }
+                except Exception as e:
+                    logger.debug("Altum fout %s: %s", kans.adres, e)
 
             # Dealscore — composite 0-100 voor triage.
             # Gebruikt WORST-case scenario (P25) om te voorkomen dat deals die

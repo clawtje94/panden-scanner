@@ -524,6 +524,9 @@ export default function Home() {
             <button className={`nav-tab ${view === 'stats' ? 'active' : ''}`} onClick={() => setView('stats')}>
               📊 Stats
             </button>
+            <button className={`nav-tab ${view === 'compare' ? 'active' : ''}`} onClick={() => setView('compare')}>
+              ⚖️ Compare
+            </button>
           </div>
         </nav>
 
@@ -813,6 +816,7 @@ export default function Home() {
 
         {view === 'portfolio' && <PortfolioView />}
         {view === 'stats' && <StatsView kansen={kansen} />}
+        {view === 'compare' && <CompareView kansen={[...kansen, ...savedList, ...hotList]} />}
 
         {showNotes && current && (
           <div className="modal-overlay" onClick={() => setShowNotes(false)}>
@@ -1010,6 +1014,111 @@ function ListView({ title, items, userState, updateStatus, showRestore }) {
               }}>Opslaan</button>
             </div>
           </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Compare tab (2 panden naast elkaar) ──────────────────────────────────
+function CompareView({ kansen }) {
+  const [picks, setPicks] = useState([null, null]);
+  const unique = Array.from(new Map(kansen.map(k => [k.url, k])).values());
+
+  const pickFor = (idx, url) => {
+    const next = [...picks];
+    next[idx] = unique.find(k => k.url === url) || null;
+    setPicks(next);
+  };
+
+  const row = (label, v1, v2, fmt = (x) => x) => {
+    const a = picks[0] ? fmt(v1) : '—';
+    const b = picks[1] ? fmt(v2) : '—';
+    const better = (() => {
+      if (!picks[0] || !picks[1]) return null;
+      if (typeof v1 === 'number' && typeof v2 === 'number') {
+        if (v1 > v2) return 0;
+        if (v2 > v1) return 1;
+      }
+      return null;
+    })();
+    return (
+      <div className="cmp-row">
+        <div className="cmp-label">{label}</div>
+        <div className={`cmp-cell ${better === 0 ? 'cmp-better' : ''}`}>{a}</div>
+        <div className={`cmp-cell ${better === 1 ? 'cmp-better' : ''}`}>{b}</div>
+      </div>
+    );
+  };
+
+  const negRow = (label, v1, v2, fmt = (x) => x) => {
+    // Voor velden waar lager beter is (bv prijs, risico-aantal)
+    const a = picks[0] ? fmt(v1) : '—';
+    const b = picks[1] ? fmt(v2) : '—';
+    const better = (() => {
+      if (!picks[0] || !picks[1]) return null;
+      if (typeof v1 === 'number' && typeof v2 === 'number') {
+        if (v1 < v2) return 0;
+        if (v2 < v1) return 1;
+      }
+      return null;
+    })();
+    return (
+      <div className="cmp-row">
+        <div className="cmp-label">{label}</div>
+        <div className={`cmp-cell ${better === 0 ? 'cmp-better' : ''}`}>{a}</div>
+        <div className={`cmp-cell ${better === 1 ? 'cmp-better' : ''}`}>{b}</div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="list-screen">
+      <h2 className="list-title">⚖️ Compare</h2>
+      <p className="subtle">Twee kansen naast elkaar vergelijken. Groen = beter van de twee.</p>
+
+      <div className="cmp-picker">
+        {[0, 1].map(i => (
+          <select key={i} value={picks[i]?.url || ''} onChange={e => pickFor(i, e.target.value)}>
+            <option value="">Kies pand {i + 1}...</option>
+            {unique.map(k => (
+              <option key={k.url} value={k.url}>
+                {k.adres} — {k.stad} — {eur(k.prijs)}
+              </option>
+            ))}
+          </select>
+        ))}
+      </div>
+
+      <div className="cmp-table">
+        <div className="cmp-row cmp-header">
+          <div className="cmp-label"></div>
+          <div className="cmp-cell">{picks[0]?.adres || 'Pand 1'}</div>
+          <div className="cmp-cell">{picks[1]?.adres || 'Pand 2'}</div>
+        </div>
+        {row('Dealscore', picks[0]?.dealscore?.score, picks[1]?.dealscore?.score,
+             v => v != null ? `${v}/100 (${picks[0]?.dealscore?.grade || picks[1]?.dealscore?.grade || '?'})` : '—')}
+        {row('Marge %', picks[0]?.marge_pct, picks[1]?.marge_pct, v => `${v}%`)}
+        {row('Winst', picks[0]?.winst_euro, picks[1]?.winst_euro, eur)}
+        {negRow('Vraagprijs', picks[0]?.prijs, picks[1]?.prijs, eur)}
+        {row('Oppervlak', picks[0]?.opp_m2, picks[1]?.opp_m2, v => `${v} m²`)}
+        {negRow('Prijs/m²', picks[0]?.prijs_per_m2, picks[1]?.prijs_per_m2, eur)}
+        {row('Worst-case marge', picks[0]?.scenarios?.worst?.marge_pct, picks[1]?.scenarios?.worst?.marge_pct, v => v != null ? `${v}%` : '—')}
+        {row('Best-case marge', picks[0]?.scenarios?.best?.marge_pct, picks[1]?.scenarios?.best?.marge_pct, v => v != null ? `${v}%` : '—')}
+        {row('Confidence', picks[0]?.verkoop_referentie?.confidence, picks[1]?.verkoop_referentie?.confidence, v => v != null ? `${v}/100` : '—')}
+        {row('# Refs', picks[0]?.verkoop_referentie?.n_refs, picks[1]?.verkoop_referentie?.n_refs)}
+        {negRow('# Risk flags', picks[0]?.risks?.aantal, picks[1]?.risks?.aantal)}
+        {row('Motion dagen online', picks[0]?.motion?.dagen_online, picks[1]?.motion?.dagen_online)}
+        {row('Bouwjaar (BAG)', picks[0]?.bag?.bouwjaar, picks[1]?.bag?.bouwjaar)}
+        {row('Label (EP)', picks[0]?.ep_online?.label || picks[0]?.energie_label, picks[1]?.ep_online?.label || picks[1]?.energie_label)}
+        {row('Rijksmonument', picks[0]?.monument?.is_rijksmonument ? 'Ja' : 'Nee', picks[1]?.monument?.is_rijksmonument ? 'Ja' : 'Nee')}
+        {row('Erfpacht', picks[0]?.erfpacht_detail?.is_erfpacht ? 'Ja' : 'Nee', picks[1]?.erfpacht_detail?.is_erfpacht ? 'Ja' : 'Nee')}
+      </div>
+
+      {picks[0] && picks[1] && (
+        <div className="cmp-links">
+          <a href={picks[0].url} target="_blank" rel="noopener noreferrer">Bekijk pand 1 →</a>
+          <a href={picks[1].url} target="_blank" rel="noopener noreferrer">Bekijk pand 2 →</a>
         </div>
       )}
     </div>

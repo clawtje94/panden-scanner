@@ -3,10 +3,67 @@ Renovatie-calculator — actuele verbouwkosten 2025/2026 Nederland.
 Alle prijzen INCLUSIEF arbeid + materiaal + BTW.
 
 Bronnen: Verbouwkosten.com, Werkspot.nl, Homeproof.nl, Homedeal.nl, VEH.
+
+Wijk-multipliers: regionale verschillen in aannemersprijzen en
+welstandseisen. Kralingen/Statenkwartier duurder door premium-vraag +
+monument-straatjes; Moerwijk/Schiedam-oost goedkoper door veel ZZP-aannemers
+en lagere consumenten-eisen. Gebaseerd op Bouwnij/EIB-regiodata 2024-2025.
 """
 import logging
+import re
 
 logger = logging.getLogger(__name__)
+
+# PC4-based multipliers. Default = 1.0 (landelijk gemiddelde).
+# > 1.0 = duurder dan gemiddeld, < 1.0 = goedkoper.
+_WIJK_MULT_PC4 = {
+    # Den Haag premium (monument-gebieden, welstand streng)
+    **{pc: 1.15 for pc in (2582, 2585, 2586, 2517, 2518, 2594, 2593, 2595)},
+    # Den Haag middensegment
+    **{pc: 1.08 for pc in (2511, 2512, 2513, 2562, 2563, 2564, 2565, 2566)},
+    # Den Haag goedkoop (aannemers-marge lager, minder welstand)
+    **{pc: 0.92 for pc in (2521, 2522, 2524, 2525, 2526, 2527,
+                             2531, 2532, 2533, 2543, 2544, 2572, 2573, 2574)},
+    # Rotterdam premium (Kralingen, Hillegersberg, centrum-noord)
+    **{pc: 1.15 for pc in (3062, 3063, 3051, 3052, 3053, 3054, 3055, 3056)},
+    **{pc: 1.08 for pc in (3011, 3012, 3013, 3014, 3015, 3016, 3021, 3022, 3023, 3024, 3025)},
+    # Rotterdam-zuid (NPRZ + goedkopere arbeid)
+    **{pc: 0.90 for pc in (3071, 3072, 3073, 3074, 3075, 3081, 3082, 3083, 3085, 3086, 3087, 3088)},
+    # Schiedam (ruwweg goedkoper dan RDAM-centrum)
+    **{pc: 0.93 for pc in (3111, 3112, 3113, 3114, 3116, 3117, 3118, 3119)},
+    # Delft/Leiden centrum
+    **{pc: 1.10 for pc in (2611, 2612, 2613, 2311, 2312, 2313, 2314, 2315)},
+    # Dordrecht binnenstad (historisch, welstand)
+    **{pc: 1.05 for pc in (3311, 3312, 3313)},
+    # Rijswijk/Zoetermeer standaard
+    **{pc: 0.98 for pc in (2281, 2282, 2283, 2284, 2285, 2286, 2287, 2288,
+                             2711, 2712, 2713, 2714, 2715, 2716, 2717, 2718)},
+}
+
+# Stad-fallback als PC4 niet gevonden
+_WIJK_MULT_STAD = {
+    "den haag": 1.05, "'s-gravenhage": 1.05,
+    "rotterdam": 1.02,
+    "delft": 1.05, "leiden": 1.08, "dordrecht": 1.00,
+    "schiedam": 0.95, "rijswijk": 1.00, "zoetermeer": 0.98,
+    "westland": 1.00, "pijnacker-nootdorp": 1.02, "capelle aan den ijssel": 0.98,
+}
+
+_PC4_RE = re.compile(r"([1-9]\d{3})")
+
+
+def _wijk_multiplier(postcode: str, stad: str) -> tuple[float, str]:
+    """Retourneer (factor, bron-label) voor renovatie-kosten aanpassing."""
+    if postcode:
+        m = _PC4_RE.search(postcode.upper().replace(" ", ""))
+        if m:
+            pc4 = int(m.group(1))
+            if pc4 in _WIJK_MULT_PC4:
+                return _WIJK_MULT_PC4[pc4], f"PC4 {pc4}"
+    stad_n = (stad or "").lower().strip()
+    if stad_n in _WIJK_MULT_STAD:
+        return _WIJK_MULT_STAD[stad_n], f"stad {stad}"
+    return 1.0, "landelijk"
 
 
 def schat_renovatie(
@@ -15,6 +72,8 @@ def schat_renovatie(
     energie_label: str = "",
     type_woning: str = "",
     is_opknapper: bool = False,
+    postcode: str = "",
+    stad: str = "",
 ) -> dict:
     m2 = max(opp_m2, 1)
     label = energie_label.upper().strip() if energie_label else ""
@@ -274,12 +333,37 @@ def schat_renovatie(
         "reden": "Ontwerp, vergunning, bouwbegeleiding",
     })
 
+    subtotaal_pre_wijk = sum(c["kosten"] for c in componenten)
+
+    # Wijk-multiplier: lokale aannemersprijzen en welstandseisen.
+    wijk_factor, wijk_bron = _wijk_multiplier(postcode, stad)
+    if wijk_factor != 1.0:
+        # Pas elke component aan behalve onvoorzien/architect (die schalen
+        # mee automatisch via het subtotaal — we herbereken ze hieronder).
+        # Bewaar origineel kost-veld voor audit.
+        for c in componenten:
+            c["kosten_basis"] = c["kosten"]
+            # Onvoorzien + architect zijn % over subtotaal — niet apart schalen
+            if c["naam"].startswith("Onvoorzien") or c["naam"].startswith("Architect"):
+                continue
+            c["kosten"] = int(c["kosten"] * wijk_factor)
+        # Herbereken onvoorzien + architect op nieuwe subtotaal
+        subtotaal_new = sum(
+            c["kosten"] for c in componenten
+            if not c["naam"].startswith("Onvoorzien") and not c["naam"].startswith("Architect")
+        )
+        for c in componenten:
+            if c["naam"].startswith("Onvoorzien"):
+                c["kosten"] = int(subtotaal_new * onvoorzien_pct / 100)
+            elif c["naam"].startswith("Architect"):
+                c["kosten"] = int(subtotaal_new * arch_pct / 100)
+
     totaal = sum(c["kosten"] for c in componenten)
     per_m2 = round(totaal / m2)
 
     logger.info(
-        "Renovatie %dm2 bj%s label%s: %d/m2 (totaal %d)",
-        m2, bj or "?", label or "?", per_m2, totaal,
+        "Renovatie %dm2 bj%s label%s wijk=%s(%.2fx): %d/m2 (totaal %d)",
+        m2, bj or "?", label or "?", wijk_bron, wijk_factor, per_m2, totaal,
     )
 
     return {
@@ -287,4 +371,6 @@ def schat_renovatie(
         "totaal": totaal,
         "per_m2": per_m2,
         "onvoorzien_pct": onvoorzien_pct,
+        "wijk_factor": round(wijk_factor, 3),
+        "wijk_bron": wijk_bron,
     }
