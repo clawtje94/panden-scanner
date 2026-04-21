@@ -558,6 +558,16 @@ def run_scan():
                         "wijk": bag_data.get("wijk"),
                         "buurt": bag_data.get("buurt"),
                     }
+                    # Hard filter: BAG zegt dat het een hal / industrie /
+                    # sport / cel is — dan is dit geen woning, punt.
+                    # Bateau wil geen ruis in de pipeline.
+                    gd = (bag_data.get("gebruiksdoel") or "").lower()
+                    if gd in ("industriefunctie", "sportfunctie", "celfunctie"):
+                        logger.info(
+                            "BAG-skip %s — gebruiksdoel=%s (geen woning)",
+                            kans.adres, gd,
+                        )
+                        continue
             except Exception as e:
                 logger.debug("BAG fout %s: %s", kans.adres, e)
                 bag_data = {}
