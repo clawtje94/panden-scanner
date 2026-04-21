@@ -23,8 +23,15 @@ jobs:
       - name: Installeer requests
         run: pip install requests
 
-      - name: Verstuur digest
+      - name: Verstuur digest (weekly of monthly)
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python weekly_digest.py
+        run: |
+          # Als het de eerste maandag van de maand is: uitgebreid maandrapport
+          DAY=$(date -u +%d)
+          if [ "$DAY" -le 7 ]; then
+            python weekly_digest.py --monthly
+          else
+            python weekly_digest.py
+          fi

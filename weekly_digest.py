@@ -39,6 +39,53 @@ def _load_leads() -> dict:
     return json.loads(open(LEADS_PATH).read())
 
 
+def samenstel_maand_digest(data: dict) -> str:
+    kansen = data.get("kansen", [])
+    if not kansen:
+        return "<b>Maandrapport</b>\n\nGeen data."
+    totaal_winst = sum(k.get("winst_euro", 0) for k in kansen)
+    avg_score = int(sum((k.get("dealscore") or {}).get("score", 0) for k in kansen) / len(kansen)) if kansen else 0
+    top_deals = sorted(kansen, key=lambda x: -(x.get("dealscore") or {}).get("score", 0))[:15]
+
+    t = f"<b>📅 MAANDRAPPORT</b>\n"
+    t += f"{'=' * 32}\n"
+    t += f"Peildatum: {data.get('scan_datum', '')[:10]}\n\n"
+
+    t += f"<b>Score de maand</b>\n"
+    t += f"Kansen in scan: {len(kansen)}\n"
+    t += f"Gem dealscore: {avg_score}/100\n"
+    t += f"Totale verwachte winst: {_eur(totaal_winst)}\n"
+
+    # Stad verdeling
+    stad_c = Counter(k.get("stad") for k in kansen if k.get("stad"))
+    t += f"\n<b>Per stad (top 5)</b>\n"
+    for s, n in stad_c.most_common(5):
+        stad_winst = sum(k.get("winst_euro", 0) for k in kansen if k.get("stad") == s)
+        t += f"  {s}: {n} kansen · {_eur(stad_winst)}\n"
+
+    # Grade verdeling
+    grade_c = Counter((k.get("dealscore") or {}).get("grade") for k in kansen)
+    t += f"\n<b>Grade</b>\n"
+    for g in ("A+", "A", "B", "C", "D"):
+        if grade_c.get(g):
+            t += f"  {g}: {grade_c[g]}\n"
+
+    t += f"\n<b>🏆 Top 15 deals van de maand</b>\n"
+    t += f"{'─' * 32}\n"
+    for i, k in enumerate(top_deals, 1):
+        ds = k.get("dealscore") or {}
+        sc = k.get("scenarios") or {}
+        worst = (sc.get("worst") or {}).get("marge_pct", 0)
+        t += (
+            f"\n{i}. [{ds.get('grade', '?')} {ds.get('score', 0)}] "
+            f"{(k.get('adres') or '?')[:35]}\n"
+            f"   {k.get('stad', '')} · {_eur(k.get('prijs', 0))} · "
+            f"worst {worst}%\n"
+        )
+
+    return t
+
+
 def samenstel_digest(data: dict) -> str:
     kansen = data.get("kansen", [])
     if not kansen:
@@ -104,7 +151,8 @@ def main():
     if not data:
         logger.error("Geen data — digest afgebroken")
         return 1
-    tekst = samenstel_digest(data)
+    monthly = "--monthly" in sys.argv
+    tekst = samenstel_maand_digest(data) if monthly else samenstel_digest(data)
     if len(tekst) > 4000:
         # Telegram HTML limiet ~4096 chars
         tekst = tekst[:3900] + "\n\n<i>...truncated</i>\n<a href='https://panden-scanner.vercel.app'>Open dashboard →</a>"

@@ -517,12 +517,33 @@ export default function Home() {
   const [notesText, setNotesText] = useState('');
   const touchStart = useRef({ x: 0, y: 0 });
 
-  useEffect(() => {
-    fetch(DATA_URL)
-      .then(r => r.json())
-      .then(d => { setData(d); setLoading(false); })
-      .catch(e => { console.error(e); setLoading(false); });
+  const [refreshInfo, setRefreshInfo] = useState({ last: null, newKansen: 0 });
 
+  useEffect(() => {
+    const load = (initial = false) => {
+      fetch(DATA_URL + '?t=' + Date.now())
+        .then(r => r.json())
+        .then(d => {
+          setData(prev => {
+            if (!initial && prev && d?.scan_datum !== prev.scan_datum) {
+              const newKansen = Math.max(0,
+                (d.kansen?.length || 0) - (prev.kansen?.length || 0));
+              setRefreshInfo({ last: new Date(), newKansen });
+            } else if (initial) {
+              setRefreshInfo({ last: new Date(), newKansen: 0 });
+            }
+            return d;
+          });
+          setLoading(false);
+        })
+        .catch(e => { console.error(e); setLoading(false); });
+    };
+    load(true);
+    const interval = setInterval(() => load(false), 10 * 60 * 1000);  // 10 min
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
     const saved = localStorage.getItem('panden_state');
     if (saved) { try { setUserState(JSON.parse(saved)); } catch {} }
   }, []);
@@ -663,6 +684,9 @@ export default function Home() {
           <div className="nav-brand">Panden <span>Scanner</span></div>
           <div className="nav-meta">
             {data.scan_datum && <span>Laatste scan: {new Date(data.scan_datum).toLocaleString('nl-NL')}</span>}
+            {refreshInfo.newKansen > 0 && (
+              <span className="meta-chip mv">+{refreshInfo.newKansen} nieuw</span>
+            )}
             {motivatedCount > 0 && <span className="meta-chip mv">🔥 {motivatedCount} motivated</span>}
             {forcedCount > 0 && <span className="meta-chip frc">⚡ {forcedCount} forced-reno</span>}
           </div>
@@ -1813,6 +1837,7 @@ function PortfolioView() {
   const [items, setItems] = useState([]);
   const [editing, setEditing] = useState(null);  // object or null
   const [filterStatus, setFilterStatus] = useState('alle');
+  const [viewMode, setViewMode] = useState('grid');  // grid | kanban
 
   useEffect(() => {
     try {
@@ -1866,6 +1891,10 @@ function PortfolioView() {
           <option value="alle">Alle statussen</option>
           {PORTFOLIO_STATUSES.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
         </select>
+        <button
+          className={`toggle ${viewMode === 'kanban' ? 'on' : ''}`}
+          onClick={() => setViewMode(viewMode === 'kanban' ? 'grid' : 'kanban')}
+        >{viewMode === 'kanban' ? '📋 Lijst' : '📊 Kanban'}</button>
         <button className="btn-primary" onClick={() => setEditing({ ...EMPTY_ITEM })}>+ Pand toevoegen</button>
       </div>
 
@@ -1873,6 +1902,33 @@ function PortfolioView() {
         <div className="empty-state">
           <p>Nog geen panden in portfolio.</p>
           <p>Voeg er één toe om ROI, status en contactpersonen te tracken.</p>
+        </div>
+      ) : viewMode === 'kanban' ? (
+        <div className="kanban">
+          {PORTFOLIO_STATUSES.map(st => {
+            const col = filtered.filter(p => p.status === st.key);
+            return (
+              <div key={st.key} className="kanban-col">
+                <div className="kanban-col-header" style={{ borderColor: st.color }}>
+                  <span>{st.label}</span>
+                  <span className="kanban-n">{col.length}</span>
+                </div>
+                <div className="kanban-cards">
+                  {col.map(p => (
+                    <div key={p._id} className="kanban-card" onClick={() => setEditing(p)}>
+                      <div className="kanban-adres">{p.adres || '(adres)'}</div>
+                      <div className="kanban-sub">{p.stad}</div>
+                      <div className="kanban-geld">
+                        <span>Koop {eur(p.koopprijs)}</span>
+                        <span>Exit {eur(p.verwachte_exit)}</span>
+                      </div>
+                    </div>
+                  ))}
+                  {col.length === 0 && <div className="kanban-leeg">—</div>}
+                </div>
+              </div>
+            );
+          })}
         </div>
       ) : (
         <div className="list-grid">
