@@ -67,8 +67,15 @@ def detect_erfpacht(beschrijving: str, stad: str = "") -> dict:
     tekst = beschrijving.lower()
     stad_n = stad.lower().strip()
 
-    if any(kw in tekst for kw in EIGEN_GROND) and "erfpacht" not in tekst:
+    # "Eigen grond" (evt gecombineerd met "geen erfpacht") → geen erfpacht
+    if any(kw in tekst for kw in EIGEN_GROND):
         result["toelichting"] = "Eigen grond — geen erfpacht."
+        return result
+
+    # Expliciet "geen erfpacht" → geen erfpacht
+    import re as _re
+    if _re.search(r"geen\s+erfpacht|niet\s+op\s+erfpacht", tekst):
+        result["toelichting"] = "Expliciet 'geen erfpacht' vermeld."
         return result
 
     if not any(kw in tekst for kw in ERFPACHT_KEYWORDS):

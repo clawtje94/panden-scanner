@@ -45,8 +45,12 @@ def stuur_property_notificatie(prop: Property) -> bool:
 
     sterren = "\u2b50" * prop.score
 
-    # ── Header ──
-    tekst = f"<b>{strat_label}</b>\n"
+    # ── Header met dealscore (als beschikbaar) ──
+    ds = c.get("dealscore") or {}
+    if ds.get("grade"):
+        tekst = f"<b>[{ds['grade']}] {ds['score']}/100 — {strat_label}</b>\n"
+    else:
+        tekst = f"<b>{strat_label}</b>\n"
     tekst += f"{'=' * 32}\n\n"
 
     # ── Pand info ──
@@ -172,6 +176,21 @@ def stuur_property_notificatie(prop: Property) -> bool:
     tekst += f"Investering: {_eur(c['bod_totaal_investering'])}\n"
     tekst += f"Winst:  <b>{_eur(c['bod_winst'])}</b>\n"
     tekst += f"Marge:  <b>{c['bod_marge_pct']}%</b>\n"
+
+    # ── Risico-profiel ──
+    risks = c.get("risks") or {}
+    if risks.get("aantal", 0) > 0 or risks.get("kansen"):
+        tekst += f"\n<b>RISICO-PROFIEL</b>\n"
+        tekst += f"{'─' * 32}\n"
+        niveau_icon = {"rood": "🚫", "oranje": "⚠️", "geel": "⚡"}
+        for f in risks.get("flags", []):
+            ic = niveau_icon.get(f["niveau"], "•")
+            tekst += f"{ic} {f['label']}\n"
+        kansen = risks.get("kansen") or []
+        if kansen:
+            tekst += "\n<i>Kansen:</i>\n"
+            for k in kansen:
+                tekst += f"✓ {k['label']}\n"
 
     # ── EP-Online officieel energielabel ──
     ep = c.get("ep_online") or {}

@@ -234,6 +234,66 @@ a { color: #ff6b00; text-decoration: none; }
 .action.hot:hover { background: #3a200a; }
 .action.skip { background: #1a1a1a; color: #666; }
 .action.note { background: #1a1a1a; color: #aaa; font-size: 18px; }
+.action.portfolio { background: #0a1a2a; color: #4fc3f7; font-size: 18px; }
+.action.portfolio:hover { background: #0f2a3a; }
+
+/* ── STATS ── */
+.stats-topline {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 8px; margin-bottom: 20px;
+}
+.stats-topline > div {
+  background: #0f0f0f; border-radius: 10px; padding: 12px;
+  border: 1px solid #222;
+}
+.stats-topline span {
+  display: block; font-size: 10px; color: #888;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.stats-topline b {
+  font-size: 20px; font-weight: 700; color: #fff;
+  margin-top: 4px; display: block;
+}
+.stats-topline .green b { color: #00b894; }
+
+.stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+@media (max-width: 600px) { .stats-row { grid-template-columns: 1fr; } }
+
+.stats-card {
+  background: #0f0f0f; border: 1px solid #222;
+  border-radius: 12px; padding: 16px; margin-bottom: 12px;
+}
+.stats-card h3 {
+  font-size: 13px; color: #ff6b00;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+.bar-row {
+  display: grid; grid-template-columns: 60px 1fr 40px;
+  gap: 10px; align-items: center; padding: 4px 0;
+  font-size: 12px;
+}
+.bar-label {
+  color: #ccc; font-weight: 600; font-size: 11px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.bar-track {
+  background: #1a1a1a; border-radius: 4px; height: 14px; overflow: hidden;
+}
+.bar-fill {
+  height: 100%; border-radius: 4px;
+  transition: width 0.3s ease-out;
+}
+.bar-n { text-align: right; color: #aaa; font-weight: 600; font-size: 12px; }
+
+.sig-list > div {
+  display: flex; justify-content: space-between;
+  padding: 6px 0; font-size: 13px;
+  border-bottom: 1px dashed #1a1a1a;
+}
+.sig-list > div:last-child { border-bottom: none; }
+.sig-list span { color: #ccc; }
+.sig-list b { color: #ff6b00; font-weight: 700; }
 
 .swipe-hints {
   position: fixed; bottom: 90px; left: 0; right: 0;

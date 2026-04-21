@@ -310,6 +310,35 @@ export default function Home() {
     localStorage.setItem('panden_state', JSON.stringify(newState));
   };
 
+  const addToPortfolio = (kans) => {
+    try {
+      const raw = localStorage.getItem('bateau_portfolio');
+      const items = raw ? JSON.parse(raw) : [];
+      const verbouw = kans.calc?.bouw_totaal || 0;
+      const exit = kans.calc?.netto_opbrengst || kans.calc?.bruto_verkoopprijs || 0;
+      const item = {
+        _id: 'p_' + Date.now(),
+        _created: new Date().toISOString(),
+        _from_url: kans.url,
+        adres: kans.adres,
+        stad: kans.stad,
+        postcode: kans.postcode,
+        status: 'prospect',
+        koopprijs: kans.prijs,
+        verbouwkosten: verbouw,
+        verwachte_exit: exit,
+        url: kans.url,
+        notities: `Van scanner · ${kans.strategie} · marge ${kans.marge_pct}% · dealscore ${kans.dealscore?.score || '?'}/100 ${kans.dealscore?.grade || ''}`.trim(),
+      };
+      localStorage.setItem('bateau_portfolio', JSON.stringify([item, ...items]));
+      updateStatus(kans.url, STATUS.SAVED);
+      alert(`"${kans.adres}" toegevoegd aan portfolio als prospect.`);
+    } catch (e) {
+      console.error(e);
+      alert('Kon niet opslaan in portfolio.');
+    }
+  };
+
   const getStatus = (url) => userState[url]?.status || STATUS.NEW;
 
   const kansen = useMemo(() => (data?.kansen || []).map(k => ({
@@ -426,6 +455,9 @@ export default function Home() {
             </button>
             <button className={`nav-tab ${view === 'portfolio' ? 'active' : ''}`} onClick={() => setView('portfolio')}>
               🏘️ Portfolio
+            </button>
+            <button className={`nav-tab ${view === 'stats' ? 'active' : ''}`} onClick={() => setView('stats')}>
+              📊 Stats
             </button>
           </div>
         </nav>
@@ -607,6 +639,7 @@ export default function Home() {
                   <button className="action reject" onClick={() => doAction(STATUS.REJECTED)} title="Afwijzen (←)">✕</button>
                   <button className="action skip" onClick={skipNext} title="Overslaan (space)">→</button>
                   <button className="action note" onClick={() => { setNotesText(current._notes); setShowNotes(true); }} title="Notitie (N)">📝</button>
+                  <button className="action portfolio" onClick={() => addToPortfolio(current)} title="Naar portfolio">🏘️</button>
                   <button className="action save" onClick={() => doAction(STATUS.SAVED)} title="Opslaan (→)">💾</button>
                   <button className="action hot" onClick={() => doAction(STATUS.HOT)} title="Top deal (↑)">🔥</button>
                 </div>
@@ -710,6 +743,7 @@ export default function Home() {
         )}
 
         {view === 'portfolio' && <PortfolioView />}
+        {view === 'stats' && <StatsView kansen={kansen} />}
 
         {showNotes && current && (
           <div className="modal-overlay" onClick={() => setShowNotes(false)}>
@@ -913,6 +947,168 @@ function ListView({ title, items, userState, updateStatus, showRestore }) {
   );
 }
 
+// ── Stats tab + CSV export ────────────────────────────────────────────────
+function StatsView({ kansen }) {
+  const gradeCount = { 'A+': 0, 'A': 0, 'B': 0, 'C': 0, 'D': 0, '?': 0 };
+  const stadCount = {};
+  const strategieCount = {};
+  let motivated = 0, forcedReno = 0, dhSplits = 0, rdamNprz = 0, monument = 0, erfpacht = 0;
+  let margeSum = 0, scoreSum = 0, winstSum = 0;
+
+  kansen.forEach(k => {
+    const g = k.dealscore?.grade || '?';
+    gradeCount[g] = (gradeCount[g] || 0) + 1;
+    stadCount[k.stad] = (stadCount[k.stad] || 0) + 1;
+    strategieCount[k.strategie] = (strategieCount[k.strategie] || 0) + 1;
+    if (k.motion?.motivated) motivated++;
+    if (k.ep_online?.forced_renovation) forcedReno++;
+    const wijk = k.calc?.splitsen?.wijkcheck;
+    if (wijk?.regime === 'den_haag_2026' && wijk?.mag) dhSplits++;
+    if (wijk?.is_nprz) rdamNprz++;
+    if (k.monument?.is_rijksmonument) monument++;
+    if (k.erfpacht_detail?.is_erfpacht) erfpacht++;
+    margeSum += k.marge_pct || 0;
+    scoreSum += k.dealscore?.score || 0;
+    winstSum += k.winst_euro || 0;
+  });
+
+  const n = kansen.length || 1;
+  const gemMarge = Math.round((margeSum / n) * 10) / 10;
+  const gemScore = Math.round(scoreSum / n);
+
+  const topStad = Object.entries(stadCount).sort((a, b) => b[1] - a[1]);
+  const topStratArr = Object.entries(strategieCount).sort((a, b) => b[1] - a[1]);
+
+  const maxStad = topStad[0]?.[1] || 1;
+  const maxGrade = Math.max(...Object.values(gradeCount), 1);
+
+  const downloadCsv = () => {
+    const headers = [
+      'adres', 'stad', 'postcode', 'wijk', 'source', 'prijs', 'prijs_per_m2',
+      'opp_m2', 'type_woning', 'bouwjaar', 'energie_label', 'kamers',
+      'strategie', 'marge_pct', 'winst_euro', 'roi_pct',
+      'dealscore', 'grade', 'score_basis',
+      'motivated', 'motivated_score', 'dagen_online', 'prijsverlaging_pct',
+      'forced_renovation', 'ep_label', 'is_rijksmonument',
+      'is_erfpacht', 'erfpacht_risk', 'rotterdam_afkoopkans',
+      'bag_gebruiksdoel', 'bag_bouwjaar', 'bag_oppervlakte',
+      'url',
+    ];
+    const esc = (v) => {
+      if (v === null || v === undefined) return '';
+      const s = String(v);
+      return s.includes(',') || s.includes('"') || s.includes('\n')
+        ? '"' + s.replace(/"/g, '""') + '"'
+        : s;
+    };
+    const rows = kansen.map(k => ([
+      k.adres, k.stad, k.postcode, k.wijk || '', k.source,
+      k.prijs, k.prijs_per_m2, k.opp_m2, k.type_woning,
+      k.bouwjaar, k.energie_label, k.kamers,
+      k.strategie, k.marge_pct, k.winst_euro, k.roi_pct,
+      k.dealscore?.score ?? '', k.dealscore?.grade ?? '', k.score,
+      k.motion?.motivated ? 'ja' : 'nee',
+      k.motion?.motivated_score ?? '',
+      k.motion?.dagen_online ?? '',
+      k.motion?.prijsverlaging_pct ?? '',
+      k.ep_online?.forced_renovation ? 'ja' : 'nee',
+      k.ep_online?.label ?? '',
+      k.monument?.is_rijksmonument ? 'ja' : 'nee',
+      k.erfpacht_detail?.is_erfpacht ? 'ja' : 'nee',
+      k.erfpacht_detail?.risk_level ?? '',
+      k.erfpacht_detail?.rotterdam_afkoopkans ? 'ja' : 'nee',
+      k.bag?.gebruiksdoel ?? '',
+      k.bag?.bouwjaar ?? '',
+      k.bag?.oppervlakte ?? '',
+      k.url,
+    ].map(esc).join(',')));
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `panden-scanner-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="list-screen">
+      <h2 className="list-title">📊 Stats</h2>
+      <p className="subtle">Overzicht van de huidige scan. Dubbelklik CSV voor ruwe export.</p>
+
+      <div className="stats-topline">
+        <div><span>Kansen</span><b>{kansen.length}</b></div>
+        <div><span>Gem. dealscore</span><b>{gemScore}/100</b></div>
+        <div><span>Gem. marge</span><b>{gemMarge}%</b></div>
+        <div className="green"><span>Tot. verwachte winst</span><b>{eur(winstSum)}</b></div>
+      </div>
+
+      <div className="stats-row">
+        <div className="stats-card">
+          <h3>Grade verdeling</h3>
+          {['A+', 'A', 'B', 'C', 'D'].map(g => (
+            <div key={g} className="bar-row">
+              <span className="bar-label" style={{ color: GRADE_COLOR[g] }}>{g}</span>
+              <div className="bar-track">
+                <div className="bar-fill" style={{
+                  width: `${(gradeCount[g] || 0) / maxGrade * 100}%`,
+                  background: GRADE_COLOR[g],
+                }} />
+              </div>
+              <span className="bar-n">{gradeCount[g] || 0}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="stats-card">
+          <h3>Signalen</h3>
+          <div className="sig-list">
+            <div><span>🔥 Motivated</span><b>{motivated}</b></div>
+            <div><span>⚡ Forced-reno (E/F/G)</span><b>{forcedReno}</b></div>
+            <div><span>🎯 DH splits-wijk</span><b>{dhSplits}</b></div>
+            <div><span>RDAM NPRZ-zone</span><b>{rdamNprz}</b></div>
+            <div><span>🏛️ Rijksmonument</span><b>{monument}</b></div>
+            <div><span>Erfpacht</span><b>{erfpacht}</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div className="stats-card">
+        <h3>Per stad (top 10)</h3>
+        {topStad.slice(0, 10).map(([stad, n]) => (
+          <div key={stad} className="bar-row">
+            <span className="bar-label">{stad}</span>
+            <div className="bar-track">
+              <div className="bar-fill" style={{ width: `${n / maxStad * 100}%`, background: '#ff6b00' }} />
+            </div>
+            <span className="bar-n">{n}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="stats-card">
+        <h3>Per strategie</h3>
+        {topStratArr.map(([s, n]) => (
+          <div key={s} className="bar-row">
+            <span className="bar-label">{s}</span>
+            <div className="bar-track">
+              <div className="bar-fill" style={{ width: `${n / (topStratArr[0]?.[1] || 1) * 100}%`, background: '#4fc3f7' }} />
+            </div>
+            <span className="bar-n">{n}</span>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ marginTop: 20 }}>
+        <button className="btn-primary" onClick={downloadCsv}>📥 Download CSV ({kansen.length} kansen)</button>
+      </div>
+    </div>
+  );
+}
+
 // ── Portfolio tab (eigen Bateau panden) ──────────────────────────────────
 const PORTFOLIO_STATUSES = [
   { key: 'prospect', label: 'Prospect', color: '#888' },
@@ -1097,6 +1293,23 @@ function DetailModal({ pand, onClose }) {
   const motion = pand.motion || c.motion;
   const ep = pand.ep_online || c.ep_online;
   const wijk = c.splitsen?.wijkcheck;
+  const toPortfolio = () => {
+    try {
+      const raw = localStorage.getItem('bateau_portfolio');
+      const items = raw ? JSON.parse(raw) : [];
+      const item = {
+        _id: 'p_' + Date.now(), _created: new Date().toISOString(),
+        _from_url: pand.url, adres: pand.adres, stad: pand.stad, postcode: pand.postcode,
+        status: 'prospect', koopprijs: pand.prijs,
+        verbouwkosten: c.bouw_totaal || 0,
+        verwachte_exit: c.netto_opbrengst || c.bruto_verkoopprijs || 0,
+        url: pand.url,
+        notities: `Van scanner · ${pand.strategie} · marge ${pand.marge_pct}% · dealscore ${pand.dealscore?.score || '?'}/100 ${pand.dealscore?.grade || ''}`.trim(),
+      };
+      localStorage.setItem('bateau_portfolio', JSON.stringify([item, ...items]));
+      alert(`"${pand.adres}" toegevoegd aan portfolio.`);
+    } catch { alert('Kon niet opslaan.'); }
+  };
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal detail-modal" onClick={e => e.stopPropagation()}>
@@ -1121,7 +1334,8 @@ function DetailModal({ pand, onClose }) {
           <a href={pand.url} target="_blank" rel="noopener noreferrer" className="view-link">
             Bekijk op {pand.source} →
           </a>
-          <button className="btn-print" onClick={() => window.print()}>🖨️ Exporteer PDF</button>
+          <button className="btn-print" onClick={() => window.print()}>🖨️ PDF</button>
+          <button className="btn-print" onClick={toPortfolio}>🏘️ Portfolio</button>
         </div>
 
         <RisksSection risks={pand.risks || c.risks} />

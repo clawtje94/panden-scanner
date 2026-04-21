@@ -158,10 +158,18 @@ def _init_cache():
             wijk TEXT,
             buurt TEXT,
             gemeente TEXT,
+            centroide_rd TEXT,
+            centroide_ll TEXT,
             gecached_op TEXT,
             gevonden INTEGER
         )
     """)
+    # Migratie: voeg kolommen toe als tabel al bestond zonder centroide
+    for col in ("centroide_rd", "centroide_ll"):
+        try:
+            conn.execute(f"ALTER TABLE bag_cache ADD COLUMN {col} TEXT")
+        except sqlite3.OperationalError:
+            pass
     conn.commit()
     conn.close()
 
@@ -173,7 +181,8 @@ def _cache_get(key: str, max_age_dagen: int = 90) -> Optional[dict]:
         row = conn.execute("""
             SELECT bag_id, bouwjaar, oppervlakte, gebruiksdoel, pandstatus,
                    status, pandidentificatie, straatnaam, woonplaats, wijk,
-                   buurt, gemeente, gecached_op, gevonden
+                   buurt, gemeente, centroide_rd, centroide_ll,
+                   gecached_op, gevonden
             FROM bag_cache WHERE cache_key = ?
         """, (key,)).fetchone()
     finally:
@@ -181,7 +190,7 @@ def _cache_get(key: str, max_age_dagen: int = 90) -> Optional[dict]:
     if not row:
         return None
     try:
-        leeftijd = (datetime.now() - datetime.fromisoformat(row[12])).days
+        leeftijd = (datetime.now() - datetime.fromisoformat(row[14])).days
         if leeftijd > max_age_dagen:
             return None
     except Exception:
@@ -191,7 +200,8 @@ def _cache_get(key: str, max_age_dagen: int = 90) -> Optional[dict]:
         "gebruiksdoel": row[3], "pandstatus": row[4], "status": row[5],
         "pandidentificatie": row[6], "straatnaam": row[7],
         "woonplaats": row[8], "wijk": row[9], "buurt": row[10],
-        "gemeente": row[11], "gevonden": bool(row[13]),
+        "gemeente": row[11], "centroide_rd": row[12], "centroide_ll": row[13],
+        "gevonden": bool(row[15]),
     }
 
 
@@ -205,8 +215,9 @@ def _cache_set(key: str, data: Optional[dict]):
             INSERT INTO bag_cache
                 (cache_key, bag_id, bouwjaar, oppervlakte, gebruiksdoel,
                  pandstatus, status, pandidentificatie, straatnaam, woonplaats,
-                 wijk, buurt, gemeente, gecached_op, gevonden)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 wijk, buurt, gemeente, centroide_rd, centroide_ll,
+                 gecached_op, gevonden)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(cache_key) DO UPDATE SET
                 bag_id=excluded.bag_id, bouwjaar=excluded.bouwjaar,
                 oppervlakte=excluded.oppervlakte, gebruiksdoel=excluded.gebruiksdoel,
@@ -214,13 +225,15 @@ def _cache_set(key: str, data: Optional[dict]):
                 pandidentificatie=excluded.pandidentificatie,
                 straatnaam=excluded.straatnaam, woonplaats=excluded.woonplaats,
                 wijk=excluded.wijk, buurt=excluded.buurt, gemeente=excluded.gemeente,
+                centroide_rd=excluded.centroide_rd, centroide_ll=excluded.centroide_ll,
                 gecached_op=excluded.gecached_op, gevonden=excluded.gevonden
         """, (
             key, d.get("bag_id"), d.get("bouwjaar"), d.get("oppervlakte"),
             d.get("gebruiksdoel"), d.get("pandstatus"), d.get("status"),
             d.get("pandidentificatie"), d.get("straatnaam"),
             d.get("woonplaats"), d.get("wijk"), d.get("buurt"),
-            d.get("gemeente"), now, 1 if data else 0,
+            d.get("gemeente"), d.get("centroide_rd"), d.get("centroide_ll"),
+            now, 1 if data else 0,
         ))
         conn.commit()
     finally:
