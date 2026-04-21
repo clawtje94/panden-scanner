@@ -59,6 +59,9 @@ def _listing_to_property(listing, stad: str) -> Property:
     if price_cond and "huur" in str(price_cond).lower():
         return None
 
+    # Broker info uit search-API (veel goedkoper dan detail-call)
+    broker_name = d.get("broker_name") or ""
+
     return Property(
         source="funda",
         url=url,
@@ -74,6 +77,7 @@ def _listing_to_property(listing, stad: str) -> Property:
         kamers=int(kamers or slaapkamers) if (kamers or slaapkamers) else 0,
         datum_online=date.today(),
         foto_url=foto_url,
+        makelaar=broker_name,
     )
 
 
