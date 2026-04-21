@@ -1163,6 +1163,28 @@ a { color: #ff6b00; text-decoration: none; }
   .detail-photo-wrap { max-height: 300px; overflow: hidden; }
   img.plattegrond-img, .detail-photo-wrap img { max-width: 100% !important; }
   .card-score-big { color: #000 !important; background: #ccc !important; }
+
+  /* Portfolio + ROI print-vriendelijk */
+  .list-screen, .list-screen h2, .list-screen .subtle {
+    background: #fff !important; color: #000 !important;
+  }
+  .portfolio-aggregate > div, .stats-topline > div,
+  .stats-card, .roi-big, .roi-chunk, .kanban-col {
+    background: #f7f7f7 !important;
+    border: 1px solid #ccc !important;
+    color: #000 !important;
+    break-inside: avoid; page-break-inside: avoid;
+  }
+  .roi-big-pct, .stats-topline b, .portfolio-aggregate b,
+  .roi-chunk b { color: #000 !important; }
+  .portfolio-aggregate span, .stats-topline span, .roi-chunk span,
+  .roi-big-label { color: #333 !important; }
+  .port-status, .kanban-col-header {
+    print-color-adjust: exact; -webkit-print-color-adjust: exact;
+  }
+  .bar-fill, .heat-fill {
+    print-color-adjust: exact; -webkit-print-color-adjust: exact;
+  }
 }
 
 /* ── MOTION / EP / WIJK SECTIES ── */

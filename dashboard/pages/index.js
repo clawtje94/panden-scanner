@@ -2147,7 +2147,10 @@ function RoiView() {
 
   return (
     <div className="list-screen">
-      <h2 className="list-title">💎 Bateau ROI ({items.length} panden)</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+        <h2 className="list-title" style={{ margin: 0 }}>💎 Bateau ROI ({items.length} panden)</h2>
+        <button className="btn-secondary" onClick={() => window.print()} title="Print/PDF voor financier">🖨️ Print</button>
+      </div>
 
       <div className="roi-big">
         <div className="roi-big-pct" style={{ color: stats.roiPct > 0 ? '#00b894' : '#e74c3c' }}>
@@ -2272,7 +2275,10 @@ function PortfolioView() {
 
   return (
     <div className="list-screen">
-      <h2 className="list-title">🏘️ Bateau Portfolio</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2 className="list-title" style={{ margin: 0 }}>🏘️ Bateau Portfolio</h2>
+        <button className="btn-secondary" onClick={() => window.print()} title="Print/PDF portfolio">🖨️ Print</button>
+      </div>
       <p className="subtle">Eigen panden + projecten. Data lokaal in je browser (localStorage).</p>
 
       <div className="portfolio-aggregate">
