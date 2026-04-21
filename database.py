@@ -329,6 +329,60 @@ def markeer_verdwenen_kansen(urls_deze_scan: set, dagen_grace: int = 3) -> list:
     ]
 
 
+def cleanup_oude_data(
+    hist_retentie_dagen: int = 90,
+    cache_retentie_dagen: int = 180,
+) -> dict:
+    """Verwijder verouderde observatie-historie en cache-entries.
+
+    - pand_geschiedenis: alleen laatste N dagen bewaren (motion signals
+      worden berekend op recente window, oudere data is ruis).
+    - energielabel_cache / bag_cache / monument_cache / altum_cache /
+      cbs_buurt_cache: entries ouder dan cache_retentie_dagen weggooien.
+    - VACUUM aan het einde voor schijfruimte.
+
+    Retourneert: {table: n_deleted, ...}.
+    """
+    conn = sqlite3.connect(DB_PATH)
+    result = {}
+    try:
+        c = conn.cursor()
+        c.execute(
+            "DELETE FROM pand_geschiedenis WHERE ts < datetime('now', ?)",
+            (f'-{hist_retentie_dagen} days',),
+        )
+        result["pand_geschiedenis"] = c.rowcount
+
+        for tbl, ts_col in (
+            ("energielabel_cache", "gecached_op"),
+            ("bag_cache", "gecached_op"),
+            ("monument_cache", "gecached_op"),
+            ("altum_cache", "gecached_op"),
+            ("cbs_buurt_cache", "gecached_op"),
+        ):
+            try:
+                c.execute(
+                    f"DELETE FROM {tbl} WHERE {ts_col} < datetime('now', ?)",
+                    (f'-{cache_retentie_dagen} days',),
+                )
+                result[tbl] = c.rowcount
+            except sqlite3.OperationalError:
+                # Tabel bestaat nog niet, skip
+                result[tbl] = 0
+
+        conn.commit()
+    finally:
+        conn.close()
+
+    # VACUUM moet op een aparte connection zonder open transacties
+    conn = sqlite3.connect(DB_PATH)
+    try:
+        conn.execute("VACUUM")
+    finally:
+        conn.close()
+    return result
+
+
 def haal_stats_op() -> dict:
     conn = sqlite3.connect(DB_PATH)
     total = conn.execute("SELECT COUNT(*) FROM panden").fetchone()[0]

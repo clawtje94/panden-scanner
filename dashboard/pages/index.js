@@ -543,10 +543,25 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  const [deeplinkPand, setDeeplinkPand] = useState(null);
+
   useEffect(() => {
     const saved = localStorage.getItem('panden_state');
     if (saved) { try { setUserState(JSON.parse(saved)); } catch {} }
   }, []);
+
+  useEffect(() => {
+    if (!data?.kansen) return;
+    const hash = location.hash;
+    if (hash.startsWith('#pand=')) {
+      try {
+        const url = atob(decodeURIComponent(hash.slice(6)));
+        const all = [...(data.kansen || []), ...(data.beleggingen || [])];
+        const match = all.find(k => k.url === url);
+        if (match) setDeeplinkPand(match);
+      } catch {}
+    }
+  }, [data]);
 
   const updateStatus = (url, status, extraData = {}) => {
     const newState = {
@@ -1059,6 +1074,10 @@ export default function Home() {
           if (k) setView('swipe'); // of open detail
         }} />}
 
+        {deeplinkPand && (
+          <DetailModal pand={deeplinkPand} onClose={() => setDeeplinkPand(null)} />
+        )}
+
         {showNotes && current && (
           <div className="modal-overlay" onClick={() => setShowNotes(false)}>
             <div className="modal" onClick={e => e.stopPropagation()}>
@@ -1213,6 +1232,27 @@ function WijkCheckSection({ wijk }) {
   );
 }
 
+function genereerEmailBody(items) {
+  const lines = [
+    "Beste makelaar,",
+    "",
+    "Namens Bateau Vastgoed ben ik geïnteresseerd in de volgende panden uit uw aanbod.",
+    "Zou u per pand kort willen aangeven of bezichtiging nog mogelijk is, en of er al biedingen lopen?",
+    "",
+  ];
+  items.forEach((k, i) => {
+    lines.push(`${i + 1}. ${k.adres}, ${k.stad}${k.postcode ? ' ' + k.postcode : ''}`);
+    lines.push(`   Vraagprijs: €${(k.prijs || 0).toLocaleString('nl-NL')}`);
+    if (k.url) lines.push(`   Link: ${k.url}`);
+    lines.push("");
+  });
+  lines.push("Graag uw reactie. Alvast bedankt!");
+  lines.push("");
+  lines.push("Met vriendelijke groet,");
+  lines.push("Bateau Vastgoed");
+  return lines.join("\n");
+}
+
 function ListView({ title, items, userState, updateStatus, showRestore }) {
   const [selected, setSelected] = useState(null);
   const [notesText, setNotesText] = useState('');
@@ -1237,9 +1277,24 @@ function ListView({ title, items, userState, updateStatus, showRestore }) {
     return () => window.removeEventListener('keydown', h);
   }, [items, cursor, editNotes, selected]);
 
+  const emailBatch = () => {
+    if (items.length === 0) { alert('Geen panden'); return; }
+    const body = genereerEmailBody(items.slice(0, 10));
+    const subject = `Interesse: ${items.length} pand${items.length > 1 ? 'en' : ''} — Bateau Vastgoed`;
+    const mailto = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailto;
+  };
+
   return (
     <div className="list-screen">
-      <h2 className="list-title">{title}</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+        <h2 className="list-title" style={{ margin: 0 }}>{title}</h2>
+        {items.length > 0 && (
+          <button className="btn-secondary" onClick={emailBatch} title="Email met alle panden naar makelaar">
+            ✉️ Batch email
+          </button>
+        )}
+      </div>
       {items.length === 0 ? (
         <div className="empty-state">Geen panden in deze lijst</div>
       ) : (
@@ -2072,6 +2127,23 @@ function suggereerNotitie(pand) {
 
 function DetailModal({ pand, onClose }) {
   useEffect(() => { addToRecent(pand); }, [pand?.url]);
+  useEffect(() => {
+    if (!pand?.url) return;
+    const hash = '#pand=' + encodeURIComponent(btoa(pand.url));
+    if (location.hash !== hash) history.replaceState(null, '', hash);
+    return () => {
+      if (location.hash.startsWith('#pand=')) history.replaceState(null, '', location.pathname);
+    };
+  }, [pand?.url]);
+  const shareLink = () => {
+    const link = location.origin + location.pathname + '#pand=' + encodeURIComponent(btoa(pand.url));
+    if (navigator.share) {
+      navigator.share({ title: pand.adres, url: link }).catch(() => {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(link);
+      alert('Link gekopieerd');
+    }
+  };
   const c = pand.calc || {};
   const motion = pand.motion || c.motion;
   const ep = pand.ep_online || c.ep_online;
@@ -2119,6 +2191,7 @@ function DetailModal({ pand, onClose }) {
           </a>
           <button className="btn-print" onClick={() => window.print()}>🖨️ PDF</button>
           <button className="btn-print" onClick={toPortfolio}>🏘️ Portfolio</button>
+          <button className="btn-print" onClick={shareLink}>🔗 Share</button>
         </div>
 
         <RisksSection risks={pand.risks || c.risks} />

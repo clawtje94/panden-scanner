@@ -12,7 +12,7 @@ from models import (
     bereken_transformatie,
     score_property,
 )
-from database import init_db, is_nieuw, sla_op, haal_stats_op, registreer_observatie, get_motion, markeer_verdwenen_kansen
+from database import init_db, is_nieuw, sla_op, haal_stats_op, registreer_observatie, get_motion, markeer_verdwenen_kansen, cleanup_oude_data
 from notifier import stuur_property_notificatie, stuur_dagelijks_rapport
 from scrapers.funda import scrape_funda
 from scrapers.funda_ib import scrape_funda_ib
@@ -892,6 +892,15 @@ def run_scan():
         len(veilingen_dashboard), len(kavels_dashboard),
         len(beleggingen_dashboard),
     )
+
+    # ── DB cleanup (oude observaties + cache ruimen) ──────────────────────
+    try:
+        cleanup = cleanup_oude_data()
+        totaal_opgeruimd = sum(cleanup.values())
+        if totaal_opgeruimd > 0:
+            logger.info("DB cleanup: %d rows verwijderd (%s)", totaal_opgeruimd, cleanup)
+    except Exception as e:
+        logger.debug("DB cleanup fout: %s", e)
 
     # ── Dagelijks rapport ─────────────────────────────────────────────────
     stats = haal_stats_op()
