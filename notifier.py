@@ -173,6 +173,46 @@ def stuur_property_notificatie(prop: Property) -> bool:
     tekst += f"Winst:  <b>{_eur(c['bod_winst'])}</b>\n"
     tekst += f"Marge:  <b>{c['bod_marge_pct']}%</b>\n"
 
+    # ── EP-Online officieel energielabel ──
+    ep = c.get("ep_online") or {}
+    if ep.get("label"):
+        tekst += f"\n<b>EP-ONLINE (RVO)</b>\n"
+        tekst += f"{'─' * 32}\n"
+        tekst += f"Label: {ep['label']}"
+        if ep.get("forced_renovation"):
+            tekst += " — FORCED RENOVATION"
+        if ep.get("forced_renovation_sterk"):
+            tekst += " (sterk)"
+        tekst += "\n"
+        if ep.get("bouwjaar"):
+            tekst += f"Bouwjaar (EP): {ep['bouwjaar']}\n"
+        if ep.get("geldig_tot"):
+            tekst += f"Label geldig tot: {str(ep['geldig_tot'])[:10]}\n"
+
+    # ── Motion signalen (motivated seller) ──
+    m = c.get("motion") or {}
+    if m:
+        signalen = []
+        if m.get("prijsverlaging_pct", 0) >= 1.0:
+            signalen.append(
+                f"Prijs {m['prijsverlaging_pct']}% verlaagd "
+                f"(-{_eur(m['prijsverlaging_euro'])})"
+            )
+        if m.get("aantal_prijsverlagingen", 0) >= 2:
+            signalen.append(f"{m['aantal_prijsverlagingen']}x verlaagd")
+        if m.get("dagen_online", 0) >= 120:
+            signalen.append(f"{m['dagen_online']} dagen online")
+        if m.get("makelaarswissel"):
+            signalen.append("Makelaarswissel")
+        if m.get("onder_bod_terug"):
+            signalen.append("Onder bod → terug te koop")
+        if signalen:
+            label = "MOTIVATED SELLER" if m.get("motivated") else "Motion signalen"
+            tekst += f"\n<b>{label}</b>\n"
+            tekst += f"{'─' * 32}\n"
+            for s in signalen:
+                tekst += f"• {s}\n"
+
     # ── Score + link ──
     tekst += f"\nScore: {sterren} ({prop.score}/10)\n"
     tekst += f"\n<a href='{prop.url}'>Bekijk pand</a>"

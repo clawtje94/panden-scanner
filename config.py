@@ -13,6 +13,11 @@ import os
 TELEGRAM_TOKEN   = os.environ.get("TELEGRAM_TOKEN", "VERVANG_MET_JOUW_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "VERVANG_MET_JOUW_CHAT_ID")
 
+# ── EP-Online (RVO energielabel) ──────────────────────────────────────────────
+# Gratis key aanvragen op https://apikey.ep-online.nl
+# Key in Authorization-header (geen 'Bearer' prefix).
+EP_ONLINE_API_KEY = os.environ.get("EP_ONLINE_API_KEY", "")
+
 # ── Zoekgebied ────────────────────────────────────────────────────────────────
 STEDEN_FUNDA = [
     "den-haag", "rotterdam", "delft", "leiden",
@@ -56,6 +61,17 @@ TRANSFORMATIE = {
     "looptijd_maanden":   24,
     "ovb_pct":            10.4,      # OVB 2026 zakelijk
     "rente_pct":          8.0,
+}
+
+# ── Motion signals (motivated seller detectie) ───────────────────────────────
+SIGNALEN = {
+    "motivated_dagen_online":   120,     # dagen online waarna "lang online" telt
+    "motivated_dagen_lang":     180,
+    "motivated_dagen_zeer_lang": 365,
+    "prijsverlaging_min_pct":   1.0,     # onder deze drempel negeren we ruis
+    "prijsverlaging_sterk_pct": 5.0,     # hierboven = sterk motivated signaal
+    "makelaarswissel_dagen":    90,      # wissel binnen X dagen = gefrustreerd
+    "motivated_score_drempel":  5,       # vanaf deze score flag voor Telegram
 }
 
 # ── Database ──────────────────────────────────────────────────────────────────

@@ -17,6 +17,8 @@ from typing import Optional
 
 import requests
 
+from wijkdata import check_den_haag_splits, check_rotterdam_splits
+
 logger = logging.getLogger(__name__)
 
 # ── PDOK Locatieserver ───────────────────────────────────────────────────────
@@ -33,25 +35,25 @@ RP_API_URL = (
 # Bron: gemeentelijke huisvestingsverordeningen / beleidsregels
 SPLITSINGBELEID = {
     "den haag": {
-        "min_opp_m2": 100,
-        "max_units": None,  # geen max, mits per unit >= 24m2
-        "min_per_unit_m2": 24,
+        "min_opp_m2": 70,        # 2x35 als absolute ondergrens
+        "max_units": None,
+        "min_per_unit_m2": 35,   # per 1-4-2026 (was 24)
         "vergunning": "splitsingsvergunning",
         "bijzonderheden": (
-            "Splitsingsvergunning vereist. Woonoppervlak origineel >= 100m2. "
-            "Elke unit minimaal 24m2. Geluidsisolatie-eisen (Bouwbesluit). "
-            "Meldplicht bij gemeente."
+            "Per 1-4-2026: splitsen alleen in wijken met Leefbaarometer-score "
+            ">= goed (7+) EN parkeerdruk < 90%. Min 35 m² GBO per nieuwe unit. "
+            "Geluidsisolatie-eisen (Bouwbesluit). Bibob-check mogelijk."
         ),
     },
     "rotterdam": {
-        "min_opp_m2": 80,
+        "min_opp_m2": 100,       # 2x50 als ondergrens, hoger in NPRZ
         "max_units": 3,
-        "min_per_unit_m2": 18,
-        "vergunning": "splitsingsvergunning",
+        "min_per_unit_m2": 50,   # Verordening samenstelling Woningvoorraad 2025
+        "vergunning": "woningvormingsvergunning",
         "bijzonderheden": (
-            "Splitsingsvergunning vereist. Min 80m2 totaal, max 3 units. "
-            "Elke unit min 18m2. Leefbaarheidstoets in kwetsbare wijken. "
-            "Parkeereis kan van toepassing zijn."
+            "Per 1-7-2025: standaard 50 m² per unit. In NPRZ-kerngebieden "
+            "(delen Feijenoord 3071-3075 en Charlois 3081-3083) geldt 85 m². "
+            "Woningvormings- + splitsingsvergunning vereist (ca. EUR 1.350)."
         ),
     },
     "delft": {
@@ -413,28 +415,30 @@ def check_bestemming(adres: str, stad: Optional[str] = None,
 
 
 def mag_splitsen(stad: str, opp_m2: float,
-                 aantal_units: int = 2) -> dict:
+                 aantal_units: int = 2,
+                 postcode: str = "") -> dict:
     """
     Check of splitsen is toegestaan op basis van gemeente-beleid.
+
+    Voor Den Haag (per 1-4-2026) en Rotterdam (per 1-7-2025) worden wijk-
+    specifieke regels toegepast op basis van postcode: Leefbaarometer-score,
+    parkeerdruk (DH) en NPRZ-kerngebieden (RDAM).
 
     Args:
         stad: Gemeentenaam
         opp_m2: Totaal woonoppervlak in m2
         aantal_units: Gewenst aantal units na splitsing
-
-    Returns:
-        dict met:
-            - mag_splitsen: bool
-            - uitleg: str
-            - vergunning: str (type vergunning)
-            - min_opp_m2: float (minimum vereist)
-            - max_units: int | None
-            - min_per_unit_m2: float
-            - opp_per_unit: float (beschikbaar per unit)
-            - bijzonderheden: str
+        postcode: Postcode voor wijk-specifieke checks (DH/RDAM)
     """
     stad_norm = _normaliseer_stad(stad)
     beleid = SPLITSINGBELEID.get(stad_norm)
+
+    # Wijk-specifieke check voor Den Haag / Rotterdam
+    wijkcheck = None
+    if stad_norm == "den haag" and postcode:
+        wijkcheck = check_den_haag_splits(postcode, opp_m2, aantal_units, min_per_unit_m2=35)
+    elif stad_norm == "rotterdam" and postcode:
+        wijkcheck = check_rotterdam_splits(postcode, opp_m2, aantal_units)
 
     if not beleid:
         return {
@@ -491,6 +495,21 @@ def mag_splitsen(stad: str, opp_m2: float,
             f"Vereist: {beleid['vergunning']}."
         )
 
+    # Wijk-specifieke check heeft laatste woord voor DH/RDAM
+    if wijkcheck is not None:
+        if wijkcheck["mag"] is False:
+            mag = False
+            uitleg = (
+                f"Splitsen NIET toegestaan in {stad} op dit adres. "
+                + "; ".join(wijkcheck["redenen"])
+            )
+        elif wijkcheck["mag"] is True and mag:
+            uitleg += " Wijk-check OK: " + (
+                f"Leefbaarometer score {wijkcheck['wijkscore']}"
+                if stad_norm == "den haag" and wijkcheck.get("wijkscore")
+                else f"regime {wijkcheck.get('regime', '')}"
+            )
+
     return {
         "mag_splitsen": mag,
         "uitleg": uitleg,
@@ -500,6 +519,7 @@ def mag_splitsen(stad: str, opp_m2: float,
         "min_per_unit_m2": min_per_unit,
         "opp_per_unit": round(opp_per_unit, 1),
         "bijzonderheden": beleid["bijzonderheden"],
+        "wijkcheck": wijkcheck,
     }
 
 

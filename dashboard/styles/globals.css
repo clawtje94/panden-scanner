@@ -413,6 +413,127 @@ a { color: #ff6b00; text-decoration: none; }
 .plattegrond-grid { display: grid; gap: 8px; }
 .plattegrond-img { width: 100%; border-radius: 8px; background: #222; }
 
+/* ── NAV META ── */
+.nav-meta {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  font-size: 11px; color: #666;
+  margin-bottom: 10px; align-items: center;
+}
+.meta-chip {
+  padding: 2px 8px; border-radius: 10px; font-weight: 600;
+  border: 1px solid #333;
+}
+.meta-chip.mv { color: #ff6b00; border-color: #4d2a0a; background: #1a1208; }
+.meta-chip.frc { color: #ffb74d; border-color: #4d3a1a; background: #1a140a; }
+
+/* ── SIGNAL TOGGLES (filters) ── */
+.signal-toggles {
+  display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;
+}
+.toggle {
+  background: #0f0f0f; color: #aaa;
+  border: 1px solid #333; padding: 8px 14px;
+  border-radius: 20px; font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+  white-space: nowrap;
+}
+.toggle:hover { border-color: #555; color: #fff; }
+.toggle.on { background: #1a1208; color: #ff6b00; border-color: #ff6b00; }
+
+/* ── SIGNAL BADGES (on cards) ── */
+.signal-badges {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  margin-bottom: 14px;
+}
+.signal-badges.compact { margin: 8px 0; gap: 4px; }
+.signal-badge {
+  padding: 4px 9px; border-radius: 6px;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.2px;
+  border: 1px solid transparent;
+}
+.signal-badge.motivated {
+  background: linear-gradient(90deg, #ff6b00, #ff4500);
+  color: #000; border-color: #ff6b00;
+  box-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+}
+.signal-badge.forced-sterk {
+  background: #4d1a1a; color: #ff8a65; border-color: #ff6b00;
+}
+.signal-badge.forced {
+  background: #2a1a0a; color: #ffb74d; border-color: #4d3a1a;
+}
+.signal-badge.splits-dh {
+  background: #0a1f2a; color: #4fc3f7; border-color: #0984e3;
+}
+.signal-badge.nprz {
+  background: #2a1a0a; color: #ffab40; border-color: #4d3a1a;
+}
+.signal-badge.mtn-price-strong {
+  background: #2a1208; color: #ff9e5e; border-color: #ff6b00;
+}
+.signal-badge.mtn-price {
+  background: #1a1208; color: #ffb074; border-color: #4d2a0a;
+}
+.signal-badge.mtn-stale-strong {
+  background: #2a0a1a; color: #ff6b9d; border-color: #8e4162;
+}
+.signal-badge.mtn-stale {
+  background: #1a0a1a; color: #d98eb7; border-color: #4d2a3a;
+}
+.signal-badge.mtn-stale-mild {
+  background: #1a0f1a; color: #ab87a3; border-color: #3a2a3a;
+}
+.signal-badge.mtn-switch {
+  background: #1a1a2a; color: #9e9eff; border-color: #4d4d80;
+}
+.signal-badge.mtn-bid-back {
+  background: #0f1a0a; color: #a5d6a7; border-color: #2d4a2a;
+}
+
+/* ── MOTION / EP / WIJK SECTIES ── */
+.motion-card {
+  border: 1px solid #222;
+}
+.motion-card.motion-hot {
+  border-color: #ff6b00;
+  box-shadow: 0 0 18px rgba(255, 107, 0, 0.12);
+  background: linear-gradient(180deg, #1a1208, #0f0a04);
+}
+.motion-card.motion-hot h3 { color: #ff6b00; }
+
+.ep-card { border: 1px solid #222; }
+.ep-card.ep-forced {
+  background: linear-gradient(180deg, #1a140a, #0f0a04);
+  border-color: #4d3a1a;
+}
+.ep-card.ep-sterk {
+  background: linear-gradient(180deg, #1a1008, #100800);
+  border-color: #ff6b00;
+  box-shadow: 0 0 14px rgba(255, 107, 0, 0.1);
+}
+.ep-reno-note {
+  margin-top: 10px; padding: 8px 10px;
+  background: rgba(255, 107, 0, 0.08);
+  border-left: 3px solid #ff6b00;
+  border-radius: 4px;
+  font-size: 11px; color: #ffb074; line-height: 1.4;
+}
+
+.wijk-card {
+  border: 1px solid #222;
+  background: linear-gradient(180deg, #0a1418, #080b0d);
+}
+.wijk-card h3 { color: #4fc3f7; }
+.wijk-redenen {
+  margin-top: 10px; padding: 8px 10px;
+  background: rgba(255, 107, 0, 0.05);
+  border-left: 3px solid #666;
+  border-radius: 4px;
+  font-size: 11px; color: #aaa; line-height: 1.5;
+}
+.wijk-redenen > div { margin: 2px 0; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 480px) {
   .swipe-card { padding: 16px; border-radius: 16px; }

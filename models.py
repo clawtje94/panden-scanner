@@ -25,6 +25,8 @@ class Property:
     is_commercieel: bool = False
     datum_online: Optional[date] = None
     foto_url: str = ""
+    makelaar: str = ""
+    status_tekst: str = ""
 
     # Berekende velden
     strategie: str = ""

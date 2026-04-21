@@ -12,7 +12,7 @@ from models import (
     bereken_transformatie,
     score_property,
 )
-from database import init_db, is_nieuw, sla_op, haal_stats_op
+from database import init_db, is_nieuw, sla_op, haal_stats_op, registreer_observatie, get_motion
 from notifier import stuur_property_notificatie, stuur_dagelijks_rapport
 from scrapers.funda import scrape_funda
 from scrapers.funda_ib import scrape_funda_ib
@@ -25,6 +25,7 @@ from scrapers.beleggingspanden import scrape_beleggingspanden
 from scrapers.vastiva import scrape_vastiva
 from scrapers.veilingen import scrape_veilingen
 from scrapers.kavels import scrape_kavels
+from scrapers.ep_online import verrijk_energielabel
 from referentie import zoek_vergelijkbare
 from renovatie import schat_renovatie
 from looptijd import bereken_looptijd
@@ -152,6 +153,16 @@ def _check_funda_api(prop: Property) -> bool:
         detail = f.get_listing(int(match.group(1)))
         d = detail.data if hasattr(detail, 'data') else {}
         status = str(d.get("status", "")).lower().strip()
+        # Bewaar status op het property zodat pand_geschiedenis transities detecteert
+        prop.status_tekst = status
+
+        # Makelaar uit detail API voor makelaarswissel detectie
+        agents = d.get("agents") or d.get("agent") or []
+        if isinstance(agents, list) and agents:
+            a = agents[0] if isinstance(agents[0], dict) else {}
+            prop.makelaar = str(a.get("name") or a.get("title") or "").strip()
+        elif isinstance(agents, dict):
+            prop.makelaar = str(agents.get("name") or agents.get("title") or "").strip()
 
         if status != "available":
             logger.info("SKIP %s — Funda status: %s", prop.adres, status)
@@ -244,6 +255,15 @@ def evalueer_property(prop: Property) -> List[Property]:
     """Bereken alle strategieen voor een pand en retourneer degene die kansen bieden."""
     kansen = []
 
+    # EP-Online verrijking — officieel energielabel + forced_renovation flag.
+    # Gebeurt vóór renovatie-schatting zodat het label in reno-input meegenomen
+    # kan worden. Gecached in DB (60 dagen), dus veilig voor dagelijkse scan.
+    ep_online_data = {}
+    try:
+        ep_online_data = verrijk_energielabel(prop)
+    except Exception as e:
+        logger.debug("EP-Online verrijking fout %s: %s", prop.adres, e)
+
     # Zoek referentieprijzen in dezelfde stad
     ref_pm2, ref_panden = zoek_vergelijkbare(
         prop.stad, prop.opp_m2, "fix_flip",
@@ -270,8 +290,9 @@ def evalueer_property(prop: Property) -> List[Property]:
         is_opknapper=is_opknapper,
     )
 
-    # Splitsen/opbouwen mogelijkheden
-    splitsen_info = mag_splitsen(prop.stad, prop.opp_m2)
+    # Splitsen/opbouwen mogelijkheden — postcode meegeven voor wijk-checks
+    # (Den Haag Leefbaarometer + parkeerdruk, Rotterdam NPRZ 85m²-regime).
+    splitsen_info = mag_splitsen(prop.stad, prop.opp_m2, postcode=prop.postcode)
     opbouwen_info = mag_opbouwen(prop.stad, prop.type_woning)
 
     if not prop.is_commercieel:
@@ -289,6 +310,8 @@ def evalueer_property(prop: Property) -> List[Property]:
                 p.calc["splitsen"] = splitsen_info
                 p.calc["opbouwen"] = opbouwen_info
                 p.calc["looptijd_detail"] = looptijd_info
+                if ep_online_data:
+                    p.calc["ep_online"] = ep_online_data
                 score_property(p)
                 kansen.append(p)
 
@@ -302,6 +325,8 @@ def evalueer_property(prop: Property) -> List[Property]:
                 referenties=ref_panden,
             )
             if p.marge_pct >= SPLITSING["min_marge_pct"]:
+                if ep_online_data:
+                    p.calc["ep_online"] = ep_online_data
                 score_property(p)
                 kansen.append(p)
 
@@ -316,6 +341,8 @@ def evalueer_property(prop: Property) -> List[Property]:
                     referenties=ref_panden,
                 )
                 if p.marge_pct >= TRANSFORMATIE["min_marge_pct"]:
+                    if ep_online_data:
+                        p.calc["ep_online"] = ep_online_data
                     score_property(p)
                     kansen.append(p)
 
@@ -405,6 +432,15 @@ def run_scan():
     ]
     logger.info("Na sanity filter: %d panden (van %d gescand)", len(alle_panden), totaal_ruw)
 
+    # ── Observatie-historie registreren (voor motion signals) ────────────
+    # Doen we voor élk gefilterd pand — ook panden die uiteindelijk geen kans
+    # blijken, zodat we later bij her-opduiken prijsverlagingen kunnen zien.
+    for prop in alle_panden:
+        try:
+            registreer_observatie(prop)
+        except Exception as e:
+            logger.debug("registreer_observatie fout %s: %s", prop.url[:60], e)
+
     # ── Evalueer, valideer en filter ─────────────────────────────────────
     nieuw_gevonden = 0
     alle_kansen = []  # voor leads.json export
@@ -445,6 +481,14 @@ def run_scan():
                         )
                 except Exception as e:
                     logger.debug("Validatie fout %s: %s", kans.adres, e)
+
+            # Motion signalen aanhaken (prijsverlaging, dagen online, etc)
+            try:
+                motion = get_motion(kans.url)
+                if motion:
+                    kans.calc["motion"] = motion
+            except Exception as e:
+                logger.debug("motion fout %s: %s", kans.adres, e)
 
             alle_kansen.append(kans)
             sla_op(kans)
@@ -526,6 +570,8 @@ def run_scan():
             "verwachte_opbrengst": k.verwachte_opbrengst,
             "score": k.score,
             "is_opknapper": k.calc.get("is_opknapper", False),
+            "motion": k.calc.get("motion", {}),
+            "ep_online": k.calc.get("ep_online", {}),
             "calc": k.calc,
         })
     # Sorteer op marge (hoogste eerst)

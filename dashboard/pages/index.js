@@ -1,9 +1,26 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import Head from 'next/head';
 
 const DATA_URL = "https://raw.githubusercontent.com/clawtje94/panden-scanner/data/leads.json";
 
 const eur = (n) => n ? `€${Math.round(n).toLocaleString('nl-NL')}` : '-';
+const pct = (n) => (n || n === 0) ? `${n}%` : '-';
+
+// ── Motion / EP-Online helpers ─────────────────────────────────────────────
+const isMotivated = (m) => m && m.motivated;
+const motionFlags = (m) => {
+  if (!m) return [];
+  const out = [];
+  if (m.prijsverlaging_pct >= 5) out.push({ kind: 'price-strong', label: `-${m.prijsverlaging_pct}% prijs` });
+  else if (m.prijsverlaging_pct >= 1) out.push({ kind: 'price', label: `-${m.prijsverlaging_pct}% prijs` });
+  if (m.aantal_prijsverlagingen >= 2) out.push({ kind: 'price', label: `${m.aantal_prijsverlagingen}x verlaagd` });
+  if (m.dagen_online >= 365) out.push({ kind: 'stale-strong', label: `${m.dagen_online}d online` });
+  else if (m.dagen_online >= 180) out.push({ kind: 'stale', label: `${m.dagen_online}d online` });
+  else if (m.dagen_online >= 120) out.push({ kind: 'stale-mild', label: `${m.dagen_online}d online` });
+  if (m.makelaarswissel) out.push({ kind: 'switch', label: 'Makelaarswissel' });
+  if (m.onder_bod_terug) out.push({ kind: 'bid-back', label: 'Bod terug' });
+  return out;
+};
 
 function PhotoCarousel({ photos, alt, score }) {
   const [idx, setIdx] = useState(0);
@@ -19,10 +36,7 @@ function PhotoCarousel({ photos, alt, score }) {
     });
   };
 
-  const onTouchStartPhoto = (e) => {
-    e.stopPropagation();
-    startX.current = e.touches[0].clientX;
-  };
+  const onTouchStartPhoto = (e) => { e.stopPropagation(); startX.current = e.touches[0].clientX; };
   const onTouchEndPhoto = (e) => {
     e.stopPropagation();
     const dx = e.changedTouches[0].clientX - startX.current;
@@ -58,50 +72,78 @@ function PhotoCarousel({ photos, alt, score }) {
   );
 }
 
-const STATUS = {
-  NEW: 'new',
-  SAVED: 'saved',
-  HOT: 'hot',
-  REJECTED: 'rejected',
-  VIEWED: 'viewed',
-  CONTACTED: 'contacted',
-  ARCHIVED: 'archived',
-};
+function SignalBadges({ pand, compact = false }) {
+  const m = pand.motion || pand.calc?.motion || {};
+  const ep = pand.ep_online || pand.calc?.ep_online || {};
+  const wijk = pand.calc?.splitsen?.wijkcheck;
 
-const STATUS_LABELS = {
-  new: 'Nieuw',
-  saved: 'Opgeslagen',
-  hot: 'Top deal',
-  rejected: 'Afgewezen',
-  viewed: 'Bezichtigd',
-  contacted: 'Contact gehad',
-  archived: 'Gearchiveerd',
+  const flags = motionFlags(m);
+  const badges = [];
+
+  if (isMotivated(m)) {
+    badges.push(<span key="mv" className="signal-badge motivated">🔥 MOTIVATED {m.motivated_score}/10</span>);
+  }
+  if (ep.forced_renovation_sterk) {
+    badges.push(<span key="frs" className="signal-badge forced-sterk">⚡ FORCED RENO ({ep.label})</span>);
+  } else if (ep.forced_renovation) {
+    badges.push(<span key="fr" className="signal-badge forced">Label {ep.label} → reno-verplicht</span>);
+  }
+  if (wijk && wijk.regime === 'den_haag_2026' && wijk.mag === true) {
+    badges.push(<span key="dh" className="signal-badge splits-dh">🎯 DH splits-wijk {wijk.wijkscore ? `(score ${wijk.wijkscore})` : ''}</span>);
+  }
+  if (wijk && wijk.regime === 'rotterdam_2025' && wijk.is_nprz) {
+    badges.push(<span key="nprz" className="signal-badge nprz">NPRZ 85m²</span>);
+  }
+
+  if (!compact) {
+    flags.forEach((f, i) => badges.push(
+      <span key={`f${i}`} className={`signal-badge mtn-${f.kind}`}>{f.label}</span>
+    ));
+  } else if (flags.length > 0) {
+    // compact: alleen sterkste flag
+    const sterk = flags.find(f => f.kind.endsWith('strong')) || flags[0];
+    badges.push(<span key="cflag" className={`signal-badge mtn-${sterk.kind}`}>{sterk.label}</span>);
+  }
+
+  return badges.length > 0 ? <div className={`signal-badges ${compact ? 'compact' : ''}`}>{badges}</div> : null;
+}
+
+const STATUS = {
+  NEW: 'new', SAVED: 'saved', HOT: 'hot', REJECTED: 'rejected',
+  VIEWED: 'viewed', CONTACTED: 'contacted', ARCHIVED: 'archived',
 };
 
 const STATUS_COLORS = {
-  new: '#888',
-  saved: '#00b894',
-  hot: '#ff6b00',
-  rejected: '#666',
-  viewed: '#0984e3',
-  contacted: '#fdcb6e',
-  archived: '#444',
+  new: '#888', saved: '#00b894', hot: '#ff6b00', rejected: '#666',
+  viewed: '#0984e3', contacted: '#fdcb6e', archived: '#444',
 };
+
+const SORT_OPTIONS = [
+  { key: 'marge', label: 'Marge ↓', fn: (a, b) => (b.marge_pct || 0) - (a.marge_pct || 0) },
+  { key: 'winst', label: 'Winst ↓', fn: (a, b) => (b.winst_euro || 0) - (a.winst_euro || 0) },
+  { key: 'score', label: 'Score ↓', fn: (a, b) => (b.score || 0) - (a.score || 0) },
+  { key: 'motivated', label: 'Motivated ↓', fn: (a, b) => ((b.motion?.motivated_score || 0) - (a.motion?.motivated_score || 0)) || ((b.marge_pct || 0) - (a.marge_pct || 0)) },
+  { key: 'dagen', label: 'Dagen online ↓', fn: (a, b) => (b.motion?.dagen_online || 0) - (a.motion?.dagen_online || 0) },
+  { key: 'prijs_asc', label: 'Prijs ↑', fn: (a, b) => (a.prijs || 0) - (b.prijs || 0) },
+];
 
 export default function Home() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [userState, setUserState] = useState({}); // {url: {status, notes, updated}}
-  const [view, setView] = useState('swipe'); // swipe, saved, rejected, all
+  const [userState, setUserState] = useState({});
+  const [view, setView] = useState('swipe');
   const [currentIdx, setCurrentIdx] = useState(0);
   const [stadFilter, setStadFilter] = useState('alle');
   const [minMarge, setMinMarge] = useState(0);
+  const [motivatedOnly, setMotivatedOnly] = useState(false);
+  const [forcedOnly, setForcedOnly] = useState(false);
+  const [splitsDhOnly, setSplitsDhOnly] = useState(false);
+  const [sortKey, setSortKey] = useState('marge');
   const [swipeDir, setSwipeDir] = useState(null);
   const [showNotes, setShowNotes] = useState(false);
   const [notesText, setNotesText] = useState('');
   const touchStart = useRef({ x: 0, y: 0 });
 
-  // Laad data + user state
   useEffect(() => {
     fetch(DATA_URL)
       .then(r => r.json())
@@ -109,21 +151,13 @@ export default function Home() {
       .catch(e => { console.error(e); setLoading(false); });
 
     const saved = localStorage.getItem('panden_state');
-    if (saved) {
-      try { setUserState(JSON.parse(saved)); } catch {}
-    }
+    if (saved) { try { setUserState(JSON.parse(saved)); } catch {} }
   }, []);
 
-  // Sla user state op
   const updateStatus = (url, status, extraData = {}) => {
     const newState = {
       ...userState,
-      [url]: {
-        ...userState[url],
-        status,
-        updated: new Date().toISOString(),
-        ...extraData,
-      },
+      [url]: { ...userState[url], status, updated: new Date().toISOString(), ...extraData },
     };
     setUserState(newState);
     localStorage.setItem('panden_state', JSON.stringify(newState));
@@ -131,7 +165,24 @@ export default function Home() {
 
   const getStatus = (url) => userState[url]?.status || STATUS.NEW;
 
-  // Keyboard shortcuts
+  const kansen = useMemo(() => (data?.kansen || []).map(k => ({
+    ...k,
+    _status: getStatus(k.url),
+    _notes: userState[k.url]?.notes || '',
+  })), [data, userState]);
+
+  const swipeList = useMemo(() => {
+    const sortFn = (SORT_OPTIONS.find(s => s.key === sortKey) || SORT_OPTIONS[0]).fn;
+    return kansen
+      .filter(k => k._status === STATUS.NEW)
+      .filter(k => stadFilter === 'alle' || k.stad === stadFilter)
+      .filter(k => k.marge_pct >= minMarge)
+      .filter(k => !motivatedOnly || (k.motion?.motivated))
+      .filter(k => !forcedOnly || (k.ep_online?.forced_renovation))
+      .filter(k => !splitsDhOnly || (k.calc?.splitsen?.wijkcheck?.regime === 'den_haag_2026' && k.calc?.splitsen?.wijkcheck?.mag === true))
+      .sort(sortFn);
+  }, [kansen, stadFilter, minMarge, motivatedOnly, forcedOnly, splitsDhOnly, sortKey]);
+
   useEffect(() => {
     const handler = (e) => {
       if (view !== 'swipe' || showNotes) return;
@@ -143,32 +194,23 @@ export default function Home() {
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [view, currentIdx, showNotes, userState]);
+  });
 
   if (loading) return <div className="loading">Laden...</div>;
   if (!data) return <div className="loading">Geen data beschikbaar. Scan moet eerst draaien.</div>;
 
-  const kansen = (data.kansen || []).map(k => ({
-    ...k,
-    _status: getStatus(k.url),
-    _notes: userState[k.url]?.notes || '',
-  }));
-
   const veilingen = data.veilingen || [];
   const kavels = data.kavels || [];
   const biedboek = data.biedboek || [];
-
-  const steden = ['alle', ...new Set(kansen.map(k => k.stad))].sort();
-
-  // Filter voor elk scherm
-  const swipeList = kansen
-    .filter(k => k._status === STATUS.NEW)
-    .filter(k => stadFilter === 'alle' || k.stad === stadFilter)
-    .filter(k => k.marge_pct >= minMarge);
+  const steden = ['alle', ...new Set(kansen.map(k => k.stad).filter(Boolean))].sort();
 
   const savedList = kansen.filter(k => [STATUS.SAVED, STATUS.HOT, STATUS.VIEWED, STATUS.CONTACTED].includes(k._status));
   const rejectedList = kansen.filter(k => k._status === STATUS.REJECTED);
   const hotList = kansen.filter(k => k._status === STATUS.HOT);
+
+  // Counters voor tabs
+  const motivatedCount = kansen.filter(k => k._status === STATUS.NEW && k.motion?.motivated).length;
+  const forcedCount = kansen.filter(k => k._status === STATUS.NEW && k.ep_online?.forced_renovation).length;
 
   const current = swipeList[currentIdx];
 
@@ -178,30 +220,16 @@ export default function Home() {
     setTimeout(() => {
       updateStatus(current.url, status);
       setSwipeDir(null);
-      // currentIdx blijft gelijk want swipeList krimpt
     }, 250);
   };
+  const skipNext = () => { if (currentIdx < swipeList.length - 1) setCurrentIdx(currentIdx + 1); };
 
-  const skipNext = () => {
-    if (currentIdx < swipeList.length - 1) setCurrentIdx(currentIdx + 1);
-  };
-
-  const prev = () => {
-    if (currentIdx > 0) setCurrentIdx(currentIdx - 1);
-  };
-
-  // Touch gestures
-  const onTouchStart = (e) => {
-    touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-  };
+  const onTouchStart = (e) => { touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }; };
   const onTouchEnd = (e) => {
     const dx = e.changedTouches[0].clientX - touchStart.current.x;
     const dy = e.changedTouches[0].clientY - touchStart.current.y;
-    if (Math.abs(dx) > 80 && Math.abs(dx) > Math.abs(dy)) {
-      doAction(dx > 0 ? STATUS.SAVED : STATUS.REJECTED);
-    } else if (dy < -80 && Math.abs(dy) > Math.abs(dx)) {
-      doAction(STATUS.HOT);
-    }
+    if (Math.abs(dx) > 80 && Math.abs(dx) > Math.abs(dy)) doAction(dx > 0 ? STATUS.SAVED : STATUS.REJECTED);
+    else if (dy < -80 && Math.abs(dy) > Math.abs(dx)) doAction(STATUS.HOT);
   };
 
   const saveNotes = () => {
@@ -221,30 +249,29 @@ export default function Home() {
       <div className="app">
         <nav className="nav">
           <div className="nav-brand">Panden <span>Scanner</span></div>
+          <div className="nav-meta">
+            {data.scan_datum && <span>Laatste scan: {new Date(data.scan_datum).toLocaleString('nl-NL')}</span>}
+            {motivatedCount > 0 && <span className="meta-chip mv">🔥 {motivatedCount} motivated</span>}
+            {forcedCount > 0 && <span className="meta-chip frc">⚡ {forcedCount} forced-reno</span>}
+          </div>
           <div className="nav-tabs">
             <button className={`nav-tab ${view === 'swipe' ? 'active' : ''}`} onClick={() => { setView('swipe'); setCurrentIdx(0); }}>
-              Nieuw
-              <span className="count">{kansen.filter(k => k._status === STATUS.NEW).length}</span>
+              Nieuw<span className="count">{kansen.filter(k => k._status === STATUS.NEW).length}</span>
             </button>
             <button className={`nav-tab ${view === 'hot' ? 'active' : ''}`} onClick={() => setView('hot')}>
-              🔥 Top
-              <span className="count">{hotList.length}</span>
+              🔥 Top<span className="count">{hotList.length}</span>
             </button>
             <button className={`nav-tab ${view === 'saved' ? 'active' : ''}`} onClick={() => setView('saved')}>
-              💾 Opgeslagen
-              <span className="count">{savedList.length}</span>
+              💾 Opgeslagen<span className="count">{savedList.length}</span>
             </button>
             <button className={`nav-tab ${view === 'rejected' ? 'active' : ''}`} onClick={() => setView('rejected')}>
-              Prullenbak
-              <span className="count">{rejectedList.length}</span>
+              Prullenbak<span className="count">{rejectedList.length}</span>
             </button>
             <button className={`nav-tab ${view === 'veilingen' ? 'active' : ''}`} onClick={() => setView('veilingen')}>
-              Veilingen
-              <span className="count">{veilingen.length}</span>
+              Veilingen<span className="count">{veilingen.length}</span>
             </button>
             <button className={`nav-tab ${view === 'kavels' ? 'active' : ''}`} onClick={() => setView('kavels')}>
-              Kavels
-              <span className="count">{kavels.length}</span>
+              Kavels<span className="count">{kavels.length}</span>
             </button>
           </div>
         </nav>
@@ -261,9 +288,28 @@ export default function Home() {
                 <option value={15}>≥ 15%</option>
                 <option value={20}>≥ 20%</option>
               </select>
-              <div className="progress">
-                {currentIdx + 1} / {swipeList.length}
-              </div>
+              <select value={sortKey} onChange={e => { setSortKey(e.target.value); setCurrentIdx(0); }}>
+                {SORT_OPTIONS.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
+              </select>
+              <div className="progress">{swipeList.length === 0 ? '0 / 0' : `${currentIdx + 1} / ${swipeList.length}`}</div>
+            </div>
+
+            <div className="signal-toggles">
+              <button
+                className={`toggle ${motivatedOnly ? 'on' : ''}`}
+                onClick={() => { setMotivatedOnly(!motivatedOnly); setCurrentIdx(0); }}
+                title="Alleen motivated sellers tonen"
+              >🔥 Motivated</button>
+              <button
+                className={`toggle ${forcedOnly ? 'on' : ''}`}
+                onClick={() => { setForcedOnly(!forcedOnly); setCurrentIdx(0); }}
+                title="Alleen panden met verplichte renovatie (label E/F/G)"
+              >⚡ Forced-reno</button>
+              <button
+                className={`toggle ${splitsDhOnly ? 'on' : ''}`}
+                onClick={() => { setSplitsDhOnly(!splitsDhOnly); setCurrentIdx(0); }}
+                title="Alleen DH splits-wijken (Leefbaarometer ≥ goed)"
+              >🎯 DH-splits</button>
             </div>
 
             {!current ? (
@@ -293,6 +339,8 @@ export default function Home() {
                       📍 {current.stad}{current.wijk ? ` · ${current.wijk}` : ''}{current.postcode ? ` · ${current.postcode}` : ''}
                     </div>
                   </div>
+
+                  <SignalBadges pand={current} />
 
                   <div className="card-quick">
                     <div className="quick-item">
@@ -330,9 +378,13 @@ export default function Home() {
                     {current.calc?.erfpacht && <span className="badge warn">Erfpacht</span>}
                     {current.calc?.vve_bijdrage > 0 && <span className="badge">VvE €{current.calc.vve_bijdrage}/mnd</span>}
                     {current.calc?.verdieping !== undefined && <span className="badge">Verd. {current.calc.verdieping}</span>}
-                    {current.calc?.splitsen?.mag === true && <span className="badge extra">Splitsen mogelijk</span>}
-                    {current.calc?.opbouwen?.mag === true && <span className="badge extra">Opbouwen mogelijk</span>}
+                    {current.calc?.splitsen?.mag_splitsen === true && <span className="badge extra">Splitsen mogelijk</span>}
+                    {current.calc?.opbouwen?.mag_opbouwen === true && <span className="badge extra">Opbouwen mogelijk</span>}
                   </div>
+
+                  <MotionSection motion={current.motion || current.calc?.motion} />
+                  <EpOnlineSection ep={current.ep_online || current.calc?.ep_online} />
+                  <WijkCheckSection wijk={current.calc?.splitsen?.wijkcheck} />
 
                   <div className="card-calc">
                     <h3>Aankoop</h3>
@@ -393,29 +445,16 @@ export default function Home() {
                 </div>
 
                 <div className="swipe-actions">
-                  <button className="action reject" onClick={() => doAction(STATUS.REJECTED)} title="Afwijzen (←)">
-                    ✕
-                  </button>
-                  <button className="action skip" onClick={skipNext} title="Overslaan (space)">
-                    →
-                  </button>
-                  <button className="action note" onClick={() => { setNotesText(current._notes); setShowNotes(true); }} title="Notitie (N)">
-                    📝
-                  </button>
-                  <button className="action save" onClick={() => doAction(STATUS.SAVED)} title="Opslaan (→)">
-                    💾
-                  </button>
-                  <button className="action hot" onClick={() => doAction(STATUS.HOT)} title="Top deal (↑)">
-                    🔥
-                  </button>
+                  <button className="action reject" onClick={() => doAction(STATUS.REJECTED)} title="Afwijzen (←)">✕</button>
+                  <button className="action skip" onClick={skipNext} title="Overslaan (space)">→</button>
+                  <button className="action note" onClick={() => { setNotesText(current._notes); setShowNotes(true); }} title="Notitie (N)">📝</button>
+                  <button className="action save" onClick={() => doAction(STATUS.SAVED)} title="Opslaan (→)">💾</button>
+                  <button className="action hot" onClick={() => doAction(STATUS.HOT)} title="Top deal (↑)">🔥</button>
                 </div>
 
                 <div className="swipe-hints">
-                  <span>← afwijzen</span>
-                  <span>→ opslaan</span>
-                  <span>↑ top deal</span>
-                  <span>space skip</span>
-                  <span>N notitie</span>
+                  <span>← afwijzen</span><span>→ opslaan</span><span>↑ top deal</span>
+                  <span>space skip</span><span>N notitie</span>
                 </div>
               </>
             )}
@@ -502,6 +541,99 @@ export default function Home() {
   );
 }
 
+// ── Motion / EP-Online / Wijk-check secties ───────────────────────────────
+function MotionSection({ motion }) {
+  if (!motion || !motion.dagen_online) return null;
+  const m = motion;
+  return (
+    <div className={`card-calc motion-card ${m.motivated ? 'motion-hot' : ''}`}>
+      <h3>{m.motivated ? '🔥 Motivated seller' : 'Motion signalen'}</h3>
+      <div className="calc-grid">
+        <div><span>Dagen online</span><b>{m.dagen_online}</b></div>
+        {m.prijsverlaging_pct > 0 && (
+          <div>
+            <span>Prijs verlaagd</span>
+            <b style={{color: m.prijsverlaging_pct >= 5 ? '#ff6b00' : '#fff'}}>
+              -{m.prijsverlaging_pct}% ({eur(m.prijsverlaging_euro)})
+            </b>
+          </div>
+        )}
+        {m.aantal_prijsverlagingen >= 2 && (
+          <div><span>Aantal verlagingen</span><b>{m.aantal_prijsverlagingen}</b></div>
+        )}
+        {m.eerste_prijs > 0 && m.eerste_prijs !== m.huidige_prijs && (
+          <div><span>Startprijs / nu</span><b>{eur(m.eerste_prijs)} → {eur(m.huidige_prijs)}</b></div>
+        )}
+        {m.makelaarswissel && (
+          <div><span>Makelaarswissel</span><b style={{color: '#ff6b00'}}>{m.makelaars_recent?.slice(0,2).join(' → ') || 'Ja'}</b></div>
+        )}
+        {m.onder_bod_terug && (
+          <div><span>Onder bod → terug</span><b style={{color: '#ff6b00'}}>Ja</b></div>
+        )}
+        <div className="total">
+          <span>Motivated score</span>
+          <b style={{color: m.motivated_score >= 5 ? '#ff6b00' : '#aaa'}}>{m.motivated_score}/10</b>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EpOnlineSection({ ep }) {
+  if (!ep || !ep.label) return null;
+  const sterk = ep.forced_renovation_sterk;
+  const forced = ep.forced_renovation;
+  return (
+    <div className={`card-calc ep-card ${sterk ? 'ep-sterk' : forced ? 'ep-forced' : ''}`}>
+      <h3>⚡ EP-Online (RVO)</h3>
+      <div className="calc-grid">
+        <div><span>Label</span><b style={{color: forced ? '#ff6b00' : '#fff'}}>{ep.label}{sterk ? ' (sterk)' : ''}</b></div>
+        {ep.bouwjaar && <div><span>Bouwjaar (EP)</span><b>{ep.bouwjaar}</b></div>}
+        {ep.gebruiksoppervlakte && <div><span>GBO (EP)</span><b>{ep.gebruiksoppervlakte} m²</b></div>}
+        {ep.geldig_tot && <div><span>Geldig tot</span><b>{String(ep.geldig_tot).slice(0, 10)}</b></div>}
+        {ep.pand_type && <div><span>Type (EP)</span><b>{ep.pand_type}</b></div>}
+      </div>
+      {forced && (
+        <div className="ep-reno-note">
+          Verhuurverbod 2028 dreigt bij label E/F/G — eigenaar vaak motivated om te verkopen of moet renoveren.
+        </div>
+      )}
+    </div>
+  );
+}
+
+function WijkCheckSection({ wijk }) {
+  if (!wijk) return null;
+  const mag = wijk.mag;
+  const color = mag === true ? '#00b894' : mag === false ? '#e74c3c' : '#888';
+  return (
+    <div className="card-calc wijk-card">
+      <h3>🎯 Wijk-check splitsen</h3>
+      <div className="calc-grid">
+        <div><span>Regime</span><b>{wijk.regime === 'den_haag_2026' ? 'Den Haag (1-4-2026)' : wijk.regime === 'rotterdam_2025' ? 'Rotterdam (1-7-2025)' : wijk.regime}</b></div>
+        <div><span>Status</span><b style={{color}}>{mag === true ? 'Toegestaan' : mag === false ? 'NIET toegestaan' : 'Onbekend'}</b></div>
+        {wijk.wijkscore != null && (
+          <div><span>Leefbaarometer</span><b>{wijk.wijkscore}/9 {wijk.wijkscore >= 7 ? '(goed+)' : '(te laag)'}</b></div>
+        )}
+        {wijk.parkeerdruk_hoog != null && (
+          <div><span>Parkeerdruk ≥90%</span><b style={{color: wijk.parkeerdruk_hoog ? '#ffb74d' : '#00b894'}}>{wijk.parkeerdruk_hoog ? 'Ja (risico)' : 'Nee'}</b></div>
+        )}
+        {wijk.is_nprz != null && (
+          <div><span>NPRZ-kerngebied</span><b>{wijk.is_nprz ? 'Ja (85 m²)' : 'Nee (50 m²)'}</b></div>
+        )}
+        {wijk.opp_per_unit != null && (
+          <div><span>m² per unit</span><b>{wijk.opp_per_unit} m²</b></div>
+        )}
+      </div>
+      {wijk.redenen?.length > 0 && (
+        <div className="wijk-redenen">
+          {wijk.redenen.map((r, i) => <div key={i}>• {r}</div>)}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ListView({ title, items, userState, updateStatus, showRestore }) {
   const [selected, setSelected] = useState(null);
   const [notesText, setNotesText] = useState('');
@@ -529,6 +661,8 @@ function ListView({ title, items, userState, updateStatus, showRestore }) {
                 <div className="list-card-score">{k.score}/10</div>
               </div>
 
+              <SignalBadges pand={k} compact />
+
               <div className="list-card-metrics">
                 <div><span>Prijs</span><b>{eur(k.prijs)}</b></div>
                 <div><span>Winst</span><b className="green">{eur(k.winst_euro)}</b></div>
@@ -553,16 +687,12 @@ function ListView({ title, items, userState, updateStatus, showRestore }) {
                   <option value={STATUS.ARCHIVED}>📦 Archief</option>
                 </select>
                 {showRestore && (
-                  <button className="btn-restore" onClick={() => updateStatus(k.url, STATUS.NEW)}>
-                    ↺ Terug
-                  </button>
+                  <button className="btn-restore" onClick={() => updateStatus(k.url, STATUS.NEW)}>↺ Terug</button>
                 )}
                 <button className="btn-notes" onClick={() => {
                   setEditNotes(k.url);
                   setNotesText(userState[k.url]?.notes || '');
-                }}>
-                  📝
-                </button>
+                }}>📝</button>
                 <a href={k.url} target="_blank" rel="noopener noreferrer" className="btn-link">🔗</a>
               </div>
             </div>
@@ -570,19 +700,13 @@ function ListView({ title, items, userState, updateStatus, showRestore }) {
         </div>
       )}
 
-      {selected && (
-        <DetailModal pand={selected} onClose={() => setSelected(null)} />
-      )}
+      {selected && <DetailModal pand={selected} onClose={() => setSelected(null)} />}
 
       {editNotes && (
         <div className="modal-overlay" onClick={() => setEditNotes(null)}>
           <div className="modal" onClick={e => e.stopPropagation()}>
             <h3>Notitie</h3>
-            <textarea
-              value={notesText}
-              onChange={e => setNotesText(e.target.value)}
-              autoFocus
-            />
+            <textarea value={notesText} onChange={e => setNotesText(e.target.value)} autoFocus />
             <div className="modal-actions">
               <button className="btn-secondary" onClick={() => setEditNotes(null)}>Annuleren</button>
               <button className="btn-primary" onClick={() => {
@@ -599,6 +723,9 @@ function ListView({ title, items, userState, updateStatus, showRestore }) {
 
 function DetailModal({ pand, onClose }) {
   const c = pand.calc || {};
+  const motion = pand.motion || c.motion;
+  const ep = pand.ep_online || c.ep_online;
+  const wijk = c.splitsen?.wijkcheck;
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal detail-modal" onClick={e => e.stopPropagation()}>
@@ -615,9 +742,15 @@ function DetailModal({ pand, onClose }) {
         <h2>{pand.adres}</h2>
         <p className="card-location">{pand.stad}{pand.wijk ? ` · ${pand.wijk}` : ''}</p>
 
+        <SignalBadges pand={pand} />
+
         <a href={pand.url} target="_blank" rel="noopener noreferrer" className="view-link">
           Bekijk op {pand.source} →
         </a>
+
+        <MotionSection motion={motion} />
+        <EpOnlineSection ep={ep} />
+        <WijkCheckSection wijk={wijk} />
 
         <div className="detail-section">
           <h3>Aankoop</h3>
@@ -710,11 +843,11 @@ function DetailModal({ pand, onClose }) {
             <h3>Splitsen</h3>
             <div className="calc-row">
               <span>Mogelijk?</span>
-              <b style={{ color: c.splitsen.mag ? '#00b894' : c.splitsen.mag === false ? '#e74c3c' : '#888' }}>
-                {c.splitsen.mag ? 'Ja' : c.splitsen.mag === false ? 'Nee' : 'Onbekend'}
+              <b style={{ color: c.splitsen.mag_splitsen ? '#00b894' : c.splitsen.mag_splitsen === false ? '#e74c3c' : '#888' }}>
+                {c.splitsen.mag_splitsen ? 'Ja' : c.splitsen.mag_splitsen === false ? 'Nee' : 'Onbekend'}
               </b>
             </div>
-            <div style={{fontSize: 12, color: '#aaa', marginTop: 4}}>{c.splitsen.reden}</div>
+            <div style={{fontSize: 12, color: '#aaa', marginTop: 4}}>{c.splitsen.uitleg}</div>
             {c.splitsen.vergunning && <div style={{fontSize: 11, color: '#888', marginTop: 4}}>Vergunning: {c.splitsen.vergunning}</div>}
             {c.splitsen.bijzonderheden && <div style={{fontSize: 11, color: '#666', marginTop: 4}}>{c.splitsen.bijzonderheden}</div>}
           </div>
@@ -725,11 +858,11 @@ function DetailModal({ pand, onClose }) {
             <h3>Opbouwen / Dakopbouw</h3>
             <div className="calc-row">
               <span>Mogelijk?</span>
-              <b style={{ color: c.opbouwen.mag ? '#00b894' : c.opbouwen.mag === false ? '#e74c3c' : '#888' }}>
-                {c.opbouwen.mag ? 'Ja' : c.opbouwen.mag === false ? 'Nee' : 'Onbekend'}
+              <b style={{ color: c.opbouwen.mag_opbouwen ? '#00b894' : c.opbouwen.mag_opbouwen === false ? '#e74c3c' : '#888' }}>
+                {c.opbouwen.mag_opbouwen ? 'Ja' : c.opbouwen.mag_opbouwen === false ? 'Nee' : 'Onbekend'}
               </b>
             </div>
-            <div style={{fontSize: 12, color: '#aaa', marginTop: 4}}>{c.opbouwen.reden}</div>
+            <div style={{fontSize: 12, color: '#aaa', marginTop: 4}}>{c.opbouwen.uitleg}</div>
           </div>
         )}
 
