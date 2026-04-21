@@ -169,6 +169,12 @@ def scrape_beleggingspanden() -> List[Property]:
                 if foto_el:
                     foto_url = foto_el.get("src", "") or foto_el.get("data-src", "")
 
+                # Beleggingspanden zijn per definitie verhuurde objecten
+                # (huursom + factor + BAR = verhuurd gegeven). Flag ze als
+                # belegging, niet als ontwikkelkans. Scanner besluit of ze
+                # alsnog een aparte "beleggingen"-lijst in gaan.
+                is_verhuurd = huursom > 0 or "verhuurd" in type_woning.lower()
+
                 prop = Property(
                     source="beleggingspanden",
                     url=url,
@@ -182,6 +188,7 @@ def scrape_beleggingspanden() -> List[Property]:
                     and "appartement" not in type_woning.lower(),
                     datum_online=date.today(),
                     foto_url=foto_url,
+                    makelaar=makelaar,
                 )
 
                 # Bewaar extra beleggingsdata in calc dict
@@ -191,6 +198,8 @@ def scrape_beleggingspanden() -> List[Property]:
                     "bar_pct": bar,
                     "makelaar": makelaar,
                     "listing_id": listing_id,
+                    "is_belegging": True,
+                    "is_verhuurd": is_verhuurd,
                 }
 
                 results.append(prop)

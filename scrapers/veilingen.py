@@ -13,8 +13,12 @@ from typing import List
 from datetime import datetime
 
 from models import Property
+from classificatie import classificeer, VEILING_VERHUURD_SITUATIES
 
 logger = logging.getLogger(__name__)
+
+# Vastgoedveiling API gebruikt 1.000.000 als placeholder voor "onbekend startbod"
+VEILING_PRIJS_PLACEHOLDER = 1_000_000
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
@@ -57,14 +61,37 @@ def scrape_vastgoedveiling() -> List[Property]:
                 stad = a.get("plaats", "")
                 postcode = a.get("postcode", "")
 
-                # Prijs: startbod of afslag
+                # Prijs: startbod of afslag. Filter placeholder-waarde (1M) uit
+                # — API gebruikt die voor "onbekend startbod", niet realistisch.
                 startbod = a.get("startbod", 0) or 0
                 afslag = a.get("startbod_op_afslag", 0) or 0
+                if startbod == VEILING_PRIJS_PLACEHOLDER and afslag == VEILING_PRIJS_PLACEHOLDER:
+                    startbod = afslag = 0
                 prijs = startbod if startbod > 0 else afslag
+                if prijs <= 0:
+                    continue
 
                 opp = a.get("oppervlakte_object", 0) or a.get("oppervlakte_perceel", 0) or 0
                 obj_type = a.get("object_type", "") or ""
                 bouwjaar = a.get("bouwjaar", 0) or 0
+                gebruikssituatie = str(a.get("gebruikssituatie", "") or "").lower()
+                type_verkoop_raw = str(a.get("type_verkoop", "") or "")
+
+                # Classificatie: woon/transformatie/verhuurd/skip.
+                # Developers willen geen bedrijfshallen, boten of verhuurde
+                # panden in hun ontwikkel-pipeline.
+                klass = classificeer(
+                    type_woning=f"{obj_type} ({type_verkoop_raw})" if type_verkoop_raw else obj_type,
+                    adres=adres,
+                    gebruikssituatie=gebruikssituatie,
+                )
+                if klass["category"] == "skip":
+                    continue
+                if klass["is_verhuurd"]:
+                    # Verhuurd is een ander product (belegging/uitpond), niet
+                    # ontwikkeling — voor nu sluiten we uit. Later kan dit in
+                    # een aparte 'belegging'-tab landen.
+                    continue
 
                 # Veiling datum
                 starttijd = a.get("starttijd", "")
@@ -84,8 +111,7 @@ def scrape_vastgoedveiling() -> List[Property]:
                 fotos = a.get("afbeeldingen", [])
                 foto_url = fotos[0].get("url", "") if fotos else ""
 
-                # Type veiling
-                type_verkoop = a.get("type_verkoop", "") or ""
+                type_verkoop = type_verkoop_raw
 
                 prop = Property(
                     source="veiling_vastgoedveiling",
@@ -96,9 +122,10 @@ def scrape_vastgoedveiling() -> List[Property]:
                     prijs=int(prijs) if prijs else 0,
                     opp_m2=int(opp) if opp else 0,
                     prijs_per_m2=round(prijs / opp) if prijs and opp and opp > 0 else 0,
-                    type_woning=f"{obj_type} ({type_verkoop})",
+                    type_woning=f"{obj_type} ({type_verkoop})" if type_verkoop else obj_type,
                     bouwjaar=int(bouwjaar) if bouwjaar else 0,
                     foto_url=foto_url,
+                    is_commercieel=(klass["category"] == "transformatie"),
                 )
                 # Extra veiling data in calc
                 prop.calc = {
@@ -108,8 +135,9 @@ def scrape_vastgoedveiling() -> List[Property]:
                     "kosten_aanvullend": a.get("kosten_aanvullend", 0),
                     "type_verkoop": type_verkoop,
                     "onderhands_bod_mogelijk": a.get("onderhands_bod_mogelijk", ""),
-                    "gebruikssituatie": a.get("gebruikssituatie", ""),
+                    "gebruikssituatie": gebruikssituatie,
                     "is_veiling": True,
+                    "classificatie": klass,
                 }
                 results.append(prop)
 
@@ -175,10 +203,13 @@ def scrape_openbareverkoop() -> List[Property]:
                             afslag = int(m.group()) if m else 0
 
                         prijs = inzet if inzet > 0 else afslag
+                        if prijs <= 0:
+                            continue
 
-                        # Status
+                        # Status: skip historisch afgeronde veilingen
                         status = obj.get("status", "").lower()
-                        if status in ("gegund", "opgehouden", "ingetrokken"):
+                        if status in ("gegund", "opgehouden", "ingetrokken",
+                                       "gesloten", "afgelopen", "geannuleerd"):
                             continue
 
                         obj_type = obj.get("woningtype", "")
@@ -187,8 +218,13 @@ def scrape_openbareverkoop() -> List[Property]:
                         if foto and not foto.startswith("http"):
                             foto = "https://www.openbareverkoop.nl" + foto
 
-                        lat = obj.get("lat", 0)
-                        lng = obj.get("lng", 0)
+                        # Classificatie — skip hallen/kavels/boten, skip verhuurd
+                        klass = classificeer(
+                            type_woning=f"{obj_type} (veiling)" if obj_type else "",
+                            adres=adres,
+                        )
+                        if klass["category"] == "skip" or klass["is_verhuurd"]:
+                            continue
 
                         prop = Property(
                             source="veiling_openbareverkoop",
@@ -197,8 +233,9 @@ def scrape_openbareverkoop() -> List[Property]:
                             stad=stad,
                             prijs=prijs,
                             opp_m2=0,
-                            type_woning=f"{obj_type} (veiling)",
+                            type_woning=f"{obj_type} (veiling)" if obj_type else "Veiling",
                             foto_url=foto,
+                            is_commercieel=(klass["category"] == "transformatie"),
                         )
                         prop.calc = {
                             "inzet": inzet,
@@ -207,6 +244,7 @@ def scrape_openbareverkoop() -> List[Property]:
                             "veilingwijze": obj.get("veilingwijze", ""),
                             "organisatie": obj.get("organisatie", ""),
                             "is_veiling": True,
+                            "classificatie": klass,
                         }
                         results.append(prop)
 

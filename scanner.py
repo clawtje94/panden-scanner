@@ -26,6 +26,7 @@ from scrapers.vastiva import scrape_vastiva
 from scrapers.veilingen import scrape_veilingen
 from scrapers.kavels import scrape_kavels
 from scrapers.ep_online import verrijk_energielabel
+from classificatie import classificeer_property
 from referentie import zoek_vergelijkbare
 from renovatie import schat_renovatie
 from looptijd import bereken_looptijd
@@ -432,6 +433,39 @@ def run_scan():
     ]
     logger.info("Na sanity filter: %d panden (van %d gescand)", len(alle_panden), totaal_ruw)
 
+    # ── Classificatie filter: hallen/boten/kavels/verhuurd eruit ─────────
+    # Developer-pipeline wil alleen wonen + transformatie-kandidaten.
+    # Verhuurde panden, bedrijfshallen en beleggingsobjecten gaan naar aparte
+    # categorieën, niet de ontwikkel-feed.
+    beleggingen_export = []
+    ontwikkel_panden = []
+    for p in alle_panden:
+        klass = classificeer_property(p)
+        p.calc = p.calc or {}
+        p.calc["classificatie"] = klass
+
+        if klass["category"] == "skip":
+            logger.debug("FILTER skip: %s — %s", p.adres, "; ".join(klass["redenen"]))
+            continue
+
+        # Verhuurd pand = belegging, geen ontwikkeling. Apart bewaren.
+        if klass["is_verhuurd"] or p.calc.get("is_belegging"):
+            beleggingen_export.append(p)
+            continue
+
+        # Transformatie: alleen als scraper het expliciet commercieel markeerde
+        # of als classificatie het als transformatie zag (kantoor/winkel).
+        if klass["category"] == "transformatie":
+            p.is_commercieel = True
+
+        ontwikkel_panden.append(p)
+
+    logger.info(
+        "Na classificatie: %d ontwikkel-panden, %d beleggingen/verhuurd (van %d)",
+        len(ontwikkel_panden), len(beleggingen_export), len(alle_panden),
+    )
+    alle_panden = ontwikkel_panden
+
     # ── Observatie-historie registreren (voor motion signals) ────────────
     # Doen we voor élk gefilterd pand — ook panden die uiteindelijk geen kans
     # blijken, zodat we later bij her-opduiken prijsverlagingen kunnen zien.
@@ -536,6 +570,26 @@ def run_scan():
     # ── Export naar leads.json voor dashboard ─────────────────────────────
     import json
     from datetime import datetime
+    # Beleggingen/verhuurd naar eigen categorie in leads.json
+    beleggingen_dashboard = []
+    for p in beleggingen_export:
+        beleggingen_dashboard.append({
+            "adres": p.adres, "stad": p.stad, "postcode": p.postcode,
+            "prijs": p.prijs, "opp_m2": p.opp_m2,
+            "prijs_per_m2": p.prijs_per_m2,
+            "type_woning": p.type_woning, "url": p.url,
+            "source": p.source,
+            "foto_url": p.foto_url or "",
+            "bouwjaar": p.bouwjaar,
+            "is_commercieel": p.is_commercieel,
+            "makelaar": p.makelaar,
+            "huursom_jaar": (p.calc or {}).get("huursom_jaar", 0),
+            "factor": (p.calc or {}).get("factor", 0),
+            "bar_pct": (p.calc or {}).get("bar_pct", 0),
+            "is_verhuurd": (p.calc or {}).get("is_verhuurd", False),
+            "calc": p.calc or {},
+        })
+
     leads_export = {
         "scan_datum": datetime.now().isoformat(),
         "totaal_gescand": totaal_ruw,
@@ -544,6 +598,7 @@ def run_scan():
         "biedboek": biedboek_dashboard,
         "veilingen": veilingen_dashboard,
         "kavels": kavels_dashboard,
+        "beleggingen": beleggingen_dashboard,
     }
     for k in alle_kansen:
         leads_export["kansen"].append({
@@ -579,9 +634,12 @@ def run_scan():
 
     with open("leads.json", "w", encoding="utf-8") as f:
         json.dump(leads_export, f, indent=2, ensure_ascii=False, default=str)
-    logger.info("leads.json geschreven: %d kansen + %d biedboek + %d veilingen + %d kavels",
-                len(leads_export["kansen"]), len(biedboek_dashboard),
-                len(veilingen_dashboard), len(kavels_dashboard))
+    logger.info(
+        "leads.json geschreven: %d kansen + %d biedboek + %d veilingen + %d kavels + %d beleggingen",
+        len(leads_export["kansen"]), len(biedboek_dashboard),
+        len(veilingen_dashboard), len(kavels_dashboard),
+        len(beleggingen_dashboard),
+    )
 
     # ── Dagelijks rapport ─────────────────────────────────────────────────
     stats = haal_stats_op()

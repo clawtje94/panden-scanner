@@ -95,6 +95,15 @@ function SignalBadges({ pand, compact = false }) {
     badges.push(<span key="nprz" className="signal-badge nprz">NPRZ 85m²</span>);
   }
 
+  // Classificatie category badge
+  const klass = pand.calc?.classificatie;
+  if (klass?.category === 'transformatie') {
+    badges.push(<span key="klass" className="signal-badge transformatie">🏢 Transformatie-kandidaat</span>);
+  }
+  if (klass?.is_verhuurd) {
+    badges.push(<span key="verh" className="signal-badge verhuurd">⚠ Verhuurd</span>);
+  }
+
   if (!compact) {
     flags.forEach((f, i) => badges.push(
       <span key={`f${i}`} className={`signal-badge mtn-${f.kind}`}>{f.label}</span>
@@ -202,6 +211,7 @@ export default function Home() {
   const veilingen = data.veilingen || [];
   const kavels = data.kavels || [];
   const biedboek = data.biedboek || [];
+  const beleggingen = data.beleggingen || [];
   const steden = ['alle', ...new Set(kansen.map(k => k.stad).filter(Boolean))].sort();
 
   const savedList = kansen.filter(k => [STATUS.SAVED, STATUS.HOT, STATUS.VIEWED, STATUS.CONTACTED].includes(k._status));
@@ -272,6 +282,9 @@ export default function Home() {
             </button>
             <button className={`nav-tab ${view === 'kavels' ? 'active' : ''}`} onClick={() => setView('kavels')}>
               Kavels<span className="count">{kavels.length}</span>
+            </button>
+            <button className={`nav-tab ${view === 'beleggingen' ? 'active' : ''}`} onClick={() => setView('beleggingen')}>
+              Beleggingen<span className="count">{beleggingen.length}</span>
             </button>
           </div>
         </nav>
@@ -475,11 +488,18 @@ export default function Home() {
           />
         )}
 
-        {(view === 'veilingen' || view === 'kavels') && (
+        {(view === 'veilingen' || view === 'kavels' || view === 'beleggingen') && (
           <div className="list-screen">
-            <h2 className="list-title">{view === 'veilingen' ? `Veilingen (${veilingen.length})` : `Kavels (${kavels.length})`}</h2>
+            <h2 className="list-title">
+              {view === 'veilingen' ? `Veilingen (${veilingen.length})` :
+               view === 'kavels' ? `Kavels (${kavels.length})` :
+               `Beleggingen & verhuurde panden (${beleggingen.length})`}
+            </h2>
+            {view === 'beleggingen' && (
+              <p className="subtle">Deze panden zijn verhuurd of als belegging aangeboden. Géén directe ontwikkel-kans: eerst huurder uit of uitpond-strategie beoordelen.</p>
+            )}
             <div className="list-grid">
-              {(view === 'veilingen' ? veilingen : kavels).map((item, i) => (
+              {(view === 'veilingen' ? veilingen : view === 'kavels' ? kavels : beleggingen).map((item, i) => (
                 <div key={i} className="list-card">
                   {item.foto_url && (
                     <div className="list-card-photo">
@@ -495,8 +515,27 @@ export default function Home() {
                   <div className="list-card-metrics" style={{padding: '8px 16px'}}>
                     {item.prijs > 0 && <div><span>{view === 'veilingen' ? 'Startbod' : 'Prijs'}</span><b>{eur(item.prijs)}</b></div>}
                     {item.opp_m2 > 0 && <div><span>Oppervlak</span><b>{item.opp_m2} m²</b></div>}
-                    {item.type_woning && <div><span>Type</span><b>{item.type_woning}</b></div>}
+                    {view === 'beleggingen' && item.huursom_jaar > 0 && (
+                      <div><span>Huursom/jr</span><b>{eur(item.huursom_jaar)}</b></div>
+                    )}
+                    {view === 'beleggingen' && item.bar_pct > 0 && (
+                      <div><span>BAR</span><b>{item.bar_pct}%</b></div>
+                    )}
+                    {(view !== 'beleggingen') && item.type_woning && <div><span>Type</span><b>{item.type_woning}</b></div>}
                   </div>
+                  {item.calc?.classificatie && (
+                    <div style={{padding: '0 16px 8px'}}>
+                      <span className={`signal-badge ${item.calc.classificatie.category === 'transformatie' ? 'transformatie' : item.calc.classificatie.is_verhuurd ? 'verhuurd' : ''}`}>
+                        {item.calc.classificatie.category === 'transformatie' ? '🏢 Transformatie' :
+                         item.calc.classificatie.is_verhuurd ? '⚠ Verhuurd' : '🏠 Wonen'}
+                      </span>
+                    </div>
+                  )}
+                  {view === 'beleggingen' && item.is_verhuurd && (
+                    <div style={{padding: '0 16px 8px'}}>
+                      <span className="signal-badge verhuurd">⚠ Verhuurd — huurder zit erin</span>
+                    </div>
+                  )}
                   {item.calc?.veiling_datum && (
                     <div style={{padding: '0 16px 8px', fontSize: 12, color: '#ff6b00'}}>
                       Veiling: {item.calc.veiling_datum}
@@ -507,12 +546,17 @@ export default function Home() {
                       <span className="badge extra">Onderhands bod mogelijk</span>
                     </div>
                   )}
+                  {view === 'beleggingen' && item.makelaar && (
+                    <div style={{padding: '0 16px 8px', fontSize: 11, color: '#888'}}>
+                      {item.makelaar}
+                    </div>
+                  )}
                   <div style={{padding: '8px 16px 16px'}}>
                     <a href={item.url} target="_blank" rel="noopener noreferrer">Bekijk →</a>
                   </div>
                 </div>
               ))}
-              {(view === 'veilingen' ? veilingen : kavels).length === 0 && (
+              {(view === 'veilingen' ? veilingen : view === 'kavels' ? kavels : beleggingen).length === 0 && (
                 <div className="empty-state">Geen {view} gevonden in Zuid-Holland</div>
               )}
             </div>

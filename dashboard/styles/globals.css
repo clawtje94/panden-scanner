@@ -490,6 +490,13 @@ a { color: #ff6b00; text-decoration: none; }
 .signal-badge.mtn-bid-back {
   background: #0f1a0a; color: #a5d6a7; border-color: #2d4a2a;
 }
+.signal-badge.transformatie {
+  background: #0a1a2a; color: #64b5f6; border-color: #1e4d7a;
+}
+.signal-badge.verhuurd {
+  background: #2a1010; color: #ef9a9a; border-color: #7a1e1e;
+}
+.subtle { color: #888; font-size: 13px; margin: -8px 0 16px; line-height: 1.4; }
 
 /* ── MOTION / EP / WIJK SECTIES ── */
 .motion-card {
