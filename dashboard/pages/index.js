@@ -368,7 +368,41 @@ const ACTIEPLAN_STAPPEN = [
   { key: 'sleutel', label: 'Sleutel overhandigd' },
 ];
 
-function ActieplanSection({ pandUrl }) {
+function downloadIcal(pand, plan) {
+  const bezichtiging = plan?.bezichtiging;
+  if (!bezichtiging) {
+    alert('Vink eerst "Bezichtiging ingepland" aan (met datum)');
+    return;
+  }
+  const dt = new Date(bezichtiging);
+  const pad = n => String(n).padStart(2, '0');
+  const fmt = d => `${d.getUTCFullYear()}${pad(d.getUTCMonth()+1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}00Z`;
+  const end = new Date(dt.getTime() + 60 * 60 * 1000);
+  const ics = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Bateau Vastgoed Scanner//NL',
+    'BEGIN:VEVENT',
+    `UID:${Math.random().toString(36).slice(2)}@bateau`,
+    `DTSTAMP:${fmt(new Date())}`,
+    `DTSTART:${fmt(dt)}`,
+    `DTEND:${fmt(end)}`,
+    `SUMMARY:Bezichtiging ${pand.adres || ''}`,
+    `LOCATION:${pand.adres || ''}, ${pand.stad || ''}`,
+    `DESCRIPTION:Dealscore ${pand.dealscore?.score || '?'}/100 grade ${pand.dealscore?.grade || '?'}. Vraagprijs ${pand.prijs || 0}. ${pand.url || ''}`,
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\r\n');
+  const blob = new Blob([ics], { type: 'text/calendar' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `bezichtiging-${(pand.adres || 'pand').replace(/[^a-z0-9]/gi, '_').toLowerCase()}.ics`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function ActieplanSection({ pandUrl, pand }) {
   const [plan, setPlan] = useState({});
   const storageKey = `actieplan:${pandUrl}`;
 
@@ -388,7 +422,16 @@ function ActieplanSection({ pandUrl }) {
   const done = Object.values(plan).filter(Boolean).length;
   return (
     <div className="card-calc actie-card">
-      <h3>✅ Actieplan ({done}/{ACTIEPLAN_STAPPEN.length})</h3>
+      <h3>
+        ✅ Actieplan ({done}/{ACTIEPLAN_STAPPEN.length})
+        {plan.bezichtiging && pand && (
+          <button
+            onClick={(e) => { e.stopPropagation(); downloadIcal(pand, plan); }}
+            className="btn-ical"
+            title="Bezichtiging als .ics calendar-event downloaden"
+          >📅 iCal</button>
+        )}
+      </h3>
       <div className="actie-list">
         {ACTIEPLAN_STAPPEN.map(s => (
           <label key={s.key} className={`actie-item ${plan[s.key] ? 'done' : ''}`}>
@@ -570,11 +613,52 @@ export default function Home() {
   }, []);
 
   const [deeplinkPand, setDeeplinkPand] = useState(null);
+  const [cmdOpen, setCmdOpen] = useState(false);
+  const [cmdQuery, setCmdQuery] = useState('');
+
+  useEffect(() => {
+    const h = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setCmdOpen(true);
+      } else if (e.key === 'Escape') {
+        setCmdOpen(false);
+      }
+    };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
+  }, []);
 
   useEffect(() => {
     const saved = localStorage.getItem('panden_state');
     if (saved) { try { setUserState(JSON.parse(saved)); } catch {} }
   }, []);
+
+  // Auto-save motivated high-scorers (eenmalig per sessie)
+  const [autoSavedDone, setAutoSavedDone] = useState(false);
+  useEffect(() => {
+    if (!data?.kansen || autoSavedDone) return;
+    const added = [];
+    data.kansen.forEach(k => {
+      const status = userState[k.url]?.status;
+      if (status) return;  // al een status
+      const ds = k.dealscore?.score || 0;
+      const motivated = k.motion?.motivated;
+      if (motivated && ds >= 65) {
+        added.push(k.url);
+      }
+    });
+    if (added.length > 0) {
+      const next = { ...userState };
+      added.forEach(url => {
+        next[url] = { status: STATUS.SAVED, updated: new Date().toISOString(), auto: true };
+      });
+      setUserState(next);
+      localStorage.setItem('panden_state', JSON.stringify(next));
+      console.log(`Auto-saved ${added.length} motivated high-scorers`);
+    }
+    setAutoSavedDone(true);
+  }, [data, userState, autoSavedDone]);
 
   useEffect(() => {
     if (!data?.kansen) return;
@@ -1108,6 +1192,17 @@ export default function Home() {
           <DetailModal pand={deeplinkPand} onClose={() => setDeeplinkPand(null)} />
         )}
 
+        {cmdOpen && (
+          <CommandPalette
+            data={data}
+            query={cmdQuery}
+            setQuery={setCmdQuery}
+            onClose={() => { setCmdOpen(false); setCmdQuery(''); }}
+            onView={(v) => { setView(v); setCmdOpen(false); setCmdQuery(''); }}
+            onOpenPand={(p) => { setDeeplinkPand(p); setCmdOpen(false); setCmdQuery(''); }}
+          />
+        )}
+
         {showNotes && current && (
           <div className="modal-overlay" onClick={() => setShowNotes(false)}>
             <div className="modal" onClick={e => e.stopPropagation()}>
@@ -1258,6 +1353,78 @@ function WijkCheckSection({ wijk }) {
           {wijk.redenen.map((r, i) => <div key={i}>• {r}</div>)}
         </div>
       )}
+    </div>
+  );
+}
+
+function CommandPalette({ data, query, setQuery, onClose, onView, onOpenPand }) {
+  const tabs = [
+    { name: 'swipe', label: 'Nieuwe kansen', icon: '🔍' },
+    { name: 'hot', label: 'Top deals', icon: '🔥' },
+    { name: 'saved', label: 'Opgeslagen', icon: '💾' },
+    { name: 'rejected', label: 'Prullenbak', icon: '🗑️' },
+    { name: 'veilingen', label: 'Veilingen', icon: '🏛️' },
+    { name: 'kavels', label: 'Kavels', icon: '📐' },
+    { name: 'beleggingen', label: 'Beleggingen', icon: '💰' },
+    { name: 'portfolio', label: 'Portfolio', icon: '🏘️' },
+    { name: 'roi', label: 'ROI', icon: '💎' },
+    { name: 'stats', label: 'Stats', icon: '📊' },
+    { name: 'compare', label: 'Compare', icon: '⚖️' },
+    { name: 'recent', label: 'Recent', icon: '🕑' },
+  ];
+  const q = query.trim().toLowerCase();
+  const tabMatches = q ? tabs.filter(t =>
+    t.label.toLowerCase().includes(q) || t.name.includes(q)
+  ) : tabs.slice(0, 5);
+  const allPanden = [
+    ...(data?.kansen || []),
+    ...(data?.beleggingen || []),
+  ];
+  const pandMatches = q ? allPanden.filter(k =>
+    (k.adres || '').toLowerCase().includes(q) ||
+    (k.stad || '').toLowerCase().includes(q) ||
+    (k.postcode || '').toLowerCase().includes(q)
+  ).slice(0, 8) : [];
+
+  return (
+    <div className="modal-overlay cmd-overlay" onClick={onClose}>
+      <div className="cmd-palette" onClick={e => e.stopPropagation()}>
+        <input
+          type="text"
+          className="cmd-input"
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          placeholder="Zoek tab of pand... (Cmd+K)"
+          autoFocus
+        />
+        <div className="cmd-results">
+          {tabMatches.length > 0 && (
+            <>
+              <div className="cmd-section">Tabs</div>
+              {tabMatches.map(t => (
+                <div key={t.name} className="cmd-item" onClick={() => onView(t.name)}>
+                  <span>{t.icon}</span>
+                  <span>{t.label}</span>
+                </div>
+              ))}
+            </>
+          )}
+          {pandMatches.length > 0 && (
+            <>
+              <div className="cmd-section">Panden ({pandMatches.length})</div>
+              {pandMatches.map(p => (
+                <div key={p.url} className="cmd-item" onClick={() => onOpenPand(p)}>
+                  <span>🏠</span>
+                  <span>{p.adres} — {p.stad}</span>
+                </div>
+              ))}
+            </>
+          )}
+          {tabMatches.length + pandMatches.length === 0 && (
+            <div className="cmd-empty">Geen resultaten voor "{query}"</div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -2333,7 +2500,7 @@ function DetailModal({ pand, onClose }) {
         </div>
 
         <RisksSection risks={pand.risks || c.risks} />
-        <ActieplanSection pandUrl={pand.url} />
+        <ActieplanSection pandUrl={pand.url} pand={pand} />
         <BodAdviesSection advies={pand.bod_advies || c.bod_advies} />
         <BouwkundigSection pand={pand} />
         <MapsSection pand={pand} />
