@@ -593,6 +593,10 @@ a { color: #ff6b00; text-decoration: none; }
   width: 100%; height: 100%; object-fit: cover;
 }
 .list-card:hover { border-color: #ff6b00; }
+.list-card.cursor-active {
+  border-color: #ff6b00;
+  box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.2);
+}
 .list-card-header {
   display: flex; justify-content: space-between; align-items: flex-start;
   margin-bottom: 12px;
@@ -724,6 +728,18 @@ a { color: #ff6b00; text-decoration: none; }
 .badge.warn { background: #4d3a1a; color: #ffb74d; font-weight: 600; }
 .validated-section { border-left: 3px solid #00b894; }
 .invalidated-section { border-left: 3px solid #e74c3c; background: #1a0f0f; }
+.foto-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+.foto-grid a { display: block; }
+.foto-grid img {
+  width: 100%; height: 110px; object-fit: cover;
+  border-radius: 4px; cursor: pointer;
+  transition: transform 0.15s;
+}
+.foto-grid img:hover { transform: scale(1.03); }
+
 .plattegrond-grid { display: grid; gap: 8px; }
 .plattegrond-img { width: 100%; border-radius: 8px; background: #222; }
 

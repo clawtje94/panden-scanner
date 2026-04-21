@@ -613,6 +613,7 @@ export default function Home() {
   const kavels = data.kavels || [];
   const biedboek = data.biedboek || [];
   const beleggingen = data.beleggingen || [];
+  const verdwenen = data.verdwenen || [];
   const steden = ['alle', ...new Set(kansen.map(k => k.stad).filter(Boolean))].sort();
 
   const savedList = kansen.filter(k => [STATUS.SAVED, STATUS.HOT, STATUS.VIEWED, STATUS.CONTACTED].includes(k._status));
@@ -699,6 +700,11 @@ export default function Home() {
             <button className={`nav-tab ${view === 'recent' ? 'active' : ''}`} onClick={() => setView('recent')}>
               🕑 Recent
             </button>
+            {verdwenen.length > 0 && (
+              <button className={`nav-tab ${view === 'verdwenen' ? 'active' : ''}`} onClick={() => setView('verdwenen')}>
+                👻 Verdwenen<span className="count">{verdwenen.length}</span>
+              </button>
+            )}
           </div>
         </nav>
 
@@ -997,6 +1003,33 @@ export default function Home() {
         {view === 'portfolio' && <PortfolioView />}
         {view === 'stats' && <StatsView kansen={kansen} />}
         {view === 'compare' && <CompareView kansen={[...kansen, ...savedList, ...hotList]} />}
+        {view === 'verdwenen' && (
+          <div className="list-screen">
+            <h2 className="list-title">👻 Verdwenen ({verdwenen.length})</h2>
+            <p className="subtle">Panden die sinds minimaal 3 dagen niet meer in een scan voorkomen. Vaak verkocht of ingetrokken.</p>
+            <div className="list-grid">
+              {verdwenen.map((v, i) => (
+                <div key={i} className="list-card">
+                  <div className="list-card-header">
+                    <div>
+                      <div className="list-card-title">{v.adres}</div>
+                      <div className="list-card-sub">{v.stad} — laatste scan: {v.laatste_gezien?.slice(0, 10)}</div>
+                    </div>
+                    <div className="port-status" style={{ background: '#666' }}>verdwenen</div>
+                  </div>
+                  <div className="list-card-metrics">
+                    <div><span>Laatste prijs</span><b>{eur(v.laatste_prijs)}</b></div>
+                  </div>
+                  {v.url && (
+                    <div style={{ padding: '8px 16px 16px' }}>
+                      <a href={v.url} target="_blank" rel="noopener noreferrer">Check URL (404?) →</a>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         {view === 'recent' && <RecentView allKansen={kansen} onOpen={(u) => {
           const k = kansen.find(x => x.url === u);
           if (k) setView('swipe'); // of open detail
@@ -1160,6 +1193,25 @@ function ListView({ title, items, userState, updateStatus, showRestore }) {
   const [selected, setSelected] = useState(null);
   const [notesText, setNotesText] = useState('');
   const [editNotes, setEditNotes] = useState(null);
+  const [cursor, setCursor] = useState(0);
+
+  useEffect(() => {
+    const h = (e) => {
+      if (editNotes || selected) return;
+      if (e.key === 'j' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        setCursor(c => Math.min(items.length - 1, c + 1));
+      } else if (e.key === 'k' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        setCursor(c => Math.max(0, c - 1));
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (items[cursor]) setSelected(items[cursor]);
+      }
+    };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
+  }, [items, cursor, editNotes, selected]);
 
   return (
     <div className="list-screen">
@@ -1169,7 +1221,7 @@ function ListView({ title, items, userState, updateStatus, showRestore }) {
       ) : (
         <div className="list-grid">
           {items.map((k, i) => (
-            <div key={i} className="list-card" onClick={() => setSelected(k)}>
+            <div key={i} className={`list-card ${i === cursor ? 'cursor-active' : ''}`} onClick={() => setSelected(k)}>
               {k.foto_url && (
                 <div className="list-card-photo">
                   <img src={k.foto_url} alt={k.adres} />
@@ -1566,8 +1618,66 @@ function StatsView({ kansen }) {
         ))}
       </div>
 
-      <div style={{ marginTop: 20 }}>
-        <button className="btn-primary" onClick={downloadCsv}>📥 Download CSV ({kansen.length} kansen)</button>
+      <div style={{ marginTop: 20, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        <button className="btn-primary" onClick={downloadCsv}>📥 CSV alle kansen ({kansen.length})</button>
+        <button className="btn-secondary" onClick={() => {
+          try {
+            const raw = localStorage.getItem('panden_state');
+            const state = raw ? JSON.parse(raw) : {};
+            const saved = Object.entries(state)
+              .filter(([_, s]) => ['saved', 'hot', 'viewed', 'contacted'].includes(s?.status))
+              .map(([url, s]) => {
+                const k = kansen.find(x => x.url === url);
+                if (!k) return null;
+                return { ...k, _status: s.status, _notes: s.notes || '', _updated: s.updated };
+              })
+              .filter(Boolean);
+            if (saved.length === 0) { alert('Geen opgeslagen panden'); return; }
+            const h = ['status','adres','stad','prijs','marge','winst','dealscore','grade','notes','updated','url'];
+            const rows = saved.map(k => [
+              k._status, k.adres, k.stad, k.prijs, k.marge_pct, k.winst_euro,
+              k.dealscore?.score ?? '', k.dealscore?.grade ?? '',
+              k._notes, k._updated?.slice(0, 10) || '', k.url,
+            ].map(v => {
+              const s = String(v ?? '');
+              return s.includes(',') || s.includes('"') || s.includes('\n') ? '"' + s.replace(/"/g, '""') + '"' : s;
+            }).join(','));
+            const csv = [h.join(','), ...rows].join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `bateau-saved-${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          } catch (e) { console.error(e); alert('Export mislukt'); }
+        }}>💾 CSV saved/hot/contacted</button>
+        <button className="btn-secondary" onClick={() => {
+          try {
+            const raw = localStorage.getItem('bateau_portfolio');
+            const items = raw ? JSON.parse(raw) : [];
+            if (items.length === 0) { alert('Geen portfolio items'); return; }
+            const h = ['status','adres','stad','postcode','koopprijs','koopdatum','verbouwkosten','verwachte_exit','winst','makelaar','aannemer','notaris','financier','notities'];
+            const rows = items.map(p => {
+              const koop = Number(p.koopprijs) || 0;
+              const vb = Number(p.verbouwkosten) || 0;
+              const exit = Number(p.verwachte_exit) || 0;
+              return [p.status, p.adres, p.stad, p.postcode, koop, p.koopdatum || '', vb, exit, exit - koop - vb,
+                      p.makelaar || '', p.aannemer || '', p.notaris || '', p.financier || '', p.notities || ''];
+            }).map(r => r.map(v => {
+              const s = String(v ?? '');
+              return s.includes(',') || s.includes('"') || s.includes('\n') ? '"' + s.replace(/"/g, '""') + '"' : s;
+            }).join(','));
+            const csv = [h.join(','), ...rows].join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `bateau-portfolio-${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          } catch (e) { console.error(e); alert('Export mislukt'); }
+        }}>🏘️ CSV portfolio</button>
       </div>
     </div>
   );
@@ -2083,6 +2193,19 @@ function DetailModal({ pand, onClose }) {
               </b>
             </div>
             <div style={{fontSize: 12, color: '#aaa', marginTop: 4}}>{c.opbouwen.uitleg}</div>
+          </div>
+        )}
+
+        {(pand.foto_urls?.length > 1) && (
+          <div className="detail-section">
+            <h3>📸 Alle foto's ({pand.foto_urls.length})</h3>
+            <div className="foto-grid">
+              {pand.foto_urls.map((u, i) => (
+                <a key={i} href={u} target="_blank" rel="noopener noreferrer">
+                  <img src={u} alt={`Foto ${i + 1}`} loading="lazy" />
+                </a>
+              ))}
+            </div>
           </div>
         )}
 
