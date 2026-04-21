@@ -32,7 +32,7 @@ from classificatie import classificeer_property
 from erfpacht import detect_erfpacht
 from risks import aggregate_risks
 from dealscore import bereken_dealscore
-from referentie import zoek_vergelijkbare
+from referentie import zoek_vergelijkbare_detail
 from renovatie import schat_renovatie
 from looptijd import bereken_looptijd
 from validatie import valideer_verkoopprijs
@@ -272,12 +272,14 @@ def evalueer_property(prop: Property) -> List[Property]:
     except Exception as e:
         logger.debug("EP-Online verrijking fout %s: %s", prop.adres, e)
 
-    # Zoek referentieprijzen in dezelfde stad
-    ref_pm2, ref_panden = zoek_vergelijkbare(
-        prop.stad, prop.opp_m2, "fix_flip",
+    # Zoek referentieprijzen — rijke versie met P25/P50/P75 + confidence
+    ref_detail = zoek_vergelijkbare_detail(
+        prop.stad, prop.opp_m2,
         type_woning=prop.type_woning,
         postcode=prop.postcode,
     )
+    ref_pm2 = ref_detail.get("p50_pm2") or 0
+    ref_panden = ref_detail.get("top") or []
 
     # Slimme renovatie-schatting op basis van pandkenmerken
     is_opknapper = prop.calc.get("is_opknapper", False) if prop.calc else False
@@ -313,6 +315,7 @@ def evalueer_property(prop: Property) -> List[Property]:
                 verkoop_m2_override=ref_pm2,
                 referenties=ref_panden,
                 renovatie_detail=reno,
+                ref_detail=ref_detail,
             )
             if p.marge_pct >= FIX_FLIP["min_marge_pct"]:
                 p.calc["splitsen"] = splitsen_info
@@ -331,6 +334,7 @@ def evalueer_property(prop: Property) -> List[Property]:
                 Property(**prop.__dict__), SPLITSING, n_units,
                 verkoop_m2_override=ref_pm2,
                 referenties=ref_panden,
+                ref_detail=ref_detail,
             )
             if p.marge_pct >= SPLITSING["min_marge_pct"]:
                 if ep_online_data:
@@ -347,6 +351,7 @@ def evalueer_property(prop: Property) -> List[Property]:
                     Property(**prop.__dict__), TRANSFORMATIE,
                     verkoop_m2_override=ref_pm2,
                     referenties=ref_panden,
+                    ref_detail=ref_detail,
                 )
                 if p.marge_pct >= TRANSFORMATIE["min_marge_pct"]:
                     if ep_online_data:
@@ -607,7 +612,9 @@ def run_scan():
             )
             kans.calc["risks"] = risks
 
-            # Dealscore — composite 0-100 voor triage
+            # Dealscore — composite 0-100 voor triage.
+            # Gebruikt WORST-case scenario (P25) om te voorkomen dat deals die
+            # alleen bij gemiddelde verkoopprijs rendabel zijn hoog scoren.
             dscore = bereken_dealscore(
                 marge_pct=kans.marge_pct,
                 score_basis=kans.score,
@@ -616,6 +623,8 @@ def run_scan():
                 erfpacht=erf,
                 risks=risks,
                 wijkcheck=kans.calc.get("splitsen", {}).get("wijkcheck"),
+                verkoop_referentie=kans.calc.get("verkoop_referentie"),
+                scenarios=kans.calc.get("scenarios"),
             )
             kans.calc["dealscore"] = dscore
 
@@ -728,6 +737,8 @@ def run_scan():
             "erfpacht_detail": k.calc.get("erfpacht_detail", {}),
             "risks": k.calc.get("risks", {}),
             "dealscore": k.calc.get("dealscore", {}),
+            "scenarios": k.calc.get("scenarios", {}),
+            "verkoop_referentie": k.calc.get("verkoop_referentie", {}),
             "calc": k.calc,
         })
     # Sorteer op dealscore (hoogste eerst), fallback marge

@@ -257,6 +257,71 @@ function MonumentSection({ monument }) {
   );
 }
 
+function VerkoopSection({ scenarios, verkoop_referentie, calc }) {
+  const s = scenarios || calc?.scenarios;
+  const vr = verkoop_referentie || calc?.verkoop_referentie;
+  if (!s && !vr) return null;
+
+  const confColor = {
+    hoog: '#00b894', middel: '#fdcb6e',
+    laag: '#ff9b44', onvoldoende: '#e74c3c',
+  }[vr?.confidence_label] || '#888';
+
+  return (
+    <div className="card-calc verkoop-card">
+      <h3>💰 Verkoop-scenario's</h3>
+
+      {s && (
+        <div className="scen-grid">
+          <div className="scen worst">
+            <div className="scen-label">Worst (P25)</div>
+            <div className="scen-price">{eur(s.worst?.verkoop_m2)}/m²</div>
+            <div className="scen-marge" style={{ color: (s.worst?.marge_pct || 0) < 8 ? '#e74c3c' : '#ffb074' }}>
+              Marge {s.worst?.marge_pct}%
+            </div>
+            <div className="scen-winst">{eur(s.worst?.winst)}</div>
+          </div>
+          <div className="scen real">
+            <div className="scen-label">Realistisch (P50)</div>
+            <div className="scen-price">{eur(s.realistic?.verkoop_m2)}/m²</div>
+            <div className="scen-marge">Marge {s.realistic?.marge_pct}%</div>
+            <div className="scen-winst">{eur(s.realistic?.winst)}</div>
+          </div>
+          <div className="scen best">
+            <div className="scen-label">Best (P75)</div>
+            <div className="scen-price">{eur(s.best?.verkoop_m2)}/m²</div>
+            <div className="scen-marge" style={{ color: '#00b894' }}>Marge {s.best?.marge_pct}%</div>
+            <div className="scen-winst">{eur(s.best?.winst)}</div>
+          </div>
+        </div>
+      )}
+
+      {vr && (
+        <div className="ref-breakdown">
+          <div className="conf-pill" style={{ borderColor: confColor, color: confColor }}>
+            Confidence: <b>{vr.confidence_label} ({vr.confidence}/100)</b>
+          </div>
+          <div className="ref-meta">
+            <div><span>N referenties</span><b>{vr.n_refs}</b></div>
+            <div><span>Met label A/B/C</span><b>{vr.n_high_label}</b></div>
+            <div><span>Spread (P75-P25)</span><b>{vr.spread_pct}%</b></div>
+            {vr.avg_days_online != null && (
+              <div><span>Gem. dagen online</span><b>{vr.avg_days_online}</b></div>
+            )}
+            <div><span>Match-niveau</span><b>{vr.match_niveau}</b></div>
+            {vr.wijk && <div><span>Wijk</span><b>{vr.wijk}</b></div>}
+          </div>
+          {vr.waarschuwingen?.length > 0 && (
+            <div className="ref-warnings">
+              {vr.waarschuwingen.map((w, i) => <div key={i}>⚠ {w}</div>)}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ErfpachtSection({ erfpacht }) {
   if (!erfpacht || (!erfpacht.is_erfpacht && !erfpacht.toelichting)) return null;
   const risk = erfpacht.risk_level || 'geen';
@@ -570,6 +635,10 @@ export default function Home() {
                   </div>
 
                   <RisksSection risks={current.risks || current.calc?.risks} />
+                  <VerkoopSection
+                    scenarios={current.scenarios || current.calc?.scenarios}
+                    verkoop_referentie={current.verkoop_referentie || current.calc?.verkoop_referentie}
+                  />
                   <MotionSection motion={current.motion || current.calc?.motion} />
                   <EpOnlineSection ep={current.ep_online || current.calc?.ep_online} />
                   <BagSection bag={current.bag || current.calc?.bag} funda_bouwjaar={current.bouwjaar} funda_opp={current.opp_m2} />
@@ -1339,6 +1408,10 @@ function DetailModal({ pand, onClose }) {
         </div>
 
         <RisksSection risks={pand.risks || c.risks} />
+        <VerkoopSection
+          scenarios={pand.scenarios || c.scenarios}
+          verkoop_referentie={pand.verkoop_referentie || c.verkoop_referentie}
+        />
         <DealscoreBreakdown dealscore={pand.dealscore || c.dealscore} />
         <MotionSection motion={motion} />
         <EpOnlineSection ep={ep} />

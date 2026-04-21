@@ -295,6 +295,71 @@ a { color: #ff6b00; text-decoration: none; }
 .sig-list span { color: #ccc; }
 .sig-list b { color: #ff6b00; font-weight: 700; }
 
+/* ── VERKOOP SCENARIOS ── */
+.verkoop-card {
+  background: linear-gradient(180deg, #0a1a14, #080b08);
+  border: 1px solid #1e4d3a;
+}
+.verkoop-card h3 { color: #00b894; }
+
+.scen-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 8px; margin-bottom: 16px;
+}
+.scen {
+  background: #0a0a0a; border: 1px solid #222;
+  border-radius: 10px; padding: 12px 10px; text-align: center;
+}
+.scen.worst { border-color: #5a2a2a; background: #0f0a0a; }
+.scen.real { border-color: #4d3a1a; background: #0f0c08; }
+.scen.best { border-color: #1a4d3a; background: #080f0b; }
+.scen-label {
+  font-size: 10px; color: #888;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.scen-price {
+  font-size: 15px; font-weight: 700; color: #fff;
+  margin-bottom: 4px;
+}
+.scen-marge {
+  font-size: 12px; font-weight: 600; color: #ccc;
+  margin-bottom: 2px;
+}
+.scen-winst {
+  font-size: 11px; color: #888;
+}
+
+.ref-breakdown { margin-top: 8px; }
+.conf-pill {
+  display: inline-block; padding: 4px 12px;
+  border: 2px solid; border-radius: 20px;
+  font-size: 11px; font-weight: 600;
+  margin-bottom: 10px;
+}
+.conf-pill b { font-weight: 700; }
+
+.ref-meta {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 4px 16px; margin-bottom: 10px;
+}
+.ref-meta > div {
+  display: flex; justify-content: space-between;
+  padding: 4px 0; font-size: 12px;
+  border-bottom: 1px dashed #1a1a1a;
+}
+.ref-meta span { color: #888; }
+.ref-meta b { color: #fff; font-weight: 600; }
+
+.ref-warnings {
+  margin-top: 8px; padding: 8px 10px;
+  background: rgba(255, 107, 0, 0.06);
+  border-left: 3px solid #ff9b44;
+  border-radius: 4px;
+  font-size: 11px; color: #ffb074; line-height: 1.5;
+}
+.ref-warnings > div { margin: 2px 0; }
+
 .swipe-hints {
   position: fixed; bottom: 90px; left: 0; right: 0;
   text-align: center; display: flex; justify-content: center;

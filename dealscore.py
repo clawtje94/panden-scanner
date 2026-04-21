@@ -34,6 +34,8 @@ def bereken_dealscore(
     erfpacht: Optional[dict] = None,
     risks: Optional[dict] = None,
     wijkcheck: Optional[dict] = None,
+    verkoop_referentie: Optional[dict] = None,
+    scenarios: Optional[dict] = None,
 ) -> dict:
     """Bereken dealscore en retourneer breakdown.
 
@@ -60,14 +62,45 @@ def bereken_dealscore(
                     }],
                 }
 
-    # ── Marge (tot 40 pt, schaalt lineair tot 30% marge) ──
-    pt_marge = min(40, max(0, int(marge_pct * 40 / 30))) if marge_pct > 0 else 0
+    # ── Marge (tot 30 pt) — op WORST-case verkoop ──
+    # Deal die alleen bij gemiddelde verkoop rendeert = geen robuuste deal.
+    # Scenarios["worst"] komt uit P25 van referenties.
+    worst_marge = None
+    if scenarios and scenarios.get("worst"):
+        worst_marge = scenarios["worst"].get("marge_pct")
+    eff_marge = worst_marge if worst_marge is not None else marge_pct
+    pt_marge = min(30, max(0, int(eff_marge))) if eff_marge > 0 else 0
+    uitleg_marge = (
+        f"{eff_marge}% (worst-case P25) → {pt_marge}/30"
+        if worst_marge is not None else
+        f"{marge_pct}% → {pt_marge}/30 (geen scenarios)"
+    )
     breakdown.append({
         "onderdeel": "Marge",
         "punten": pt_marge,
-        "uitleg": f"{marge_pct}% → {pt_marge}/40",
+        "uitleg": uitleg_marge,
     })
     totaal += pt_marge
+
+    # ── Verkoop-confidence (tot 15 pt) ──
+    if verkoop_referentie:
+        conf = verkoop_referentie.get("confidence", 0)
+        pt_conf = int(conf * 15 / 100)
+        lbl = verkoop_referentie.get("confidence_label", "?")
+        n = verkoop_referentie.get("n_refs", 0)
+        breakdown.append({
+            "onderdeel": "Verkoop-confidence",
+            "punten": pt_conf,
+            "uitleg": f"{lbl} ({conf}/100) — N={n} refs",
+        })
+        totaal += pt_conf
+        if lbl == "onvoldoende":
+            breakdown.append({
+                "onderdeel": "Verkoop onbetrouwbaar",
+                "punten": -10,
+                "uitleg": "Geen/te weinig vergelijkbare panden",
+            })
+            totaal -= 10
 
     # ── Motion (tot 20 pt) ──
     m_score = (motion or {}).get("motivated_score", 0) if motion else 0
@@ -121,9 +154,9 @@ def bereken_dealscore(
         })
         totaal += 5
 
-    # ── Basis-score (tot 15 pt, schaal 1-10 → 0-15) ──
+    # ── Basis-score (tot 10 pt, schaal 1-10 → 0-10) ──
     if score_basis:
-        pt_basis = min(15, int(score_basis * 1.5))
+        pt_basis = min(10, int(score_basis * 1.0))
         breakdown.append({
             "onderdeel": "Kwaliteitsscore",
             "punten": pt_basis,
@@ -150,11 +183,14 @@ def bereken_dealscore(
                 totaal -= 5
 
     totaal = max(0, min(100, totaal))
+    # Calibratie: 16% worst-case marge + hoge confidence + basis 8 + motivated 5
+    # ≈ 46 pt. Dat is een solide-maar-niet-topper deal → verdient B (50-64).
+    # A+ en A zijn gereserveerd voor echt uitzonderlijke deals.
     grade = (
-        "A+" if totaal >= 85 else
-        "A" if totaal >= 70 else
-        "B" if totaal >= 55 else
-        "C" if totaal >= 40 else
+        "A+" if totaal >= 80 else
+        "A" if totaal >= 65 else
+        "B" if totaal >= 45 else
+        "C" if totaal >= 30 else
         "D"
     )
     return {"score": totaal, "grade": grade, "breakdown": breakdown}

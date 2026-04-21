@@ -41,7 +41,32 @@ class Property:
     calc: dict = field(default_factory=dict)
 
 
-def bereken_fix_flip(prop: Property, cfg: dict, verkoop_m2_override: float = 0, referenties: list = None, renovatie_detail: dict = None) -> Property:
+def _scenario_verkoop(verkoop_oppervlak: float, verkoop_m2: float,
+                       totaal_kosten: float, n_units: int = 1) -> dict:
+    """Generieke verkoop-calc voor fix_flip/splitsen/transformatie.
+
+    Args:
+        verkoop_oppervlak: verkoopbare m² (fix_flip=opp, splits/trafo=gbo_totaal)
+        verkoop_m2: prijs per m²
+        totaal_kosten: alle investeringskosten
+        n_units: aantal afzonderlijke units (bepaalt notariskosten)
+    """
+    omzet = verkoop_oppervlak * verkoop_m2
+    makelaar = omzet * 0.015
+    notaris = n_units * 2_500
+    netto = omzet - makelaar - notaris
+    winst = netto - totaal_kosten
+    marge = (winst / netto * 100) if netto > 0 else -99
+    roi = (winst / totaal_kosten * 100) if totaal_kosten > 0 else -99
+    return {
+        "verkoop_m2": verkoop_m2, "omzet": int(omzet),
+        "makelaar": int(makelaar), "notaris": int(notaris),
+        "netto": int(netto), "winst": int(winst),
+        "marge_pct": round(marge, 1), "roi_pct": round(roi, 1),
+    }
+
+
+def bereken_fix_flip(prop: Property, cfg: dict, verkoop_m2_override: float = 0, referenties: list = None, renovatie_detail: dict = None, ref_detail: dict = None) -> Property:
     m2 = max(prop.opp_m2, 1)
     koop = prop.prijs
 
@@ -69,18 +94,29 @@ def bereken_fix_flip(prop: Property, cfg: dict, verkoop_m2_override: float = 0, 
 
     totaal_kosten = aankoop_totaal + bouw_totaal + rente
 
-    # ── VERKOOP ──
-    verkoop_m2 = verkoop_m2_override if verkoop_m2_override > 0 else cfg["verwacht_verkoop_m2"]
-    verkoop_bron = "referentie" if verkoop_m2_override > 0 else "config"
-    omzet = m2 * verkoop_m2
-    makelaar_verkoop = omzet * 0.015
-    notaris_verkoop = 2_500
-    verkoop_kosten = makelaar_verkoop + notaris_verkoop
-    netto_omzet = omzet - verkoop_kosten
+    # ── VERKOOP (scenarios P25/P50/P75) ──
+    if ref_detail and ref_detail.get("p50_pm2"):
+        verkoop_m2 = ref_detail["p50_pm2"]  # realistisch (mediaan)
+        verkoop_bron = "referentie_p50"
+        scen_worst = _scenario_verkoop(m2, ref_detail.get("p25_pm2") or verkoop_m2, totaal_kosten)
+        scen_real = _scenario_verkoop(m2, verkoop_m2, totaal_kosten)
+        scen_best = _scenario_verkoop(m2, ref_detail.get("p75_pm2") or verkoop_m2, totaal_kosten)
+    else:
+        verkoop_m2 = verkoop_m2_override if verkoop_m2_override > 0 else cfg["verwacht_verkoop_m2"]
+        verkoop_bron = "referentie_p50" if verkoop_m2_override > 0 else "config"
+        scen_real = _scenario_verkoop(m2, verkoop_m2, totaal_kosten)
+        # Fallback zonder spread: worst = -10%, best = +10% als ruwe indicatie
+        scen_worst = _scenario_verkoop(m2, verkoop_m2 * 0.90, totaal_kosten)
+        scen_best = _scenario_verkoop(m2, verkoop_m2 * 1.10, totaal_kosten)
 
-    winst = netto_omzet - totaal_kosten
-    marge = (winst / netto_omzet * 100) if netto_omzet > 0 else -99
-    roi = (winst / totaal_kosten * 100) if totaal_kosten > 0 else -99
+    omzet = scen_real["omzet"]
+    makelaar_verkoop = scen_real["makelaar"]
+    notaris_verkoop = scen_real["notaris"]
+    verkoop_kosten = makelaar_verkoop + notaris_verkoop
+    netto_omzet = scen_real["netto"]
+    winst = scen_real["winst"]
+    marge = scen_real["marge_pct"]
+    roi = scen_real["roi_pct"]
 
     # ── BOD BEREKENING ──
     bod_korting_pct = 10
@@ -136,11 +172,31 @@ def bereken_fix_flip(prop: Property, cfg: dict, verkoop_m2_override: float = 0, 
         "bod_totaal_investering": int(bod_totaal),
         "bod_winst": int(bod_winst),
         "bod_marge_pct": round(bod_marge, 1),
+        # Scenarios P25/P50/P75
+        "scenarios": {
+            "worst": scen_worst,
+            "realistic": scen_real,
+            "best": scen_best,
+        },
+        "verkoop_referentie": {
+            "p25_pm2": ref_detail.get("p25_pm2") if ref_detail else 0,
+            "p50_pm2": ref_detail.get("p50_pm2") if ref_detail else verkoop_m2,
+            "p75_pm2": ref_detail.get("p75_pm2") if ref_detail else 0,
+            "n_refs": ref_detail.get("n_refs", 0) if ref_detail else 0,
+            "n_high_label": ref_detail.get("n_high_label", 0) if ref_detail else 0,
+            "spread_pct": ref_detail.get("spread_pct", 0) if ref_detail else 0,
+            "avg_days_online": ref_detail.get("avg_days_online") if ref_detail else None,
+            "match_niveau": ref_detail.get("match_niveau", "config") if ref_detail else "config",
+            "confidence": ref_detail.get("confidence", 0) if ref_detail else 0,
+            "confidence_label": ref_detail.get("confidence_label", "onvoldoende") if ref_detail else "onvoldoende",
+            "waarschuwingen": ref_detail.get("waarschuwingen", []) if ref_detail else [],
+            "wijk": ref_detail.get("wijk", "") if ref_detail else "",
+        } if ref_detail else None,
     }
     return prop
 
 
-def bereken_splitsing(prop: Property, cfg: dict, n_units: int = 2, verkoop_m2_override: float = 0, referenties: list = None) -> Property:
+def bereken_splitsing(prop: Property, cfg: dict, n_units: int = 2, verkoop_m2_override: float = 0, referenties: list = None, ref_detail: dict = None) -> Property:
     m2 = max(prop.opp_m2, 1)
     koop = prop.prijs
 
@@ -163,17 +219,28 @@ def bereken_splitsing(prop: Property, cfg: dict, n_units: int = 2, verkoop_m2_ov
 
     gbo_per_unit = (m2 * 0.80) / n_units
     gbo_totaal = m2 * 0.80
-    verkoop_m2 = verkoop_m2_override if verkoop_m2_override > 0 else cfg["verwacht_verkoop_m2"]
-    verkoop_bron = "referentie" if verkoop_m2_override > 0 else "config"
-    omzet = n_units * gbo_per_unit * verkoop_m2
-    makelaar_verkoop = omzet * 0.015
-    notaris_verkoop = n_units * 2_500
-    verkoop_kosten = makelaar_verkoop + notaris_verkoop
-    netto_omzet = omzet - verkoop_kosten
 
-    winst = netto_omzet - totaal_kosten
-    marge = (winst / netto_omzet * 100) if netto_omzet > 0 else -99
-    roi = (winst / totaal_kosten * 100) if totaal_kosten > 0 else -99
+    if ref_detail and ref_detail.get("p50_pm2"):
+        verkoop_m2 = ref_detail["p50_pm2"]
+        verkoop_bron = "referentie_p50"
+        scen_worst = _scenario_verkoop(gbo_totaal, ref_detail.get("p25_pm2") or verkoop_m2, totaal_kosten, n_units)
+        scen_real = _scenario_verkoop(gbo_totaal, verkoop_m2, totaal_kosten, n_units)
+        scen_best = _scenario_verkoop(gbo_totaal, ref_detail.get("p75_pm2") or verkoop_m2, totaal_kosten, n_units)
+    else:
+        verkoop_m2 = verkoop_m2_override if verkoop_m2_override > 0 else cfg["verwacht_verkoop_m2"]
+        verkoop_bron = "referentie_p50" if verkoop_m2_override > 0 else "config"
+        scen_real = _scenario_verkoop(gbo_totaal, verkoop_m2, totaal_kosten, n_units)
+        scen_worst = _scenario_verkoop(gbo_totaal, verkoop_m2 * 0.90, totaal_kosten, n_units)
+        scen_best = _scenario_verkoop(gbo_totaal, verkoop_m2 * 1.10, totaal_kosten, n_units)
+
+    omzet = scen_real["omzet"]
+    makelaar_verkoop = scen_real["makelaar"]
+    notaris_verkoop = scen_real["notaris"]
+    verkoop_kosten = makelaar_verkoop + notaris_verkoop
+    netto_omzet = scen_real["netto"]
+    winst = scen_real["winst"]
+    marge = scen_real["marge_pct"]
+    roi = scen_real["roi_pct"]
 
     bod_korting_pct = 10
     bod = int(koop * (1 - bod_korting_pct / 100))
@@ -228,11 +295,35 @@ def bereken_splitsing(prop: Property, cfg: dict, n_units: int = 2, verkoop_m2_ov
         "bod_totaal_investering": int(bod_totaal),
         "bod_winst": int(bod_winst),
         "bod_marge_pct": round(bod_marge, 1),
+        "scenarios": {
+            "worst": scen_worst,
+            "realistic": scen_real,
+            "best": scen_best,
+        },
+        "verkoop_referentie": _ref_detail_dict(ref_detail, verkoop_m2) if ref_detail else None,
     }
     return prop
 
 
-def bereken_transformatie(prop: Property, cfg: dict, verkoop_m2_override: float = 0, referenties: list = None) -> Property:
+def _ref_detail_dict(ref_detail: dict, fallback_p50: float) -> dict:
+    """Serializeer referentie-info voor calc-dict (dashboard/Telegram)."""
+    return {
+        "p25_pm2": ref_detail.get("p25_pm2", 0),
+        "p50_pm2": ref_detail.get("p50_pm2", fallback_p50),
+        "p75_pm2": ref_detail.get("p75_pm2", 0),
+        "n_refs": ref_detail.get("n_refs", 0),
+        "n_high_label": ref_detail.get("n_high_label", 0),
+        "spread_pct": ref_detail.get("spread_pct", 0),
+        "avg_days_online": ref_detail.get("avg_days_online"),
+        "match_niveau": ref_detail.get("match_niveau", "config"),
+        "confidence": ref_detail.get("confidence", 0),
+        "confidence_label": ref_detail.get("confidence_label", "onvoldoende"),
+        "waarschuwingen": ref_detail.get("waarschuwingen", []),
+        "wijk": ref_detail.get("wijk", ""),
+    }
+
+
+def bereken_transformatie(prop: Property, cfg: dict, verkoop_m2_override: float = 0, referenties: list = None, ref_detail: dict = None) -> Property:
     m2 = max(prop.opp_m2, 1)
     koop = prop.prijs
 
@@ -257,17 +348,28 @@ def bereken_transformatie(prop: Property, cfg: dict, verkoop_m2_override: float 
 
     n_units = max(1, int(m2 * 0.75 / 75))
     gbo_totaal = m2 * 0.75
-    verkoop_m2 = verkoop_m2_override if verkoop_m2_override > 0 else cfg["verwacht_verkoop_m2"]
-    verkoop_bron = "referentie" if verkoop_m2_override > 0 else "config"
-    omzet = gbo_totaal * verkoop_m2
-    makelaar_verkoop = omzet * 0.015
-    notaris_verkoop = n_units * 2_500
-    verkoop_kosten = makelaar_verkoop + notaris_verkoop
-    netto_omzet = omzet - verkoop_kosten
 
-    winst = netto_omzet - totaal_kosten
-    marge = (winst / netto_omzet * 100) if netto_omzet > 0 else -99
-    roi = (winst / totaal_kosten * 100) if totaal_kosten > 0 else -99
+    if ref_detail and ref_detail.get("p50_pm2"):
+        verkoop_m2 = ref_detail["p50_pm2"]
+        verkoop_bron = "referentie_p50"
+        scen_worst = _scenario_verkoop(gbo_totaal, ref_detail.get("p25_pm2") or verkoop_m2, totaal_kosten, n_units)
+        scen_real = _scenario_verkoop(gbo_totaal, verkoop_m2, totaal_kosten, n_units)
+        scen_best = _scenario_verkoop(gbo_totaal, ref_detail.get("p75_pm2") or verkoop_m2, totaal_kosten, n_units)
+    else:
+        verkoop_m2 = verkoop_m2_override if verkoop_m2_override > 0 else cfg["verwacht_verkoop_m2"]
+        verkoop_bron = "referentie_p50" if verkoop_m2_override > 0 else "config"
+        scen_real = _scenario_verkoop(gbo_totaal, verkoop_m2, totaal_kosten, n_units)
+        scen_worst = _scenario_verkoop(gbo_totaal, verkoop_m2 * 0.90, totaal_kosten, n_units)
+        scen_best = _scenario_verkoop(gbo_totaal, verkoop_m2 * 1.10, totaal_kosten, n_units)
+
+    omzet = scen_real["omzet"]
+    makelaar_verkoop = scen_real["makelaar"]
+    notaris_verkoop = scen_real["notaris"]
+    verkoop_kosten = makelaar_verkoop + notaris_verkoop
+    netto_omzet = scen_real["netto"]
+    winst = scen_real["winst"]
+    marge = scen_real["marge_pct"]
+    roi = scen_real["roi_pct"]
 
     bod_korting_pct = 12
     bod = int(koop * (1 - bod_korting_pct / 100))
@@ -324,6 +426,12 @@ def bereken_transformatie(prop: Property, cfg: dict, verkoop_m2_override: float 
         "bod_totaal_investering": int(bod_totaal),
         "bod_winst": int(bod_winst),
         "bod_marge_pct": round(bod_marge, 1),
+        "scenarios": {
+            "worst": scen_worst,
+            "realistic": scen_real,
+            "best": scen_best,
+        },
+        "verkoop_referentie": _ref_detail_dict(ref_detail, verkoop_m2) if ref_detail else None,
     }
     return prop
 

@@ -316,11 +316,102 @@ def test_full_pipeline_real_address():
     print(f"      (dealscore: {d['score']}/100 grade {d['grade']})")
 
 
+def test_percentiel():
+    section("Percentiel helper")
+    from referentie import _percentiel
+    vals = [3000, 3500, 4000, 4500, 5000, 5500, 6000]
+    check("P25 ≈ 3750", abs(_percentiel(vals, 25) - 3750) < 1)
+    check("P50 = 4500", _percentiel(vals, 50) == 4500)
+    check("P75 ≈ 5250", abs(_percentiel(vals, 75) - 5250) < 1)
+    check("Lege lijst → 0", _percentiel([], 50) == 0.0)
+
+
+def test_confidence_score():
+    section("Confidence score")
+    from referentie import _confidence_score
+    # Hoge confidence: veel refs, klein spread, veel A/B/C, strak niveau, verse refs
+    high = _confidence_score(n=15, spread_pct=8, high_label_frac=0.7,
+                              match_niveau="pc6_label_fresh", avg_days=30)
+    check(f"Ideale case → conf ≥ 70 (got {high})", high >= 70)
+
+    # Lage confidence: weinig refs, grote spread, weinig A/B/C
+    low = _confidence_score(n=3, spread_pct=55, high_label_frac=0.2,
+                             match_niveau="stad_all_any", avg_days=200)
+    check(f"Slechte case → conf ≤ 35 (got {low})", low <= 35)
+
+
+def test_scenarios_fix_flip():
+    section("Scenarios in bereken_fix_flip")
+    from models import bereken_fix_flip, Property
+    p = Property(source="t", url="u", adres="A 1", stad="Rotterdam",
+                 prijs=300000, opp_m2=100, prijs_per_m2=3000,
+                 type_woning="apartment")
+    cfg = {"ovb_pct": 8, "rente_pct": 8, "renovatie_per_m2": 850,
+           "looptijd_maanden": 9, "verwacht_verkoop_m2": 4800}
+    ref = {
+        "p25_pm2": 4500, "p50_pm2": 5000, "p75_pm2": 5500,
+        "n_refs": 8, "confidence": 70, "confidence_label": "hoog",
+    }
+    p = bereken_fix_flip(p, cfg, ref_detail=ref)
+    scen = p.calc.get("scenarios", {})
+    check("scenarios dict aanwezig", bool(scen))
+    check("worst verkoop_m2 = 4500",
+          scen.get("worst", {}).get("verkoop_m2") == 4500,
+          f"got {scen.get('worst')}")
+    check("best verkoop_m2 = 5500",
+          scen.get("best", {}).get("verkoop_m2") == 5500)
+    check("realistic marge < best marge",
+          scen["realistic"]["marge_pct"] < scen["best"]["marge_pct"])
+    check("worst marge < realistic marge",
+          scen["worst"]["marge_pct"] < scen["realistic"]["marge_pct"])
+
+    vr = p.calc.get("verkoop_referentie", {})
+    check("verkoop_referentie heeft confidence",
+          vr.get("confidence") == 70)
+
+
+def test_dealscore_worst_case():
+    section("Dealscore gebruikt worst-case marge")
+    from dealscore import bereken_dealscore
+    # Deal met optimistische marge maar worst-case onder 8% → lage score
+    d_risky = bereken_dealscore(
+        marge_pct=18, score_basis=7,
+        scenarios={"worst": {"marge_pct": 5}, "realistic": {"marge_pct": 15}, "best": {"marge_pct": 22}},
+        verkoop_referentie={"confidence": 60, "confidence_label": "middel", "n_refs": 8},
+    )
+    check(f"Risky deal (worst 5%) → score ≤ 45 (got {d_risky['score']})",
+          d_risky["score"] <= 45)
+
+    # Robuuste deal: worst-case ≥15% + hoge confidence = solide
+    d_solid = bereken_dealscore(
+        marge_pct=22, score_basis=8,
+        scenarios={"worst": {"marge_pct": 16}, "realistic": {"marge_pct": 22}, "best": {"marge_pct": 28}},
+        verkoop_referentie={"confidence": 80, "confidence_label": "hoog", "n_refs": 14},
+        motion={"motivated_score": 5, "prijsverlaging_pct": 3},
+    )
+    check(f"Solide deal → score ≥ 45 (B grade, got {d_solid['score']})",
+          d_solid["score"] >= 45)
+    check(f"Solide deal → grade ∈ B/A (got {d_solid['grade']})",
+          d_solid["grade"] in ("B", "A", "A+"))
+
+    # Onbetrouwbare verkoop → aftrek
+    d_unknown = bereken_dealscore(
+        marge_pct=20, score_basis=7,
+        scenarios={"worst": {"marge_pct": 15}},
+        verkoop_referentie={"confidence": 15, "confidence_label": "onvoldoende", "n_refs": 1},
+    )
+    has_penalty = any("onbetrouwbaar" in b["onderdeel"].lower()
+                      for b in d_unknown["breakdown"])
+    check("Onvoldoende verkoop-data → 'onbetrouwbaar' aftrek", has_penalty)
+
+
 def main():
     print(f"\n🧪 Integratie-test — SKIP_NETWORK={SKIP_NETWORK}")
     tests = [
         test_classificatie, test_erfpacht, test_motion, test_splitsen,
         test_bag, test_monument, test_risks_aggregator, test_dealscore,
+        test_percentiel, test_confidence_score,
+        test_scenarios_fix_flip, test_dealscore_worst_case,
         test_full_pipeline_real_address,
     ]
     for t in tests:
