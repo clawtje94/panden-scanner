@@ -68,6 +68,12 @@ TRANSFORMATIE = {
     "rente_pct":          8.0,
 }
 
+# ── Telegram notificatie-filter ──────────────────────────────────────────────
+# Voorkomt spam in je chat. Minimum grade voor een Telegram notificatie
+# (B = solide, A = top, A+ = uitzonderlijk). Alles onder deze drempel
+# belandt nog wel in leads.json maar stuurt geen bericht.
+TELEGRAM_MIN_GRADE = "B"   # opties: "A+", "A", "B", "C", "D" (D = altijd sturen)
+
 # ── Verkoop-kwaliteit filter (kill-switch bij slechte data) ──────────────────
 # Als scanner alleen "onvoldoende" verkoop-data heeft EN worst-case marge
 # onder deze drempel ligt, dan skippen. Anders alleen flaggen.

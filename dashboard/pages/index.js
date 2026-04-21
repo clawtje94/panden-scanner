@@ -622,6 +622,9 @@ export default function Home() {
             <button className={`nav-tab ${view === 'compare' ? 'active' : ''}`} onClick={() => setView('compare')}>
               ⚖️ Compare
             </button>
+            <button className={`nav-tab ${view === 'recent' ? 'active' : ''}`} onClick={() => setView('recent')}>
+              🕑 Recent
+            </button>
           </div>
         </nav>
 
@@ -920,6 +923,10 @@ export default function Home() {
         {view === 'portfolio' && <PortfolioView />}
         {view === 'stats' && <StatsView kansen={kansen} />}
         {view === 'compare' && <CompareView kansen={[...kansen, ...savedList, ...hotList]} />}
+        {view === 'recent' && <RecentView allKansen={kansen} onOpen={(u) => {
+          const k = kansen.find(x => x.url === u);
+          if (k) setView('swipe'); // of open detail
+        }} />}
 
         {showNotes && current && (
           <div className="modal-overlay" onClick={() => setShowNotes(false)}>
@@ -932,6 +939,14 @@ export default function Home() {
                 autoFocus
               />
               <div className="modal-actions">
+                <button
+                  className="btn-secondary"
+                  onClick={() => {
+                    const sug = suggereerNotitie(current);
+                    if (sug) setNotesText(t => t ? `${t}\n\n${sug}` : sug);
+                  }}
+                  title="Auto-gegenereerde samenvatting toevoegen"
+                >💡 Suggereer</button>
                 <button className="btn-secondary" onClick={() => setShowNotes(false)}>Annuleren</button>
                 <button className="btn-primary" onClick={saveNotes}>Opslaan</button>
               </div>
@@ -944,12 +959,43 @@ export default function Home() {
 }
 
 // ── Motion / EP-Online / Wijk-check secties ───────────────────────────────
+function PriceHistoryChart({ history }) {
+  if (!history || history.length < 2) return null;
+  const prices = history.map(h => h.prijs);
+  const max = Math.max(...prices), min = Math.min(...prices);
+  const range = max - min || 1;
+  const points = history.map((h, i) => {
+    const x = (i / (history.length - 1)) * 100;
+    const y = 100 - ((h.prijs - min) / range) * 85 - 7;
+    return `${x},${y}`;
+  }).join(' ');
+  return (
+    <div className="price-chart">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+        <polyline points={points} fill="none" stroke="#ff6b00" strokeWidth="1" />
+        {history.map((h, i) => {
+          const x = (i / (history.length - 1)) * 100;
+          const y = 100 - ((h.prijs - min) / range) * 85 - 7;
+          return <circle key={i} cx={x} cy={y} r="1.2" fill="#ff6b00" />;
+        })}
+      </svg>
+      <div className="price-chart-labels">
+        <span>€{Math.round(history[0].prijs / 1000)}k</span>
+        <span>€{Math.round(history[history.length - 1].prijs / 1000)}k</span>
+      </div>
+    </div>
+  );
+}
+
 function MotionSection({ motion }) {
   if (!motion || !motion.dagen_online) return null;
   const m = motion;
   return (
     <div className={`card-calc motion-card ${m.motivated ? 'motion-hot' : ''}`}>
       <h3>{m.motivated ? '🔥 Motivated seller' : 'Motion signalen'}</h3>
+      {m.prijs_historie && m.prijs_historie.length >= 2 && (
+        <PriceHistoryChart history={m.prijs_historie} />
+      )}
       <div className="calc-grid">
         <div><span>Dagen online</span><b>{m.dagen_online}</b></div>
         {m.prijsverlaging_pct > 0 && (
@@ -1119,6 +1165,65 @@ function ListView({ title, items, userState, updateStatus, showRestore }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+// ── Recent viewed ─────────────────────────────────────────────────────────
+function RecentView({ allKansen, onOpen }) {
+  const [items, setItems] = useState([]);
+  const [selected, setSelected] = useState(null);
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('recent_viewed');
+      if (raw) setItems(JSON.parse(raw));
+    } catch {}
+  }, []);
+  const clear = () => {
+    localStorage.removeItem('recent_viewed');
+    setItems([]);
+  };
+  if (items.length === 0) {
+    return (
+      <div className="list-screen">
+        <h2 className="list-title">🕑 Recent bekeken</h2>
+        <div className="empty-state">
+          <p>Nog geen panden bekeken.</p>
+          <p>Klik in een lijst op een kaart — verschijnt hier.</p>
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div className="list-screen">
+      <h2 className="list-title">🕑 Recent bekeken ({items.length})</h2>
+      <button className="btn-secondary" onClick={clear} style={{ marginBottom: 12 }}>Leegmaken</button>
+      <div className="list-grid">
+        {items.map((r, i) => {
+          const full = allKansen.find(k => k.url === r.url) || r;
+          return (
+            <div key={i} className="list-card" onClick={() => setSelected(full)}>
+              {r.foto_url && (
+                <div className="list-card-photo">
+                  <img src={r.foto_url} alt={r.adres} />
+                </div>
+              )}
+              <div className="list-card-header">
+                <div>
+                  <div className="list-card-title">{r.adres}</div>
+                  <div className="list-card-sub">{r.stad} · {new Date(r.viewed_at).toLocaleString('nl-NL')}</div>
+                </div>
+                {r.dealscore && <DealscorePill dealscore={r.dealscore} compact />}
+              </div>
+              <div className="list-card-metrics">
+                <div><span>Prijs</span><b>{eur(r.prijs)}</b></div>
+                <div><span>Marge</span><b>{r.marge_pct}%</b></div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {selected && <DetailModal pand={selected} onClose={() => setSelected(null)} />}
     </div>
   );
 }
@@ -1681,7 +1786,52 @@ function PortfolioForm({ item, onSave, onDelete }) {
   );
 }
 
+function addToRecent(pand) {
+  try {
+    const raw = localStorage.getItem('recent_viewed');
+    const recent = raw ? JSON.parse(raw) : [];
+    const filtered = recent.filter(r => r.url !== pand.url);
+    const next = [{
+      url: pand.url, adres: pand.adres, stad: pand.stad,
+      prijs: pand.prijs, marge_pct: pand.marge_pct,
+      dealscore: pand.dealscore,
+      foto_url: pand.foto_url,
+      viewed_at: new Date().toISOString(),
+    }, ...filtered].slice(0, 20);
+    localStorage.setItem('recent_viewed', JSON.stringify(next));
+  } catch {}
+}
+
+function suggereerNotitie(pand) {
+  const tips = [];
+  const c = pand.calc || {};
+  const ds = pand.dealscore || c.dealscore;
+  if (ds?.grade) tips.push(`Dealscore ${ds.score}/${ds.grade}.`);
+  const m = pand.motion || c.motion;
+  if (m?.motivated) tips.push(`Motivated seller (score ${m.motivated_score}/10).`);
+  if (m?.prijsverlaging_pct > 0) tips.push(`Prijs al ${m.prijsverlaging_pct}% verlaagd.`);
+  if (m?.dagen_online >= 120) tips.push(`${m.dagen_online} dagen online.`);
+  if (m?.makelaarswissel) tips.push(`Makelaarswissel — vorige strategie faalde.`);
+  const ep = pand.ep_online || c.ep_online;
+  if (ep?.forced_renovation) tips.push(`Label ${ep.label} — verhuurverbod 2028 leverage.`);
+  const mon = pand.monument || c.monument;
+  if (mon?.is_rijksmonument) tips.push(`Rijksmonument #${mon.rijksmonument_nr} — reno +30-50%.`);
+  const erf = pand.erfpacht_detail || c.erfpacht_detail;
+  if (erf?.is_erfpacht && !erf.is_afgekocht) tips.push(`Erfpacht (${erf.risk_level}).`);
+  const risks = pand.risks || c.risks;
+  risks?.flags?.forEach(f => {
+    if (!f.niveau || f.niveau === 'geel') return;
+    tips.push(`⚠ ${f.label}.`);
+  });
+  const vr = pand.verkoop_referentie || c.verkoop_referentie;
+  if (vr) tips.push(`Verkoop-confidence ${vr.confidence_label} (N=${vr.n_refs}).`);
+  const sc = pand.scenarios || c.scenarios;
+  if (sc?.worst?.marge_pct !== undefined) tips.push(`Worst-case marge: ${sc.worst.marge_pct}%.`);
+  return tips.join(' ');
+}
+
 function DetailModal({ pand, onClose }) {
+  useEffect(() => { addToRecent(pand); }, [pand?.url]);
   const c = pand.calc || {};
   const motion = pand.motion || c.motion;
   const ep = pand.ep_online || c.ep_online;

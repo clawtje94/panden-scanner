@@ -39,7 +39,7 @@ from renovatie import schat_renovatie
 from looptijd import bereken_looptijd
 from validatie import valideer_verkoopprijs
 from bestemmingsplan import mag_splitsen, mag_opbouwen
-from config import FIX_FLIP, SPLITSING, TRANSFORMATIE, VERKOOP_KWALITEIT
+from config import FIX_FLIP, SPLITSING, TRANSFORMATIE, VERKOOP_KWALITEIT, TELEGRAM_MIN_GRADE
 
 logging.basicConfig(
     level=logging.INFO,
@@ -706,13 +706,22 @@ def run_scan():
             alle_kansen.append(kans)
             sla_op(kans)
 
-            # Alleen Telegram notificatie voor NIEUWE kansen
+            # Alleen Telegram notificatie voor NIEUWE kansen + minimum grade
             if is_nieuw(kans.url):
                 logger.info(
                     "KANS NIEUW: %s | %s | marge %.1f%% | winst EUR%d",
                     kans.adres, kans.strategie, kans.marge_pct, kans.winst_euro,
                 )
-                stuur_property_notificatie(kans)
+                # Filter op dealscore-grade voor Telegram
+                grade = (kans.calc.get("dealscore") or {}).get("grade", "D")
+                grade_order = {"A+": 5, "A": 4, "B": 3, "C": 2, "D": 1}
+                if grade_order.get(grade, 0) >= grade_order.get(TELEGRAM_MIN_GRADE, 3):
+                    stuur_property_notificatie(kans)
+                else:
+                    logger.info(
+                        "SKIP notificatie %s — grade %s < drempel %s",
+                        kans.adres, grade, TELEGRAM_MIN_GRADE,
+                    )
                 nieuw_gevonden += 1
 
         if not kansen:
