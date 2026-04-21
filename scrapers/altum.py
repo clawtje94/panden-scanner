@@ -172,3 +172,52 @@ def get_modelwaarde(postcode: str, huisnummer: str, toevoeging: str = "") -> Opt
 
 def is_available() -> bool:
     return bool(ALTUM_API_KEY)
+
+
+def inschat_eigenaarsduur(koopsom_data: Optional[dict]) -> Optional[dict]:
+    """Parse Altum koopsom-response naar eigenaarsduur-signaal.
+
+    Altum retourneert transactie-historie. Laatste transactie = aankoop
+    door huidige eigenaar → (nu - datum) = eigenaarsduur in jaren.
+
+    Lange eigenaarsduur + onderhouds-achterstand + slecht label = hoge
+    motivatie-score voor verkoop (eigenaar heeft pand "uitgewoond").
+    """
+    if not koopsom_data:
+        return None
+    # Altum levert typisch: {"transacties": [{"datum":"2010-05-12","prijs":234000}, ...]}
+    trans = (
+        koopsom_data.get("transacties")
+        or koopsom_data.get("transactions")
+        or koopsom_data.get("verkopen")
+        or []
+    )
+    if not trans:
+        return None
+    try:
+        # Neem meest recente transactie
+        trans_sorted = sorted(
+            trans,
+            key=lambda t: t.get("datum") or t.get("date") or "",
+            reverse=True,
+        )
+        laatste = trans_sorted[0]
+        datum_str = laatste.get("datum") or laatste.get("date") or ""
+        prijs = laatste.get("prijs") or laatste.get("price") or 0
+        datum = datetime.fromisoformat(datum_str[:10])
+        jaren = (datetime.now() - datum).days / 365.25
+        motivatie = (
+            "hoog" if jaren >= 20 else
+            "middel" if jaren >= 10 else
+            "laag"
+        )
+        return {
+            "laatste_transactie_datum": datum_str[:10],
+            "laatste_koopsom": int(prijs) if prijs else 0,
+            "eigenaarsduur_jaren": round(jaren, 1),
+            "motivatie_inschatting": motivatie,
+            "n_transacties": len(trans),
+        }
+    except Exception as e:
+        logger.debug("Altum eigenaarsduur parse fout: %s", e)
+        return None

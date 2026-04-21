@@ -295,6 +295,19 @@ a { color: #ff6b00; text-decoration: none; }
 .sig-list span { color: #ccc; }
 .sig-list b { color: #ff6b00; font-weight: 700; }
 
+/* ── MAKELAAR INTEL ── */
+.mkl-row {
+  display: grid; grid-template-columns: 2fr 0.5fr 0.7fr 0.7fr 0.7fr 0.7fr;
+  gap: 8px; padding: 6px 0; font-size: 12px;
+  border-bottom: 1px dashed #1a1a1a; color: #ccc;
+}
+.mkl-row:last-child { border-bottom: none; }
+.mkl-row.mkl-header {
+  font-weight: 700; color: #888; font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.3px;
+}
+.mkl-name { color: #fff; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
 /* ── VERKOOP SCENARIOS ── */
 .verkoop-card {
   background: linear-gradient(180deg, #0a1a14, #080b08);
@@ -397,6 +410,55 @@ a { color: #ff6b00; text-decoration: none; }
 .cmp-links a {
   padding: 10px 16px; background: #1a1a1a; border-radius: 8px;
   border: 1px solid #333;
+}
+
+/* ── BOD-ADVIES ── */
+.bod-card {
+  background: linear-gradient(180deg, #1a1208, #0f0a04);
+  border: 1px solid #4d3a1a;
+}
+.bod-card h3 { color: #ffb074; }
+.bod-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 8px; margin-bottom: 14px;
+}
+.bod-niveau {
+  background: #0a0a0a; border: 1px solid #222;
+  border-radius: 10px; padding: 12px 10px; text-align: center;
+}
+.bod-niveau.aggressief { border-color: #5a2a2a; background: #100808; }
+.bod-niveau.markt { border-color: #4d3a1a; background: #100c08; }
+.bod-niveau.plafond { border-color: #1a4d3a; background: #080f0b; }
+.bod-label {
+  font-size: 10px; color: #aaa;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.bod-price {
+  font-size: 17px; font-weight: 700; color: #fff;
+  margin-bottom: 4px;
+}
+.bod-korting { font-size: 11px; color: #888; }
+.bod-strategie {
+  padding: 8px 10px;
+  background: rgba(255, 107, 0, 0.08);
+  border-left: 3px solid #ff6b00;
+  border-radius: 4px;
+  font-size: 12px; color: #ffb074; font-weight: 600;
+  margin-bottom: 10px;
+}
+.bod-argumenten {
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+}
+.bod-arg-header {
+  font-size: 10px; color: #888;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.bod-arg {
+  font-size: 12px; color: #ccc; line-height: 1.5; margin: 3px 0;
 }
 
 .swipe-hints {

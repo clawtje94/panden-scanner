@@ -34,6 +34,7 @@ def bereken_looptijd(
     stad: str = "",
     type_woning: str = "",
     is_opknapper: bool = False,
+    avg_days_online_wijk: float = None,
 ) -> dict:
     """
     Bereken realistische projectlooptijd in maanden.
@@ -78,8 +79,17 @@ def bereken_looptijd(
     else:
         vergunning_mnd = VERGUNNING_MAANDEN.get(stad_clean, 3)
 
-    # Verkooptijd
-    verkoop_mnd = VERKOOPTIJD_MAANDEN
+    # Verkooptijd — gebruik echte wijk-data als beschikbaar
+    # avg_days_online_wijk komt uit referentie-engine (gemiddelde dagen dat
+    # vergelijkbare panden op Funda staan in deze wijk). Zelfs na listing
+    # duurt verkoop + transactie nog ~6 weken.
+    if avg_days_online_wijk and avg_days_online_wijk > 0:
+        verkoop_mnd = round(avg_days_online_wijk / 30 + 1.5, 1)
+        verkoop_mnd = max(1.5, min(verkoop_mnd, 12))  # clamp 1.5-12 mnd
+        verkoop_bron = f"wijk-data ({int(avg_days_online_wijk)}d online)"
+    else:
+        verkoop_mnd = VERKOOPTIJD_MAANDEN
+        verkoop_bron = "landelijk gemiddelde"
 
     totaal = round(vergunning_mnd + verbouw_mnd + verkoop_mnd)
 
@@ -93,5 +103,6 @@ def bereken_looptijd(
         "vergunning_maanden": vergunning_mnd,
         "verbouw_maanden": verbouw_mnd,
         "verkoop_maanden": verkoop_mnd,
+        "verkoop_bron": verkoop_bron,
         "type": reno_type,
     }

@@ -28,10 +28,12 @@ from scrapers.kavels import scrape_kavels
 from scrapers.ep_online import verrijk_energielabel
 from scrapers.bag import verrijk_bag
 from scrapers.monument import verrijk_monument_status
+from scrapers.cbs_buurt import get_gemeente_cijfers, wijk_kwaliteit_score
 from classificatie import classificeer_property
 from erfpacht import detect_erfpacht
 from risks import aggregate_risks
 from dealscore import bereken_dealscore
+from bod_advies import genereer_bod_advies
 from referentie import zoek_vergelijkbare_detail
 from renovatie import schat_renovatie
 from looptijd import bereken_looptijd
@@ -293,13 +295,15 @@ def evalueer_property(prop: Property) -> List[Property]:
         stad=prop.stad,
     )
 
-    # Dynamische looptijd op basis van renovatietype
+    # Dynamische looptijd — voed ook avg_days_online uit referentie-engine
+    # terug voor realistische verkoop-duur per wijk.
     looptijd_info = bereken_looptijd(
         renovatie_per_m2=reno["per_m2"],
         opp_m2=prop.opp_m2,
         stad=prop.stad,
         type_woning=prop.type_woning,
         is_opknapper=is_opknapper,
+        avg_days_online_wijk=ref_detail.get("avg_days_online"),
     )
 
     # Splitsen/opbouwen mogelijkheden — postcode meegeven voor wijk-checks
@@ -579,6 +583,15 @@ def run_scan():
                 logger.debug("BAG fout %s: %s", kans.adres, e)
                 bag_data = {}
 
+            # CBS buurt-data (gemeente-niveau) + wijk-kwaliteit-score
+            try:
+                cbs = get_gemeente_cijfers(kans.stad)
+                if cbs:
+                    kans.calc["cbs"] = cbs
+                    kans.calc["wijk_kwaliteit"] = wijk_kwaliteit_score(cbs)
+            except Exception as e:
+                logger.debug("CBS fout %s: %s", kans.adres, e)
+
             # Monument check via RCE WFS (gebruikt BAG-coords als aanwezig)
             try:
                 mon = verrijk_monument_status(kans, bag_data)
@@ -635,21 +648,24 @@ def run_scan():
                     continue
 
             # Altum AI — alleen voor top-deals om gratis-tier (50/mnd) te sparen.
-            # Roepen we aan op indicatieve dealscore >= 65, die weten we nog
-            # niet precies — we schatten op basis van marge.
             if kans.marge_pct >= 12 and kans.postcode and kans.adres:
                 try:
-                    from scrapers.altum import get_koopsom, get_modelwaarde, is_available
+                    from scrapers.altum import (
+                        get_koopsom, get_modelwaarde, is_available,
+                        inschat_eigenaarsduur,
+                    )
                     from scrapers.bag import _parse_huisnummer
                     if is_available():
                         hn, hl, tv = _parse_huisnummer(kans.adres)
                         if hn:
                             koop = get_koopsom(kans.postcode, hn, tv)
                             mw = get_modelwaarde(kans.postcode, hn, tv)
-                            if koop or mw:
+                            eigen = inschat_eigenaarsduur(koop)
+                            if koop or mw or eigen:
                                 kans.calc["altum"] = {
                                     "koopsom": koop,
                                     "modelwaarde": mw,
+                                    "eigenaarsduur": eigen,
                                 }
                 except Exception as e:
                     logger.debug("Altum fout %s: %s", kans.adres, e)
@@ -669,6 +685,22 @@ def run_scan():
                 scenarios=kans.calc.get("scenarios"),
             )
             kans.calc["dealscore"] = dscore
+
+            # Bod-advies met onderhandelings-argumenten
+            try:
+                bod = genereer_bod_advies(
+                    vraagprijs=kans.prijs,
+                    calc=kans.calc,
+                    motion=kans.calc.get("motion"),
+                    risks=risks,
+                    ep_online=kans.calc.get("ep_online"),
+                    erfpacht=erf,
+                    bag=bag_data,
+                    opp_m2=kans.opp_m2,
+                )
+                kans.calc["bod_advies"] = bod
+            except Exception as e:
+                logger.debug("bod_advies fout %s: %s", kans.adres, e)
 
             alle_kansen.append(kans)
             sla_op(kans)
@@ -781,6 +813,7 @@ def run_scan():
             "dealscore": k.calc.get("dealscore", {}),
             "scenarios": k.calc.get("scenarios", {}),
             "verkoop_referentie": k.calc.get("verkoop_referentie", {}),
+            "bod_advies": k.calc.get("bod_advies", {}),
             "calc": k.calc,
         })
     # Sorteer op dealscore (hoogste eerst), fallback marge

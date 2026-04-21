@@ -257,6 +257,41 @@ function MonumentSection({ monument }) {
   );
 }
 
+function BodAdviesSection({ advies }) {
+  if (!advies) return null;
+  return (
+    <div className="card-calc bod-card">
+      <h3>🎯 Bod-advies</h3>
+      <div className="bod-grid">
+        <div className="bod-niveau aggressief">
+          <div className="bod-label">Agressief</div>
+          <div className="bod-price">{eur(advies.aggressief?.bod)}</div>
+          <div className="bod-korting">-{advies.aggressief?.korting_pct}%</div>
+        </div>
+        <div className="bod-niveau markt">
+          <div className="bod-label">Markt</div>
+          <div className="bod-price">{eur(advies.markt?.bod)}</div>
+          <div className="bod-korting">-{advies.markt?.korting_pct}%</div>
+        </div>
+        <div className="bod-niveau plafond">
+          <div className="bod-label">Plafond</div>
+          <div className="bod-price">{eur(advies.plafond?.bod)}</div>
+          <div className="bod-korting">10% worst-marge</div>
+        </div>
+      </div>
+      <div className="bod-strategie">{advies.strategie}</div>
+      {advies.argumenten?.length > 0 && (
+        <div className="bod-argumenten">
+          <div className="bod-arg-header">Onderhandelings-argumenten</div>
+          {advies.argumenten.map((a, i) => (
+            <div key={i} className="bod-arg">• {a}</div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function VerkoopSection({ scenarios, verkoop_referentie, calc }) {
   const s = scenarios || calc?.scenarios;
   const vr = verkoop_referentie || calc?.verkoop_referentie;
@@ -638,6 +673,7 @@ export default function Home() {
                   </div>
 
                   <RisksSection risks={current.risks || current.calc?.risks} />
+                  <BodAdviesSection advies={current.bod_advies || current.calc?.bod_advies} />
                   <VerkoopSection
                     scenarios={current.scenarios || current.calc?.scenarios}
                     verkoop_referentie={current.verkoop_referentie || current.calc?.verkoop_referentie}
@@ -1267,6 +1303,8 @@ function StatsView({ kansen }) {
         ))}
       </div>
 
+      <MakelaarIntel kansen={kansen} />
+
       <div className="stats-card">
         <h3>Per strategie</h3>
         {topStratArr.map(([s, n]) => (
@@ -1283,6 +1321,61 @@ function StatsView({ kansen }) {
       <div style={{ marginTop: 20 }}>
         <button className="btn-primary" onClick={downloadCsv}>📥 Download CSV ({kansen.length} kansen)</button>
       </div>
+    </div>
+  );
+}
+
+function MakelaarIntel({ kansen }) {
+  // Aggregeer per makelaar: # listings, gem dealscore, # motivated, gem dagen online
+  const byMak = new Map();
+  kansen.forEach(k => {
+    const m = k.calc?.beschrijving_parsed?.makelaar || k.calc?.motion?.makelaars_recent?.[0]
+      || k.calc?.makelaar || (k.source?.startsWith('mkl_') ? k.source.replace('mkl_', '').replace(/_/g, ' ') : null);
+    if (!m) return;
+    if (!byMak.has(m)) byMak.set(m, { n: 0, dealscoreSum: 0, motivated: 0, dagenSum: 0, dagenN: 0, verlaagdN: 0 });
+    const e = byMak.get(m);
+    e.n += 1;
+    e.dealscoreSum += k.dealscore?.score || 0;
+    if (k.motion?.motivated) e.motivated += 1;
+    if (k.motion?.dagen_online) { e.dagenSum += k.motion.dagen_online; e.dagenN += 1; }
+    if (k.motion?.prijsverlaging_pct > 0) e.verlaagdN += 1;
+  });
+  const rows = Array.from(byMak.entries())
+    .filter(([_, e]) => e.n >= 1)
+    .map(([m, e]) => ({
+      mak: m,
+      n: e.n,
+      gemScore: Math.round(e.dealscoreSum / e.n),
+      motivated: e.motivated,
+      gemDagen: e.dagenN > 0 ? Math.round(e.dagenSum / e.dagenN) : null,
+      verlaagdPct: e.n > 0 ? Math.round(e.verlaagdN / e.n * 100) : 0,
+    }))
+    .sort((a, b) => b.motivated - a.motivated || b.n - a.n)
+    .slice(0, 10);
+
+  if (rows.length === 0) return null;
+
+  return (
+    <div className="stats-card">
+      <h3>Makelaar-intelligence (top 10)</h3>
+      <div className="mkl-row mkl-header">
+        <div>Makelaar</div>
+        <div>N</div>
+        <div>Score</div>
+        <div>Motiv.</div>
+        <div>Dagen</div>
+        <div>% verl.</div>
+      </div>
+      {rows.map((r, i) => (
+        <div key={i} className="mkl-row">
+          <div className="mkl-name">{r.mak}</div>
+          <div>{r.n}</div>
+          <div>{r.gemScore}</div>
+          <div>{r.motivated}</div>
+          <div>{r.gemDagen ?? '-'}</div>
+          <div>{r.verlaagdPct}%</div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -1517,6 +1610,7 @@ function DetailModal({ pand, onClose }) {
         </div>
 
         <RisksSection risks={pand.risks || c.risks} />
+        <BodAdviesSection advies={pand.bod_advies || c.bod_advies} />
         <VerkoopSection
           scenarios={pand.scenarios || c.scenarios}
           verkoop_referentie={pand.verkoop_referentie || c.verkoop_referentie}

@@ -1,0 +1,30 @@
+name: Weekly Digest (Telegram)
+
+on:
+  schedule:
+    - cron: "0 7 * * 1"   # Elke maandag om 07:00 UTC (09:00 NL)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  digest:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installeer requests
+        run: pip install requests
+
+      - name: Verstuur digest
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python weekly_digest.py

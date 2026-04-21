@@ -177,6 +177,22 @@ def stuur_property_notificatie(prop: Property) -> bool:
     tekst += f"Winst:  <b>{_eur(c['bod_winst'])}</b>\n"
     tekst += f"Marge:  <b>{c['bod_marge_pct']}%</b>\n"
 
+    # ── Bod-advies ──
+    b = c.get("bod_advies") or {}
+    if b.get("aggressief"):
+        tekst += f"\n<b>BOD-ADVIES</b>\n"
+        tekst += f"{'─' * 32}\n"
+        tekst += f"Agressief: {_eur(b['aggressief']['bod'])} (-{b['aggressief']['korting_pct']}%)\n"
+        tekst += f"Markt:     {_eur(b['markt']['bod'])} (-{b['markt']['korting_pct']}%)\n"
+        if b.get("plafond") and b["plafond"].get("bod"):
+            tekst += f"Plafond:   {_eur(b['plafond']['bod'])} (10% worst-marge)\n"
+        if b.get("strategie"):
+            tekst += f"<i>{b['strategie']}</i>\n"
+        if b.get("argumenten"):
+            tekst += "\n<i>Argumenten:</i>\n"
+            for arg in b["argumenten"][:5]:
+                tekst += f"• {arg}\n"
+
     # ── Verkoop scenarios + confidence ──
     scen = c.get("scenarios") or {}
     vref = c.get("verkoop_referentie") or {}
