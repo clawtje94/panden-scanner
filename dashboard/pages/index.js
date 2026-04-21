@@ -104,6 +104,18 @@ function SignalBadges({ pand, compact = false }) {
     badges.push(<span key="verh" className="signal-badge verhuurd">⚠ Verhuurd</span>);
   }
 
+  // Risk-flags indicator (alleen als er echte risks zijn)
+  const risks = pand.risks || pand.calc?.risks;
+  if (risks?.aantal > 0) {
+    const niv = risks.zwaarste;
+    const kleur = niv === 'rood' ? 'risk-rood' : niv === 'oranje' ? 'risk-oranje' : 'risk-geel';
+    badges.push(<span key="risk" className={`signal-badge ${kleur}`}>⚠ {risks.aantal} risico's</span>);
+  }
+  // Monument
+  if ((pand.monument || pand.calc?.monument)?.is_rijksmonument) {
+    badges.push(<span key="mon" className="signal-badge monument">🏛️ Rijksmonument</span>);
+  }
+
   if (!compact) {
     flags.forEach((f, i) => badges.push(
       <span key={`f${i}`} className={`signal-badge mtn-${f.kind}`}>{f.label}</span>
@@ -128,6 +140,7 @@ const STATUS_COLORS = {
 };
 
 const SORT_OPTIONS = [
+  { key: 'dealscore', label: 'Dealscore ↓', fn: (a, b) => (b.dealscore?.score || 0) - (a.dealscore?.score || 0) },
   { key: 'marge', label: 'Marge ↓', fn: (a, b) => (b.marge_pct || 0) - (a.marge_pct || 0) },
   { key: 'winst', label: 'Winst ↓', fn: (a, b) => (b.winst_euro || 0) - (a.winst_euro || 0) },
   { key: 'score', label: 'Score ↓', fn: (a, b) => (b.score || 0) - (a.score || 0) },
@@ -135,6 +148,131 @@ const SORT_OPTIONS = [
   { key: 'dagen', label: 'Dagen online ↓', fn: (a, b) => (b.motion?.dagen_online || 0) - (a.motion?.dagen_online || 0) },
   { key: 'prijs_asc', label: 'Prijs ↑', fn: (a, b) => (a.prijs || 0) - (b.prijs || 0) },
 ];
+
+const GRADE_COLOR = {
+  'A+': '#00b894', 'A': '#00a885', 'B': '#fdcb6e',
+  'C': '#ff9b44', 'D': '#e74c3c',
+};
+
+function DealscorePill({ dealscore, compact = false }) {
+  if (!dealscore || !dealscore.score && dealscore.score !== 0) return null;
+  const color = GRADE_COLOR[dealscore.grade] || '#888';
+  return (
+    <div className={`dealscore-pill ${compact ? 'compact' : ''}`} style={{ borderColor: color, color }}>
+      <span className="ds-grade" style={{ background: color }}>{dealscore.grade}</span>
+      <span className="ds-num">{dealscore.score}</span>
+      {!compact && <span className="ds-label">Deal</span>}
+    </div>
+  );
+}
+
+function RisksSection({ risks }) {
+  if (!risks) return null;
+  const flags = risks.flags || [];
+  const kansen = risks.kansen || [];
+  if (flags.length === 0 && kansen.length === 0) return null;
+
+  const iconFor = (niveau) => ({ rood: '🚫', oranje: '⚠️', geel: '⚡' }[niveau] || '•');
+  return (
+    <div className="card-calc risks-card">
+      <h3>Risico-profiel</h3>
+      {flags.map((f, i) => (
+        <div key={i} className={`risk-row risk-${f.niveau}`}>
+          <span className="risk-icon">{iconFor(f.niveau)}</span>
+          <div className="risk-body">
+            <div className="risk-label">{f.label}</div>
+            {f.details && <div className="risk-details">{f.details}</div>}
+          </div>
+        </div>
+      ))}
+      {kansen.length > 0 && <h4 className="kansen-h4">Kansen</h4>}
+      {kansen.map((k, i) => (
+        <div key={i} className="risk-row kans-row">
+          <span className="risk-icon">✓</span>
+          <div className="risk-body">
+            <div className="risk-label">{k.label}</div>
+            {k.details && <div className="risk-details">{k.details}</div>}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function DealscoreBreakdown({ dealscore }) {
+  if (!dealscore || !dealscore.breakdown) return null;
+  return (
+    <div className="card-calc ds-breakdown-card">
+      <h3>Dealscore breakdown · {dealscore.score}/100 · grade {dealscore.grade}</h3>
+      {dealscore.breakdown.map((b, i) => (
+        <div key={i} className="ds-row">
+          <span>{b.onderdeel}</span>
+          <b style={{ color: b.punten < 0 ? '#e74c3c' : '#00b894' }}>
+            {b.punten > 0 ? '+' : ''}{b.punten}
+          </b>
+          <span className="ds-uitleg">{b.uitleg}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function BagSection({ bag, funda_bouwjaar, funda_opp }) {
+  if (!bag || !bag.oppervlakte) return null;
+  return (
+    <div className="card-calc bag-card">
+      <h3>🏛️ BAG (Kadaster)</h3>
+      <div className="calc-grid">
+        <div><span>Gebruiksdoel</span><b>{bag.gebruiksdoel || '—'}</b></div>
+        {bag.bouwjaar && <div><span>Bouwjaar</span><b>{bag.bouwjaar}{funda_bouwjaar && funda_bouwjaar !== bag.bouwjaar ? ` (Funda: ${funda_bouwjaar})` : ''}</b></div>}
+        {bag.oppervlakte && <div><span>Oppervlakte</span><b>{bag.oppervlakte} m²{funda_opp && Math.abs(funda_opp - bag.oppervlakte) / bag.oppervlakte > 0.1 ? ` (Funda: ${funda_opp})` : ''}</b></div>}
+        {bag.pandstatus && <div><span>Pandstatus</span><b>{bag.pandstatus}</b></div>}
+        {bag.status && <div><span>VO status</span><b>{bag.status}</b></div>}
+        {bag.wijk && <div><span>Wijk</span><b>{bag.wijk}</b></div>}
+        {bag.buurt && <div><span>Buurt</span><b>{bag.buurt}</b></div>}
+      </div>
+    </div>
+  );
+}
+
+function MonumentSection({ monument }) {
+  if (!monument || !monument.is_rijksmonument) return null;
+  return (
+    <div className="card-calc monument-card">
+      <h3>🏛️ Rijksmonument</h3>
+      <div className="calc-grid">
+        <div><span>Nummer</span><b>{monument.rijksmonument_nr}</b></div>
+        {monument.hoofdcategorie && <div><span>Categorie</span><b>{monument.hoofdcategorie}</b></div>}
+        {monument.subcategorie && <div><span>Subcategorie</span><b>{monument.subcategorie}</b></div>}
+      </div>
+      {monument.url && (
+        <a href={monument.url} target="_blank" rel="noopener noreferrer" className="view-link" style={{ marginTop: 8 }}>
+          Monumentenregister →
+        </a>
+      )}
+      <div className="monument-note">
+        Verbouwing 30-50% duurder + welstandseisen + vergunningstraject. Check ook beschermd stadsgezicht.
+      </div>
+    </div>
+  );
+}
+
+function ErfpachtSection({ erfpacht }) {
+  if (!erfpacht || (!erfpacht.is_erfpacht && !erfpacht.toelichting)) return null;
+  const risk = erfpacht.risk_level || 'geen';
+  return (
+    <div className={`card-calc erfpacht-card erfpacht-${risk}`}>
+      <h3>Erfpacht</h3>
+      <div className="calc-grid">
+        <div><span>Status</span><b>{erfpacht.is_eeuwigdurend ? 'Eeuwigdurend' : erfpacht.is_afgekocht ? 'Afgekocht' : erfpacht.is_erfpacht ? 'Tijdelijk / actief' : 'Eigen grond'}</b></div>
+        {erfpacht.eindjaar && <div><span>Eindjaar</span><b>{erfpacht.eindjaar} ({erfpacht.jaren_resterend}j te gaan)</b></div>}
+        {erfpacht.canon_euro && <div><span>Canon</span><b>€{erfpacht.canon_euro.toLocaleString('nl-NL')}/jr</b></div>}
+        <div><span>Risico</span><b style={{ color: risk === 'hoog' ? '#e74c3c' : risk === 'middel' ? '#ff9b44' : '#00b894' }}>{risk}</b></div>
+      </div>
+      {erfpacht.toelichting && <div className="erfpacht-note">{erfpacht.toelichting}</div>}
+    </div>
+  );
+}
 
 export default function Home() {
   const [data, setData] = useState(null);
@@ -286,6 +424,9 @@ export default function Home() {
             <button className={`nav-tab ${view === 'beleggingen' ? 'active' : ''}`} onClick={() => setView('beleggingen')}>
               Beleggingen<span className="count">{beleggingen.length}</span>
             </button>
+            <button className={`nav-tab ${view === 'portfolio' ? 'active' : ''}`} onClick={() => setView('portfolio')}>
+              🏘️ Portfolio
+            </button>
           </div>
         </nav>
 
@@ -351,6 +492,7 @@ export default function Home() {
                     <div className="card-location">
                       📍 {current.stad}{current.wijk ? ` · ${current.wijk}` : ''}{current.postcode ? ` · ${current.postcode}` : ''}
                     </div>
+                    {current.dealscore && <DealscorePill dealscore={current.dealscore} />}
                   </div>
 
                   <SignalBadges pand={current} />
@@ -395,8 +537,12 @@ export default function Home() {
                     {current.calc?.opbouwen?.mag_opbouwen === true && <span className="badge extra">Opbouwen mogelijk</span>}
                   </div>
 
+                  <RisksSection risks={current.risks || current.calc?.risks} />
                   <MotionSection motion={current.motion || current.calc?.motion} />
                   <EpOnlineSection ep={current.ep_online || current.calc?.ep_online} />
+                  <BagSection bag={current.bag || current.calc?.bag} funda_bouwjaar={current.bouwjaar} funda_opp={current.opp_m2} />
+                  <MonumentSection monument={current.monument || current.calc?.monument} />
+                  <ErfpachtSection erfpacht={current.erfpacht_detail || current.calc?.erfpacht_detail} />
                   <WijkCheckSection wijk={current.calc?.splitsen?.wijkcheck} />
 
                   <div className="card-calc">
@@ -562,6 +708,8 @@ export default function Home() {
             </div>
           </div>
         )}
+
+        {view === 'portfolio' && <PortfolioView />}
 
         {showNotes && current && (
           <div className="modal-overlay" onClick={() => setShowNotes(false)}>
@@ -765,6 +913,185 @@ function ListView({ title, items, userState, updateStatus, showRestore }) {
   );
 }
 
+// ── Portfolio tab (eigen Bateau panden) ──────────────────────────────────
+const PORTFOLIO_STATUSES = [
+  { key: 'prospect', label: 'Prospect', color: '#888' },
+  { key: 'onderhandeling', label: 'Onderhandeling', color: '#fdcb6e' },
+  { key: 'aangekocht', label: 'Aangekocht', color: '#00b894' },
+  { key: 'verbouwing', label: 'Verbouwing', color: '#ff6b00' },
+  { key: 'in_verkoop', label: 'In verkoop', color: '#0984e3' },
+  { key: 'verhuurd', label: 'Verhuurd', color: '#6c5ce7' },
+  { key: 'verkocht', label: 'Verkocht', color: '#2d3436' },
+];
+const EMPTY_ITEM = {
+  adres: '', stad: '', postcode: '', status: 'prospect',
+  koopprijs: '', koopdatum: '', verwachte_exit: '', exit_datum: '',
+  verbouwkosten: '', verbouw_start: '', verbouw_eind: '',
+  makelaar: '', aannemer: '', notaris: '', financier: '',
+  notities: '', url: '',
+};
+
+function PortfolioView() {
+  const [items, setItems] = useState([]);
+  const [editing, setEditing] = useState(null);  // object or null
+  const [filterStatus, setFilterStatus] = useState('alle');
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('bateau_portfolio');
+      if (raw) setItems(JSON.parse(raw));
+    } catch {}
+  }, []);
+
+  const save = (next) => {
+    setItems(next);
+    localStorage.setItem('bateau_portfolio', JSON.stringify(next));
+  };
+
+  const upsert = (item) => {
+    if (item._id) {
+      save(items.map(x => x._id === item._id ? item : x));
+    } else {
+      item._id = 'p_' + Date.now();
+      item._created = new Date().toISOString();
+      save([...items, item]);
+    }
+    setEditing(null);
+  };
+  const remove = (id) => {
+    if (!confirm('Pand verwijderen uit portfolio?')) return;
+    save(items.filter(x => x._id !== id));
+  };
+
+  const filtered = filterStatus === 'alle' ? items : items.filter(x => x.status === filterStatus);
+
+  // Aggregaten
+  const totaalKoop = items.reduce((s, x) => s + (Number(x.koopprijs) || 0), 0);
+  const totaalVerbouw = items.reduce((s, x) => s + (Number(x.verbouwkosten) || 0), 0);
+  const totaalExit = items.reduce((s, x) => s + (Number(x.verwachte_exit) || 0), 0);
+  const verwachteWinst = totaalExit - totaalKoop - totaalVerbouw;
+
+  return (
+    <div className="list-screen">
+      <h2 className="list-title">🏘️ Bateau Portfolio</h2>
+      <p className="subtle">Eigen panden + projecten. Data lokaal in je browser (localStorage).</p>
+
+      <div className="portfolio-aggregate">
+        <div><span>Panden</span><b>{items.length}</b></div>
+        <div><span>Investering</span><b>{eur(totaalKoop + totaalVerbouw)}</b></div>
+        <div><span>Exit (verwacht)</span><b>{eur(totaalExit)}</b></div>
+        <div className={verwachteWinst > 0 ? 'green' : 'red'}><span>Verwachte winst</span><b>{eur(verwachteWinst)}</b></div>
+      </div>
+
+      <div className="portfolio-actions">
+        <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
+          <option value="alle">Alle statussen</option>
+          {PORTFOLIO_STATUSES.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
+        </select>
+        <button className="btn-primary" onClick={() => setEditing({ ...EMPTY_ITEM })}>+ Pand toevoegen</button>
+      </div>
+
+      {filtered.length === 0 ? (
+        <div className="empty-state">
+          <p>Nog geen panden in portfolio.</p>
+          <p>Voeg er één toe om ROI, status en contactpersonen te tracken.</p>
+        </div>
+      ) : (
+        <div className="list-grid">
+          {filtered.map(p => {
+            const status = PORTFOLIO_STATUSES.find(s => s.key === p.status) || PORTFOLIO_STATUSES[0];
+            const kost = (Number(p.koopprijs) || 0) + (Number(p.verbouwkosten) || 0);
+            const winst = (Number(p.verwachte_exit) || 0) - kost;
+            return (
+              <div key={p._id} className="list-card" onClick={() => setEditing(p)}>
+                <div className="list-card-header">
+                  <div>
+                    <div className="list-card-title">{p.adres || '(geen adres)'}</div>
+                    <div className="list-card-sub">{p.stad}{p.postcode ? ` · ${p.postcode}` : ''}</div>
+                  </div>
+                  <div className="port-status" style={{ background: status.color }}>{status.label}</div>
+                </div>
+                <div className="list-card-metrics">
+                  <div><span>Koop</span><b>{eur(p.koopprijs)}</b></div>
+                  <div><span>Verbouw</span><b>{eur(p.verbouwkosten)}</b></div>
+                  <div><span>Exit</span><b>{eur(p.verwachte_exit)}</b></div>
+                </div>
+                {winst !== 0 && (
+                  <div className="port-winst" style={{ color: winst > 0 ? '#00b894' : '#e74c3c' }}>
+                    Winst: {eur(winst)}
+                  </div>
+                )}
+                {p.notities && <div className="list-card-notes">📝 {p.notities}</div>}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {editing && (
+        <div className="modal-overlay" onClick={() => setEditing(null)}>
+          <div className="modal detail-modal" onClick={e => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setEditing(null)}>×</button>
+            <h3>{editing._id ? 'Pand bewerken' : 'Nieuw pand'}</h3>
+            <PortfolioForm item={editing} onSave={upsert} onDelete={editing._id ? () => { remove(editing._id); setEditing(null); } : null} />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PortfolioForm({ item, onSave, onDelete }) {
+  const [form, setForm] = useState({ ...item });
+  const set = (k, v) => setForm({ ...form, [k]: v });
+  return (
+    <div className="portfolio-form">
+      <div className="pf-row">
+        <label>Adres<input value={form.adres || ''} onChange={e => set('adres', e.target.value)} /></label>
+      </div>
+      <div className="pf-row">
+        <label>Stad<input value={form.stad || ''} onChange={e => set('stad', e.target.value)} /></label>
+        <label>Postcode<input value={form.postcode || ''} onChange={e => set('postcode', e.target.value)} /></label>
+      </div>
+      <div className="pf-row">
+        <label>Status
+          <select value={form.status} onChange={e => set('status', e.target.value)}>
+            {PORTFOLIO_STATUSES.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
+          </select>
+        </label>
+        <label>URL<input value={form.url || ''} onChange={e => set('url', e.target.value)} placeholder="Funda link / dossier" /></label>
+      </div>
+      <div className="pf-row">
+        <label>Koopprijs €<input type="number" value={form.koopprijs || ''} onChange={e => set('koopprijs', e.target.value)} /></label>
+        <label>Koopdatum<input type="date" value={form.koopdatum || ''} onChange={e => set('koopdatum', e.target.value)} /></label>
+      </div>
+      <div className="pf-row">
+        <label>Verbouwkosten €<input type="number" value={form.verbouwkosten || ''} onChange={e => set('verbouwkosten', e.target.value)} /></label>
+        <label>Verwachte exit €<input type="number" value={form.verwachte_exit || ''} onChange={e => set('verwachte_exit', e.target.value)} /></label>
+      </div>
+      <div className="pf-row">
+        <label>Verbouw start<input type="date" value={form.verbouw_start || ''} onChange={e => set('verbouw_start', e.target.value)} /></label>
+        <label>Verbouw eind<input type="date" value={form.verbouw_eind || ''} onChange={e => set('verbouw_eind', e.target.value)} /></label>
+      </div>
+      <div className="pf-row">
+        <label>Makelaar<input value={form.makelaar || ''} onChange={e => set('makelaar', e.target.value)} /></label>
+        <label>Aannemer<input value={form.aannemer || ''} onChange={e => set('aannemer', e.target.value)} /></label>
+      </div>
+      <div className="pf-row">
+        <label>Notaris<input value={form.notaris || ''} onChange={e => set('notaris', e.target.value)} /></label>
+        <label>Financier<input value={form.financier || ''} onChange={e => set('financier', e.target.value)} /></label>
+      </div>
+      <div className="pf-row">
+        <label>Notities<textarea value={form.notities || ''} onChange={e => set('notities', e.target.value)} /></label>
+      </div>
+      <div className="modal-actions">
+        {onDelete && <button className="btn-secondary" onClick={onDelete} style={{ color: '#e74c3c' }}>Verwijder</button>}
+        <button className="btn-primary" onClick={() => onSave(form)}>Opslaan</button>
+      </div>
+    </div>
+  );
+}
+
 function DetailModal({ pand, onClose }) {
   const c = pand.calc || {};
   const motion = pand.motion || c.motion;
@@ -786,14 +1113,24 @@ function DetailModal({ pand, onClose }) {
         <h2>{pand.adres}</h2>
         <p className="card-location">{pand.stad}{pand.wijk ? ` · ${pand.wijk}` : ''}</p>
 
+        {pand.dealscore && <DealscorePill dealscore={pand.dealscore} />}
+
         <SignalBadges pand={pand} />
 
-        <a href={pand.url} target="_blank" rel="noopener noreferrer" className="view-link">
-          Bekijk op {pand.source} →
-        </a>
+        <div className="detail-actions">
+          <a href={pand.url} target="_blank" rel="noopener noreferrer" className="view-link">
+            Bekijk op {pand.source} →
+          </a>
+          <button className="btn-print" onClick={() => window.print()}>🖨️ Exporteer PDF</button>
+        </div>
 
+        <RisksSection risks={pand.risks || c.risks} />
+        <DealscoreBreakdown dealscore={pand.dealscore || c.dealscore} />
         <MotionSection motion={motion} />
         <EpOnlineSection ep={ep} />
+        <BagSection bag={pand.bag || c.bag} funda_bouwjaar={pand.bouwjaar} funda_opp={pand.opp_m2} />
+        <MonumentSection monument={pand.monument || c.monument} />
+        <ErfpachtSection erfpacht={pand.erfpacht_detail || c.erfpacht_detail} />
         <WijkCheckSection wijk={wijk} />
 
         <div className="detail-section">

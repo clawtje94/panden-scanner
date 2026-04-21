@@ -498,6 +498,210 @@ a { color: #ff6b00; text-decoration: none; }
 }
 .subtle { color: #888; font-size: 13px; margin: -8px 0 16px; line-height: 1.4; }
 
+/* ── DEALSCORE PILL ── */
+.dealscore-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 12px 5px 5px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid;
+  border-radius: 999px;
+  margin-top: 10px;
+  font-weight: 700;
+}
+.dealscore-pill .ds-grade {
+  background: #888; color: #000;
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 900;
+}
+.dealscore-pill .ds-num { font-size: 18px; }
+.dealscore-pill .ds-label {
+  text-transform: uppercase; font-size: 10px;
+  letter-spacing: 1px; color: #aaa;
+  padding-right: 6px;
+}
+.dealscore-pill.compact .ds-grade { width: 22px; height: 22px; font-size: 11px; }
+.dealscore-pill.compact .ds-num { font-size: 13px; }
+
+/* ── RISKS CARD ── */
+.risks-card { border-left: 3px solid #ff9b44; }
+.risks-card h3 { color: #ff9b44; }
+.risk-row {
+  display: flex; gap: 10px; padding: 8px 0;
+  border-bottom: 1px dashed #1a1a1a;
+}
+.risk-row:last-child { border-bottom: none; }
+.risk-icon {
+  font-size: 18px; line-height: 1; padding-top: 1px;
+  flex-shrink: 0; width: 22px;
+}
+.risk-body { flex: 1; }
+.risk-label { font-size: 13px; font-weight: 600; color: #fff; }
+.risk-details { font-size: 11px; color: #999; margin-top: 2px; line-height: 1.4; }
+.risk-rood .risk-label { color: #ff6b6b; }
+.risk-oranje .risk-label { color: #ffb074; }
+.risk-geel .risk-label { color: #ffe066; }
+.kans-row .risk-label { color: #6ee7b7; }
+.kansen-h4 {
+  font-size: 11px; color: #00b894;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin: 12px 0 4px;
+}
+
+.signal-badge.risk-rood { background: #2a1010; color: #ff6b6b; border-color: #7a1e1e; }
+.signal-badge.risk-oranje { background: #2a1a0a; color: #ffb074; border-color: #7a4a1e; }
+.signal-badge.risk-geel { background: #1a1a0a; color: #ffe066; border-color: #5a5a1e; }
+.signal-badge.monument { background: #1a0a2a; color: #c39bd3; border-color: #4d2a6a; }
+
+/* ── BAG / MONUMENT / ERFPACHT ── */
+.bag-card h3 { color: #4fc3f7; }
+.bag-card { border: 1px solid #222; }
+.monument-card {
+  background: linear-gradient(180deg, #1a0f1f, #0f0812);
+  border: 1px solid #4d2a6a;
+}
+.monument-card h3 { color: #c39bd3; }
+.monument-note {
+  margin-top: 10px; padding: 8px 10px;
+  background: rgba(195, 155, 211, 0.06);
+  border-left: 3px solid #c39bd3;
+  border-radius: 4px;
+  font-size: 11px; color: #d7bce3; line-height: 1.4;
+}
+
+.erfpacht-card { border: 1px solid #222; }
+.erfpacht-laag { border-color: #004d3a; }
+.erfpacht-middel { border-color: #4d3a1a; }
+.erfpacht-hoog { border-color: #7a1e1e; background: #1a0a0a; }
+.erfpacht-note {
+  margin-top: 10px; padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border-left: 3px solid #666;
+  border-radius: 4px;
+  font-size: 11px; color: #aaa; line-height: 1.4;
+}
+
+/* ── DEALSCORE BREAKDOWN ── */
+.ds-breakdown-card { border: 1px solid #333; }
+.ds-breakdown-card h3 { color: #ff6b00; }
+.ds-row {
+  display: grid; grid-template-columns: 140px 60px 1fr;
+  gap: 10px; padding: 4px 0;
+  font-size: 12px; color: #aaa;
+}
+.ds-row b { text-align: right; }
+.ds-uitleg { color: #666; font-size: 11px; }
+
+/* ── DETAIL ACTIONS (bekijken + PDF) ── */
+.detail-actions {
+  display: flex; gap: 8px; margin: 12px 0;
+}
+.detail-actions .view-link { flex: 1; margin: 0; }
+.btn-print {
+  background: #0f0f0f; color: #aaa;
+  border: 1px solid #333; border-radius: 10px;
+  padding: 12px 16px; font-size: 13px; font-weight: 600;
+  cursor: pointer;
+}
+.btn-print:hover { border-color: #ff6b00; color: #fff; }
+
+/* ── PORTFOLIO ── */
+.portfolio-aggregate {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 8px; margin-bottom: 16px;
+}
+.portfolio-aggregate > div {
+  background: #0f0f0f; border-radius: 10px; padding: 10px 12px;
+}
+.portfolio-aggregate span {
+  display: block; font-size: 10px; color: #888;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.portfolio-aggregate b {
+  font-size: 14px; font-weight: 700; color: #fff;
+  margin-top: 3px; display: block;
+}
+.portfolio-aggregate .green b { color: #00b894; }
+.portfolio-aggregate .red b { color: #e74c3c; }
+
+.portfolio-actions {
+  display: flex; gap: 8px; margin-bottom: 16px;
+}
+.portfolio-actions select {
+  background: #1a1a1a; color: #fff; border: 1px solid #333;
+  padding: 10px 14px; border-radius: 8px; font-size: 13px;
+  flex: 1;
+}
+
+.port-status {
+  color: #000; font-weight: 700; font-size: 11px;
+  padding: 4px 10px; border-radius: 12px;
+}
+.port-winst {
+  margin-top: 6px; padding: 4px 0; font-size: 13px; font-weight: 700;
+}
+
+.portfolio-form { display: flex; flex-direction: column; gap: 10px; }
+.pf-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.pf-row label {
+  flex: 1; min-width: 180px;
+  font-size: 11px; color: #888;
+  display: flex; flex-direction: column; gap: 4px;
+  text-transform: uppercase; letter-spacing: 0.3px;
+}
+.pf-row input, .pf-row select, .pf-row textarea {
+  background: #0f0f0f; color: #fff;
+  border: 1px solid #333; border-radius: 6px;
+  padding: 8px 10px; font-size: 13px; font-family: inherit;
+  text-transform: none; letter-spacing: 0;
+}
+.pf-row textarea { min-height: 70px; resize: vertical; }
+.pf-row input:focus, .pf-row textarea:focus, .pf-row select:focus {
+  outline: none; border-color: #ff6b00;
+}
+
+/* ── PRINT CSS (PDF export) ── */
+@media print {
+  body { background: #fff !important; color: #000 !important; }
+  .nav, .swipe-actions, .swipe-hints, .signal-toggles,
+  .modal-close, .btn-print, .detail-actions .view-link,
+  .list-screen > h2, .portfolio-actions { display: none !important; }
+  .app { max-width: 100% !important; padding: 0 !important; }
+  .modal-overlay {
+    position: static !important; background: none !important;
+    padding: 0 !important; display: block !important;
+  }
+  .modal.detail-modal {
+    background: #fff !important; color: #000 !important;
+    max-width: 100% !important; max-height: none !important;
+    padding: 0 24px !important; border: none !important;
+    box-shadow: none !important;
+  }
+  .detail-modal h2 { font-size: 22px; margin: 16px 0 4px; color: #000 !important; }
+  .card-location { color: #555 !important; margin-bottom: 12px; }
+  .detail-section, .card-calc {
+    background: #f7f7f7 !important; color: #000 !important;
+    border: 1px solid #ddd !important; border-left-color: #ddd !important;
+    page-break-inside: avoid; margin: 10px 0;
+  }
+  .detail-section h3, .card-calc h3 { color: #1a1a1a !important; }
+  .calc-row, .calc-grid > div {
+    color: #000 !important; border-bottom-color: #ccc !important;
+  }
+  .calc-row span, .calc-grid span { color: #555 !important; }
+  .calc-row b, .calc-grid b { color: #000 !important; }
+  .signal-badge { border-color: #aaa !important; background: #f0f0f0 !important; color: #333 !important; }
+  .dealscore-pill .ds-grade { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .risk-label, .risk-details { color: #000 !important; }
+  .risks-card, .ds-breakdown-card, .motion-card, .ep-card, .wijk-card,
+  .bag-card, .monument-card, .erfpacht-card {
+    background: #f7f7f7 !important;
+  }
+  .detail-photo-wrap { max-height: 300px; overflow: hidden; }
+  img.plattegrond-img, .detail-photo-wrap img { max-width: 100% !important; }
+  .card-score-big { color: #000 !important; background: #ccc !important; }
+}
+
 /* ── MOTION / EP / WIJK SECTIES ── */
 .motion-card {
   border: 1px solid #222;
