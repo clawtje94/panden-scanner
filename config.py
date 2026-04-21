@@ -28,6 +28,23 @@ STEDEN_FUNDA = [
     "den-haag", "rotterdam", "delft", "leiden",
     "zoetermeer", "schiedam", "rijswijk", "dordrecht",
     "westland", "pijnacker-nootdorp",
+    # Uitbreiding ZH kernsteden met arbitrage-potentieel
+    "vlaardingen",                   # renovatie-delta nog hoog
+    "capelle-aan-den-ijssel",        # transformatie-kantoor rivium
+    "gouda",                         # binnenstad-monumenten
+    "leidschendam-voorburg",
+    "alphen-aan-den-rijn",
+    "spijkenisse",
+    "barendrecht",
+    "krimpen-aan-den-ijssel",
+    "nissewaard",
+    "ridderkerk",
+    "wassenaar",
+    "katwijk",
+    "noordwijk",
+    "hellevoetsluis",
+    "goeree-overflakkee",            # recreatiewoningen permanente bew
+    "hoeksche-waard",                # VAB-potentieel
 ]
 
 # ── Fix & Flip criteria ───────────────────────────────────────────────────────
