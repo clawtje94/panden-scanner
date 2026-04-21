@@ -257,6 +257,80 @@ function MonumentSection({ monument }) {
   );
 }
 
+function genereerChecklist(pand) {
+  const checks = [];
+  const bj = pand.bouwjaar || pand.bag?.bouwjaar || 0;
+  const label = (pand.ep_online?.label || pand.energie_label || '').toUpperCase().slice(0, 1);
+  const tw = (pand.type_woning || '').toLowerCase();
+  const monument = pand.monument?.is_rijksmonument;
+
+  if (bj && bj < 1940) {
+    checks.push({ cat: 'Constructie', punt: 'Houten vloeren — houtworm, schimmel, veerkracht', urg: 'hoog' });
+    checks.push({ cat: 'Constructie', punt: 'Fundering staal/houten palen — verzakking', urg: 'hoog' });
+    checks.push({ cat: 'Water', punt: 'Loden waterleidingen (vervang verplicht)', urg: 'hoog' });
+    checks.push({ cat: 'Asbest', punt: 'Asbest in dakbeschot/leidingisolatie', urg: 'hoog' });
+  } else if (bj && bj < 1975) {
+    checks.push({ cat: 'Asbest', punt: 'Asbest in plaatmateriaal (gevel/dak)', urg: 'hoog' });
+    checks.push({ cat: 'Constructie', punt: 'Beton-rot in galerijen/balkons', urg: 'hoog' });
+    checks.push({ cat: 'Isolatie', punt: 'Vrijwel zeker ongeïsoleerd', urg: 'middel' });
+  } else if (bj && bj < 1992) {
+    checks.push({ cat: 'Isolatie', punt: 'Spouw meestal aanwezig, dak variabel', urg: 'middel' });
+    checks.push({ cat: 'CV', punt: 'CV-ketel 20+ jaar — vervanging plannen', urg: 'middel' });
+  }
+  if (label === 'E' || label === 'F' || label === 'G') {
+    checks.push({ cat: 'Verhuurverbod', punt: `Label ${label} — B verplicht voor verhuur 2028`, urg: 'hoog' });
+  } else if (label === 'C' || label === 'D') {
+    checks.push({ cat: 'Energie', punt: `Label ${label} — naar A/B te tillen`, urg: 'middel' });
+  }
+  if (tw.includes('appartement') || tw.includes('portiek') || tw.includes('galerij')) {
+    checks.push({ cat: 'VvE', punt: 'MJOP opvragen + reserves check', urg: 'hoog' });
+    checks.push({ cat: 'VvE', punt: 'Geluidsisolatie NEN 5077', urg: 'middel' });
+  }
+  if (monument) {
+    checks.push({ cat: 'Monument', punt: 'Verbouwing alleen na omgevings + erfgoed-akkoord', urg: 'hoog' });
+  }
+  checks.push({ cat: 'Algemeen', punt: 'Bouwkundige keuring erkend keurder', urg: 'hoog' });
+  checks.push({ cat: 'Algemeen', punt: 'Bestemmingsplan-wijziging omgeving check', urg: 'middel' });
+  return checks;
+}
+
+function BouwkundigSection({ pand }) {
+  const checks = genereerChecklist(pand);
+  if (checks.length === 0) return null;
+  const color = { hoog: '#e74c3c', middel: '#fdcb6e', laag: '#888' };
+  return (
+    <div className="card-calc bouw-card">
+      <h3>🔧 Bouwkundige checklist</h3>
+      {checks.map((c, i) => (
+        <div key={i} className="bouw-check">
+          <span className="bouw-urg" style={{ background: color[c.urg] }} />
+          <span className="bouw-cat">{c.cat}</span>
+          <span className="bouw-punt">{c.punt}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function MapsSection({ pand }) {
+  if (!pand?.adres) return null;
+  const q = encodeURIComponent(`${pand.adres}, ${pand.stad} ${pand.postcode || ''}`.trim());
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${q}`;
+  const sviewUrl = `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${q}`;
+  const bagId = pand.calc?.bag?.bag_id;
+  return (
+    <div className="card-calc maps-card">
+      <h3>🗺️ Locatie</h3>
+      <div className="maps-links">
+        <a href={mapsUrl} target="_blank" rel="noopener noreferrer">📍 Google Maps</a>
+        <a href={sviewUrl} target="_blank" rel="noopener noreferrer">🚶 Street View</a>
+        <a href={`https://bagviewer.kadaster.nl/lvbag/bag-viewer/?searchQuery=${q}`} target="_blank" rel="noopener noreferrer">🏛️ BAG-viewer</a>
+        <a href={`https://www.wozwaardeloket.nl/#!/zoek/?wq=${q}`} target="_blank" rel="noopener noreferrer">💰 WOZ-loket</a>
+      </div>
+    </div>
+  );
+}
+
 const ACTIEPLAN_STAPPEN = [
   { key: 'bezichtiging', label: 'Bezichtiging ingepland' },
   { key: 'bezichtigd', label: 'Bezichtigd' },
@@ -1884,6 +1958,8 @@ function DetailModal({ pand, onClose }) {
         <RisksSection risks={pand.risks || c.risks} />
         <ActieplanSection pandUrl={pand.url} />
         <BodAdviesSection advies={pand.bod_advies || c.bod_advies} />
+        <BouwkundigSection pand={pand} />
+        <MapsSection pand={pand} />
         <VerkoopSection
           scenarios={pand.scenarios || c.scenarios}
           verkoop_referentie={pand.verkoop_referentie || c.verkoop_referentie}

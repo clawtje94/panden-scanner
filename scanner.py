@@ -12,7 +12,7 @@ from models import (
     bereken_transformatie,
     score_property,
 )
-from database import init_db, is_nieuw, sla_op, haal_stats_op, registreer_observatie, get_motion
+from database import init_db, is_nieuw, sla_op, haal_stats_op, registreer_observatie, get_motion, markeer_verdwenen_kansen
 from notifier import stuur_property_notificatie, stuur_dagelijks_rapport
 from scrapers.funda import scrape_funda
 from scrapers.funda_ib import scrape_funda_ib
@@ -34,6 +34,7 @@ from erfpacht import detect_erfpacht
 from risks import aggregate_risks
 from dealscore import bereken_dealscore
 from bod_advies import genereer_bod_advies
+from bouwkundig import genereer_checklist
 from referentie import zoek_vergelijkbare_detail
 from renovatie import schat_renovatie
 from looptijd import bereken_looptijd
@@ -706,6 +707,45 @@ def run_scan():
             alle_kansen.append(kans)
             sla_op(kans)
 
+            # Prijs-verlaging alert: ook voor BESTAANDE kansen met verse
+            # prijsverlaging sinds vorige scan (trigger = motion dat een
+            # nieuwe prijs-wijziging in deze scan vastlegde).
+            motion_now = kans.calc.get("motion") or {}
+            prijs_hist = motion_now.get("prijs_historie") or []
+            if len(prijs_hist) >= 2 and not is_nieuw(kans.url):
+                laatste = prijs_hist[-1]
+                voor_laatste = prijs_hist[-2]
+                # Wijziging in laatste 48u = verse verlaging
+                try:
+                    from datetime import datetime as _dt
+                    laatste_ts = _dt.fromisoformat(laatste["ts"])
+                    delta_hr = (_dt.now() - laatste_ts).total_seconds() / 3600
+                    is_vers = delta_hr < 48 and laatste["prijs"] < voor_laatste["prijs"]
+                except Exception:
+                    is_vers = False
+                if is_vers:
+                    verlaging = voor_laatste["prijs"] - laatste["prijs"]
+                    verlaging_pct = verlaging / voor_laatste["prijs"] * 100
+                    logger.info(
+                        "PRIJS VERLAAGD %s: €%d → €%d (-%.1f%%)",
+                        kans.adres, voor_laatste["prijs"], laatste["prijs"], verlaging_pct,
+                    )
+                    # Kort Telegram bericht (niet de volledige businesscase)
+                    from notifier import stuur_telegram, _eur
+                    grade = (kans.calc.get("dealscore") or {}).get("grade", "?")
+                    dscore_val = (kans.calc.get("dealscore") or {}).get("score", 0)
+                    tekst = (
+                        f"<b>💸 PRIJS VERLAAGD</b>\n"
+                        f"{'─' * 32}\n"
+                        f"<b>{kans.adres}</b>\n"
+                        f"{kans.stad}{' · ' + kans.postcode if kans.postcode else ''}\n\n"
+                        f"{_eur(voor_laatste['prijs'])} → <b>{_eur(laatste['prijs'])}</b>\n"
+                        f"Verlaging: {_eur(verlaging)} (-{verlaging_pct:.1f}%)\n"
+                        f"Dealscore: [{grade}] {dscore_val}/100\n\n"
+                        f"<a href='{kans.url}'>Bekijk →</a>"
+                    )
+                    stuur_telegram(tekst)
+
             # Alleen Telegram notificatie voor NIEUWE kansen + minimum grade
             if is_nieuw(kans.url):
                 logger.info(
@@ -836,6 +876,16 @@ def run_scan():
 
     with open("leads.json", "w", encoding="utf-8") as f:
         json.dump(leads_export, f, indent=2, ensure_ascii=False, default=str)
+    # Detecteer verdwenen panden (waren in vorige scan, nu niet meer)
+    urls_deze_scan = {p.url for p in alle_panden if p.url}
+    try:
+        verdwenen = markeer_verdwenen_kansen(urls_deze_scan, dagen_grace=3)
+        if verdwenen:
+            logger.info("Verdwenen sinds laatste scan: %d panden", len(verdwenen))
+            leads_export["verdwenen"] = verdwenen[:50]  # max 50 in export
+    except Exception as e:
+        logger.debug("verdwenen-check fout: %s", e)
+
     logger.info(
         "leads.json geschreven: %d kansen + %d biedboek + %d veilingen + %d kavels + %d beleggingen",
         len(leads_export["kansen"]), len(biedboek_dashboard),

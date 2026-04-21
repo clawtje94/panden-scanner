@@ -300,6 +300,35 @@ def energielabel_cache_set(cache_key: str, data: dict | None):
         conn.close()
 
 
+def markeer_verdwenen_kansen(urls_deze_scan: set, dagen_grace: int = 3) -> list:
+    """Retourneer URLs van panden die in vorige scans waren maar nu verdwenen.
+
+    Een pand dat >X dagen niet meer in een scan voorkomt is waarschijnlijk
+    verkocht of ingetrokken. Gebruik voor 'Sold/Verdwenen' notificatie op
+    opgeslagen panden.
+    """
+    if not urls_deze_scan:
+        return []
+    conn = sqlite3.connect(DB_PATH)
+    try:
+        placeholders = ",".join("?" * len(urls_deze_scan))
+        query = f"""
+            SELECT url, adres, stad, prijs, laatste_gezien
+            FROM panden
+            WHERE laatste_gezien < datetime('now', '-{int(dagen_grace)} days')
+              AND url NOT IN ({placeholders})
+              AND strategie != ''
+        """
+        rows = conn.execute(query, tuple(urls_deze_scan)).fetchall()
+    finally:
+        conn.close()
+    return [
+        {"url": r[0], "adres": r[1], "stad": r[2], "laatste_prijs": r[3],
+         "laatste_gezien": r[4]}
+        for r in rows
+    ]
+
+
 def haal_stats_op() -> dict:
     conn = sqlite3.connect(DB_PATH)
     total = conn.execute("SELECT COUNT(*) FROM panden").fetchone()[0]

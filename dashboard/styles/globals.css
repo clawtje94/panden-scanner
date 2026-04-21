@@ -340,6 +340,42 @@ a { color: #ff6b00; text-decoration: none; }
   accent-color: #9e9eff;
 }
 
+/* ── BOUWKUNDIG ── */
+.bouw-card {
+  background: linear-gradient(180deg, #1a0f08, #0f0804);
+  border: 1px solid #5a3a1a;
+}
+.bouw-card h3 { color: #ffb074; }
+.bouw-check {
+  display: grid; grid-template-columns: 8px 80px 1fr;
+  gap: 10px; padding: 5px 0; font-size: 12px;
+  border-bottom: 1px dashed #1a1a1a; align-items: center;
+}
+.bouw-check:last-child { border-bottom: none; }
+.bouw-urg {
+  width: 8px; height: 8px; border-radius: 50%; display: block;
+}
+.bouw-cat {
+  font-weight: 700; color: #ffb074;
+  text-transform: uppercase; letter-spacing: 0.3px;
+  font-size: 10px;
+}
+.bouw-punt { color: #ccc; line-height: 1.4; }
+
+/* ── MAPS ── */
+.maps-card { border: 1px solid #222; }
+.maps-card h3 { color: #4fc3f7; }
+.maps-links {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.maps-links a {
+  flex: 1; min-width: 140px;
+  padding: 10px 12px; background: #0a0a0a;
+  border: 1px solid #333; border-radius: 8px;
+  text-align: center; font-size: 12px; font-weight: 600;
+}
+.maps-links a:hover { border-color: #4fc3f7; color: #fff; }
+
 /* ── HEATMAP STATS ── */
 .heat-row {
   display: grid; grid-template-columns: 120px 1fr 180px;
