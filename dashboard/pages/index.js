@@ -615,6 +615,17 @@ export default function Home() {
   const [deeplinkPand, setDeeplinkPand] = useState(null);
   const [cmdOpen, setCmdOpen] = useState(false);
   const [cmdQuery, setCmdQuery] = useState('');
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (!localStorage.getItem('onboarded_v1')) setShowOnboarding(true);
+    } catch {}
+  }, []);
+  const dismissOnboarding = () => {
+    try { localStorage.setItem('onboarded_v1', '1'); } catch {}
+    setShowOnboarding(false);
+  };
 
   useEffect(() => {
     const h = (e) => {
@@ -1190,6 +1201,31 @@ export default function Home() {
 
         {deeplinkPand && (
           <DetailModal pand={deeplinkPand} onClose={() => setDeeplinkPand(null)} />
+        )}
+
+        {showOnboarding && (
+          <div className="modal-overlay" onClick={dismissOnboarding}>
+            <div className="modal" onClick={e => e.stopPropagation()}>
+              <h3>👋 Welkom bij Panden Scanner</h3>
+              <p style={{ fontSize: 13, color: '#ccc', lineHeight: 1.5, marginBottom: 12 }}>
+                Development-intelligence voor vastgoed. Hier is waar je op moet letten:
+              </p>
+              <div style={{ fontSize: 12, color: '#aaa', lineHeight: 1.8 }}>
+                <div>• <b style={{ color: '#ff6b00' }}>Dealscore</b> + grade (A+ … D) = triage-getal</div>
+                <div>• <b style={{ color: '#ff6b00' }}>Worst-case marge</b> is leidend — niet realistic</div>
+                <div>• <b style={{ color: '#ff6b00' }}>Risico-flags</b> zichtbaar vóór aankoop</div>
+                <div>• <b style={{ color: '#ff6b00' }}>🏘️ Portfolio</b> + <b style={{ color: '#ff6b00' }}>💎 ROI</b> voor eigen panden</div>
+                <div style={{ marginTop: 10 }}>
+                  <b>Shortcuts:</b>
+                </div>
+                <div>← →  Swipe reject/save · ↑ Top · Space skip · N notitie</div>
+                <div>J/K Lijst-nav · Enter open · Cmd+K zoeken</div>
+              </div>
+              <div className="modal-actions">
+                <button className="btn-primary" onClick={dismissOnboarding}>Aan de slag</button>
+              </div>
+            </div>
+          </div>
         )}
 
         {cmdOpen && (
