@@ -2536,18 +2536,28 @@ function DetailModal({ pand, onClose }) {
         </div>
 
         <RisksSection risks={pand.risks || c.risks} />
-        <ActieplanSection pandUrl={pand.url} pand={pand} />
+        <Collapsible title="✅ Actieplan" id="sect_actie" defaultOpen={false}>
+          <ActieplanSection pandUrl={pand.url} pand={pand} />
+        </Collapsible>
         <BodAdviesSection advies={pand.bod_advies || c.bod_advies} />
-        <BouwkundigSection pand={pand} />
-        <MapsSection pand={pand} />
+        <Collapsible title="🔧 Bouwkundige checklist" id="sect_bouw" defaultOpen={false}>
+          <BouwkundigSection pand={pand} />
+        </Collapsible>
+        <Collapsible title="🗺️ Locatie &amp; externe bronnen" id="sect_maps" defaultOpen={false}>
+          <MapsSection pand={pand} />
+        </Collapsible>
         <VerkoopSection
           scenarios={pand.scenarios || c.scenarios}
           verkoop_referentie={pand.verkoop_referentie || c.verkoop_referentie}
         />
-        <DealscoreBreakdown dealscore={pand.dealscore || c.dealscore} />
+        <Collapsible title="📊 Dealscore breakdown" id="sect_ds" defaultOpen={false}>
+          <DealscoreBreakdown dealscore={pand.dealscore || c.dealscore} />
+        </Collapsible>
         <MotionSection motion={motion} />
         <EpOnlineSection ep={ep} />
-        <BagSection bag={pand.bag || c.bag} funda_bouwjaar={pand.bouwjaar} funda_opp={pand.opp_m2} />
+        <Collapsible title="🏛️ BAG (Kadaster)" id="sect_bag" defaultOpen={false}>
+          <BagSection bag={pand.bag || c.bag} funda_bouwjaar={pand.bouwjaar} funda_opp={pand.opp_m2} />
+        </Collapsible>
         <MonumentSection monument={pand.monument || c.monument} />
         <ErfpachtSection erfpacht={pand.erfpacht_detail || c.erfpacht_detail} />
         <WijkCheckSection wijk={wijk} />
