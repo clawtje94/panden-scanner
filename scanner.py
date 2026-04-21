@@ -622,6 +622,7 @@ def run_scan():
                 monument=mon,
                 erfpacht=erf,
                 wijkcheck=kans.calc.get("splitsen", {}).get("wijkcheck"),
+                motion=kans.calc.get("motion"),
                 prop_bouwjaar=kans.bouwjaar,
                 prop_opp_m2=kans.opp_m2,
             )

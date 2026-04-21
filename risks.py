@@ -31,6 +31,7 @@ def aggregate_risks(
     monument: Optional[dict] = None,
     erfpacht: Optional[dict] = None,
     wijkcheck: Optional[dict] = None,
+    motion: Optional[dict] = None,
     prop_bouwjaar: Optional[int] = None,
     prop_opp_m2: Optional[int] = None,
 ) -> dict:
@@ -164,6 +165,21 @@ def aggregate_risks(
                     "label": "RDAM splits-gebied (50 m²)",
                     "details": "Versoepeld regime 2025 — buiten NPRZ-kerngebied.",
                 })
+
+    # ── Leegstand-detectie ──
+    if motion:
+        dagen = motion.get("dagen_online") or 0
+        if dagen >= 365:
+            flags.append(_flag(
+                "oranje", f"Leegstand {dagen}d",
+                "Pand staat >1 jaar online — vaak verborgen probleem "
+                "(juridisch/bouwkundig/overlast). Grondige due diligence vereist.",
+            ))
+        elif dagen >= 270:
+            flags.append(_flag(
+                "geel", f"Lang online {dagen}d",
+                "Bijna een jaar niet verkocht — prijs of pand heeft issue.",
+            ))
 
     zwaarste = "geen"
     order = {"geen": 0, "geel": 1, "oranje": 2, "rood": 3}

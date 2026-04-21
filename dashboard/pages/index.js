@@ -257,6 +257,57 @@ function MonumentSection({ monument }) {
   );
 }
 
+const ACTIEPLAN_STAPPEN = [
+  { key: 'bezichtiging', label: 'Bezichtiging ingepland' },
+  { key: 'bezichtigd', label: 'Bezichtigd' },
+  { key: 'keuring', label: 'Bouwkundige keuring' },
+  { key: 'bod', label: 'Bod uitgebracht' },
+  { key: 'geaccepteerd', label: 'Bod geaccepteerd' },
+  { key: 'financiering', label: 'Financiering rond' },
+  { key: 'notaris', label: 'Notaris + transport' },
+  { key: 'sleutel', label: 'Sleutel overhandigd' },
+];
+
+function ActieplanSection({ pandUrl }) {
+  const [plan, setPlan] = useState({});
+  const storageKey = `actieplan:${pandUrl}`;
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (raw) setPlan(JSON.parse(raw));
+    } catch {}
+  }, [storageKey]);
+
+  const toggle = (key) => {
+    const next = { ...plan, [key]: plan[key] ? null : new Date().toISOString() };
+    setPlan(next);
+    localStorage.setItem(storageKey, JSON.stringify(next));
+  };
+
+  const done = Object.values(plan).filter(Boolean).length;
+  return (
+    <div className="card-calc actie-card">
+      <h3>✅ Actieplan ({done}/{ACTIEPLAN_STAPPEN.length})</h3>
+      <div className="actie-list">
+        {ACTIEPLAN_STAPPEN.map(s => (
+          <label key={s.key} className={`actie-item ${plan[s.key] ? 'done' : ''}`}>
+            <input
+              type="checkbox"
+              checked={!!plan[s.key]}
+              onChange={() => toggle(s.key)}
+            />
+            <span className="actie-label">{s.label}</span>
+            {plan[s.key] && (
+              <span className="actie-date">{new Date(plan[s.key]).toLocaleDateString('nl-NL')}</span>
+            )}
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function BodAdviesSection({ advies }) {
   if (!advies) return null;
   return (
@@ -385,7 +436,8 @@ export default function Home() {
   const [motivatedOnly, setMotivatedOnly] = useState(false);
   const [forcedOnly, setForcedOnly] = useState(false);
   const [splitsDhOnly, setSplitsDhOnly] = useState(false);
-  const [sortKey, setSortKey] = useState('marge');
+  const [sortKey, setSortKey] = useState('dealscore');
+  const [search, setSearch] = useState('');
   const [swipeDir, setSwipeDir] = useState(null);
   const [showNotes, setShowNotes] = useState(false);
   const [notesText, setNotesText] = useState('');
@@ -449,6 +501,7 @@ export default function Home() {
 
   const swipeList = useMemo(() => {
     const sortFn = (SORT_OPTIONS.find(s => s.key === sortKey) || SORT_OPTIONS[0]).fn;
+    const q = search.trim().toLowerCase();
     return kansen
       .filter(k => k._status === STATUS.NEW)
       .filter(k => stadFilter === 'alle' || k.stad === stadFilter)
@@ -456,8 +509,15 @@ export default function Home() {
       .filter(k => !motivatedOnly || (k.motion?.motivated))
       .filter(k => !forcedOnly || (k.ep_online?.forced_renovation))
       .filter(k => !splitsDhOnly || (k.calc?.splitsen?.wijkcheck?.regime === 'den_haag_2026' && k.calc?.splitsen?.wijkcheck?.mag === true))
+      .filter(k => !q || (
+        (k.adres || '').toLowerCase().includes(q) ||
+        (k.stad || '').toLowerCase().includes(q) ||
+        (k.postcode || '').toLowerCase().includes(q) ||
+        (k.calc?.bag?.wijk || '').toLowerCase().includes(q) ||
+        (k.calc?.bag?.buurt || '').toLowerCase().includes(q)
+      ))
       .sort(sortFn);
-  }, [kansen, stadFilter, minMarge, motivatedOnly, forcedOnly, splitsDhOnly, sortKey]);
+  }, [kansen, stadFilter, minMarge, motivatedOnly, forcedOnly, splitsDhOnly, sortKey, search]);
 
   useEffect(() => {
     const handler = (e) => {
@@ -567,6 +627,13 @@ export default function Home() {
 
         {view === 'swipe' && (
           <div className="swipe-screen">
+            <input
+              type="search"
+              className="search-box"
+              placeholder="Zoek op adres, stad, postcode, wijk..."
+              value={search}
+              onChange={e => { setSearch(e.target.value); setCurrentIdx(0); }}
+            />
             <div className="swipe-filters">
               <select value={stadFilter} onChange={e => { setStadFilter(e.target.value); setCurrentIdx(0); }}>
                 {steden.map(s => <option key={s}>{s}</option>)}
@@ -1303,6 +1370,8 @@ function StatsView({ kansen }) {
         ))}
       </div>
 
+      <StadDealscoreHeatmap kansen={kansen} />
+
       <MakelaarIntel kansen={kansen} />
 
       <div className="stats-card">
@@ -1321,6 +1390,59 @@ function StatsView({ kansen }) {
       <div style={{ marginTop: 20 }}>
         <button className="btn-primary" onClick={downloadCsv}>📥 Download CSV ({kansen.length} kansen)</button>
       </div>
+    </div>
+  );
+}
+
+function StadDealscoreHeatmap({ kansen }) {
+  // Gem dealscore per stad + aantal
+  const byStad = new Map();
+  kansen.forEach(k => {
+    const s = k.stad;
+    if (!s) return;
+    if (!byStad.has(s)) byStad.set(s, { n: 0, scoreSum: 0, margeSum: 0, winstSum: 0 });
+    const e = byStad.get(s);
+    e.n += 1;
+    e.scoreSum += k.dealscore?.score || 0;
+    e.margeSum += k.marge_pct || 0;
+    e.winstSum += k.winst_euro || 0;
+  });
+  const rows = Array.from(byStad.entries()).map(([stad, e]) => ({
+    stad,
+    n: e.n,
+    gemScore: Math.round(e.scoreSum / e.n),
+    gemMarge: Math.round((e.margeSum / e.n) * 10) / 10,
+    totWinst: e.winstSum,
+  })).sort((a, b) => b.gemScore - a.gemScore);
+
+  if (rows.length === 0) return null;
+  const maxScore = Math.max(...rows.map(r => r.gemScore), 1);
+
+  const colorFor = (score) => {
+    if (score >= 70) return '#00b894';
+    if (score >= 55) return '#7cb342';
+    if (score >= 40) return '#fdcb6e';
+    if (score >= 25) return '#ff9b44';
+    return '#e74c3c';
+  };
+
+  return (
+    <div className="stats-card">
+      <h3>Dealscore-heatmap per stad</h3>
+      {rows.map(r => (
+        <div key={r.stad} className="heat-row">
+          <span className="heat-stad">{r.stad}</span>
+          <div className="heat-track">
+            <div className="heat-fill" style={{
+              width: `${r.gemScore / maxScore * 100}%`,
+              background: colorFor(r.gemScore),
+            }}>
+              <span className="heat-score">{r.gemScore}</span>
+            </div>
+          </div>
+          <span className="heat-n">{r.n} deals · {r.gemMarge}% · {eur(r.totWinst)}</span>
+        </div>
+      ))}
     </div>
   );
 }
@@ -1610,6 +1732,7 @@ function DetailModal({ pand, onClose }) {
         </div>
 
         <RisksSection risks={pand.risks || c.risks} />
+        <ActieplanSection pandUrl={pand.url} />
         <BodAdviesSection advies={pand.bod_advies || c.bod_advies} />
         <VerkoopSection
           scenarios={pand.scenarios || c.scenarios}

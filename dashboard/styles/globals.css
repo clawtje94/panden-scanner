@@ -45,6 +45,14 @@ a { color: #ff6b00; text-decoration: none; }
 
 /* ── SWIPE SCREEN ── */
 .swipe-screen { }
+.search-box {
+  width: 100%; background: #1a1a1a; color: #fff;
+  border: 1px solid #333; border-radius: 10px;
+  padding: 10px 14px; font-size: 14px;
+  margin-bottom: 12px;
+}
+.search-box:focus { outline: none; border-color: #ff6b00; }
+
 .swipe-filters {
   display: flex; gap: 8px; margin-bottom: 16px; align-items: center;
   flex-wrap: wrap;
@@ -307,6 +315,50 @@ a { color: #ff6b00; text-decoration: none; }
   text-transform: uppercase; letter-spacing: 0.3px;
 }
 .mkl-name { color: #fff; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── ACTIEPLAN ── */
+.actie-card {
+  background: linear-gradient(180deg, #0f0a1a, #08060f);
+  border: 1px solid #2a1a4d;
+}
+.actie-card h3 { color: #9e9eff; }
+.actie-list { display: flex; flex-direction: column; gap: 6px; }
+.actie-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 8px; font-size: 13px; color: #ccc;
+  cursor: pointer; border-radius: 6px;
+}
+.actie-item:hover { background: #0a0a0a; }
+.actie-item.done { color: #666; }
+.actie-item.done .actie-label { text-decoration: line-through; }
+.actie-label { flex: 1; }
+.actie-date {
+  font-size: 10px; color: #888;
+  background: #1a1a1a; padding: 2px 6px; border-radius: 4px;
+}
+.actie-item input[type="checkbox"] {
+  accent-color: #9e9eff;
+}
+
+/* ── HEATMAP STATS ── */
+.heat-row {
+  display: grid; grid-template-columns: 120px 1fr 180px;
+  gap: 10px; align-items: center; padding: 5px 0;
+  font-size: 12px;
+}
+.heat-stad { color: #ccc; font-weight: 600; }
+.heat-track {
+  background: #0a0a0a; border-radius: 4px; height: 22px;
+  position: relative; overflow: hidden;
+}
+.heat-fill {
+  height: 100%; border-radius: 4px;
+  display: flex; align-items: center; justify-content: flex-end;
+  padding-right: 8px;
+  transition: width 0.3s ease-out;
+}
+.heat-score { color: #000; font-weight: 700; font-size: 11px; }
+.heat-n { color: #888; font-size: 11px; text-align: right; }
 
 /* ── VERKOOP SCENARIOS ── */
 .verkoop-card {
