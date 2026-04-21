@@ -166,6 +166,32 @@ function DealscorePill({ dealscore, compact = false }) {
   );
 }
 
+// Collapsible wrapper — ingeklapte secties besparen scroll in detail-modal.
+// State is lokaal: klik op kop → toggle, geen localStorage om KISS.
+function Collapsible({ title, children, defaultOpen = true, id }) {
+  const [open, setOpen] = useState(() => {
+    if (!id) return defaultOpen;
+    try {
+      const raw = localStorage.getItem('coll:' + id);
+      return raw === null ? defaultOpen : raw === '1';
+    } catch { return defaultOpen; }
+  });
+  const toggle = () => {
+    const next = !open;
+    setOpen(next);
+    if (id) { try { localStorage.setItem('coll:' + id, next ? '1' : '0'); } catch {} }
+  };
+  return (
+    <div className="collapsible">
+      <div className="coll-head" onClick={toggle}>
+        <span className="coll-chev">{open ? '▾' : '▸'}</span>
+        <span>{title}</span>
+      </div>
+      {open && <div className="coll-body">{children}</div>}
+    </div>
+  );
+}
+
 function RisksSection({ risks }) {
   if (!risks) return null;
   const flags = risks.flags || [];
@@ -733,6 +759,9 @@ export default function Home() {
             <button className={`nav-tab ${view === 'stats' ? 'active' : ''}`} onClick={() => setView('stats')}>
               📊 Stats
             </button>
+            <button className={`nav-tab ${view === 'roi' ? 'active' : ''}`} onClick={() => setView('roi')}>
+              💎 ROI
+            </button>
             <button className={`nav-tab ${view === 'compare' ? 'active' : ''}`} onClick={() => setView('compare')}>
               ⚖️ Compare
             </button>
@@ -1040,6 +1069,7 @@ export default function Home() {
         )}
 
         {view === 'portfolio' && <PortfolioView />}
+        {view === 'roi' && <RoiView />}
         {view === 'stats' && <StatsView kansen={kansen} />}
         {view === 'compare' && <CompareView kansen={[...kansen, ...savedList, ...hotList]} />}
         {view === 'verdwenen' && (
@@ -1866,6 +1896,114 @@ function MakelaarIntel({ kansen }) {
           <div>{r.verlaagdPct}%</div>
         </div>
       ))}
+    </div>
+  );
+}
+
+// ── ROI tab ──────────────────────────────────────────────────────────────
+function RoiView() {
+  const [items, setItems] = useState([]);
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('bateau_portfolio');
+      if (raw) setItems(JSON.parse(raw));
+    } catch {}
+  }, []);
+
+  const stats = useMemo(() => {
+    const byStatus = {};
+    let totKoop = 0, totVerbouw = 0, totExit = 0, totWinst = 0;
+    let totGerealiseerd = 0, totVerwacht = 0;
+    items.forEach(p => {
+      const koop = Number(p.koopprijs) || 0;
+      const verb = Number(p.verbouwkosten) || 0;
+      const exit = Number(p.verwachte_exit) || 0;
+      const winst = exit - koop - verb;
+      totKoop += koop; totVerbouw += verb; totExit += exit; totWinst += winst;
+      if (p.status === 'verkocht') totGerealiseerd += winst;
+      else totVerwacht += winst;
+      byStatus[p.status] = (byStatus[p.status] || 0) + 1;
+    });
+    const roiPct = (totKoop + totVerbouw) > 0
+      ? Math.round(totWinst / (totKoop + totVerbouw) * 100 * 10) / 10
+      : 0;
+    return { totKoop, totVerbouw, totExit, totWinst, totGerealiseerd, totVerwacht, roiPct, byStatus };
+  }, [items]);
+
+  if (items.length === 0) {
+    return (
+      <div className="list-screen">
+        <h2 className="list-title">💎 ROI</h2>
+        <div className="empty-state">
+          <p>Geen panden in portfolio.</p>
+          <p>Voeg panden toe via 🏘️ Portfolio om hier ROI te tracken.</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="list-screen">
+      <h2 className="list-title">💎 Bateau ROI ({items.length} panden)</h2>
+
+      <div className="roi-big">
+        <div className="roi-big-pct" style={{ color: stats.roiPct > 0 ? '#00b894' : '#e74c3c' }}>
+          {stats.roiPct > 0 ? '+' : ''}{stats.roiPct}%
+        </div>
+        <div className="roi-big-label">ROI over hele portfolio</div>
+      </div>
+
+      <div className="stats-topline">
+        <div><span>Totaal investering</span><b>{eur(stats.totKoop + stats.totVerbouw)}</b></div>
+        <div><span>Koop</span><b>{eur(stats.totKoop)}</b></div>
+        <div><span>Verbouw</span><b>{eur(stats.totVerbouw)}</b></div>
+        <div><span>Verwachte exit</span><b>{eur(stats.totExit)}</b></div>
+      </div>
+
+      <div className="stats-row">
+        <div className="stats-card">
+          <h3>Gerealiseerd vs verwacht</h3>
+          <div className="roi-split">
+            <div className="roi-chunk real"><b>{eur(stats.totGerealiseerd)}</b><span>gerealiseerd (verkocht)</span></div>
+            <div className="roi-chunk exp"><b>{eur(stats.totVerwacht)}</b><span>verwacht (nog open)</span></div>
+          </div>
+        </div>
+
+        <div className="stats-card">
+          <h3>Status verdeling</h3>
+          {PORTFOLIO_STATUSES.map(st => {
+            const n = stats.byStatus[st.key] || 0;
+            if (n === 0) return null;
+            return (
+              <div key={st.key} className="sig-list">
+                <div><span style={{color: st.color}}>● {st.label}</span><b>{n}</b></div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="stats-card">
+        <h3>Per pand</h3>
+        {items.map((p, i) => {
+          const koop = Number(p.koopprijs) || 0;
+          const verb = Number(p.verbouwkosten) || 0;
+          const exit = Number(p.verwachte_exit) || 0;
+          const winst = exit - koop - verb;
+          const roi = (koop + verb) > 0 ? Math.round(winst / (koop + verb) * 100 * 10) / 10 : 0;
+          const st = PORTFOLIO_STATUSES.find(s => s.key === p.status) || PORTFOLIO_STATUSES[0];
+          return (
+            <div key={p._id || i} className="roi-row">
+              <div className="roi-adres">{p.adres || '(adres)'}<span className="roi-stad">{p.stad}</span></div>
+              <div className="port-status" style={{ background: st.color, fontSize: 10 }}>{st.label}</div>
+              <div className="roi-amount">{eur(koop + verb)} → {eur(exit)}</div>
+              <div className="roi-pct" style={{ color: winst > 0 ? '#00b894' : '#e74c3c' }}>
+                {winst > 0 ? '+' : ''}{roi}%
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

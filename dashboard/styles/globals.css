@@ -53,6 +53,58 @@ a { color: #ff6b00; text-decoration: none; }
 }
 .search-box:focus { outline: none; border-color: #ff6b00; }
 
+/* ── COLLAPSIBLE (kleine helper, niet toegepast op detail-secties tenzij nodig) ── */
+.collapsible { margin-bottom: 8px; }
+.coll-head {
+  cursor: pointer; padding: 8px 12px;
+  background: #0f0f0f; border-radius: 8px;
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 700; color: #fff; font-size: 13px;
+}
+.coll-head:hover { background: #1a1a1a; }
+.coll-chev { color: #ff6b00; font-size: 10px; }
+.coll-body { padding: 8px 0; }
+
+/* ── ROI ── */
+.roi-big {
+  text-align: center; padding: 20px;
+  background: linear-gradient(180deg, #0a1a0f, #050a08);
+  border: 1px solid #1a4d3a;
+  border-radius: 14px; margin-bottom: 16px;
+}
+.roi-big-pct { font-size: 48px; font-weight: 900; line-height: 1; }
+.roi-big-label {
+  font-size: 11px; color: #888; margin-top: 8px;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.roi-split { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.roi-chunk {
+  text-align: center; padding: 12px;
+  background: #0a0a0a; border-radius: 8px;
+}
+.roi-chunk.real { border: 1px solid #1a4d3a; }
+.roi-chunk.exp { border: 1px solid #4d3a1a; }
+.roi-chunk b { display: block; font-size: 16px; font-weight: 700; color: #fff; }
+.roi-chunk span {
+  display: block; font-size: 10px; color: #888;
+  text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;
+}
+.roi-row {
+  display: grid; grid-template-columns: 1.5fr 90px 140px 60px;
+  gap: 10px; align-items: center;
+  padding: 8px 0; border-bottom: 1px dashed #1a1a1a;
+  font-size: 12px;
+}
+.roi-row:last-child { border-bottom: none; }
+.roi-adres {
+  display: flex; flex-direction: column;
+  color: #fff; font-weight: 600;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.roi-stad { font-size: 10px; color: #888; font-weight: 400; }
+.roi-amount { color: #aaa; font-size: 11px; }
+.roi-pct { font-weight: 700; text-align: right; }
+
 .swipe-filters {
   display: flex; gap: 8px; margin-bottom: 16px; align-items: center;
   flex-wrap: wrap;
