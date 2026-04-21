@@ -154,6 +154,10 @@ export default function Home() {
     _notes: userState[k.url]?.notes || '',
   }));
 
+  const veilingen = data.veilingen || [];
+  const kavels = data.kavels || [];
+  const biedboek = data.biedboek || [];
+
   const steden = ['alle', ...new Set(kansen.map(k => k.stad))].sort();
 
   // Filter voor elk scherm
@@ -233,6 +237,14 @@ export default function Home() {
             <button className={`nav-tab ${view === 'rejected' ? 'active' : ''}`} onClick={() => setView('rejected')}>
               Prullenbak
               <span className="count">{rejectedList.length}</span>
+            </button>
+            <button className={`nav-tab ${view === 'veilingen' ? 'active' : ''}`} onClick={() => setView('veilingen')}>
+              Veilingen
+              <span className="count">{veilingen.length}</span>
+            </button>
+            <button className={`nav-tab ${view === 'kavels' ? 'active' : ''}`} onClick={() => setView('kavels')}>
+              Kavels
+              <span className="count">{kavels.length}</span>
             </button>
           </div>
         </nav>
@@ -422,6 +434,50 @@ export default function Home() {
             updateStatus={updateStatus}
             showRestore={view === 'rejected'}
           />
+        )}
+
+        {(view === 'veilingen' || view === 'kavels') && (
+          <div className="list-screen">
+            <h2 className="list-title">{view === 'veilingen' ? `Veilingen (${veilingen.length})` : `Kavels (${kavels.length})`}</h2>
+            <div className="list-grid">
+              {(view === 'veilingen' ? veilingen : kavels).map((item, i) => (
+                <div key={i} className="list-card">
+                  {item.foto_url && (
+                    <div className="list-card-photo">
+                      <img src={item.foto_url} alt={item.adres} />
+                    </div>
+                  )}
+                  <div className="list-card-header" style={{padding: '12px 16px 0'}}>
+                    <div>
+                      <div className="list-card-title">{item.adres}</div>
+                      <div className="list-card-sub">{item.stad}{item.postcode ? ` · ${item.postcode}` : ''}</div>
+                    </div>
+                  </div>
+                  <div className="list-card-metrics" style={{padding: '8px 16px'}}>
+                    {item.prijs > 0 && <div><span>{view === 'veilingen' ? 'Startbod' : 'Prijs'}</span><b>{eur(item.prijs)}</b></div>}
+                    {item.opp_m2 > 0 && <div><span>Oppervlak</span><b>{item.opp_m2} m²</b></div>}
+                    {item.type_woning && <div><span>Type</span><b>{item.type_woning}</b></div>}
+                  </div>
+                  {item.calc?.veiling_datum && (
+                    <div style={{padding: '0 16px 8px', fontSize: 12, color: '#ff6b00'}}>
+                      Veiling: {item.calc.veiling_datum}
+                    </div>
+                  )}
+                  {item.calc?.is_veiling && item.calc?.onderhands_bod_mogelijk === 'ja' && (
+                    <div style={{padding: '0 16px 8px'}}>
+                      <span className="badge extra">Onderhands bod mogelijk</span>
+                    </div>
+                  )}
+                  <div style={{padding: '8px 16px 16px'}}>
+                    <a href={item.url} target="_blank" rel="noopener noreferrer">Bekijk →</a>
+                  </div>
+                </div>
+              ))}
+              {(view === 'veilingen' ? veilingen : kavels).length === 0 && (
+                <div className="empty-state">Geen {view} gevonden in Zuid-Holland</div>
+              )}
+            </div>
+          </div>
         )}
 
         {showNotes && current && (

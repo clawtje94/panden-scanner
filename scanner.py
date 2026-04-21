@@ -14,11 +14,17 @@ from models import (
 )
 from database import init_db, is_nieuw, sla_op, haal_stats_op
 from notifier import stuur_property_notificatie, stuur_dagelijks_rapport
-from scrapers import (
-    scrape_funda, scrape_funda_ib, scrape_pararius,
-    scrape_bedrijfspand, scrape_makelaars,
-    scrape_trovit, scrape_biedboek,
-)
+from scrapers.funda import scrape_funda
+from scrapers.funda_ib import scrape_funda_ib
+from scrapers.pararius import scrape_pararius
+from scrapers.bedrijfspand import scrape_bedrijfspand
+from scrapers.makelaars import scrape_makelaars
+from scrapers.trovit import scrape_trovit
+from scrapers.biedboek import scrape_biedboek
+from scrapers.beleggingspanden import scrape_beleggingspanden
+from scrapers.vastiva import scrape_vastiva
+from scrapers.veilingen import scrape_veilingen
+from scrapers.kavels import scrape_kavels
 from referentie import zoek_vergelijkbare
 from renovatie import schat_renovatie
 from looptijd import bereken_looptijd
@@ -354,13 +360,37 @@ def run_scan():
     # except Exception as e:
     #     logger.error("Trovit scraper gefaald: %s", e)
 
-    # Biedboek: aparte lijst, geen standaard calc (veilingen)
+    try:
+        alle_panden += scrape_beleggingspanden()
+    except Exception as e:
+        logger.error("Beleggingspanden scraper gefaald: %s", e)
+
+    try:
+        alle_panden += scrape_vastiva()
+    except Exception as e:
+        logger.error("Vastiva scraper gefaald: %s", e)
+
+    # ── Aparte categorieen (info-only, geen standaard calc) ──
     biedboek_panden = []
     try:
         biedboek_panden = scrape_biedboek()
-        logger.info("Biedboek: %d panden (info-only, geen calc)", len(biedboek_panden))
+        logger.info("Biedboek: %d panden (info-only)", len(biedboek_panden))
     except Exception as e:
         logger.error("Biedboek scraper gefaald: %s", e)
+
+    veiling_panden = []
+    try:
+        veiling_panden = scrape_veilingen()
+        logger.info("Veilingen: %d panden", len(veiling_panden))
+    except Exception as e:
+        logger.error("Veilingen scraper gefaald: %s", e)
+
+    kavel_panden = []
+    try:
+        kavel_panden = scrape_kavels()
+        logger.info("Kavels: %d kavels", len(kavel_panden))
+    except Exception as e:
+        logger.error("Kavels scraper gefaald: %s", e)
 
     totaal_ruw = len(alle_panden)
     logger.info("Totaal gescand: %d panden", totaal_ruw)
@@ -445,6 +475,20 @@ def run_scan():
             "bouwjaar": bp.bouwjaar,
         })
 
+    # ── Veilingen + kavels naar dashboard format ────────────────────────
+    def _prop_to_dict(p, source_override=None):
+        return {
+            "adres": p.adres, "stad": p.stad, "postcode": p.postcode,
+            "prijs": p.prijs, "opp_m2": p.opp_m2, "prijs_per_m2": p.prijs_per_m2,
+            "type_woning": p.type_woning, "url": p.url,
+            "source": source_override or p.source,
+            "bouwjaar": p.bouwjaar, "foto_url": p.foto_url or "",
+            "calc": p.calc or {},
+        }
+
+    veilingen_dashboard = [_prop_to_dict(v) for v in veiling_panden]
+    kavels_dashboard = [_prop_to_dict(k) for k in kavel_panden]
+
     # ── Export naar leads.json voor dashboard ─────────────────────────────
     import json
     from datetime import datetime
@@ -454,6 +498,8 @@ def run_scan():
         "na_filter": len(alle_panden),
         "kansen": [],
         "biedboek": biedboek_dashboard,
+        "veilingen": veilingen_dashboard,
+        "kavels": kavels_dashboard,
     }
     for k in alle_kansen:
         leads_export["kansen"].append({
@@ -487,8 +533,9 @@ def run_scan():
 
     with open("leads.json", "w", encoding="utf-8") as f:
         json.dump(leads_export, f, indent=2, ensure_ascii=False, default=str)
-    logger.info("leads.json geschreven: %d kansen + %d biedboek",
-                len(leads_export["kansen"]), len(biedboek_dashboard))
+    logger.info("leads.json geschreven: %d kansen + %d biedboek + %d veilingen + %d kavels",
+                len(leads_export["kansen"]), len(biedboek_dashboard),
+                len(veilingen_dashboard), len(kavels_dashboard))
 
     # ── Dagelijks rapport ─────────────────────────────────────────────────
     stats = haal_stats_op()
