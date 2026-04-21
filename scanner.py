@@ -26,7 +26,12 @@ from scrapers.vastiva import scrape_vastiva
 from scrapers.veilingen import scrape_veilingen
 from scrapers.kavels import scrape_kavels
 from scrapers.ep_online import verrijk_energielabel
+from scrapers.bag import verrijk_bag
+from scrapers.monument import verrijk_monument_status
 from classificatie import classificeer_property
+from erfpacht import detect_erfpacht
+from risks import aggregate_risks
+from dealscore import bereken_dealscore
 from referentie import zoek_vergelijkbare
 from renovatie import schat_renovatie
 from looptijd import bereken_looptijd
@@ -210,6 +215,8 @@ def _check_funda_api(prop: Property) -> bool:
         # Beschrijving parsen: erfpacht, VvE, verdieping, etc
         description = d.get("description") or ""
         if description:
+            # Bewaar raw beschrijving voor latere regex-parses (erfpacht, etc)
+            prop.calc["beschrijving_raw"] = description[:2000]
             parsed = _parse_description(description)
             if parsed:
                 prop.calc["beschrijving_parsed"] = parsed
@@ -439,12 +446,17 @@ def run_scan():
     # categorieën, niet de ontwikkel-feed.
     beleggingen_export = []
     ontwikkel_panden = []
+    audit = {"wonen": 0, "transformatie": 0, "verhuurd_wonen": 0, "skip": 0}
+    skip_redenen = {}
     for p in alle_panden:
         klass = classificeer_property(p)
         p.calc = p.calc or {}
         p.calc["classificatie"] = klass
+        audit[klass["category"]] = audit.get(klass["category"], 0) + 1
 
         if klass["category"] == "skip":
+            for reden in klass.get("redenen", []):
+                skip_redenen[reden] = skip_redenen.get(reden, 0) + 1
             logger.debug("FILTER skip: %s — %s", p.adres, "; ".join(klass["redenen"]))
             continue
 
@@ -464,7 +476,16 @@ def run_scan():
         "Na classificatie: %d ontwikkel-panden, %d beleggingen/verhuurd (van %d)",
         len(ontwikkel_panden), len(beleggingen_export), len(alle_panden),
     )
+    # Top-5 skip redenen loggen voor inzicht
+    top_skip = sorted(skip_redenen.items(), key=lambda x: -x[1])[:5]
+    for reden, aantal in top_skip:
+        logger.info("  skip reden: %d× '%s'", aantal, reden[:80])
     alle_panden = ontwikkel_panden
+    classificatie_audit = {
+        "per_category": audit,
+        "top_skip_redenen": dict(top_skip),
+        "totaal_voor_filter": len(alle_panden) + audit.get("skip", 0) + len(beleggingen_export),
+    }
 
     # ── Observatie-historie registreren (voor motion signals) ────────────
     # Doen we voor élk gefilterd pand — ook panden die uiteindelijk geen kans
@@ -523,6 +544,70 @@ def run_scan():
                     kans.calc["motion"] = motion
             except Exception as e:
                 logger.debug("motion fout %s: %s", kans.adres, e)
+
+            # BAG verificatie — officieel bouwjaar/oppervlak/gebruiksdoel
+            try:
+                bag_data = verrijk_bag(kans.postcode, kans.adres)
+                if bag_data:
+                    kans.calc["bag"] = {
+                        "bouwjaar": bag_data.get("bouwjaar"),
+                        "oppervlakte": bag_data.get("oppervlakte"),
+                        "gebruiksdoel": bag_data.get("gebruiksdoel"),
+                        "pandstatus": bag_data.get("pandstatus"),
+                        "status": bag_data.get("status"),
+                        "wijk": bag_data.get("wijk"),
+                        "buurt": bag_data.get("buurt"),
+                    }
+            except Exception as e:
+                logger.debug("BAG fout %s: %s", kans.adres, e)
+                bag_data = {}
+
+            # Monument check via RCE WFS (gebruikt BAG-coords als aanwezig)
+            try:
+                mon = verrijk_monument_status(kans, bag_data)
+                if mon:
+                    kans.calc["monument"] = mon
+            except Exception as e:
+                logger.debug("Monument fout %s: %s", kans.adres, e)
+                mon = {}
+
+            # Erfpacht detectie uit Funda-beschrijving (als beschikbaar)
+            try:
+                beschrijving = kans.calc.get("beschrijving_raw", "") or ""
+                if not beschrijving and kans.calc.get("erfpacht") is not None:
+                    # Minimale info uit _parse_description — stel kunstmatige zin op
+                    beschrijving = "erfpacht" if kans.calc.get("erfpacht") else "eigen grond"
+                erf = detect_erfpacht(beschrijving, kans.stad)
+                if erf.get("is_erfpacht") or erf.get("toelichting"):
+                    kans.calc["erfpacht_detail"] = erf
+            except Exception as e:
+                logger.debug("Erfpacht parse fout %s: %s", kans.adres, e)
+                erf = {}
+
+            # Risks aggregeren
+            risks = aggregate_risks(
+                classificatie=kans.calc.get("classificatie"),
+                ep_online=kans.calc.get("ep_online"),
+                bag=bag_data,
+                monument=mon,
+                erfpacht=erf,
+                wijkcheck=kans.calc.get("splitsen", {}).get("wijkcheck"),
+                prop_bouwjaar=kans.bouwjaar,
+                prop_opp_m2=kans.opp_m2,
+            )
+            kans.calc["risks"] = risks
+
+            # Dealscore — composite 0-100 voor triage
+            dscore = bereken_dealscore(
+                marge_pct=kans.marge_pct,
+                score_basis=kans.score,
+                motion=kans.calc.get("motion"),
+                ep_online=kans.calc.get("ep_online"),
+                erfpacht=erf,
+                risks=risks,
+                wijkcheck=kans.calc.get("splitsen", {}).get("wijkcheck"),
+            )
+            kans.calc["dealscore"] = dscore
 
             alle_kansen.append(kans)
             sla_op(kans)
@@ -594,6 +679,7 @@ def run_scan():
         "scan_datum": datetime.now().isoformat(),
         "totaal_gescand": totaal_ruw,
         "na_filter": len(alle_panden),
+        "classificatie_audit": classificatie_audit,
         "kansen": [],
         "biedboek": biedboek_dashboard,
         "veilingen": veilingen_dashboard,
@@ -627,10 +713,20 @@ def run_scan():
             "is_opknapper": k.calc.get("is_opknapper", False),
             "motion": k.calc.get("motion", {}),
             "ep_online": k.calc.get("ep_online", {}),
+            "bag": k.calc.get("bag", {}),
+            "monument": k.calc.get("monument", {}),
+            "erfpacht_detail": k.calc.get("erfpacht_detail", {}),
+            "risks": k.calc.get("risks", {}),
+            "dealscore": k.calc.get("dealscore", {}),
             "calc": k.calc,
         })
-    # Sorteer op marge (hoogste eerst)
-    leads_export["kansen"].sort(key=lambda x: -x["marge_pct"])
+    # Sorteer op dealscore (hoogste eerst), fallback marge
+    leads_export["kansen"].sort(
+        key=lambda x: (
+            -(x.get("dealscore", {}).get("score", 0)),
+            -x["marge_pct"],
+        )
+    )
 
     with open("leads.json", "w", encoding="utf-8") as f:
         json.dump(leads_export, f, indent=2, ensure_ascii=False, default=str)
