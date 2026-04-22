@@ -581,6 +581,12 @@ export default function Home() {
   const [splitsDhOnly, setSplitsDhOnly] = useState(false);
   const [sortKey, setSortKey] = useState('dealscore');
   const [search, setSearch] = useState('');
+  const [searchDebounced, setSearchDebounced] = useState('');
+
+  useEffect(() => {
+    const t = setTimeout(() => setSearchDebounced(search), 180);
+    return () => clearTimeout(t);
+  }, [search]);
   const [swipeDir, setSwipeDir] = useState(null);
   const [showNotes, setShowNotes] = useState(false);
   const [notesText, setNotesText] = useState('');
@@ -732,7 +738,7 @@ export default function Home() {
 
   const swipeList = useMemo(() => {
     const sortFn = (SORT_OPTIONS.find(s => s.key === sortKey) || SORT_OPTIONS[0]).fn;
-    const q = search.trim().toLowerCase();
+    const q = searchDebounced.trim().toLowerCase();
     return kansen
       .filter(k => k._status === STATUS.NEW)
       .filter(k => stadFilter === 'alle' || k.stad === stadFilter)
@@ -748,7 +754,7 @@ export default function Home() {
         (k.calc?.bag?.buurt || '').toLowerCase().includes(q)
       ))
       .sort(sortFn);
-  }, [kansen, stadFilter, minMarge, motivatedOnly, forcedOnly, splitsDhOnly, sortKey, search]);
+  }, [kansen, stadFilter, minMarge, motivatedOnly, forcedOnly, splitsDhOnly, sortKey, searchDebounced]);
 
   useEffect(() => {
     const handler = (e) => {
