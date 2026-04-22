@@ -273,6 +273,56 @@ def test_dealscore():
           d3["score"] == 0 and d3["grade"] == "D")
 
 
+def test_classificatie_edge_cases():
+    section("Classificatie — edge cases")
+    from classificatie import classificeer
+    # Unicode / spaties
+    check("Whitespace-only type → skip",
+          classificeer("   ").get("category") in ("skip", "wonen"))
+    # Lange adres met bedrijfspand-keyword
+    r = classificeer("Appartement", adres="Bedrijfspand De Schaar 12")
+    check("'Bedrijfspand' in adres flag gets picked up? Nee — type leidt",
+          r["category"] == "wonen")
+    # Gebruikssituatie: huurbeding niet ingeroepen = verhuurd
+    r = classificeer("Woning", gebruikssituatie="huurbeding_niet_ingeroepen")
+    check("huurbeding_niet_ingeroepen → verhuurd_wonen",
+          r["category"] == "verhuurd_wonen" and r["is_verhuurd"])
+
+
+def test_wijkcheck_edge_cases():
+    section("Wijkcheck — edge cases")
+    from bestemmingsplan import mag_splitsen
+    # Onbekende postcode DH → wijk-score onbekend
+    r = mag_splitsen("den haag", 150, 2, postcode="9999XX")
+    # Basis-check (150m², 2 units) slaagt, maar wijkcheck heeft geen data
+    check("DH onbekende PC → None or True (defensief)",
+          r["mag_splitsen"] in (True, None))
+
+    # Splitsing 3 units in DH waar 35m² per unit net niet haalbaar is
+    r = mag_splitsen("den haag", 100, 3, postcode="2593AB")  # Bezuidenhout
+    check("100m²/3 units = 33m² per unit < 35 min → niet toegestaan",
+          r["mag_splitsen"] is False)
+
+    # Unknown stad → None
+    r = mag_splitsen("hoogvliet", 120, 2, postcode="3191AA")
+    check("Onbekende stad → None",
+          r["mag_splitsen"] is None)
+
+
+def test_erfpacht_edge_cases():
+    section("Erfpacht — edge cases")
+    from erfpacht import detect_erfpacht
+    # Leeg
+    check("Lege tekst → geen erfpacht", detect_erfpacht("", "rotterdam")["is_erfpacht"] is False)
+    # "Geen erfpacht" in koopakte
+    r = detect_erfpacht("De woning wordt verkocht vrij op naam. Geen erfpacht.", "rotterdam")
+    check("'Geen erfpacht' tekst → niet geflagd", r["is_erfpacht"] is False)
+    # Tijdelijke erfpacht vlak voor expiration
+    r = detect_erfpacht("Tijdelijke erfpacht tot 2027.", "den haag")
+    check("Eindjaar < huidige + 5 = risico hoog",
+          r.get("risk_level") == "hoog")
+
+
 def test_bod_advies():
     section("Bod-advies generator")
     from bod_advies import genereer_bod_advies
@@ -522,6 +572,9 @@ def main():
         test_scenarios_fix_flip, test_dealscore_worst_case,
         test_bod_advies, test_cbs_score, test_bouwkundig,
         test_wijk_multiplier, test_verkoopkwaliteit_filter,
+        test_classificatie_edge_cases,
+        test_wijkcheck_edge_cases,
+        test_erfpacht_edge_cases,
         test_full_pipeline_real_address,
     ]
     for t in tests:
