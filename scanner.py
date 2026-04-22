@@ -34,7 +34,7 @@ from erfpacht import detect_erfpacht
 from risks import aggregate_risks
 from dealscore import bereken_dealscore
 from bod_advies import genereer_bod_advies
-from bouwkundig import genereer_checklist
+# bouwkundig checklist wordt client-side gerenderd in dashboard
 from referentie import zoek_vergelijkbare_detail
 from renovatie import schat_renovatie
 from looptijd import bereken_looptijd
