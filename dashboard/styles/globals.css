@@ -1257,4 +1257,25 @@ img[src=""], img:not([src]) { display: none; }
   .action { padding: 14px; font-size: 18px; }
   .swipe-hints { font-size: 10px; gap: 8px; }
   .modal { padding: 20px; }
+
+  /* Mobile-specific polish */
+  .nav-tabs { gap: 2px; }
+  .nav-tab { padding: 8px 10px; font-size: 12px; }
+  .nav-tab .count { font-size: 10px; padding: 1px 6px; }
+  .portfolio-aggregate, .stats-topline { grid-template-columns: 1fr 1fr; }
+  .scen-grid, .bod-grid { grid-template-columns: 1fr; }
+  .kanban { grid-template-columns: repeat(2, minmax(160px, 1fr)); }
+  .heat-row { grid-template-columns: 80px 1fr 100px; font-size: 11px; }
+  .cmp-picker { grid-template-columns: 1fr; }
+  .detail-actions { flex-direction: column; }
+  .detail-actions > * { width: 100%; text-align: center; }
+  .foto-grid { grid-template-columns: repeat(2, 1fr); }
+  .ref-meta { grid-template-columns: 1fr; }
+  .cmp-row { grid-template-columns: 1fr; padding: 10px 14px; gap: 4px; }
+  .cmp-row .cmp-cell { text-align: left; padding-left: 16px; }
+  .cmp-row.cmp-header { display: none; }
+  .roi-row { grid-template-columns: 1fr 70px; }
+  .roi-row > *:nth-child(3), .roi-row > *:nth-child(4) {
+    grid-column: 1 / 3; font-size: 11px; color: #888;
+  }
 }
