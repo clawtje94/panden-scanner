@@ -819,7 +819,18 @@ export default function Home() {
         <nav className="nav">
           <div className="nav-brand">Panden <span>Scanner</span></div>
           <div className="nav-meta">
-            {data.scan_datum && <span>Laatste scan: {new Date(data.scan_datum).toLocaleString('nl-NL')}</span>}
+            {data.scan_datum && (() => {
+              const scan = new Date(data.scan_datum);
+              const ageH = (Date.now() - scan.getTime()) / (1000 * 3600);
+              const stale = ageH > 36;   // scan draait dagelijks, 36h = miss
+              const veryStale = ageH > 72;
+              return (
+                <span className={`scan-age ${stale ? 'stale' : ''} ${veryStale ? 'very-stale' : ''}`}>
+                  Laatste scan: {scan.toLocaleString('nl-NL')}
+                  {stale && ` · ⚠ ${Math.round(ageH)}u oud`}
+                </span>
+              );
+            })()}
             {refreshInfo.newKansen > 0 && (
               <span className="meta-chip mv">+{refreshInfo.newKansen} nieuw</span>
             )}

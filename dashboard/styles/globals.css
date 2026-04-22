@@ -845,6 +845,8 @@ a { color: #ff6b00; text-decoration: none; }
   border: 1px solid #333;
 }
 .meta-chip.mv { color: #ff6b00; border-color: #4d2a0a; background: #1a1208; }
+.scan-age.stale { color: #ffb074; }
+.scan-age.very-stale { color: #ff6b6b; font-weight: 700; }
 .meta-chip.frc { color: #ffb74d; border-color: #4d3a1a; background: #1a140a; }
 
 /* ── SIGNAL TOGGLES (filters) ── */
