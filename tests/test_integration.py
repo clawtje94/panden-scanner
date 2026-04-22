@@ -273,6 +273,114 @@ def test_dealscore():
           d3["score"] == 0 and d3["grade"] == "D")
 
 
+def test_bod_advies():
+    section("Bod-advies generator")
+    from bod_advies import genereer_bod_advies
+    calc_stub = {
+        "aankoop_totaal": 330_000, "totaal_kosten": 420_000,
+        "scenarios": {
+            "worst": {"netto": 400_000, "marge_pct": 6},
+            "realistic": {"netto": 420_000, "marge_pct": 12},
+            "best": {"netto": 440_000, "marge_pct": 18},
+        },
+    }
+    # Scenario 1: hot motivated — veel argumenten, agressief bod
+    b1 = genereer_bod_advies(
+        vraagprijs=300_000, calc=calc_stub,
+        motion={"motivated": True, "motivated_score": 8,
+                "prijsverlaging_pct": 8, "aantal_prijsverlagingen": 2,
+                "dagen_online": 200, "makelaarswissel": True},
+        risks={"flags": [{"niveau": "oranje", "label": "Rijksmonument", "details": ""}]},
+        ep_online={"forced_renovation_sterk": True, "label": "G"},
+    )
+    check("Motivated pand → 4+ argumenten", len(b1["argumenten"]) >= 4)
+    check("Hoge korting_modifier → agressieve strategie",
+          "Aggressief" in b1["strategie"] or "Markt" in b1["strategie"])
+    check("Aggressief bod < markt bod",
+          b1["aggressief"]["bod"] < b1["markt"]["bod"])
+
+    # Scenario 2: rustig pand, markt-bod
+    b2 = genereer_bod_advies(
+        vraagprijs=300_000, calc=calc_stub,
+        motion={"motivated": False, "motivated_score": 2},
+        risks={"flags": []},
+    )
+    check("Rustig pand → weinig argumenten", len(b2["argumenten"]) <= 1)
+
+    # Scenario 3: plafond-berekening werkt
+    plafond = b2["plafond"]["bod"]
+    check("Plafond < vraagprijs (worst marge 6% < 10% drempel)",
+          plafond is not None and plafond <= 300_000)
+
+
+def test_cbs_score():
+    section("CBS wijk-kwaliteit score")
+    import importlib.util as iu
+    s = iu.spec_from_file_location("cbs", "scrapers/cbs_buurt.py")
+    m = iu.module_from_spec(s); s.loader.exec_module(m)
+    # Hoog: hoge WOZ + veel koop + weinig corp
+    hi = m.wijk_kwaliteit_score({"gem_woz_x1000": 600, "pct_koop": 80, "pct_corp": 10})
+    check(f"Premium wijk → score ≥ 80 (got {hi})", hi >= 80)
+    # Laag: lage WOZ + weinig koop + veel corp
+    lo = m.wijk_kwaliteit_score({"gem_woz_x1000": 180, "pct_koop": 25, "pct_corp": 50})
+    check(f"Zwakke wijk → score ≤ 30 (got {lo})", lo <= 30)
+    # Lege dict → None
+    check("Lege dict → None", m.wijk_kwaliteit_score({}) is None or m.wijk_kwaliteit_score({}) == 50)
+
+
+def test_bouwkundig():
+    section("Bouwkundige checklist")
+    from bouwkundig import genereer_checklist
+    # 1920 + label F = veel checks
+    c1 = genereer_checklist(bouwjaar=1920, energie_label="F", type_woning="herenhuis")
+    labels = [x["punt"].lower() for x in c1]
+    check("Oud pand → loden waterleidingen check",
+          any("loden" in l for l in labels))
+    check("Label F → verhuurverbod 2028",
+          any("verhuurverbod" in l for l in labels))
+    check("Herenhuis → monumenten-register check",
+          any("monument" in l for l in labels))
+
+    # Nieuwbouw 2015 + label A = minder checks
+    c2 = genereer_checklist(bouwjaar=2015, energie_label="A", type_woning="appartement")
+    check("Recent appartement → VvE check",
+          any("vve" in x["punt"].lower() for x in c2))
+    check("Minder checks dan oud pand", len(c2) < len(c1))
+
+    # Rijksmonument flag werkt
+    c3 = genereer_checklist(bouwjaar=1900, is_rijksmonument=True)
+    check("Monument-flag → erfgoed-akkoord check",
+          any("erfgoed" in x["punt"].lower() for x in c3))
+
+
+def test_wijk_multiplier():
+    section("Renovatie wijk-multipliers")
+    from renovatie import _wijk_multiplier
+    # Kralingen (Rotterdam premium)
+    f1, b1 = _wijk_multiplier("3062AB", "Rotterdam")
+    check(f"Kralingen premium → factor >1.0 (got {f1})", f1 > 1.0)
+    # Tarwewijk (Rotterdam NPRZ goedkoop)
+    f2, _ = _wijk_multiplier("3081XY", "Rotterdam")
+    check(f"NPRZ goedkoop → factor <1.0 (got {f2})", f2 < 1.0)
+    # Onbekende postcode → stad-fallback
+    f3, b3 = _wijk_multiplier("9999XX", "Schiedam")
+    check(f"Unknown PC4 → stad fallback (got {f3}, bron {b3})",
+          0.9 < f3 < 1.05 and "stad" in b3)
+    # Geen info → landelijk
+    f4, b4 = _wijk_multiplier("", "")
+    check(f"Geen info → 1.0 landelijk", f4 == 1.0 and b4 == "landelijk")
+
+
+def test_verkoopkwaliteit_filter():
+    section("Hard-skip filter (VERKOOP_KWALITEIT)")
+    from config import VERKOOP_KWALITEIT
+    # Config check
+    check("Config heeft skip_bij_onvoldoende_confidence",
+          "skip_bij_onvoldoende_confidence" in VERKOOP_KWALITEIT)
+    check("min_worst_marge_bij_onvoldoende ≥ 0",
+          VERKOOP_KWALITEIT.get("min_worst_marge_bij_onvoldoende", 0) >= 0)
+
+
 def test_full_pipeline_real_address():
     if SKIP_NETWORK:
         return
@@ -412,6 +520,8 @@ def main():
         test_bag, test_monument, test_risks_aggregator, test_dealscore,
         test_percentiel, test_confidence_score,
         test_scenarios_fix_flip, test_dealscore_worst_case,
+        test_bod_advies, test_cbs_score, test_bouwkundig,
+        test_wijk_multiplier, test_verkoopkwaliteit_filter,
         test_full_pipeline_real_address,
     ]
     for t in tests:

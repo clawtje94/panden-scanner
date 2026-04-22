@@ -557,6 +557,27 @@ def run_scan():
             except Exception as e:
                 logger.debug("motion fout %s: %s", kans.adres, e)
 
+            # Postcode fallback: als scraper hem niet meeleverde, resolve via
+            # PDOK locatieserver zodat BAG/monument/EP-Online wel kunnen lopen.
+            if not kans.postcode and kans.adres and kans.stad:
+                try:
+                    import requests as _rq
+                    q = f"{kans.adres} {kans.stad}"
+                    _r = _rq.get(
+                        "https://api.pdok.nl/bzk/locatieserver/search/v3_1/free",
+                        params={"q": q, "fq": "type:adres", "rows": 1},
+                        timeout=5,
+                    )
+                    if _r.ok:
+                        docs = _r.json().get("response", {}).get("docs", [])
+                        if docs:
+                            pc = (docs[0].get("postcode") or "").strip()
+                            if pc:
+                                kans.postcode = pc
+                                logger.debug("Postcode resolved %s → %s", kans.adres, pc)
+                except Exception as _e:
+                    logger.debug("Postcode-resolve fout: %s", _e)
+
             # BAG verificatie — officieel bouwjaar/oppervlak/gebruiksdoel
             try:
                 bag_data = verrijk_bag(kans.postcode, kans.adres)
