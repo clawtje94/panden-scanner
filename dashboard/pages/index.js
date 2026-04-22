@@ -56,7 +56,7 @@ function PhotoCarousel({ photos, alt, score }) {
         go(clickX > rect.width / 2 ? 1 : -1);
       }}
     >
-      <img src={photos[idx]} alt={alt} />
+      <img src={photos[idx]} alt={alt} onError={(e) => { e.target.style.display = 'none'; }} />
       <div className="card-score-big">{score}/10</div>
       {photos.length > 1 && (
         <>

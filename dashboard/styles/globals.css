@@ -847,6 +847,10 @@ a { color: #ff6b00; text-decoration: none; }
 .meta-chip.mv { color: #ff6b00; border-color: #4d2a0a; background: #1a1208; }
 .scan-age.stale { color: #ffb074; }
 .scan-age.very-stale { color: #ff6b6b; font-weight: 700; }
+
+/* Image fallback bij defecte foto's */
+img { background: #0f0f0f; }
+img[src=""], img:not([src]) { display: none; }
 .meta-chip.frc { color: #ffb74d; border-color: #4d3a1a; background: #1a140a; }
 
 /* ── SIGNAL TOGGLES (filters) ── */
