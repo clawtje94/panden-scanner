@@ -1,63 +1,65 @@
 {
-  "scan_datum": "2026-04-28T09:45:14.664731",
-  "totaal_gescand": 1463,
-  "na_filter": 1417,
+  "scan_datum": "2026-04-29T09:29:24.846795",
+  "totaal_gescand": 1492,
+  "na_filter": 1443,
   "classificatie_audit": {
     "per_category": {
-      "wonen": 1424,
+      "wonen": 1450,
       "transformatie": 7,
       "verhuurd_wonen": 0,
-      "skip": 8
+      "skip": 11
     },
     "top_skip_redenen": {
       "type leeg en geen woon-hint — defensief skip": 4,
       "type 'Bedrijfspand' staat op skip-lijst": 3,
+      "verhuurd-keyword in type/adres/beschrijving": 2,
+      "onbekend type 'Beleggingspand' — niet op whitelist": 2,
       "onbekend type 'Kamerverhuurpand' — niet op whitelist": 1
     },
-    "totaal_voor_filter": 1439
+    "totaal_voor_filter": 1468
   },
   "kansen": [
     {
-      "adres": "Sirtemastraat 254",
-      "stad": "Den Haag",
-      "postcode": "2513SV",
+      "adres": "Parallelweg 124",
+      "stad": "Vlaardingen",
+      "postcode": "3131DM",
       "wijk": "",
-      "prijs": 350000,
-      "opp_m2": 104,
-      "prijs_per_m2": 3365.0,
+      "prijs": 275000,
+      "opp_m2": 113,
+      "prijs_per_m2": 2434.0,
       "type_woning": "apartment",
-      "bouwjaar": 1971,
-      "energie_label": "D",
-      "kamers": 4,
+      "bouwjaar": 1950,
+      "energie_label": "unknown",
+      "kamers": 6,
       "source": "funda",
-      "url": "https://www.funda.nl/detail/koop/den-haag/sirtemastraat-254/43322676/",
-      "foto_url": "https://cloud.funda.nl/valentina_media/227/836/458.jpg",
+      "url": "https://www.funda.nl/detail/koop/vlaardingen/parallelweg-124-d/89788817/",
+      "foto_url": "https://cloud.funda.nl/valentina_media/227/943/087.jpg",
       "foto_urls": [
-        "https://cloud.funda.nl/valentina_media/227/836/458.jpg",
-        "https://cloud.funda.nl/valentina_media/227/836/460.jpg",
-        "https://cloud.funda.nl/valentina_media/227/836/462.jpg",
-        "https://cloud.funda.nl/valentina_media/227/836/559.jpg",
-        "https://cloud.funda.nl/valentina_media/227/836/464.jpg",
-        "https://cloud.funda.nl/valentina_media/227/836/597.jpg"
+        "https://cloud.funda.nl/valentina_media/227/943/087.jpg",
+        "https://cloud.funda.nl/valentina_media/227/943/047.jpg",
+        "https://cloud.funda.nl/valentina_media/227/943/048.jpg",
+        "https://cloud.funda.nl/valentina_media/227/943/110.jpg",
+        "https://cloud.funda.nl/valentina_media/227/943/200.jpg",
+        "https://cloud.funda.nl/valentina_media/227/943/112.jpg"
       ],
       "strategie": "fix_flip",
-      "marge_pct": 17.9,
-      "winst_euro": 103154,
-      "roi_pct": 21.7,
-      "totale_kosten": 474565,
-      "verwachte_opbrengst": 577720,
-      "score": 4,
+      "marge_pct": 35.5,
+      "winst_euro": 188603,
+      "roi_pct": 55.0,
+      "totale_kosten": 343160,
+      "verwachte_opbrengst": 531764,
+      "score": 6,
       "is_opknapper": false,
       "motion": {},
       "ep_online": {},
       "bag": {
-        "bouwjaar": 1971,
-        "oppervlakte": 103,
+        "bouwjaar": 1950,
+        "oppervlakte": 107,
         "gebruiksdoel": "woonfunctie",
         "pandstatus": "Pand in gebruik",
         "status": "Verblijfsobject in gebruik",
-        "wijk": "Wijk 28 Centrum",
-        "buurt": "Kortenbos"
+        "wijk": "Centrum",
+        "buurt": "Vettenoordse Polder Oost"
       },
       "monument": {
         "is_rijksmonument": false
@@ -65,494 +67,376 @@
       "erfpacht_detail": {},
       "risks": {
         "flags": [],
-        "kansen": [
-          {
-            "label": "DH splits-wijk (1-4-2026)",
-            "details": "Leefbaarometer-score 8 — splitsen toegestaan onder nieuwe regeling."
-          }
-        ],
+        "kansen": [],
         "zwaarste": "geen",
         "aantal": 0
       },
       "dealscore": {
-        "score": 33,
-        "grade": "C",
+        "score": 24,
+        "grade": "D",
         "breakdown": [
           {
             "onderdeel": "Marge",
-            "punten": 8,
-            "uitleg": "8.3% (worst-case P25) → 8/30"
+            "punten": 28,
+            "uitleg": "28.3% (worst-case P25) → 28/30"
           },
           {
             "onderdeel": "Verkoop-confidence",
-            "punten": 11,
-            "uitleg": "hoog (77/100) — N=10 refs"
+            "punten": 0,
+            "uitleg": "onvoldoende (0/100) — N=0 refs"
           },
           {
-            "onderdeel": "Splits-wijk",
-            "punten": 10,
-            "uitleg": "den_haag_2026 — wijkcheck OK"
+            "onderdeel": "Verkoop onbetrouwbaar",
+            "punten": -10,
+            "uitleg": "Geen/te weinig vergelijkbare panden"
           },
           {
             "onderdeel": "Kwaliteitsscore",
-            "punten": 4,
-            "uitleg": "4/10 (bouwjaar/label/eigen grond/etc)"
+            "punten": 6,
+            "uitleg": "6/10 (bouwjaar/label/eigen grond/etc)"
           }
         ]
       },
       "scenarios": {
         "worst": {
-          "verkoop_m2": 5079,
-          "omzet": 528216,
-          "makelaar": 7923,
+          "verkoop_m2": 4320.0,
+          "omzet": 488160,
+          "makelaar": 7322,
           "notaris": 2500,
-          "netto": 517792,
-          "winst": 43227,
-          "marge_pct": 8.3,
-          "roi_pct": 9.1
+          "netto": 478337,
+          "winst": 135177,
+          "marge_pct": 28.3,
+          "roi_pct": 39.4
         },
         "realistic": {
-          "verkoop_m2": 5664,
-          "omzet": 589056,
-          "makelaar": 8835,
+          "verkoop_m2": 4800,
+          "omzet": 542400,
+          "makelaar": 8136,
           "notaris": 2500,
-          "netto": 577720,
-          "winst": 103154,
-          "marge_pct": 17.9,
-          "roi_pct": 21.7
+          "netto": 531764,
+          "winst": 188603,
+          "marge_pct": 35.5,
+          "roi_pct": 55.0
         },
         "best": {
-          "verkoop_m2": 7050,
-          "omzet": 733200,
-          "makelaar": 10998,
+          "verkoop_m2": 5280.0,
+          "omzet": 596640,
+          "makelaar": 8949,
           "notaris": 2500,
-          "netto": 719702,
-          "winst": 245136,
-          "marge_pct": 34.1,
-          "roi_pct": 51.7
+          "netto": 585190,
+          "winst": 242030,
+          "marge_pct": 41.4,
+          "roi_pct": 70.5
         }
       },
       "verkoop_referentie": {
-        "p25_pm2": 5079,
-        "p50_pm2": 5664,
-        "p75_pm2": 7050,
-        "n_refs": 10,
-        "n_high_label": 10,
-        "spread_pct": 34.8,
-        "avg_days_online": 23.6,
-        "match_niveau": "pc4_label_fresh",
-        "confidence": 77,
-        "confidence_label": "hoog",
-        "waarschuwingen": [],
-        "wijk": "Zeeheldenkwartier"
+        "p25_pm2": 0,
+        "p50_pm2": 0,
+        "p75_pm2": 0,
+        "n_refs": 0,
+        "n_high_label": 0,
+        "spread_pct": 0.0,
+        "avg_days_online": null,
+        "match_niveau": "geen",
+        "confidence": 0,
+        "confidence_label": "onvoldoende",
+        "waarschuwingen": [
+          "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
+        ],
+        "wijk": ""
       },
       "bod_advies": {
-        "vraagprijs": 350000,
+        "vraagprijs": 275000,
         "aggressief": {
-          "bod": 308000,
+          "bod": 242000,
           "korting_pct": 12.0,
           "label": "Agressief"
         },
         "markt": {
-          "bod": 332500,
+          "bod": 261250,
           "korting_pct": 5.0,
           "label": "Markt"
         },
         "plafond": {
-          "bod": 341997,
-          "tekst": "341,997",
+          "bod": 275000,
+          "tekst": "275,000",
           "label": "Plafond (10% worst-marge)"
         },
         "korting_modifier": 0.0,
         "argumenten": [],
-        "strategie": "Krappe deal — pas bij aggressief bod rendabel."
+        "strategie": "Solide deal — markt-bod, niet te veel bieden."
       },
       "calc": {
-        "vraagprijs": 350000,
+        "vraagprijs": 275000,
         "ovb_pct": 8.0,
-        "ovb": 28000,
-        "notaris_makelaar_aankoop": 4550,
-        "aankoop_totaal": 382550,
-        "renovatie_per_m2": 671,
+        "ovb": 22000,
+        "notaris_makelaar_aankoop": 3575,
+        "aankoop_totaal": 300575,
+        "renovatie_per_m2": 302,
         "renovatie_detail": {
           "componenten": [
             {
-              "naam": "Keuken renovatie",
-              "kosten": 15120,
-              "reden": "Nieuwe fronten, apparatuur, blad, tegelwerk",
-              "kosten_basis": 14000
+              "naam": "Keuken opfrissen",
+              "kosten": 8000,
+              "reden": "Nieuwe fronten, werkblad, apparatuur behouden"
             },
             {
-              "naam": "Badkamer renovatie",
-              "kosten": 12960,
-              "reden": "Nieuwe tegels, sanitair, kranen",
-              "kosten_basis": 12000
+              "naam": "Badkamer opfrissen",
+              "kosten": 7000,
+              "reden": "Sanitair + kranen vervangen, voegen vernieuwen"
             },
             {
               "naam": "Toilet opknappen",
-              "kosten": 2700,
-              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties",
-              "kosten_basis": 2500
+              "kosten": 2500,
+              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties"
             },
             {
-              "naam": "Vloeren (60/m²)",
-              "kosten": 6739,
-              "reden": "PVC click vloer leggen (licht egaliseren)",
-              "kosten_basis": 6240
+              "naam": "Vloeren (50/m²)",
+              "kosten": 5650,
+              "reden": "Nieuwe PVC click vloer leggen"
             },
             {
               "naam": "Schilderwerk (20/m²)",
-              "kosten": 2246,
-              "reden": "Latex muren en plafonds",
-              "kosten_basis": 2080
+              "kosten": 2260,
+              "reden": "Latex muren en plafonds"
             },
             {
-              "naam": "Elektra upgraden",
-              "kosten": 3780,
-              "reden": "Groepenkast + extra groepen + stopcontacten",
-              "kosten_basis": 3500
-            },
-            {
-              "naam": "Isolatie verbeteren",
-              "kosten": 4492,
-              "reden": "Label D: dak + vloer bijwerken",
-              "kosten_basis": 4160
-            },
-            {
-              "naam": "Ramen deels (6x)",
-              "kosten": 7776,
-              "reden": "Oudere ramen upgraden naar HR++",
-              "kosten_basis": 7200
-            },
-            {
-              "naam": "CV-ketel onderhoud/reserve",
-              "kosten": 1620,
-              "reden": "Mogelijk verouderd, budget voor vervanging",
-              "kosten_basis": 1500
+              "naam": "Elektra check + uitbreiden",
+              "kosten": 1500,
+              "reden": "Keuring + extra groepen/stopcontacten"
             },
             {
               "naam": "Buitenschilderwerk",
-              "kosten": 2700,
-              "reden": "Kozijnen buiten schilderen",
-              "kosten_basis": 2500
+              "kosten": 2500,
+              "reden": "Kozijnen buiten schilderen"
             },
             {
               "naam": "Onvoorzien (10%)",
-              "kosten": 6013,
-              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)",
-              "kosten_basis": 5568
+              "kosten": 2941,
+              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)"
             },
             {
               "naam": "Architect + leges (6%)",
-              "kosten": 3607,
-              "reden": "Ontwerp, vergunning, bouwbegeleiding",
-              "kosten_basis": 3340
+              "kosten": 1764,
+              "reden": "Ontwerp, vergunning, bouwbegeleiding"
             }
           ],
-          "totaal": 69753,
-          "per_m2": 671,
+          "totaal": 34115,
+          "per_m2": 302,
           "onvoorzien_pct": 10,
-          "wijk_factor": 1.08,
-          "wijk_bron": "PC4 2513"
+          "wijk_factor": 1.0,
+          "wijk_bron": "landelijk"
         },
-        "bouw_totaal": 69753,
-        "looptijd_maanden": 8,
+        "bouw_totaal": 34115,
+        "looptijd_maanden": 4,
         "rente_pct": 8.0,
-        "financiering_basis": 417426,
-        "rente": 22262,
-        "totaal_kosten": 474565,
-        "verkoop_m2": 5664,
-        "verkoop_bron": "referentie_p50",
-        "referenties": [
-          {
-            "adres": "Toussaintkade 71",
-            "prijs": 595000,
-            "opp_m2": 79,
-            "prijs_per_m2": 7532,
-            "energie_label": "A",
-            "is_high_label": true,
-            "days_online": 26,
-            "is_fresh": true,
-            "postcode": "2513CL",
-            "neighbourhood": "Zeeheldenkwartier",
-            "type": "apartment",
-            "url": "https://www.funda.nl/detail/koop/den-haag/appartement-toussaintkade-71-b/89757222/",
-            "broker": "DRVM makelaars "
-          },
-          {
-            "adres": "Bilderdijkstraat 23",
-            "prijs": 685000,
-            "opp_m2": 91,
-            "prijs_per_m2": 7527,
-            "energie_label": "A++",
-            "is_high_label": true,
-            "days_online": 31,
-            "is_fresh": true,
-            "postcode": "2513CM",
-            "neighbourhood": "Zeeheldenkwartier",
-            "type": "apartment",
-            "url": "https://www.funda.nl/detail/koop/den-haag/appartement-bilderdijkstraat-23-a/43397424/",
-            "broker": "Frisia Makelaars"
-          },
-          {
-            "adres": "Westerbaenstraat 2",
-            "prijs": 595850,
-            "opp_m2": 81,
-            "prijs_per_m2": 7356,
-            "energie_label": "A+",
-            "is_high_label": true,
-            "days_online": 3,
-            "is_fresh": true,
-            "postcode": "2513GJ",
-            "neighbourhood": "Zeeheldenkwartier",
-            "type": "apartment",
-            "url": "https://www.funda.nl/detail/koop/den-haag/appartement-westerbaenstraat-2-a/89786025/",
-            "broker": "Makelaarskantoor Reichman & Rommelaar B.V."
-          },
-          {
-            "adres": "Hemsterhuisstraat 75",
-            "prijs": 699000,
-            "opp_m2": 114,
-            "prijs_per_m2": 6132,
-            "energie_label": "A",
-            "is_high_label": true,
-            "days_online": 11,
-            "is_fresh": true,
-            "postcode": "2513RB",
-            "neighbourhood": "Zeeheldenkwartier",
-            "type": "apartment",
-            "url": "https://www.funda.nl/detail/koop/den-haag/appartement-hemsterhuisstraat-75/43310114/",
-            "broker": "Real Estate Partners B.V."
-          },
-          {
-            "adres": "Veenkade 189",
-            "prijs": 449000,
-            "opp_m2": 79,
-            "prijs_per_m2": 5684,
-            "energie_label": "B",
-            "is_high_label": true,
-            "days_online": 34,
-            "is_fresh": true,
-            "postcode": "2513EM",
-            "neighbourhood": "Zeeheldenkwartier",
-            "type": "apartment",
-            "url": "https://www.funda.nl/detail/koop/den-haag/appartement-veenkade-189/43382582/",
-            "broker": "Dekker Makelaars"
-          }
-        ],
-        "bruto_verkoopprijs": 589056,
-        "makelaar_verkoop": 8835,
+        "financiering_basis": 317632,
+        "rente": 8470,
+        "totaal_kosten": 343160,
+        "verkoop_m2": 4800,
+        "verkoop_bron": "config",
+        "referenties": [],
+        "bruto_verkoopprijs": 542400,
+        "makelaar_verkoop": 8136,
         "notaris_verkoop": 2500,
-        "verkoop_kosten": 11335,
-        "netto_opbrengst": 577720,
-        "winst": 103154,
-        "marge_pct": 17.9,
-        "roi_pct": 21.7,
+        "verkoop_kosten": 10636,
+        "netto_opbrengst": 531764,
+        "winst": 188603,
+        "marge_pct": 35.5,
+        "roi_pct": 55.0,
         "bod_korting_pct": 10,
-        "bod": 315000,
-        "bod_totaal_investering": 434270,
-        "bod_winst": 143449,
-        "bod_marge_pct": 24.8,
+        "bod": 247500,
+        "bod_totaal_investering": 312301,
+        "bod_winst": 219462,
+        "bod_marge_pct": 41.3,
         "scenarios": {
           "worst": {
-            "verkoop_m2": 5079,
-            "omzet": 528216,
-            "makelaar": 7923,
+            "verkoop_m2": 4320.0,
+            "omzet": 488160,
+            "makelaar": 7322,
             "notaris": 2500,
-            "netto": 517792,
-            "winst": 43227,
-            "marge_pct": 8.3,
-            "roi_pct": 9.1
+            "netto": 478337,
+            "winst": 135177,
+            "marge_pct": 28.3,
+            "roi_pct": 39.4
           },
           "realistic": {
-            "verkoop_m2": 5664,
-            "omzet": 589056,
-            "makelaar": 8835,
+            "verkoop_m2": 4800,
+            "omzet": 542400,
+            "makelaar": 8136,
             "notaris": 2500,
-            "netto": 577720,
-            "winst": 103154,
-            "marge_pct": 17.9,
-            "roi_pct": 21.7
+            "netto": 531764,
+            "winst": 188603,
+            "marge_pct": 35.5,
+            "roi_pct": 55.0
           },
           "best": {
-            "verkoop_m2": 7050,
-            "omzet": 733200,
-            "makelaar": 10998,
+            "verkoop_m2": 5280.0,
+            "omzet": 596640,
+            "makelaar": 8949,
             "notaris": 2500,
-            "netto": 719702,
-            "winst": 245136,
-            "marge_pct": 34.1,
-            "roi_pct": 51.7
+            "netto": 585190,
+            "winst": 242030,
+            "marge_pct": 41.4,
+            "roi_pct": 70.5
           }
         },
         "verkoop_referentie": {
-          "p25_pm2": 5079,
-          "p50_pm2": 5664,
-          "p75_pm2": 7050,
-          "n_refs": 10,
-          "n_high_label": 10,
-          "spread_pct": 34.8,
-          "avg_days_online": 23.6,
-          "match_niveau": "pc4_label_fresh",
-          "confidence": 77,
-          "confidence_label": "hoog",
-          "waarschuwingen": [],
-          "wijk": "Zeeheldenkwartier"
+          "p25_pm2": 0,
+          "p50_pm2": 0,
+          "p75_pm2": 0,
+          "n_refs": 0,
+          "n_high_label": 0,
+          "spread_pct": 0.0,
+          "avg_days_online": null,
+          "match_niveau": "geen",
+          "confidence": 0,
+          "confidence_label": "onvoldoende",
+          "waarschuwingen": [
+            "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
+          ],
+          "wijk": ""
         },
         "splitsen": {
-          "mag_splitsen": true,
-          "uitleg": "Splitsen is waarschijnlijk toegestaan in Den Haag. Oppervlak (104m2) voldoet aan minimum (70m2). Per unit: 52m2 (min: 35m2). Vereist: splitsingsvergunning. Wijk-check OK: Leefbaarometer score 8",
-          "vergunning": "splitsingsvergunning",
-          "min_opp_m2": 70,
+          "mag_splitsen": null,
+          "uitleg": "Geen splitsingbeleid bekend voor Vlaardingen. Check de gemeentelijke huisvestingsverordening.",
+          "vergunning": "onbekend",
+          "min_opp_m2": null,
           "max_units": null,
-          "min_per_unit_m2": 35,
-          "opp_per_unit": 52.0,
-          "bijzonderheden": "Per 1-4-2026: splitsen alleen in wijken met Leefbaarometer-score >= goed (7+) EN parkeerdruk < 90%. Min 35 m² GBO per nieuwe unit. Geluidsisolatie-eisen (Bouwbesluit). Bibob-check mogelijk.",
-          "wijkcheck": {
-            "mag": true,
-            "wijkscore": 8,
-            "parkeerdruk_hoog": true,
-            "opp_per_unit": 52.0,
-            "redenen": [
-              "parkeerdruk >= 90% in deze wijk (fallback-data)"
-            ],
-            "regime": "den_haag_2026"
-          }
+          "min_per_unit_m2": null,
+          "opp_per_unit": 56.5,
+          "bijzonderheden": ""
         },
         "opbouwen": {
           "mag_opbouwen": null,
-          "uitleg": "Woningtype 'apartment' niet gevonden voor Den Haag. Bekende types: tussenwoning, hoekwoning, twee_onder_een_kap, vrijstaand, appartement.",
+          "uitleg": "Geen opbouwbeleid bekend voor Vlaardingen. Check het bestemmingsplan op ruimtelijkeplannen.nl.",
           "max_hoogte_m": null,
           "max_verdiepingen": null,
           "dakopbouw_toegestaan": null,
           "ruimte_over_m": null,
-          "bijzonderheden": "Dakopbouw vergunningvrij mits <= 4m diep aan achterkant, kruimelregeling mogelijk. In beschermde stadsgezichten (Statenkwartier, Archipelbuurt, Zeeheldenkwartier) extra welstandseisen."
+          "bijzonderheden": ""
         },
         "looptijd_detail": {
-          "totaal_maanden": 8,
-          "vergunning_maanden": 1,
-          "verbouw_maanden": 4.2,
-          "verkoop_maanden": 2.3,
-          "verkoop_bron": "wijk-data (23d online)",
-          "type": "medium"
+          "totaal_maanden": 4,
+          "vergunning_maanden": 0,
+          "verbouw_maanden": 2.2,
+          "verkoop_maanden": 2,
+          "verkoop_bron": "landelijk gemiddelde",
+          "type": "cosmetisch"
         },
-        "funda_prijs_per_m2": "€ 3.365",
+        "funda_prijs_per_m2": "€ 2.434",
         "foto_urls": [
-          "https://cloud.funda.nl/valentina_media/227/836/458.jpg",
-          "https://cloud.funda.nl/valentina_media/227/836/460.jpg",
-          "https://cloud.funda.nl/valentina_media/227/836/462.jpg",
-          "https://cloud.funda.nl/valentina_media/227/836/559.jpg",
-          "https://cloud.funda.nl/valentina_media/227/836/464.jpg",
-          "https://cloud.funda.nl/valentina_media/227/836/597.jpg"
+          "https://cloud.funda.nl/valentina_media/227/943/087.jpg",
+          "https://cloud.funda.nl/valentina_media/227/943/047.jpg",
+          "https://cloud.funda.nl/valentina_media/227/943/048.jpg",
+          "https://cloud.funda.nl/valentina_media/227/943/110.jpg",
+          "https://cloud.funda.nl/valentina_media/227/943/200.jpg",
+          "https://cloud.funda.nl/valentina_media/227/943/112.jpg"
         ],
         "has_garden": false,
         "has_balcony": true,
         "has_roof_terrace": false,
-        "has_parking_on_site": true,
+        "has_parking_on_site": false,
         "has_solar_panels": false,
         "has_heat_pump": false,
         "is_monument": false,
-        "beschrijving_raw": "Algemene objectinformatie:\nOp een rustige en centrale locatie in Den Haag, bevindt zich dit ruime en goed ingedeelde 4-kamerappartement. De woning beschikt over 2 slaapkamers (voorheen 3), een zonnig balkon, een keuken en een badkamer en biedt daarnaast de mogelijkheid tot het aankopen van een eigen parkeerplaats (separaat beschikbaar). De ligging is bijzonder gunstig: aan de rand van het geliefde Zeeheldenkwartier en op loopafstand van zowel het bruisende centrum van Den Haag als het HMC Westeinde. In de directe omgeving vind je een gevarieerd aanbod aan gezellige restaurants, cafés, supermarkten en winkels, waardoor alle dagelijkse voorzieningen binnen handbereik zijn. Ook zijn tram- en bushaltes in de directe omgeving aanwezig. Kortom: comfortabel en centraal wonen met alle voorzieningen binnen handbereik!\n\nIndeling:\nEntree via een afgesloten portiek met bellentableau. Trappenhuis en lift naar de 6e verdieping. Via de galerij bereikt u de entree van het appartement.\n\nBij binnenkomst komt u in de hal, voorzien van een inbouwkast en de meterkast.\n\nDe open woon- en eetkamer genieten van veel daglicht en bieden een prachtig uitzicht aan de voorzijde, terwijl u aan de achterzijde uitkijkt op een parkje.\n\nDe ruime keuken beschikt over een koelkast, een vriezer, een afzuigkap, een gaskookplaat, een magnetron en een vaatwasser.\n\nDe badkamer is voorzien van een inloopdouche, een wastafelmeubel en een aansluiting voor de wasmachine. Daarnaast bevindt zich in de gang een separaat toilet met fonteintje.\n\nAan de achterzijde liggen twee slaapkamers, beide met veel daglicht. De grote slaapkamer beschikt over een inbouwkast, terwijl de kleinere slaapkamer toegang biedt tot het balkon.\n\nOp de begane grond is ook nog een eigen berging. \n\nEventueel is er een extra parkeerplek te koop op nummer 654 te zien op de foto’s.\n\nAfmetingen: \nvoor uitgebreide maatvoering verwijzen wij naar de plattegrondtekeningen.\n\nOplevering:\nIn overleg/kan spoedig\n\nKadastrale recherche: \nWoning:\nGemeente ",
+        "beschrijving_raw": "Royaal 6-kamer maisonnette appartement met veel potentie op toplocatie nabij het centrum!\n\nOp de bovenste etage van een appartementencomplex aan de rand van de geliefde Vlaardingse VOP-wijk ligt dit ruime, deels gerenoveerde 6-kamer appartement. \n\nOok de zolderverdieping is comfortabel toegankelijk gemaakt, zodat er een verrassend grote en speels ingedeelde woning is ontstaan met volop mogelijkheden.\n\nDe ligging is ideaal: op loopafstand van station Vlaardingen Centrum, winkels, scholen en diverse voorzieningen.\nDe woning is deels gemoderniseerd en kan verder nog naar eigen smaak gerenoveerd en ingericht worden, helemaal ideaal voor wie waarde wil toevoegen!\n\nINDELING\nBegane grond:\nAfgesloten entree met intercom, trappenhuis en toegang tot de bergingen.\n\n4e verdieping:\nEntree appartement. Ruime hal met moderne meterkast en nette toiletruimte met hangend closet.\nAan de achterzijde bevindt zich een slaapkamer met kunststof kozijn en dubbel glas.\nAan de voorzijde een tweede slaapkamer met toegang tot het balkon.\nBalkon 1 gelegen op het zonnige zuiden met uitzicht richting het spoor.\n\nDe lichte en ruime woonkamer is voorzien van een laminaat vloer, gestuukte wanden en kunststof kozijnen met dubbel glas. Vanuit hier bereikt u via een open trap de zolderverdieping én het tweede balkon.\nDe keuken is in rechte opstelling en uitgerust met diverse inbouwapparatuur, waaronder een koelkast, vriezer, vaatwasser, oven, magnetron en gaskookplaat met grillplaat.\nBalkon 2 gelegen op het noorden  met vrij uitzicht over een groene binnentuin met speelvoorzieningen.\n\nZolderverdieping:\nRuime voorzolder, ideaal als werkruimte, hobbyruimte of extra opslag.\nDaarnaast een grote zolderkamer en een extra slaapkamer  met opstelling voor de cv-ketel (merk Remeha bj. 2024).\n\nDe badkamer biedt volop mogelijkheden en dient nog volledig naar eigen wens te worden ingericht. De ruimte is royaal en geschikt voor een complete indeling met douche, ligbad, wastafel, tweede toilet en wasmachineaansluiting",
         "beschrijving_parsed": {
           "erfpacht": false,
-          "vve_bijdrage": 334.5,
-          "verdieping": 6
+          "vve_bijdrage": 125.0,
+          "verdieping": 4,
+          "heeft_zolder": true
         },
         "erfpacht": false,
-        "vve_bijdrage": 334.5,
-        "verdieping": 6,
+        "vve_bijdrage": 125.0,
+        "verdieping": 4,
         "validatie": {
           "goedgekeurd": false,
-          "onze_pm2": 5664,
+          "onze_pm2": 4800,
           "bronnen": {
-            "funda_pm2": 3365
+            "funda_pm2": 2434
           },
-          "gem_extern_pm2": 3365,
-          "afwijking_pct": 68.3,
-          "gecorrigeerde_pm2": 3533,
-          "reden": "Onze prijs 68% hoger dan extern (3365/m2). Gecorrigeerd naar 3533/m2"
+          "gem_extern_pm2": 2434,
+          "afwijking_pct": 97.2,
+          "gecorrigeerde_pm2": 2556,
+          "reden": "Onze prijs 97% hoger dan extern (2434/m2). Gecorrigeerd naar 2556/m2"
         },
         "bag": {
-          "bouwjaar": 1971,
-          "oppervlakte": 103,
+          "bouwjaar": 1950,
+          "oppervlakte": 107,
           "gebruiksdoel": "woonfunctie",
           "pandstatus": "Pand in gebruik",
           "status": "Verblijfsobject in gebruik",
-          "wijk": "Wijk 28 Centrum",
-          "buurt": "Kortenbos"
+          "wijk": "Centrum",
+          "buurt": "Vettenoordse Polder Oost"
         },
         "cbs": {
-          "wijkcode": "GM0518",
-          "gemeente": "'s-Gravenhage",
-          "bevolkingsdichtheid": 6901,
-          "gem_woz_x1000": 383,
-          "pct_koop": 43,
-          "pct_huur": 57,
-          "pct_corp": 30,
-          "pct_meergezins": 79,
+          "wijkcode": "GM0622",
+          "gemeente": "Vlaardingen",
+          "bevolkingsdichtheid": 3307,
+          "gem_woz_x1000": 303,
+          "pct_koop": 47,
+          "pct_huur": 53,
+          "pct_corp": 41,
+          "pct_meergezins": 62,
           "nieuwbouw_woningen": null
         },
-        "wijk_kwaliteit": 55,
+        "wijk_kwaliteit": 45,
         "monument": {
           "is_rijksmonument": false
         },
         "risks": {
           "flags": [],
-          "kansen": [
-            {
-              "label": "DH splits-wijk (1-4-2026)",
-              "details": "Leefbaarometer-score 8 — splitsen toegestaan onder nieuwe regeling."
-            }
-          ],
+          "kansen": [],
           "zwaarste": "geen",
           "aantal": 0
         },
         "dealscore": {
-          "score": 33,
-          "grade": "C",
+          "score": 24,
+          "grade": "D",
           "breakdown": [
             {
               "onderdeel": "Marge",
-              "punten": 8,
-              "uitleg": "8.3% (worst-case P25) → 8/30"
+              "punten": 28,
+              "uitleg": "28.3% (worst-case P25) → 28/30"
             },
             {
               "onderdeel": "Verkoop-confidence",
-              "punten": 11,
-              "uitleg": "hoog (77/100) — N=10 refs"
+              "punten": 0,
+              "uitleg": "onvoldoende (0/100) — N=0 refs"
             },
             {
-              "onderdeel": "Splits-wijk",
-              "punten": 10,
-              "uitleg": "den_haag_2026 — wijkcheck OK"
+              "onderdeel": "Verkoop onbetrouwbaar",
+              "punten": -10,
+              "uitleg": "Geen/te weinig vergelijkbare panden"
             },
             {
               "onderdeel": "Kwaliteitsscore",
-              "punten": 4,
-              "uitleg": "4/10 (bouwjaar/label/eigen grond/etc)"
+              "punten": 6,
+              "uitleg": "6/10 (bouwjaar/label/eigen grond/etc)"
             }
           ]
         },
         "bod_advies": {
-          "vraagprijs": 350000,
+          "vraagprijs": 275000,
           "aggressief": {
-            "bod": 308000,
+            "bod": 242000,
             "korting_pct": 12.0,
             "label": "Agressief"
           },
           "markt": {
-            "bod": 332500,
+            "bod": 261250,
             "korting_pct": 5.0,
             "label": "Markt"
           },
           "plafond": {
-            "bod": 341997,
-            "tekst": "341,997",
+            "bod": 275000,
+            "tekst": "275,000",
             "label": "Plafond (10% worst-marge)"
           },
           "korting_modifier": 0.0,
           "argumenten": [],
-          "strategie": "Krappe deal — pas bij aggressief bod rendabel."
+          "strategie": "Solide deal — markt-bod, niet te veel bieden."
         }
       }
     },
@@ -565,14 +449,19 @@
       "opp_m2": 123,
       "prijs_per_m2": 2561.0,
       "type_woning": "house",
-      "bouwjaar": 0,
+      "bouwjaar": 1972,
       "energie_label": "B",
       "kamers": 5,
       "source": "funda",
-      "url": "https://www.funda.nl/detail/koop/wassenaar/huis-donker-curtiusstraat-35/89776000/",
+      "url": "https://www.funda.nl/detail/koop/wassenaar/donker-curtiusstraat-35/89776000/",
       "foto_url": "https://cloud.funda.nl/valentina_media/227/531/491.jpg",
       "foto_urls": [
-        "https://cloud.funda.nl/valentina_media/227/531/491.jpg"
+        "https://cloud.funda.nl/valentina_media/227/531/491.jpg",
+        "https://cloud.funda.nl/valentina_media/227/531/492.jpg",
+        "https://cloud.funda.nl/valentina_media/227/531/509.jpg",
+        "https://cloud.funda.nl/valentina_media/227/531/519.jpg",
+        "https://cloud.funda.nl/valentina_media/227/531/493.jpg",
+        "https://cloud.funda.nl/valentina_media/227/531/494.jpg"
       ],
       "strategie": "fix_flip",
       "marge_pct": 32.8,
@@ -582,29 +471,7 @@
       "verwachte_opbrengst": 579044,
       "score": 6,
       "is_opknapper": false,
-      "motion": {
-        "dagen_online": 0,
-        "eerste_gezien": "2026-04-28T09:38:49.356025",
-        "laatste_gezien": "2026-04-28T09:38:49.356025",
-        "prijs_historie": [
-          {
-            "ts": "2026-04-28T09:38:49.356025",
-            "prijs": 315000
-          }
-        ],
-        "eerste_prijs": 315000,
-        "huidige_prijs": 315000,
-        "prijsverlaging_euro": 0,
-        "prijsverlaging_pct": 0.0,
-        "aantal_prijsverlagingen": 0,
-        "makelaarswissel": false,
-        "makelaars_recent": [
-          "Remmerswaal Makelaardij"
-        ],
-        "onder_bod_terug": false,
-        "motivated_score": 0,
-        "motivated": false
-      },
+      "motion": {},
       "ep_online": {},
       "bag": {
         "bouwjaar": 1972,
@@ -878,37 +745,39 @@
           "verkoop_bron": "landelijk gemiddelde",
           "type": "cosmetisch"
         },
-        "validatie": {
-          "goedgekeurd": true,
-          "onze_pm2": 4800,
-          "bronnen": {},
-          "gem_extern_pm2": 0,
-          "afwijking_pct": 0,
-          "gecorrigeerde_pm2": 4800,
-          "reden": "Geen externe bronnen beschikbaar"
+        "funda_prijs_per_m2": "€ 2.561",
+        "foto_urls": [
+          "https://cloud.funda.nl/valentina_media/227/531/491.jpg",
+          "https://cloud.funda.nl/valentina_media/227/531/492.jpg",
+          "https://cloud.funda.nl/valentina_media/227/531/509.jpg",
+          "https://cloud.funda.nl/valentina_media/227/531/519.jpg",
+          "https://cloud.funda.nl/valentina_media/227/531/493.jpg",
+          "https://cloud.funda.nl/valentina_media/227/531/494.jpg"
+        ],
+        "has_garden": true,
+        "has_balcony": false,
+        "has_roof_terrace": false,
+        "has_parking_on_site": false,
+        "has_solar_panels": false,
+        "has_heat_pump": false,
+        "is_monument": false,
+        "plot_area": 168,
+        "beschrijving_raw": "DEZE WONING WORDT VERKOCHT MET KOOPGARANT EN IS ALLEEN TE BEZICHTIGINGEN TIJDENS HET OPEN HUIS op woensdag 22 april 2026 van 17:00- 18:00.\nBuiten het open huis om worden GEEN bezichtigingen gepland.\n\nOM TELEURSTELLINGEN TE VOORKOMEN ADVISEREN WE GEÏNTRESSEERDEN ZICH EERST IN DE KOOPGARANT VOORWAARDEN TE VERDIEPEN.\nMeer informatie over Koopgarant is te vinden op de site van stichting Opmaat.\n\nDE WONING: \n\nLeuke eengezinswoning met voor- en achtertuin en stenen berging in de achtertuin. \nDe woning is centraal gelegen in Wassenaar op steenworp afstand van een supermarkt en dichtbij de gezellige oude haven met al z’n restaurantjes.\n\nIndeling:\nEntree, gang met meterkast, toilet en gangkast, woon/eetkamer van ca. 30 m2, gesloten ruime keuken met toegang tot de 13,5 meter diepe achter tuin (zuidwest) met stenen schuur en achterom.\n\n1e verdieping;\nOverloop, 3 slaapkamers waarvan één met wastafel, badkamer met douche, toilet, wastafel.\n\n2e verdieping:\nOverloop , een berging aan de voor- en achterzijde, in laatstgenoemde bevindt zich de opstelplaats voor de Cv-installatie, grote zolderkamer met Velux dakvenster.\n\nBijzonderheden:\n- gehele woning voorzien van houten kozijnen met dubbel glas;\n- dak en vloer geïsoleerd;\n- elektra, 4 groepen;\n- de woning komt uit de verhuur en wordt verkocht met koopgarant;\n- inschrijving sluit op zondag 26 april 2026;\n- projectnotaris: van Wijk en Zwart notarissen;\n- een inschrijfformulier kunt u via Funda downloaden, bij \"download brochure\" aan de rechterkant van de pagina.\n\n* de volgende regeling met betrekking tot rangvolgorde is van toepassing:\n\nA. starters op de koopmarkt: \n1. huishoudens, woonachtig in overig Wassenaar, die een sociale huurwoning achterlaten \n2. huishoudens, woonachtig in overig Wassenaar, die een vrije sector huurwoning achterlaten \n\nB. starters op de woonmarkt : \n1. woonachtig in overig Wassenaar \n2. woonachtig in overig Nederland \nVoorwaarde is dat de starter staat ingeschreven als woningzoekende bij Woonnet Haaglanden \n",
+        "beschrijving_parsed": {
+          "verdieping": 1,
+          "heeft_zolder": true
         },
-        "motion": {
-          "dagen_online": 0,
-          "eerste_gezien": "2026-04-28T09:38:49.356025",
-          "laatste_gezien": "2026-04-28T09:38:49.356025",
-          "prijs_historie": [
-            {
-              "ts": "2026-04-28T09:38:49.356025",
-              "prijs": 315000
-            }
-          ],
-          "eerste_prijs": 315000,
-          "huidige_prijs": 315000,
-          "prijsverlaging_euro": 0,
-          "prijsverlaging_pct": 0.0,
-          "aantal_prijsverlagingen": 0,
-          "makelaarswissel": false,
-          "makelaars_recent": [
-            "Remmerswaal Makelaardij"
-          ],
-          "onder_bod_terug": false,
-          "motivated_score": 0,
-          "motivated": false
+        "verdieping": 1,
+        "validatie": {
+          "goedgekeurd": false,
+          "onze_pm2": 4800,
+          "bronnen": {
+            "funda_pm2": 2561
+          },
+          "gem_extern_pm2": 2561,
+          "afwijking_pct": 87.4,
+          "gecorrigeerde_pm2": 2689,
+          "reden": "Onze prijs 87% hoger dan extern (2561/m2). Gecorrigeerd naar 2689/m2"
         },
         "bag": {
           "bouwjaar": 1972,
@@ -1015,11 +884,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-04-28T09:38:49.939677",
-        "laatste_gezien": "2026-04-28T09:38:49.939677",
+        "eerste_gezien": "2026-04-29T09:26:06.994804",
+        "laatste_gezien": "2026-04-29T09:26:06.994804",
         "prijs_historie": [
           {
-            "ts": "2026-04-28T09:38:49.939677",
+            "ts": "2026-04-29T09:26:06.994804",
             "prijs": 325000
           }
         ],
@@ -1334,11 +1203,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-04-28T09:38:49.939677",
-          "laatste_gezien": "2026-04-28T09:38:49.939677",
+          "eerste_gezien": "2026-04-29T09:26:06.994804",
+          "laatste_gezien": "2026-04-29T09:26:06.994804",
           "prijs_historie": [
             {
-              "ts": "2026-04-28T09:38:49.939677",
+              "ts": "2026-04-29T09:26:06.994804",
               "prijs": 325000
             }
           ],
@@ -1394,6 +1263,453 @@
               "onderdeel": "Kwaliteitsscore",
               "punten": 7,
               "uitleg": "7/10 (bouwjaar/label/eigen grond/etc)"
+            }
+          ]
+        },
+        "bod_advies": {
+          "vraagprijs": 325000,
+          "aggressief": {
+            "bod": 286000,
+            "korting_pct": 12.0,
+            "label": "Agressief"
+          },
+          "markt": {
+            "bod": 308750,
+            "korting_pct": 5.0,
+            "label": "Markt"
+          },
+          "plafond": {
+            "bod": 325000,
+            "tekst": "325,000",
+            "label": "Plafond (10% worst-marge)"
+          },
+          "korting_modifier": 0.0,
+          "argumenten": [],
+          "strategie": "Solide deal — markt-bod, niet te veel bieden."
+        }
+      }
+    },
+    {
+      "adres": "Aleidastraat 134",
+      "stad": "Schiedam",
+      "postcode": "3117DP",
+      "wijk": "",
+      "prijs": 325000,
+      "opp_m2": 129,
+      "prijs_per_m2": 2519.0,
+      "type_woning": "apartment",
+      "bouwjaar": 1928,
+      "energie_label": "D",
+      "kamers": 5,
+      "source": "funda",
+      "url": "https://www.funda.nl/detail/koop/schiedam/aleidastraat-134-a/89782821/",
+      "foto_url": "https://cloud.funda.nl/valentina_media/227/703/949.jpg",
+      "foto_urls": [
+        "https://cloud.funda.nl/valentina_media/227/703/949.jpg",
+        "https://cloud.funda.nl/valentina_media/227/703/883.jpg",
+        "https://cloud.funda.nl/valentina_media/227/703/972.jpg",
+        "https://cloud.funda.nl/valentina_media/227/703/922.jpg",
+        "https://cloud.funda.nl/valentina_media/227/703/974.jpg",
+        "https://cloud.funda.nl/valentina_media/227/704/029.jpg"
+      ],
+      "strategie": "fix_flip",
+      "marge_pct": 29.0,
+      "winst_euro": 175944,
+      "roi_pct": 40.8,
+      "totale_kosten": 431467,
+      "verwachte_opbrengst": 607412,
+      "score": 6,
+      "is_opknapper": false,
+      "motion": {},
+      "ep_online": {},
+      "bag": {
+        "bouwjaar": 1928,
+        "oppervlakte": 130,
+        "gebruiksdoel": "woonfunctie",
+        "pandstatus": "Pand in gebruik",
+        "status": "Verblijfsobject in gebruik",
+        "wijk": "Wijk 03 West",
+        "buurt": "Fabribuurt"
+      },
+      "monument": {
+        "is_rijksmonument": false
+      },
+      "erfpacht_detail": {},
+      "risks": {
+        "flags": [],
+        "kansen": [],
+        "zwaarste": "geen",
+        "aantal": 0
+      },
+      "dealscore": {
+        "score": 17,
+        "grade": "D",
+        "breakdown": [
+          {
+            "onderdeel": "Marge",
+            "punten": 21,
+            "uitleg": "21.0% (worst-case P25) → 21/30"
+          },
+          {
+            "onderdeel": "Verkoop-confidence",
+            "punten": 0,
+            "uitleg": "onvoldoende (0/100) — N=0 refs"
+          },
+          {
+            "onderdeel": "Verkoop onbetrouwbaar",
+            "punten": -10,
+            "uitleg": "Geen/te weinig vergelijkbare panden"
+          },
+          {
+            "onderdeel": "Kwaliteitsscore",
+            "punten": 6,
+            "uitleg": "6/10 (bouwjaar/label/eigen grond/etc)"
+          }
+        ]
+      },
+      "scenarios": {
+        "worst": {
+          "verkoop_m2": 4320.0,
+          "omzet": 557280,
+          "makelaar": 8359,
+          "notaris": 2500,
+          "netto": 546420,
+          "winst": 114953,
+          "marge_pct": 21.0,
+          "roi_pct": 26.6
+        },
+        "realistic": {
+          "verkoop_m2": 4800,
+          "omzet": 619200,
+          "makelaar": 9288,
+          "notaris": 2500,
+          "netto": 607412,
+          "winst": 175944,
+          "marge_pct": 29.0,
+          "roi_pct": 40.8
+        },
+        "best": {
+          "verkoop_m2": 5280.0,
+          "omzet": 681120,
+          "makelaar": 10216,
+          "notaris": 2500,
+          "netto": 668403,
+          "winst": 236935,
+          "marge_pct": 35.4,
+          "roi_pct": 54.9
+        }
+      },
+      "verkoop_referentie": {
+        "p25_pm2": 0,
+        "p50_pm2": 0,
+        "p75_pm2": 0,
+        "n_refs": 0,
+        "n_high_label": 0,
+        "spread_pct": 0.0,
+        "avg_days_online": null,
+        "match_niveau": "geen",
+        "confidence": 0,
+        "confidence_label": "onvoldoende",
+        "waarschuwingen": [
+          "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
+        ],
+        "wijk": ""
+      },
+      "bod_advies": {
+        "vraagprijs": 325000,
+        "aggressief": {
+          "bod": 286000,
+          "korting_pct": 12.0,
+          "label": "Agressief"
+        },
+        "markt": {
+          "bod": 308750,
+          "korting_pct": 5.0,
+          "label": "Markt"
+        },
+        "plafond": {
+          "bod": 325000,
+          "tekst": "325,000",
+          "label": "Plafond (10% worst-marge)"
+        },
+        "korting_modifier": 0.0,
+        "argumenten": [],
+        "strategie": "Solide deal — markt-bod, niet te veel bieden."
+      },
+      "calc": {
+        "vraagprijs": 325000,
+        "ovb_pct": 8.0,
+        "ovb": 26000,
+        "notaris_makelaar_aankoop": 4225,
+        "aankoop_totaal": 355225,
+        "renovatie_per_m2": 511,
+        "renovatie_detail": {
+          "componenten": [
+            {
+              "naam": "Keuken renovatie",
+              "kosten": 13020,
+              "reden": "Nieuwe fronten, apparatuur, blad, tegelwerk",
+              "kosten_basis": 14000
+            },
+            {
+              "naam": "Badkamer renovatie",
+              "kosten": 11160,
+              "reden": "Nieuwe tegels, sanitair, kranen",
+              "kosten_basis": 12000
+            },
+            {
+              "naam": "Toilet opknappen",
+              "kosten": 2325,
+              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties",
+              "kosten_basis": 2500
+            },
+            {
+              "naam": "Vloeren (60/m²)",
+              "kosten": 7198,
+              "reden": "PVC click vloer leggen (licht egaliseren)",
+              "kosten_basis": 7740
+            },
+            {
+              "naam": "Schilderwerk (20/m²)",
+              "kosten": 2399,
+              "reden": "Latex muren en plafonds",
+              "kosten_basis": 2580
+            },
+            {
+              "naam": "Elektra upgraden",
+              "kosten": 3255,
+              "reden": "Groepenkast + extra groepen + stopcontacten",
+              "kosten_basis": 3500
+            },
+            {
+              "naam": "Isolatie verbeteren",
+              "kosten": 4798,
+              "reden": "Label D: dak + vloer bijwerken",
+              "kosten_basis": 5160
+            },
+            {
+              "naam": "Ramen deels (8x)",
+              "kosten": 8928,
+              "reden": "Oudere ramen upgraden naar HR++",
+              "kosten_basis": 9600
+            },
+            {
+              "naam": "CV-ketel onderhoud/reserve",
+              "kosten": 1395,
+              "reden": "Mogelijk verouderd, budget voor vervanging",
+              "kosten_basis": 1500
+            },
+            {
+              "naam": "Buitenschilderwerk",
+              "kosten": 2325,
+              "reden": "Kozijnen buiten schilderen",
+              "kosten_basis": 2500
+            },
+            {
+              "naam": "Onvoorzien (10%)",
+              "kosten": 5680,
+              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)",
+              "kosten_basis": 6108
+            },
+            {
+              "naam": "Architect + leges (6%)",
+              "kosten": 3408,
+              "reden": "Ontwerp, vergunning, bouwbegeleiding",
+              "kosten_basis": 3664
+            }
+          ],
+          "totaal": 65891,
+          "per_m2": 511,
+          "onvoorzien_pct": 10,
+          "wijk_factor": 0.93,
+          "wijk_bron": "PC4 3117"
+        },
+        "bouw_totaal": 65891,
+        "looptijd_maanden": 4,
+        "rente_pct": 8.0,
+        "financiering_basis": 388170,
+        "rente": 10351,
+        "totaal_kosten": 431467,
+        "verkoop_m2": 4800,
+        "verkoop_bron": "config",
+        "referenties": [],
+        "bruto_verkoopprijs": 619200,
+        "makelaar_verkoop": 9288,
+        "notaris_verkoop": 2500,
+        "verkoop_kosten": 11788,
+        "netto_opbrengst": 607412,
+        "winst": 175944,
+        "marge_pct": 29.0,
+        "roi_pct": 40.8,
+        "bod_korting_pct": 10,
+        "bod": 292500,
+        "bod_totaal_investering": 394997,
+        "bod_winst": 212414,
+        "bod_marge_pct": 35.0,
+        "scenarios": {
+          "worst": {
+            "verkoop_m2": 4320.0,
+            "omzet": 557280,
+            "makelaar": 8359,
+            "notaris": 2500,
+            "netto": 546420,
+            "winst": 114953,
+            "marge_pct": 21.0,
+            "roi_pct": 26.6
+          },
+          "realistic": {
+            "verkoop_m2": 4800,
+            "omzet": 619200,
+            "makelaar": 9288,
+            "notaris": 2500,
+            "netto": 607412,
+            "winst": 175944,
+            "marge_pct": 29.0,
+            "roi_pct": 40.8
+          },
+          "best": {
+            "verkoop_m2": 5280.0,
+            "omzet": 681120,
+            "makelaar": 10216,
+            "notaris": 2500,
+            "netto": 668403,
+            "winst": 236935,
+            "marge_pct": 35.4,
+            "roi_pct": 54.9
+          }
+        },
+        "verkoop_referentie": {
+          "p25_pm2": 0,
+          "p50_pm2": 0,
+          "p75_pm2": 0,
+          "n_refs": 0,
+          "n_high_label": 0,
+          "spread_pct": 0.0,
+          "avg_days_online": null,
+          "match_niveau": "geen",
+          "confidence": 0,
+          "confidence_label": "onvoldoende",
+          "waarschuwingen": [
+            "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
+          ],
+          "wijk": ""
+        },
+        "splitsen": {
+          "mag_splitsen": true,
+          "uitleg": "Splitsen is waarschijnlijk toegestaan in Schiedam. Oppervlak (129m2) voldoet aan minimum (90m2). Per unit: 64m2 (min: 28m2). Vereist: splitsingsvergunning.",
+          "vergunning": "splitsingsvergunning",
+          "min_opp_m2": 90,
+          "max_units": 2,
+          "min_per_unit_m2": 28,
+          "opp_per_unit": 64.5,
+          "bijzonderheden": "Splitsingsvergunning vereist. Min 90m2 totaal. In beschermd stadsgezicht extra voorwaarden.",
+          "wijkcheck": null
+        },
+        "opbouwen": {
+          "mag_opbouwen": null,
+          "uitleg": "Geen opbouwbeleid bekend voor Schiedam. Check het bestemmingsplan op ruimtelijkeplannen.nl.",
+          "max_hoogte_m": null,
+          "max_verdiepingen": null,
+          "dakopbouw_toegestaan": null,
+          "ruimte_over_m": null,
+          "bijzonderheden": ""
+        },
+        "looptijd_detail": {
+          "totaal_maanden": 4,
+          "vergunning_maanden": 0,
+          "verbouw_maanden": 2.2,
+          "verkoop_maanden": 2,
+          "verkoop_bron": "landelijk gemiddelde",
+          "type": "cosmetisch"
+        },
+        "funda_prijs_per_m2": "€ 2.519",
+        "foto_urls": [
+          "https://cloud.funda.nl/valentina_media/227/703/949.jpg",
+          "https://cloud.funda.nl/valentina_media/227/703/883.jpg",
+          "https://cloud.funda.nl/valentina_media/227/703/972.jpg",
+          "https://cloud.funda.nl/valentina_media/227/703/922.jpg",
+          "https://cloud.funda.nl/valentina_media/227/703/974.jpg",
+          "https://cloud.funda.nl/valentina_media/227/704/029.jpg"
+        ],
+        "has_garden": false,
+        "has_balcony": true,
+        "has_roof_terrace": true,
+        "has_parking_on_site": false,
+        "has_solar_panels": false,
+        "has_heat_pump": false,
+        "is_monument": false,
+        "beschrijving_raw": "Stijlvol en ruim wonen met karakter in Schiedam-West\n\nBen je op zoek naar een ruime en sfeervolle woning met karakter én mogelijkheden? Dan is deze charmante dubbele bovenwoning aan de Aleidastraat precies wat je zoekt. Met een woonoppervlakte van maar liefst 129 m², verdeeld over drie verdiepingen, biedt deze woning volop ruimte voor het hele gezin.\n\nDe woning, gebouwd in 1928, combineert authentieke elementen met hedendaags wooncomfort. Je beschikt over een lichte doorzonwoonkamer, een open keuken, vier ruime slaapkamers en zelfs de mogelijkheid om een royaal dakterras te realiseren.\n\nLigging en omgeving\nDe woning is gelegen in de geliefde Fabribuurt in Schiedam-West, een levendige en karakteristieke wijk met een mix van vooroorlogse bebouwing en groen. Aan de voorzijde geniet je van vrij uitzicht over groen, wat zorgt voor een prettig gevoel van ruimte en rust. Alle dagelijkse voorzieningen bevinden zich in de directe omgeving: supermarkten, winkels, scholen en horecagelegenheden zijn op korte afstand te vinden. Het centrum van Schiedam bereik je eenvoudig per fiets. Daarnaast is de woning uitstekend bereikbaar met het openbaar vervoer (metrostation Troelstralaan en busverbindingen) en liggen de uitvalswegen A4 en A20 op enkele minuten rijden. Parkeren is gratis en er is voldoende parkeergelegenheid in de buurt.\n\nIndeling\n\nBegane grond:\nEntree/hal met trapopgang naar de eerste verdieping.\n\n1e verdieping:\nOverloop met moderne toiletruimte (hangend toilet en fonteintje) en trap naar de tweede verdieping.\nDe ruime doorzonwoonkamer met eethoek zorgt voor veel lichtinval en een aangename leefruimte.\nDe open keuken is voorzien van diverse inbouwapparatuur en biedt toegang tot het balkon aan de achterzijde.\n\n2e verdieping:\nOverloop met trap naar de derde verdieping.\nDrie goed bemeten slaapkamers.\nDe badkamer is praktisch ingericht met douche, wastafelmeubel en wasmachineaansluiting.\nDaarnaast is er een separate toiletruimte aanwezig.\n\n3e verdieping:\nVoorzolder met opste",
+        "beschrijving_parsed": {
+          "erfpacht": true,
+          "verdieping": 1,
+          "heeft_zolder": true
+        },
+        "erfpacht": true,
+        "verdieping": 1,
+        "validatie": {
+          "goedgekeurd": false,
+          "onze_pm2": 4800,
+          "bronnen": {
+            "funda_pm2": 2519
+          },
+          "gem_extern_pm2": 2519,
+          "afwijking_pct": 90.6,
+          "gecorrigeerde_pm2": 2645,
+          "reden": "Onze prijs 91% hoger dan extern (2519/m2). Gecorrigeerd naar 2645/m2"
+        },
+        "bag": {
+          "bouwjaar": 1928,
+          "oppervlakte": 130,
+          "gebruiksdoel": "woonfunctie",
+          "pandstatus": "Pand in gebruik",
+          "status": "Verblijfsobject in gebruik",
+          "wijk": "Wijk 03 West",
+          "buurt": "Fabribuurt"
+        },
+        "cbs": {
+          "wijkcode": "GM0606",
+          "gemeente": "Schiedam",
+          "bevolkingsdichtheid": 4618,
+          "gem_woz_x1000": 314,
+          "pct_koop": 50,
+          "pct_huur": 50,
+          "pct_corp": 31,
+          "pct_meergezins": 68,
+          "nieuwbouw_woningen": null
+        },
+        "wijk_kwaliteit": 60,
+        "monument": {
+          "is_rijksmonument": false
+        },
+        "risks": {
+          "flags": [],
+          "kansen": [],
+          "zwaarste": "geen",
+          "aantal": 0
+        },
+        "dealscore": {
+          "score": 17,
+          "grade": "D",
+          "breakdown": [
+            {
+              "onderdeel": "Marge",
+              "punten": 21,
+              "uitleg": "21.0% (worst-case P25) → 21/30"
+            },
+            {
+              "onderdeel": "Verkoop-confidence",
+              "punten": 0,
+              "uitleg": "onvoldoende (0/100) — N=0 refs"
+            },
+            {
+              "onderdeel": "Verkoop onbetrouwbaar",
+              "punten": -10,
+              "uitleg": "Geen/te weinig vergelijkbare panden"
+            },
+            {
+              "onderdeel": "Kwaliteitsscore",
+              "punten": 6,
+              "uitleg": "6/10 (bouwjaar/label/eigen grond/etc)"
             }
           ]
         },
@@ -2779,14 +3095,19 @@
       "opp_m2": 112,
       "prijs_per_m2": 3027.0,
       "type_woning": "apartment",
-      "bouwjaar": 0,
+      "bouwjaar": 1980,
       "energie_label": "B",
       "kamers": 4,
       "source": "funda",
-      "url": "https://www.funda.nl/detail/koop/hellevoetsluis/appartement-struytse-hoeck-123/43327481/",
+      "url": "https://www.funda.nl/detail/koop/hellevoetsluis/struytse-hoeck-123/43327481/",
       "foto_url": "https://cloud.funda.nl/valentina_media/227/633/509.jpg",
       "foto_urls": [
-        "https://cloud.funda.nl/valentina_media/227/633/509.jpg"
+        "https://cloud.funda.nl/valentina_media/227/633/509.jpg",
+        "https://cloud.funda.nl/valentina_media/227/633/554.jpg",
+        "https://cloud.funda.nl/valentina_media/227/633/545.jpg",
+        "https://cloud.funda.nl/valentina_media/227/633/560.jpg",
+        "https://cloud.funda.nl/valentina_media/227/633/539.jpg",
+        "https://cloud.funda.nl/valentina_media/227/633/512.jpg"
       ],
       "strategie": "fix_flip",
       "marge_pct": 21.3,
@@ -2796,29 +3117,7 @@
       "verwachte_opbrengst": 527036,
       "score": 5,
       "is_opknapper": false,
-      "motion": {
-        "dagen_online": 0,
-        "eerste_gezien": "2026-04-28T09:38:49.393676",
-        "laatste_gezien": "2026-04-28T09:38:49.393676",
-        "prijs_historie": [
-          {
-            "ts": "2026-04-28T09:38:49.393676",
-            "prijs": 339000
-          }
-        ],
-        "eerste_prijs": 339000,
-        "huidige_prijs": 339000,
-        "prijsverlaging_euro": 0,
-        "prijsverlaging_pct": 0.0,
-        "aantal_prijsverlagingen": 0,
-        "makelaarswissel": false,
-        "makelaars_recent": [
-          "Xtra Makelaardij"
-        ],
-        "onder_bod_terug": false,
-        "motivated_score": 0,
-        "motivated": false
-      },
+      "motion": {},
       "ep_online": {},
       "bag": {
         "bouwjaar": 1980,
@@ -3092,37 +3391,39 @@
           "verkoop_bron": "landelijk gemiddelde",
           "type": "cosmetisch"
         },
-        "validatie": {
-          "goedgekeurd": true,
-          "onze_pm2": 4800,
-          "bronnen": {},
-          "gem_extern_pm2": 0,
-          "afwijking_pct": 0,
-          "gecorrigeerde_pm2": 4800,
-          "reden": "Geen externe bronnen beschikbaar"
+        "funda_prijs_per_m2": "€ 3.027",
+        "foto_urls": [
+          "https://cloud.funda.nl/valentina_media/227/633/509.jpg",
+          "https://cloud.funda.nl/valentina_media/227/633/554.jpg",
+          "https://cloud.funda.nl/valentina_media/227/633/545.jpg",
+          "https://cloud.funda.nl/valentina_media/227/633/560.jpg",
+          "https://cloud.funda.nl/valentina_media/227/633/539.jpg",
+          "https://cloud.funda.nl/valentina_media/227/633/512.jpg"
+        ],
+        "has_garden": false,
+        "has_balcony": false,
+        "has_roof_terrace": false,
+        "has_parking_on_site": false,
+        "has_solar_panels": false,
+        "has_heat_pump": false,
+        "is_monument": false,
+        "beschrijving_raw": "Zou je graag willen wonen met alle voorzieningen binnen handbereik en zonder te klussen aan je nieuwe woning? Dan is deze maisonnette hoekwoning zeker een bezichtiging waard!\n\nDe woning beschikt over een royale woonkamer en een ruime woonkeuken om gezellige avonden met vrienden of familie door te brengen. Daarnaast zijn er 3 ruime slaapkamers. De badkamer en het toilet zijn echte eyecatchers: modern betegeld, strak afgewerkt en vernieuwd in 2022. Het zonnige terras op het zuidoosten maakt het helemaal compleet.\n\nDeze woning heeft een praktische en centrale ligging boven het winkelcentrum en tegenover de supermarkt, dus je hoeft niet ver te lopen met de boodschappen. Ook het trappenhuis en de lift zijn om de hoek.\n\nIndeling:\n\nVia het ruime en zonnig gelegen terras van circa 21 m2 heb je toegang tot de berging en de woning.\n\n1e verdieping:\nHal/entree met de meterkast, een garderobe nis, de gestoffeerde trapopgang en de moderne, volledig betegelde toiletruimte (2022) met inbouwcloset en handwasbakje. Aan de voorzijde van de woning bevindt zich de ruime keuken met granieten werkblad en inbouwapparatuur als: een keramische kookplaat, afzuigkap, oven, koelkast, vriezer en een rvs-vaatwasser en met volop bergruimte in de vele kastjes, lades en de apothekerskast. In de voorraadkast/trapkast is extra bergruimte aanwezig en hier is ook de opstelplaats van de cv-combiketel (Remeha). De royale woonkamer heeft een grote raampartij en biedt uitzicht over het winkelcentrum.\n\n2e verdieping:\nRuime en lichte overloop met een schuin oplopend dak met kunststof dakramen en een vaste kast met de aansluiting voor de wasmachine en droger, en bergruimte. De masterbedroom ligt aan de achterzijde en heeft grote kastenwand (blijft achter). Alle 3 de slaapkamers en de overloop hebben een keurige laminaatvloer. De badkamer is eveneens geplaatst in 2022 en is ingericht met een inloopdouche met hand- en regendouche, een wastafelmeubel en spiegel met verlichting, een 2e inbouwtoilet, een handdoekra",
+        "beschrijving_parsed": {
+          "vve_bijdrage": 236.99,
+          "verdieping": 1
         },
-        "motion": {
-          "dagen_online": 0,
-          "eerste_gezien": "2026-04-28T09:38:49.393676",
-          "laatste_gezien": "2026-04-28T09:38:49.393676",
-          "prijs_historie": [
-            {
-              "ts": "2026-04-28T09:38:49.393676",
-              "prijs": 339000
-            }
-          ],
-          "eerste_prijs": 339000,
-          "huidige_prijs": 339000,
-          "prijsverlaging_euro": 0,
-          "prijsverlaging_pct": 0.0,
-          "aantal_prijsverlagingen": 0,
-          "makelaarswissel": false,
-          "makelaars_recent": [
-            "Xtra Makelaardij"
-          ],
-          "onder_bod_terug": false,
-          "motivated_score": 0,
-          "motivated": false
+        "vve_bijdrage": 236.99,
+        "verdieping": 1,
+        "validatie": {
+          "goedgekeurd": false,
+          "onze_pm2": 4800,
+          "bronnen": {
+            "funda_pm2": 3027
+          },
+          "gem_extern_pm2": 3027,
+          "afwijking_pct": 58.6,
+          "gecorrigeerde_pm2": 3178,
+          "reden": "Onze prijs 59% hoger dan extern (3027/m2). Gecorrigeerd naar 3178/m2"
         },
         "bag": {
           "bouwjaar": 1980,
@@ -3212,14 +3513,19 @@
       "opp_m2": 113,
       "prijs_per_m2": 3097.0,
       "type_woning": "house",
-      "bouwjaar": 0,
+      "bouwjaar": 1981,
       "energie_label": "B",
       "kamers": 5,
       "source": "funda",
-      "url": "https://www.funda.nl/detail/koop/hellevoetsluis/huis-strandgaper-26/43305744/",
+      "url": "https://www.funda.nl/detail/koop/hellevoetsluis/strandgaper-26/43305744/",
       "foto_url": "https://cloud.funda.nl/valentina_media/226/778/977.jpg",
       "foto_urls": [
-        "https://cloud.funda.nl/valentina_media/226/778/977.jpg"
+        "https://cloud.funda.nl/valentina_media/226/778/977.jpg",
+        "https://cloud.funda.nl/valentina_media/226/778/831.jpg",
+        "https://cloud.funda.nl/valentina_media/226/778/833.jpg",
+        "https://cloud.funda.nl/valentina_media/226/778/940.jpg",
+        "https://cloud.funda.nl/valentina_media/226/778/908.jpg",
+        "https://cloud.funda.nl/valentina_media/226/778/885.jpg"
       ],
       "strategie": "fix_flip",
       "marge_pct": 19.6,
@@ -3229,29 +3535,7 @@
       "verwachte_opbrengst": 531764,
       "score": 4,
       "is_opknapper": false,
-      "motion": {
-        "dagen_online": 0,
-        "eerste_gezien": "2026-04-28T09:38:49.415563",
-        "laatste_gezien": "2026-04-28T09:38:49.415563",
-        "prijs_historie": [
-          {
-            "ts": "2026-04-28T09:38:49.415563",
-            "prijs": 350000
-          }
-        ],
-        "eerste_prijs": 350000,
-        "huidige_prijs": 350000,
-        "prijsverlaging_euro": 0,
-        "prijsverlaging_pct": 0.0,
-        "aantal_prijsverlagingen": 0,
-        "makelaarswissel": false,
-        "makelaars_recent": [
-          "Ooms Makelaars Hellevoetsluis"
-        ],
-        "onder_bod_terug": false,
-        "motivated_score": 0,
-        "motivated": false
-      },
+      "motion": {},
       "ep_online": {},
       "bag": {
         "bouwjaar": 1981,
@@ -3265,7 +3549,17 @@
       "monument": {
         "is_rijksmonument": false
       },
-      "erfpacht_detail": {},
+      "erfpacht_detail": {
+        "is_erfpacht": false,
+        "is_eeuwigdurend": false,
+        "is_afgekocht": false,
+        "eindjaar": null,
+        "jaren_resterend": null,
+        "canon_euro": null,
+        "rotterdam_afkoopkans": false,
+        "risk_level": "geen",
+        "toelichting": "Eigen grond — geen erfpacht."
+      },
       "risks": {
         "flags": [],
         "kansen": [],
@@ -3525,37 +3819,39 @@
           "verkoop_bron": "landelijk gemiddelde",
           "type": "cosmetisch"
         },
-        "validatie": {
-          "goedgekeurd": true,
-          "onze_pm2": 4800,
-          "bronnen": {},
-          "gem_extern_pm2": 0,
-          "afwijking_pct": 0,
-          "gecorrigeerde_pm2": 4800,
-          "reden": "Geen externe bronnen beschikbaar"
+        "funda_prijs_per_m2": "€ 3.097",
+        "foto_urls": [
+          "https://cloud.funda.nl/valentina_media/226/778/977.jpg",
+          "https://cloud.funda.nl/valentina_media/226/778/831.jpg",
+          "https://cloud.funda.nl/valentina_media/226/778/833.jpg",
+          "https://cloud.funda.nl/valentina_media/226/778/940.jpg",
+          "https://cloud.funda.nl/valentina_media/226/778/908.jpg",
+          "https://cloud.funda.nl/valentina_media/226/778/885.jpg"
+        ],
+        "has_garden": true,
+        "has_balcony": false,
+        "has_roof_terrace": false,
+        "has_parking_on_site": false,
+        "has_solar_panels": false,
+        "has_heat_pump": false,
+        "is_monument": false,
+        "plot_area": 135,
+        "beschrijving_raw": "Op een rustige en groene locatie aan de rand van de wijk ‘De Kooistee’, vind je deze ruime en lichte eengezinswoning met vrij uitzicht aan de achterzijde en een zonnige tuin op het zuiden. Door de ligging aan een autovrijpad woon je hier heerlijk rustig, terwijl voorzieningen en natuur zich op korte afstand bevinden. De woning is ideaal gelegen voor gezinnen welke die rust en ruimte zoeken met toch alle voorzieningen binnen handbereik. \n\nIndeling:\n\nBegane grond:\nEntree, hal met toiletruimte voorzien van hangend closet en fontein, meterkast, trapopgang en toegang tot de woonkamer. Tuin gerichte woonkamer met trapkast, openslaande deuren naar de tuin en keuken aan de voorzijde van de woning. De keuken in L-opstelling is voorzien van een 4 pits gas kookplaat, oven, afzuigkap, vaatwasser en koel-/vriescombinatie.\n\nEerste verdieping:\nOverloop. Slaapkamer 1 is zeer royaal en gelegen aan de achterzijde van de woning, voorheen waren dit 2 slaapkamers. Badkamer met douchecabine, hangend closet, ligbad en wastafel met meubel. Slaapkamer 2 gelegen aan de voorzijde van de woning.\n\nTweede verdieping:\nOverloop met opstelling Cv-combiketel en aansluiting voor wasmachine en droger. Slaapkamer 3 gelegen aan de voorzijde en slaapkamer 4 gelegen aan de achterzijde van de woning. \n\nVliering:\nPraktische bergvliering middels vlizotrap bereikbaar. \n\nAfmetingen:\nVoor de afmetingen van deze woning verwijzen wij naar bijgevoegde plattegronden.\n\nKenmerken:\n- Eigen grond\n- Stenen berging in de achtertuin\n- Zonnige achtertuin gelegen op het zuiden\n- Gelegen aan autovrij pad (rustig wonen)\n- 4 slaapkamers (5 mogelijk)\n- Deels voorzien van kunststof kozijnen\n- Cv-combiketel, eigendom, bouwjaar 2014\n- Glasvezel\n- Oplevering kan op korte termijn\n- In de koopovereenkomst wordt de ouderdomsclausule alsmede de asbest clausule opgenomen\n\nBIJZONDERHEDEN:\n* Vanaf 1 januari 2023 zijn makelaars wettelijk verplicht een biedlogboek bij te houden bij de verkoop van bestaande woningen (en wanneer de koper en/o",
+        "beschrijving_parsed": {
+          "erfpacht": false,
+          "heeft_zolder": true
         },
-        "motion": {
-          "dagen_online": 0,
-          "eerste_gezien": "2026-04-28T09:38:49.415563",
-          "laatste_gezien": "2026-04-28T09:38:49.415563",
-          "prijs_historie": [
-            {
-              "ts": "2026-04-28T09:38:49.415563",
-              "prijs": 350000
-            }
-          ],
-          "eerste_prijs": 350000,
-          "huidige_prijs": 350000,
-          "prijsverlaging_euro": 0,
-          "prijsverlaging_pct": 0.0,
-          "aantal_prijsverlagingen": 0,
-          "makelaarswissel": false,
-          "makelaars_recent": [
-            "Ooms Makelaars Hellevoetsluis"
-          ],
-          "onder_bod_terug": false,
-          "motivated_score": 0,
-          "motivated": false
+        "erfpacht": false,
+        "validatie": {
+          "goedgekeurd": false,
+          "onze_pm2": 4800,
+          "bronnen": {
+            "funda_pm2": 3097
+          },
+          "gem_extern_pm2": 3097,
+          "afwijking_pct": 55.0,
+          "gecorrigeerde_pm2": 3252,
+          "reden": "Onze prijs 55% hoger dan extern (3097/m2). Gecorrigeerd naar 3252/m2"
         },
         "bag": {
           "bouwjaar": 1981,
@@ -3580,6 +3876,17 @@
         "wijk_kwaliteit": 60,
         "monument": {
           "is_rijksmonument": false
+        },
+        "erfpacht_detail": {
+          "is_erfpacht": false,
+          "is_eeuwigdurend": false,
+          "is_afgekocht": false,
+          "eindjaar": null,
+          "jaren_resterend": null,
+          "canon_euro": null,
+          "rotterdam_afkoopkans": false,
+          "risk_level": "geen",
+          "toelichting": "Eigen grond — geen erfpacht."
         },
         "risks": {
           "flags": [],
@@ -3637,6 +3944,452 @@
       }
     },
     {
+      "adres": "Sibeliusplein 176",
+      "stad": "Schiedam",
+      "postcode": "3122XA",
+      "wijk": "",
+      "prijs": 260000,
+      "opp_m2": 94,
+      "prijs_per_m2": 2766.0,
+      "type_woning": "apartment",
+      "bouwjaar": 1971,
+      "energie_label": "C",
+      "kamers": 5,
+      "source": "funda",
+      "url": "https://www.funda.nl/detail/koop/schiedam/sibeliusplein-176/43326284/",
+      "foto_url": "https://cloud.funda.nl/valentina_media/227/624/927.jpg",
+      "foto_urls": [
+        "https://cloud.funda.nl/valentina_media/227/624/927.jpg",
+        "https://cloud.funda.nl/valentina_media/227/625/221.jpg",
+        "https://cloud.funda.nl/valentina_media/227/625/231.jpg",
+        "https://cloud.funda.nl/valentina_media/227/625/242.jpg",
+        "https://cloud.funda.nl/valentina_media/227/625/058.jpg",
+        "https://cloud.funda.nl/valentina_media/227/624/953.jpg"
+      ],
+      "strategie": "fix_flip",
+      "marge_pct": 18.8,
+      "winst_euro": 83053,
+      "roi_pct": 23.1,
+      "totale_kosten": 358878,
+      "verwachte_opbrengst": 441932,
+      "score": 5,
+      "is_opknapper": false,
+      "motion": {},
+      "ep_online": {},
+      "bag": {
+        "bouwjaar": 1971,
+        "oppervlakte": 95,
+        "gebruiksdoel": "woonfunctie",
+        "pandstatus": "Pand in gebruik",
+        "status": "Verblijfsobject in gebruik",
+        "wijk": "Wijk 07 Groenoord",
+        "buurt": "Van Beethovenbuurt"
+      },
+      "monument": {
+        "is_rijksmonument": false
+      },
+      "erfpacht_detail": {},
+      "risks": {
+        "flags": [],
+        "kansen": [],
+        "zwaarste": "geen",
+        "aantal": 0
+      },
+      "dealscore": {
+        "score": 4,
+        "grade": "D",
+        "breakdown": [
+          {
+            "onderdeel": "Marge",
+            "punten": 9,
+            "uitleg": "9.7% (worst-case P25) → 9/30"
+          },
+          {
+            "onderdeel": "Verkoop-confidence",
+            "punten": 0,
+            "uitleg": "onvoldoende (0/100) — N=0 refs"
+          },
+          {
+            "onderdeel": "Verkoop onbetrouwbaar",
+            "punten": -10,
+            "uitleg": "Geen/te weinig vergelijkbare panden"
+          },
+          {
+            "onderdeel": "Kwaliteitsscore",
+            "punten": 5,
+            "uitleg": "5/10 (bouwjaar/label/eigen grond/etc)"
+          }
+        ]
+      },
+      "scenarios": {
+        "worst": {
+          "verkoop_m2": 4320.0,
+          "omzet": 406080,
+          "makelaar": 6091,
+          "notaris": 2500,
+          "netto": 397488,
+          "winst": 38610,
+          "marge_pct": 9.7,
+          "roi_pct": 10.8
+        },
+        "realistic": {
+          "verkoop_m2": 4800,
+          "omzet": 451200,
+          "makelaar": 6768,
+          "notaris": 2500,
+          "netto": 441932,
+          "winst": 83053,
+          "marge_pct": 18.8,
+          "roi_pct": 23.1
+        },
+        "best": {
+          "verkoop_m2": 5280.0,
+          "omzet": 496320,
+          "makelaar": 7444,
+          "notaris": 2500,
+          "netto": 486375,
+          "winst": 127496,
+          "marge_pct": 26.2,
+          "roi_pct": 35.5
+        }
+      },
+      "verkoop_referentie": {
+        "p25_pm2": 0,
+        "p50_pm2": 0,
+        "p75_pm2": 0,
+        "n_refs": 0,
+        "n_high_label": 0,
+        "spread_pct": 0.0,
+        "avg_days_online": null,
+        "match_niveau": "geen",
+        "confidence": 0,
+        "confidence_label": "onvoldoende",
+        "waarschuwingen": [
+          "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
+        ],
+        "wijk": ""
+      },
+      "bod_advies": {
+        "vraagprijs": 260000,
+        "aggressief": {
+          "bod": 228800,
+          "korting_pct": 12.0,
+          "label": "Agressief"
+        },
+        "markt": {
+          "bod": 247000,
+          "korting_pct": 5.0,
+          "label": "Markt"
+        },
+        "plafond": {
+          "bod": 258915,
+          "tekst": "258,915",
+          "label": "Plafond (10% worst-marge)"
+        },
+        "korting_modifier": 0.0,
+        "argumenten": [],
+        "strategie": "Krappe deal — pas bij aggressief bod rendabel."
+      },
+      "calc": {
+        "vraagprijs": 260000,
+        "ovb_pct": 8.0,
+        "ovb": 20800,
+        "notaris_makelaar_aankoop": 3380,
+        "aankoop_totaal": 284180,
+        "renovatie_per_m2": 639,
+        "renovatie_detail": {
+          "componenten": [
+            {
+              "naam": "Keuken renovatie",
+              "kosten": 13300,
+              "reden": "Nieuwe fronten, apparatuur, blad, tegelwerk",
+              "kosten_basis": 14000
+            },
+            {
+              "naam": "Badkamer renovatie",
+              "kosten": 11400,
+              "reden": "Nieuwe tegels, sanitair, kranen",
+              "kosten_basis": 12000
+            },
+            {
+              "naam": "Toilet opknappen",
+              "kosten": 2375,
+              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties",
+              "kosten_basis": 2500
+            },
+            {
+              "naam": "Vloeren (60/m²)",
+              "kosten": 5358,
+              "reden": "PVC click vloer leggen (licht egaliseren)",
+              "kosten_basis": 5640
+            },
+            {
+              "naam": "Schilderwerk (20/m²)",
+              "kosten": 1786,
+              "reden": "Latex muren en plafonds",
+              "kosten_basis": 1880
+            },
+            {
+              "naam": "Elektra upgraden",
+              "kosten": 3325,
+              "reden": "Groepenkast + extra groepen + stopcontacten",
+              "kosten_basis": 3500
+            },
+            {
+              "naam": "Isolatie verbeteren",
+              "kosten": 3572,
+              "reden": "Label C: dak + vloer bijwerken",
+              "kosten_basis": 3760
+            },
+            {
+              "naam": "Ramen deels (6x)",
+              "kosten": 6840,
+              "reden": "Oudere ramen upgraden naar HR++",
+              "kosten_basis": 7200
+            },
+            {
+              "naam": "CV-ketel onderhoud/reserve",
+              "kosten": 1425,
+              "reden": "Mogelijk verouderd, budget voor vervanging",
+              "kosten_basis": 1500
+            },
+            {
+              "naam": "Buitenschilderwerk",
+              "kosten": 2375,
+              "reden": "Kozijnen buiten schilderen",
+              "kosten_basis": 2500
+            },
+            {
+              "naam": "Onvoorzien (10%)",
+              "kosten": 5175,
+              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)",
+              "kosten_basis": 5448
+            },
+            {
+              "naam": "Architect + leges (6%)",
+              "kosten": 3105,
+              "reden": "Ontwerp, vergunning, bouwbegeleiding",
+              "kosten_basis": 3268
+            }
+          ],
+          "totaal": 60036,
+          "per_m2": 639,
+          "onvoorzien_pct": 10,
+          "wijk_factor": 0.95,
+          "wijk_bron": "stad Schiedam"
+        },
+        "bouw_totaal": 60036,
+        "looptijd_maanden": 7,
+        "rente_pct": 8.0,
+        "financiering_basis": 314198,
+        "rente": 14662,
+        "totaal_kosten": 358878,
+        "verkoop_m2": 4800,
+        "verkoop_bron": "config",
+        "referenties": [],
+        "bruto_verkoopprijs": 451200,
+        "makelaar_verkoop": 6768,
+        "notaris_verkoop": 2500,
+        "verkoop_kosten": 9268,
+        "netto_opbrengst": 441932,
+        "winst": 83053,
+        "marge_pct": 18.8,
+        "roi_pct": 23.1,
+        "bod_korting_pct": 10,
+        "bod": 234000,
+        "bod_totaal_investering": 329134,
+        "bod_winst": 112797,
+        "bod_marge_pct": 25.5,
+        "scenarios": {
+          "worst": {
+            "verkoop_m2": 4320.0,
+            "omzet": 406080,
+            "makelaar": 6091,
+            "notaris": 2500,
+            "netto": 397488,
+            "winst": 38610,
+            "marge_pct": 9.7,
+            "roi_pct": 10.8
+          },
+          "realistic": {
+            "verkoop_m2": 4800,
+            "omzet": 451200,
+            "makelaar": 6768,
+            "notaris": 2500,
+            "netto": 441932,
+            "winst": 83053,
+            "marge_pct": 18.8,
+            "roi_pct": 23.1
+          },
+          "best": {
+            "verkoop_m2": 5280.0,
+            "omzet": 496320,
+            "makelaar": 7444,
+            "notaris": 2500,
+            "netto": 486375,
+            "winst": 127496,
+            "marge_pct": 26.2,
+            "roi_pct": 35.5
+          }
+        },
+        "verkoop_referentie": {
+          "p25_pm2": 0,
+          "p50_pm2": 0,
+          "p75_pm2": 0,
+          "n_refs": 0,
+          "n_high_label": 0,
+          "spread_pct": 0.0,
+          "avg_days_online": null,
+          "match_niveau": "geen",
+          "confidence": 0,
+          "confidence_label": "onvoldoende",
+          "waarschuwingen": [
+            "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
+          ],
+          "wijk": ""
+        },
+        "splitsen": {
+          "mag_splitsen": true,
+          "uitleg": "Splitsen is waarschijnlijk toegestaan in Schiedam. Oppervlak (94m2) voldoet aan minimum (90m2). Per unit: 47m2 (min: 28m2). Vereist: splitsingsvergunning.",
+          "vergunning": "splitsingsvergunning",
+          "min_opp_m2": 90,
+          "max_units": 2,
+          "min_per_unit_m2": 28,
+          "opp_per_unit": 47.0,
+          "bijzonderheden": "Splitsingsvergunning vereist. Min 90m2 totaal. In beschermd stadsgezicht extra voorwaarden.",
+          "wijkcheck": null
+        },
+        "opbouwen": {
+          "mag_opbouwen": null,
+          "uitleg": "Geen opbouwbeleid bekend voor Schiedam. Check het bestemmingsplan op ruimtelijkeplannen.nl.",
+          "max_hoogte_m": null,
+          "max_verdiepingen": null,
+          "dakopbouw_toegestaan": null,
+          "ruimte_over_m": null,
+          "bijzonderheden": ""
+        },
+        "looptijd_detail": {
+          "totaal_maanden": 7,
+          "vergunning_maanden": 1,
+          "verbouw_maanden": 4.1,
+          "verkoop_maanden": 2,
+          "verkoop_bron": "landelijk gemiddelde",
+          "type": "medium"
+        },
+        "funda_prijs_per_m2": "€ 2.766",
+        "foto_urls": [
+          "https://cloud.funda.nl/valentina_media/227/624/927.jpg",
+          "https://cloud.funda.nl/valentina_media/227/625/221.jpg",
+          "https://cloud.funda.nl/valentina_media/227/625/231.jpg",
+          "https://cloud.funda.nl/valentina_media/227/625/242.jpg",
+          "https://cloud.funda.nl/valentina_media/227/625/058.jpg",
+          "https://cloud.funda.nl/valentina_media/227/624/953.jpg"
+        ],
+        "has_garden": false,
+        "has_balcony": true,
+        "has_roof_terrace": false,
+        "has_parking_on_site": false,
+        "has_solar_panels": false,
+        "has_heat_pump": false,
+        "is_monument": false,
+        "beschrijving_raw": "Ruim en licht 4-kamerappartement met balkon op het zuidwesten, in populaire wijk n Schiedam Noord.\nWat een royaal en fijn appartement van 94 m² met 4 slaapkamers, een afgesloten keuken, en een balkon op het zuidwesten. De woning is gelegen op de 8e verdieping van een verzorgd appartementencomplex in de groene wijk Groenoord, met winkels en openbaar vervoer op loopafstand. Ideaal voor wie comfortabel wil wonen op een centrale plek in Schiedam.\n\nSCHIEDAM\nVoorzieningen zijn op loopafstand aanwezig: recht tegenover het appartement ligt een winkelcentrum met o.a. een Aldi en een bakker. Op slechts 200 meter afstand bevindt zich winkelcentrum Spaland met een uitgebreid aanbod aan winkels en voorzieningen.\nDe wijk Groenoord biedt een ideale combinatie van rust, groen en bereikbaarheid. Met Park Groenoord om de hoek kunt u genieten van wandelingen of ontspanning in het groen. Via de A4 en A20 bent u binnen enkele minuten in Rotterdam, Delft of op het strand van Hoek van Holland. Ook openbaar vervoer is op loopafstand te vinden, met bushaltes om de hoek en goede verbindingen naar station Schiedam.\nSchiedam staat bekend om haar historische binnenstad met pakhuizen, molens, gezellige horeca en een rijk cultureel leven. Met de metro en trein bent u snel in Rotterdam of aan de kust.\n\nINDELING\nVia het afgesloten portiek met lift bereikt u dit lichte en goed ingedeelde appartement. De centrale hal geeft toegang tot alle vertrekken.\n\n8E VERDIEPING\n\nDe royale woonkamer van ca. 26 m² is een fijne plek om te ontspannen, met grote ramen die zorgen voor veel natuurlijk licht en een vrij uitzicht.\n\nHet ruime balkon van ca. 10 m² ligt op het zuidwesten en is toegankelijk vanuit de grootste slaapkamer. Hier kunt u heerlijk genieten van de middag- en avondzon – een rustige buitenplek met veel privacy.\n\nDe keuken is praktisch ingericht en uitgevoerd in lichte kleurstelling.\n\nHet appartement beschikt over 4 comfortabele slaapkamers (waarvan 1 grenzend aan de woonkamer), ideaal voor een gezin,",
+        "beschrijving_parsed": {
+          "vve_bijdrage": 392.0,
+          "verdieping": 8
+        },
+        "vve_bijdrage": 392.0,
+        "verdieping": 8,
+        "validatie": {
+          "goedgekeurd": false,
+          "onze_pm2": 4800,
+          "bronnen": {
+            "funda_pm2": 2766
+          },
+          "gem_extern_pm2": 2766,
+          "afwijking_pct": 73.5,
+          "gecorrigeerde_pm2": 2904,
+          "reden": "Onze prijs 74% hoger dan extern (2766/m2). Gecorrigeerd naar 2904/m2"
+        },
+        "bag": {
+          "bouwjaar": 1971,
+          "oppervlakte": 95,
+          "gebruiksdoel": "woonfunctie",
+          "pandstatus": "Pand in gebruik",
+          "status": "Verblijfsobject in gebruik",
+          "wijk": "Wijk 07 Groenoord",
+          "buurt": "Van Beethovenbuurt"
+        },
+        "cbs": {
+          "wijkcode": "GM0606",
+          "gemeente": "Schiedam",
+          "bevolkingsdichtheid": 4618,
+          "gem_woz_x1000": 314,
+          "pct_koop": 50,
+          "pct_huur": 50,
+          "pct_corp": 31,
+          "pct_meergezins": 68,
+          "nieuwbouw_woningen": null
+        },
+        "wijk_kwaliteit": 60,
+        "monument": {
+          "is_rijksmonument": false
+        },
+        "risks": {
+          "flags": [],
+          "kansen": [],
+          "zwaarste": "geen",
+          "aantal": 0
+        },
+        "dealscore": {
+          "score": 4,
+          "grade": "D",
+          "breakdown": [
+            {
+              "onderdeel": "Marge",
+              "punten": 9,
+              "uitleg": "9.7% (worst-case P25) → 9/30"
+            },
+            {
+              "onderdeel": "Verkoop-confidence",
+              "punten": 0,
+              "uitleg": "onvoldoende (0/100) — N=0 refs"
+            },
+            {
+              "onderdeel": "Verkoop onbetrouwbaar",
+              "punten": -10,
+              "uitleg": "Geen/te weinig vergelijkbare panden"
+            },
+            {
+              "onderdeel": "Kwaliteitsscore",
+              "punten": 5,
+              "uitleg": "5/10 (bouwjaar/label/eigen grond/etc)"
+            }
+          ]
+        },
+        "bod_advies": {
+          "vraagprijs": 260000,
+          "aggressief": {
+            "bod": 228800,
+            "korting_pct": 12.0,
+            "label": "Agressief"
+          },
+          "markt": {
+            "bod": 247000,
+            "korting_pct": 5.0,
+            "label": "Markt"
+          },
+          "plafond": {
+            "bod": 258915,
+            "tekst": "258,915",
+            "label": "Plafond (10% worst-marge)"
+          },
+          "korting_modifier": 0.0,
+          "argumenten": [],
+          "strategie": "Krappe deal — pas bij aggressief bod rendabel."
+        }
+      }
+    },
+    {
       "adres": "Snoekenveen 211",
       "stad": "Spijkenisse",
       "postcode": "3205CB",
@@ -3645,14 +4398,19 @@
       "opp_m2": 122,
       "prijs_per_m2": 2828.0,
       "type_woning": "house",
-      "bouwjaar": 0,
+      "bouwjaar": 1976,
       "energie_label": "C",
       "kamers": 5,
       "source": "funda",
-      "url": "https://www.funda.nl/detail/koop/spijkenisse/huis-snoekenveen-211/43311292/",
+      "url": "https://www.funda.nl/detail/koop/spijkenisse/snoekenveen-211/43311292/",
       "foto_url": "https://cloud.funda.nl/valentina_media/227/424/071.jpg",
       "foto_urls": [
-        "https://cloud.funda.nl/valentina_media/227/424/071.jpg"
+        "https://cloud.funda.nl/valentina_media/227/424/071.jpg",
+        "https://cloud.funda.nl/valentina_media/227/424/072.jpg",
+        "https://cloud.funda.nl/valentina_media/227/424/073.jpg",
+        "https://cloud.funda.nl/valentina_media/227/424/090.jpg",
+        "https://cloud.funda.nl/valentina_media/227/424/076.jpg",
+        "https://cloud.funda.nl/valentina_media/227/424/077.jpg"
       ],
       "strategie": "fix_flip",
       "marge_pct": 20.3,
@@ -3662,29 +4420,7 @@
       "verwachte_opbrengst": 574316,
       "score": 6,
       "is_opknapper": false,
-      "motion": {
-        "dagen_online": 0,
-        "eerste_gezien": "2026-04-28T09:38:49.222648",
-        "laatste_gezien": "2026-04-28T09:38:49.222648",
-        "prijs_historie": [
-          {
-            "ts": "2026-04-28T09:38:49.222648",
-            "prijs": 345000
-          }
-        ],
-        "eerste_prijs": 345000,
-        "huidige_prijs": 345000,
-        "prijsverlaging_euro": 0,
-        "prijsverlaging_pct": 0.0,
-        "aantal_prijsverlagingen": 0,
-        "makelaarswissel": false,
-        "makelaars_recent": [
-          "CORPOwonen"
-        ],
-        "onder_bod_terug": false,
-        "motivated_score": 0,
-        "motivated": false
-      },
+      "motion": {},
       "ep_online": {},
       "bag": {
         "bouwjaar": 1976,
@@ -3698,7 +4434,17 @@
       "monument": {
         "is_rijksmonument": false
       },
-      "erfpacht_detail": {},
+      "erfpacht_detail": {
+        "is_erfpacht": true,
+        "is_eeuwigdurend": true,
+        "is_afgekocht": true,
+        "eindjaar": null,
+        "jaren_resterend": null,
+        "canon_euro": null,
+        "rotterdam_afkoopkans": false,
+        "risk_level": "laag",
+        "toelichting": "Erfpacht, maar afgekocht/eeuwigdurend — beperkt risico."
+      },
       "risks": {
         "flags": [
           {
@@ -3986,37 +4732,38 @@
           "verkoop_bron": "landelijk gemiddelde",
           "type": "cosmetisch"
         },
-        "validatie": {
-          "goedgekeurd": true,
-          "onze_pm2": 4800,
-          "bronnen": {},
-          "gem_extern_pm2": 0,
-          "afwijking_pct": 0,
-          "gecorrigeerde_pm2": 4800,
-          "reden": "Geen externe bronnen beschikbaar"
+        "funda_prijs_per_m2": "€ 2.828",
+        "foto_urls": [
+          "https://cloud.funda.nl/valentina_media/227/424/071.jpg",
+          "https://cloud.funda.nl/valentina_media/227/424/072.jpg",
+          "https://cloud.funda.nl/valentina_media/227/424/073.jpg",
+          "https://cloud.funda.nl/valentina_media/227/424/090.jpg",
+          "https://cloud.funda.nl/valentina_media/227/424/076.jpg",
+          "https://cloud.funda.nl/valentina_media/227/424/077.jpg"
+        ],
+        "has_garden": true,
+        "has_balcony": false,
+        "has_roof_terrace": false,
+        "has_parking_on_site": false,
+        "has_solar_panels": false,
+        "has_heat_pump": false,
+        "is_monument": false,
+        "plot_area": 170,
+        "beschrijving_raw": "Spijkenisse - Waterland\n\nVraagprijs € 345.000,00 k.k.\n\nHeeft u interesse in deze woning? Laat het ons weten via de knop \"'Neem contact op\"'.\n\nLeuke 5-kamer hoek-eengezinswoning in Waterland. De woning bevindt zich op korte afstand van een gezellig winkelcentrum, scholen en recreatievoorzieningen. De woning beschikt over een ruime tuin. De woning heeft een opknapbeurt nodig. \n\nBegane grond\nEntree/hal met aan de rechterzijde een sanitair ruimte met zwevend toilet en fonteintje.\nDe ruime woonkamer is voorzien van een plavuizenvloer en beschikt over een inbouwkast. \nEen deur geeft toegang tot de achtertuin.\nDe half open keuken beschikt over een eenvoudig keukenblad. Muren zijn geen draagmuren. Makkelijk is er een open ruimte te creëren.\nDe tuin is betegeld, biedt veel groen en is voorzien van een stenen berging een achterom. Tevens beschikt de woning over een zij-gedeelte wat is overkapt.\n\nEerste verdieping\nOverloop met toegang tot de drie slaapkamers. Alle kamers hebben een ruime afmeting.\nDe badkamer is grotendeels betegeld, beschikt over een toilet, douchehoek en wastafelmeubel. \n\nTweede verdieping\nRuime overloop met opstelplaats cv-ketel en een handige ruimte met wasmachine aansluiting.\nDe 4e slaapkamer is voorzien is van een dakraam.\n\nKenmerken:\n- Leuke eengezinswoning in de wijk Waterland;\n- Veel woonoppervlakte voor een scherpe prijs;\n- Totaal vier slaapkamers aanwezig;\n- Ruime tuin.\n\nAfmetingen:\n- Woonkamer totaal ca. 32.2 m²\n- Keuken totaal ca. 8.3 m²\n- Badkamer totaal ca. 4.4 m²\n- Slaapkamer 1 totaal ca. 14.3 m²\n- Slaapkamer 2 totaal ca. 12.4 m²\n- Slaapkamer 3 totaal ca. 8.9 m²\n- Slaapkamer 4 totaal ca. 7.7 m²\n- Tuin totaal ca. 90m²\n\nBijzonderheden / kenmerken:\n- Erfpacht eeuwigdurend afgekocht;\n- Ouderdom en niet bewonersclausule van toepassing;\n- Projectnotaris van toepassing;\n- Eeuwigdurende zelfbewoningsplicht van toepassing;\n- Anti-speculatiebeding van 2 jaar van toepassing;\n- Totaal vier slaapkamers.\n\nBij aankoop van deze woning zal de oplevering binnen ",
+        "beschrijving_parsed": {
+          "erfpacht": true
         },
-        "motion": {
-          "dagen_online": 0,
-          "eerste_gezien": "2026-04-28T09:38:49.222648",
-          "laatste_gezien": "2026-04-28T09:38:49.222648",
-          "prijs_historie": [
-            {
-              "ts": "2026-04-28T09:38:49.222648",
-              "prijs": 345000
-            }
-          ],
-          "eerste_prijs": 345000,
-          "huidige_prijs": 345000,
-          "prijsverlaging_euro": 0,
-          "prijsverlaging_pct": 0.0,
-          "aantal_prijsverlagingen": 0,
-          "makelaarswissel": false,
-          "makelaars_recent": [
-            "CORPOwonen"
-          ],
-          "onder_bod_terug": false,
-          "motivated_score": 0,
-          "motivated": false
+        "erfpacht": true,
+        "validatie": {
+          "goedgekeurd": false,
+          "onze_pm2": 4800,
+          "bronnen": {
+            "funda_pm2": 2828
+          },
+          "gem_extern_pm2": 2828,
+          "afwijking_pct": 69.7,
+          "gecorrigeerde_pm2": 2969,
+          "reden": "Onze prijs 70% hoger dan extern (2828/m2). Gecorrigeerd naar 2969/m2"
         },
         "bag": {
           "bouwjaar": 1976,
@@ -4029,6 +4776,17 @@
         },
         "monument": {
           "is_rijksmonument": false
+        },
+        "erfpacht_detail": {
+          "is_erfpacht": true,
+          "is_eeuwigdurend": true,
+          "is_afgekocht": true,
+          "eindjaar": null,
+          "jaren_resterend": null,
+          "canon_euro": null,
+          "rotterdam_afkoopkans": false,
+          "risk_level": "laag",
+          "toelichting": "Erfpacht, maar afgekocht/eeuwigdurend — beperkt risico."
         },
         "risks": {
           "flags": [
@@ -4107,14 +4865,19 @@
       "opp_m2": 96,
       "prijs_per_m2": 3125.0,
       "type_woning": "apartment",
-      "bouwjaar": 0,
+      "bouwjaar": 1974,
       "energie_label": "B",
       "kamers": 4,
       "source": "funda",
-      "url": "https://www.funda.nl/detail/koop/alphen-aan-den-rijn/appartement-aidaplein-71/43310571/",
+      "url": "https://www.funda.nl/detail/koop/alphen-aan-den-rijn/aïdaplein-71/43310571/",
       "foto_url": "https://cloud.funda.nl/valentina_media/227/356/633.jpg",
       "foto_urls": [
-        "https://cloud.funda.nl/valentina_media/227/356/633.jpg"
+        "https://cloud.funda.nl/valentina_media/227/356/633.jpg",
+        "https://cloud.funda.nl/valentina_media/227/356/634.jpg",
+        "https://cloud.funda.nl/valentina_media/227/356/637.jpg",
+        "https://cloud.funda.nl/valentina_media/227/356/638.jpg",
+        "https://cloud.funda.nl/valentina_media/227/356/643.jpg",
+        "https://cloud.funda.nl/valentina_media/227/356/645.jpg"
       ],
       "strategie": "fix_flip",
       "marge_pct": 18.1,
@@ -4124,29 +4887,7 @@
       "verwachte_opbrengst": 451388,
       "score": 4,
       "is_opknapper": false,
-      "motion": {
-        "dagen_online": 0,
-        "eerste_gezien": "2026-04-28T09:38:49.191452",
-        "laatste_gezien": "2026-04-28T09:38:49.191452",
-        "prijs_historie": [
-          {
-            "ts": "2026-04-28T09:38:49.191452",
-            "prijs": 300000
-          }
-        ],
-        "eerste_prijs": 300000,
-        "huidige_prijs": 300000,
-        "prijsverlaging_euro": 0,
-        "prijsverlaging_pct": 0.0,
-        "aantal_prijsverlagingen": 0,
-        "makelaarswissel": false,
-        "makelaars_recent": [
-          "De Koning makelaars - ERA én NVM"
-        ],
-        "onder_bod_terug": false,
-        "motivated_score": 0,
-        "motivated": false
-      },
+      "motion": {},
       "ep_online": {},
       "bag": {
         "bouwjaar": 1972,
@@ -4420,37 +5161,33 @@
           "verkoop_bron": "landelijk gemiddelde",
           "type": "cosmetisch"
         },
+        "funda_prijs_per_m2": "€ 3.125",
+        "foto_urls": [
+          "https://cloud.funda.nl/valentina_media/227/356/633.jpg",
+          "https://cloud.funda.nl/valentina_media/227/356/634.jpg",
+          "https://cloud.funda.nl/valentina_media/227/356/637.jpg",
+          "https://cloud.funda.nl/valentina_media/227/356/638.jpg",
+          "https://cloud.funda.nl/valentina_media/227/356/643.jpg",
+          "https://cloud.funda.nl/valentina_media/227/356/645.jpg"
+        ],
+        "has_garden": false,
+        "has_balcony": true,
+        "has_roof_terrace": false,
+        "has_parking_on_site": false,
+        "has_solar_panels": false,
+        "has_heat_pump": false,
+        "is_monument": false,
+        "beschrijving_raw": "Royale en instapklare maisonnette met maar liefst drie balkons!\n\nDeze ruime woning is in 2023 grondig gemoderniseerd en tot in de netjes afgewerkt. Zo beschikt het appartement over een fraaie laminaatvloer, een vernieuwde badkamer, een gemoderniseerde keuken en strak afgewerkte wanden met stucwerk en behang. Hierdoor kun je hier direct zorgeloos intrekken.\n\nDe maisonnette strekt zich uit over de vierde en vijfde verdieping, wat zorgt voor een bijzonder ruimtelijk gevoel. De entree bevindt zich op de vijfde verdieping, waar je twee comfortabele slaapkamers en een separaat toilet aantreft. Via de interne trap bereik je de vierde verdieping: de woonverdieping. Hier vind je de royale woonkamer, de nette en complete keuken, een derde slaapkamer en de moderne badkamer.\n\nMet drie balkons is er altijd een fijne plek te vinden om te genieten van de zon of juist de schaduw, een luxe die deze woning helemaal compleet maakt.\n\nOp de begane grond bevindt zich de afgesloten centrale entree met brievenbussen, bellentableau, trappenhuis en twee liften. Tevens is hier de inpandige fietsenberging met elektra gelegen.\n\nHet complex is ideaal gelegen tegenover winkelcentrum ‘De Ridderhof’, perfect voor de dagelijkse boodschappen. Op korte loopafstand vind je het populaire recreatiegebied ‘De Zegersloot’, waar je volop kunt genieten van natuur, wandelroutes, watersport en gezellige horecagelegenheden.\nDaarnaast zijn alle voorzieningen binnen handbereik, zoals basisscholen, kinderdagverblijven, een zorgcentrum en zwembad ‘Aquarijn’. Dankzij de gunstige ligging nabij de N11 en N207 bereik je eenvoudig omliggende steden.\nDe feiten op een rij\nInstapklare en sfeervolle maisonnette\nMaar liefst drie balkons\nEntree op de vijfde verdieping\nRoyale woonkamer op de vierde verdieping\nKeuken gemoderniseerd in 2023\nModerne badkamer (2023) met inloopdouche, wastafelmeubel en wasmachineaansluiting\nGedeeltelijk voorzien van dubbele beglazing\nServicekosten €214,- per maand (excl. €130,- voorschot stookkoste",
         "validatie": {
-          "goedgekeurd": true,
+          "goedgekeurd": false,
           "onze_pm2": 4800,
-          "bronnen": {},
-          "gem_extern_pm2": 0,
-          "afwijking_pct": 0,
-          "gecorrigeerde_pm2": 4800,
-          "reden": "Geen externe bronnen beschikbaar"
-        },
-        "motion": {
-          "dagen_online": 0,
-          "eerste_gezien": "2026-04-28T09:38:49.191452",
-          "laatste_gezien": "2026-04-28T09:38:49.191452",
-          "prijs_historie": [
-            {
-              "ts": "2026-04-28T09:38:49.191452",
-              "prijs": 300000
-            }
-          ],
-          "eerste_prijs": 300000,
-          "huidige_prijs": 300000,
-          "prijsverlaging_euro": 0,
-          "prijsverlaging_pct": 0.0,
-          "aantal_prijsverlagingen": 0,
-          "makelaarswissel": false,
-          "makelaars_recent": [
-            "De Koning makelaars - ERA én NVM"
-          ],
-          "onder_bod_terug": false,
-          "motivated_score": 0,
-          "motivated": false
+          "bronnen": {
+            "funda_pm2": 3125
+          },
+          "gem_extern_pm2": 3125,
+          "afwijking_pct": 53.6,
+          "gecorrigeerde_pm2": 3281,
+          "reden": "Onze prijs 54% hoger dan extern (3125/m2). Gecorrigeerd naar 3281/m2"
         },
         "bag": {
           "bouwjaar": 1972,
@@ -4532,454 +5269,6 @@
       }
     },
     {
-      "adres": "Sweelinckplein 150",
-      "stad": "Alphen aan den Rijn",
-      "postcode": "2402VL",
-      "wijk": "",
-      "prijs": 345000,
-      "opp_m2": 116,
-      "prijs_per_m2": 2974.0,
-      "type_woning": "apartment",
-      "bouwjaar": 0,
-      "energie_label": "D",
-      "kamers": 5,
-      "source": "funda",
-      "url": "https://www.funda.nl/detail/koop/alphen-aan-den-rijn/appartement-sweelinckplein-150/43316701/",
-      "foto_url": "https://cloud.funda.nl/valentina_media/227/213/102.jpg",
-      "foto_urls": [
-        "https://cloud.funda.nl/valentina_media/227/213/102.jpg"
-      ],
-      "strategie": "fix_flip",
-      "marge_pct": 16.5,
-      "winst_euro": 90254,
-      "roi_pct": 19.8,
-      "totale_kosten": 455693,
-      "verwachte_opbrengst": 545948,
-      "score": 5,
-      "is_opknapper": false,
-      "motion": {
-        "dagen_online": 0,
-        "eerste_gezien": "2026-04-28T09:38:49.198211",
-        "laatste_gezien": "2026-04-28T09:38:49.198211",
-        "prijs_historie": [
-          {
-            "ts": "2026-04-28T09:38:49.198211",
-            "prijs": 345000
-          }
-        ],
-        "eerste_prijs": 345000,
-        "huidige_prijs": 345000,
-        "prijsverlaging_euro": 0,
-        "prijsverlaging_pct": 0.0,
-        "aantal_prijsverlagingen": 0,
-        "makelaarswissel": false,
-        "makelaars_recent": [
-          "Koppes Makelaardij B.V."
-        ],
-        "onder_bod_terug": false,
-        "motivated_score": 0,
-        "motivated": false
-      },
-      "ep_online": {},
-      "bag": {
-        "bouwjaar": 1972,
-        "oppervlakte": 113,
-        "gebruiksdoel": "woonfunctie",
-        "pandstatus": "Pand in gebruik",
-        "status": "Verblijfsobject in gebruik",
-        "wijk": "Ridderveld",
-        "buurt": "Componistenbuurt-Zuid"
-      },
-      "monument": {
-        "is_rijksmonument": false
-      },
-      "erfpacht_detail": {},
-      "risks": {
-        "flags": [],
-        "kansen": [],
-        "zwaarste": "geen",
-        "aantal": 0
-      },
-      "dealscore": {
-        "score": 2,
-        "grade": "D",
-        "breakdown": [
-          {
-            "onderdeel": "Marge",
-            "punten": 7,
-            "uitleg": "7.2% (worst-case P25) → 7/30"
-          },
-          {
-            "onderdeel": "Verkoop-confidence",
-            "punten": 0,
-            "uitleg": "onvoldoende (0/100) — N=0 refs"
-          },
-          {
-            "onderdeel": "Verkoop onbetrouwbaar",
-            "punten": -10,
-            "uitleg": "Geen/te weinig vergelijkbare panden"
-          },
-          {
-            "onderdeel": "Kwaliteitsscore",
-            "punten": 5,
-            "uitleg": "5/10 (bouwjaar/label/eigen grond/etc)"
-          }
-        ]
-      },
-      "scenarios": {
-        "worst": {
-          "verkoop_m2": 4320.0,
-          "omzet": 501120,
-          "makelaar": 7516,
-          "notaris": 2500,
-          "netto": 491103,
-          "winst": 35409,
-          "marge_pct": 7.2,
-          "roi_pct": 7.8
-        },
-        "realistic": {
-          "verkoop_m2": 4800,
-          "omzet": 556800,
-          "makelaar": 8352,
-          "notaris": 2500,
-          "netto": 545948,
-          "winst": 90254,
-          "marge_pct": 16.5,
-          "roi_pct": 19.8
-        },
-        "best": {
-          "verkoop_m2": 5280.0,
-          "omzet": 612480,
-          "makelaar": 9187,
-          "notaris": 2500,
-          "netto": 600792,
-          "winst": 145099,
-          "marge_pct": 24.2,
-          "roi_pct": 31.8
-        }
-      },
-      "verkoop_referentie": {
-        "p25_pm2": 0,
-        "p50_pm2": 0,
-        "p75_pm2": 0,
-        "n_refs": 0,
-        "n_high_label": 0,
-        "spread_pct": 0.0,
-        "avg_days_online": null,
-        "match_niveau": "geen",
-        "confidence": 0,
-        "confidence_label": "onvoldoende",
-        "waarschuwingen": [
-          "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
-        ],
-        "wijk": ""
-      },
-      "bod_advies": {
-        "vraagprijs": 345000,
-        "aggressief": {
-          "bod": 303600,
-          "korting_pct": 12.0,
-          "label": "Agressief"
-        },
-        "markt": {
-          "bod": 327750,
-          "korting_pct": 5.0,
-          "label": "Markt"
-        },
-        "plafond": {
-          "bod": 332499,
-          "tekst": "332,499",
-          "label": "Plafond (10% worst-marge)"
-        },
-        "korting_modifier": 0.0,
-        "argumenten": [],
-        "strategie": "Krappe deal — pas bij aggressief bod rendabel."
-      },
-      "calc": {
-        "vraagprijs": 345000,
-        "ovb_pct": 8.0,
-        "ovb": 27600,
-        "notaris_makelaar_aankoop": 4485,
-        "aankoop_totaal": 377085,
-        "renovatie_per_m2": 583,
-        "renovatie_detail": {
-          "componenten": [
-            {
-              "naam": "Keuken renovatie",
-              "kosten": 14000,
-              "reden": "Nieuwe fronten, apparatuur, blad, tegelwerk"
-            },
-            {
-              "naam": "Badkamer renovatie",
-              "kosten": 12000,
-              "reden": "Nieuwe tegels, sanitair, kranen"
-            },
-            {
-              "naam": "Toilet opknappen",
-              "kosten": 2500,
-              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties"
-            },
-            {
-              "naam": "Vloeren (60/m²)",
-              "kosten": 6960,
-              "reden": "PVC click vloer leggen (licht egaliseren)"
-            },
-            {
-              "naam": "Schilderwerk (20/m²)",
-              "kosten": 2320,
-              "reden": "Latex muren en plafonds"
-            },
-            {
-              "naam": "Elektra upgraden",
-              "kosten": 3500,
-              "reden": "Groepenkast + extra groepen + stopcontacten"
-            },
-            {
-              "naam": "Isolatie verbeteren",
-              "kosten": 4640,
-              "reden": "Label D: dak + vloer bijwerken"
-            },
-            {
-              "naam": "Ramen deels (7x)",
-              "kosten": 8400,
-              "reden": "Oudere ramen upgraden naar HR++"
-            },
-            {
-              "naam": "CV-ketel onderhoud/reserve",
-              "kosten": 1500,
-              "reden": "Mogelijk verouderd, budget voor vervanging"
-            },
-            {
-              "naam": "Buitenschilderwerk",
-              "kosten": 2500,
-              "reden": "Kozijnen buiten schilderen"
-            },
-            {
-              "naam": "Onvoorzien (10%)",
-              "kosten": 5832,
-              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)"
-            },
-            {
-              "naam": "Architect + leges (6%)",
-              "kosten": 3499,
-              "reden": "Ontwerp, vergunning, bouwbegeleiding"
-            }
-          ],
-          "totaal": 67651,
-          "per_m2": 583,
-          "onvoorzien_pct": 10,
-          "wijk_factor": 1.0,
-          "wijk_bron": "landelijk"
-        },
-        "bouw_totaal": 67651,
-        "looptijd_maanden": 4,
-        "rente_pct": 8.0,
-        "financiering_basis": 410910,
-        "rente": 10957,
-        "totaal_kosten": 455693,
-        "verkoop_m2": 4800,
-        "verkoop_bron": "config",
-        "referenties": [],
-        "bruto_verkoopprijs": 556800,
-        "makelaar_verkoop": 8352,
-        "notaris_verkoop": 2500,
-        "verkoop_kosten": 10852,
-        "netto_opbrengst": 545948,
-        "winst": 90254,
-        "marge_pct": 16.5,
-        "roi_pct": 19.8,
-        "bod_korting_pct": 10,
-        "bod": 310500,
-        "bod_totaal_investering": 416979,
-        "bod_winst": 128968,
-        "bod_marge_pct": 23.6,
-        "scenarios": {
-          "worst": {
-            "verkoop_m2": 4320.0,
-            "omzet": 501120,
-            "makelaar": 7516,
-            "notaris": 2500,
-            "netto": 491103,
-            "winst": 35409,
-            "marge_pct": 7.2,
-            "roi_pct": 7.8
-          },
-          "realistic": {
-            "verkoop_m2": 4800,
-            "omzet": 556800,
-            "makelaar": 8352,
-            "notaris": 2500,
-            "netto": 545948,
-            "winst": 90254,
-            "marge_pct": 16.5,
-            "roi_pct": 19.8
-          },
-          "best": {
-            "verkoop_m2": 5280.0,
-            "omzet": 612480,
-            "makelaar": 9187,
-            "notaris": 2500,
-            "netto": 600792,
-            "winst": 145099,
-            "marge_pct": 24.2,
-            "roi_pct": 31.8
-          }
-        },
-        "verkoop_referentie": {
-          "p25_pm2": 0,
-          "p50_pm2": 0,
-          "p75_pm2": 0,
-          "n_refs": 0,
-          "n_high_label": 0,
-          "spread_pct": 0.0,
-          "avg_days_online": null,
-          "match_niveau": "geen",
-          "confidence": 0,
-          "confidence_label": "onvoldoende",
-          "waarschuwingen": [
-            "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
-          ],
-          "wijk": ""
-        },
-        "splitsen": {
-          "mag_splitsen": null,
-          "uitleg": "Geen splitsingbeleid bekend voor Alphen aan den Rijn. Check de gemeentelijke huisvestingsverordening.",
-          "vergunning": "onbekend",
-          "min_opp_m2": null,
-          "max_units": null,
-          "min_per_unit_m2": null,
-          "opp_per_unit": 58.0,
-          "bijzonderheden": ""
-        },
-        "opbouwen": {
-          "mag_opbouwen": null,
-          "uitleg": "Geen opbouwbeleid bekend voor Alphen aan den Rijn. Check het bestemmingsplan op ruimtelijkeplannen.nl.",
-          "max_hoogte_m": null,
-          "max_verdiepingen": null,
-          "dakopbouw_toegestaan": null,
-          "ruimte_over_m": null,
-          "bijzonderheden": ""
-        },
-        "looptijd_detail": {
-          "totaal_maanden": 4,
-          "vergunning_maanden": 0,
-          "verbouw_maanden": 2.2,
-          "verkoop_maanden": 2,
-          "verkoop_bron": "landelijk gemiddelde",
-          "type": "cosmetisch"
-        },
-        "validatie": {
-          "goedgekeurd": true,
-          "onze_pm2": 4800,
-          "bronnen": {},
-          "gem_extern_pm2": 0,
-          "afwijking_pct": 0,
-          "gecorrigeerde_pm2": 4800,
-          "reden": "Geen externe bronnen beschikbaar"
-        },
-        "motion": {
-          "dagen_online": 0,
-          "eerste_gezien": "2026-04-28T09:38:49.198211",
-          "laatste_gezien": "2026-04-28T09:38:49.198211",
-          "prijs_historie": [
-            {
-              "ts": "2026-04-28T09:38:49.198211",
-              "prijs": 345000
-            }
-          ],
-          "eerste_prijs": 345000,
-          "huidige_prijs": 345000,
-          "prijsverlaging_euro": 0,
-          "prijsverlaging_pct": 0.0,
-          "aantal_prijsverlagingen": 0,
-          "makelaarswissel": false,
-          "makelaars_recent": [
-            "Koppes Makelaardij B.V."
-          ],
-          "onder_bod_terug": false,
-          "motivated_score": 0,
-          "motivated": false
-        },
-        "bag": {
-          "bouwjaar": 1972,
-          "oppervlakte": 113,
-          "gebruiksdoel": "woonfunctie",
-          "pandstatus": "Pand in gebruik",
-          "status": "Verblijfsobject in gebruik",
-          "wijk": "Ridderveld",
-          "buurt": "Componistenbuurt-Zuid"
-        },
-        "cbs": {
-          "wijkcode": "GM0484",
-          "gemeente": "Alphen aan den Rijn",
-          "bevolkingsdichtheid": 919,
-          "gem_woz_x1000": 397,
-          "pct_koop": 64,
-          "pct_huur": 36,
-          "pct_corp": 25,
-          "pct_meergezins": 36,
-          "nieuwbouw_woningen": null
-        },
-        "wijk_kwaliteit": 60,
-        "monument": {
-          "is_rijksmonument": false
-        },
-        "risks": {
-          "flags": [],
-          "kansen": [],
-          "zwaarste": "geen",
-          "aantal": 0
-        },
-        "dealscore": {
-          "score": 2,
-          "grade": "D",
-          "breakdown": [
-            {
-              "onderdeel": "Marge",
-              "punten": 7,
-              "uitleg": "7.2% (worst-case P25) → 7/30"
-            },
-            {
-              "onderdeel": "Verkoop-confidence",
-              "punten": 0,
-              "uitleg": "onvoldoende (0/100) — N=0 refs"
-            },
-            {
-              "onderdeel": "Verkoop onbetrouwbaar",
-              "punten": -10,
-              "uitleg": "Geen/te weinig vergelijkbare panden"
-            },
-            {
-              "onderdeel": "Kwaliteitsscore",
-              "punten": 5,
-              "uitleg": "5/10 (bouwjaar/label/eigen grond/etc)"
-            }
-          ]
-        },
-        "bod_advies": {
-          "vraagprijs": 345000,
-          "aggressief": {
-            "bod": 303600,
-            "korting_pct": 12.0,
-            "label": "Agressief"
-          },
-          "markt": {
-            "bod": 327750,
-            "korting_pct": 5.0,
-            "label": "Markt"
-          },
-          "plafond": {
-            "bod": 332499,
-            "tekst": "332,499",
-            "label": "Plafond (10% worst-marge)"
-          },
-          "korting_modifier": 0.0,
-          "argumenten": [],
-          "strategie": "Krappe deal — pas bij aggressief bod rendabel."
-        }
-      }
-    },
-    {
       "adres": "Boegbeeld 2",
       "stad": "Hellevoetsluis",
       "postcode": "3224PC",
@@ -4988,14 +5277,19 @@
       "opp_m2": 103,
       "prijs_per_m2": 3194.0,
       "type_woning": "house",
-      "bouwjaar": 0,
+      "bouwjaar": 1982,
       "energie_label": "B",
       "kamers": 5,
       "source": "funda",
-      "url": "https://www.funda.nl/detail/koop/hellevoetsluis/huis-boegbeeld-2/43314324/",
+      "url": "https://www.funda.nl/detail/koop/hellevoetsluis/boegbeeld-2/43314324/",
       "foto_url": "https://cloud.funda.nl/valentina_media/227/555/280.jpg",
       "foto_urls": [
-        "https://cloud.funda.nl/valentina_media/227/555/280.jpg"
+        "https://cloud.funda.nl/valentina_media/227/555/280.jpg",
+        "https://cloud.funda.nl/valentina_media/227/555/314.jpg",
+        "https://cloud.funda.nl/valentina_media/227/555/198.jpg",
+        "https://cloud.funda.nl/valentina_media/227/555/307.jpg",
+        "https://cloud.funda.nl/valentina_media/227/555/212.jpg",
+        "https://cloud.funda.nl/valentina_media/227/555/333.jpg"
       ],
       "strategie": "fix_flip",
       "marge_pct": 16.8,
@@ -5005,29 +5299,7 @@
       "verwachte_opbrengst": 484484,
       "score": 4,
       "is_opknapper": false,
-      "motion": {
-        "dagen_online": 0,
-        "eerste_gezien": "2026-04-28T09:38:49.395893",
-        "laatste_gezien": "2026-04-28T09:38:49.395893",
-        "prijs_historie": [
-          {
-            "ts": "2026-04-28T09:38:49.395893",
-            "prijs": 329000
-          }
-        ],
-        "eerste_prijs": 329000,
-        "huidige_prijs": 329000,
-        "prijsverlaging_euro": 0,
-        "prijsverlaging_pct": 0.0,
-        "aantal_prijsverlagingen": 0,
-        "makelaarswissel": false,
-        "makelaars_recent": [
-          "Xtra Makelaardij"
-        ],
-        "onder_bod_terug": false,
-        "motivated_score": 0,
-        "motivated": false
-      },
+      "motion": {},
       "ep_online": {},
       "bag": {
         "bouwjaar": 1982,
@@ -5301,37 +5573,39 @@
           "verkoop_bron": "landelijk gemiddelde",
           "type": "cosmetisch"
         },
-        "validatie": {
-          "goedgekeurd": true,
-          "onze_pm2": 4800,
-          "bronnen": {},
-          "gem_extern_pm2": 0,
-          "afwijking_pct": 0,
-          "gecorrigeerde_pm2": 4800,
-          "reden": "Geen externe bronnen beschikbaar"
+        "funda_prijs_per_m2": "€ 3.194",
+        "foto_urls": [
+          "https://cloud.funda.nl/valentina_media/227/555/280.jpg",
+          "https://cloud.funda.nl/valentina_media/227/555/314.jpg",
+          "https://cloud.funda.nl/valentina_media/227/555/198.jpg",
+          "https://cloud.funda.nl/valentina_media/227/555/307.jpg",
+          "https://cloud.funda.nl/valentina_media/227/555/212.jpg",
+          "https://cloud.funda.nl/valentina_media/227/555/333.jpg"
+        ],
+        "has_garden": true,
+        "has_balcony": false,
+        "has_roof_terrace": false,
+        "has_parking_on_site": false,
+        "has_solar_panels": false,
+        "has_heat_pump": false,
+        "is_monument": false,
+        "plot_area": 121,
+        "beschrijving_raw": "Een 5-kamer eengezinswoning, rustig gelegen aan een voetpad! De woning heeft een ruime woonkamer met een open keuken, er zijn 3 goede slaapkamers en een ruime 2e verdieping welke je eenvoudig als 4e slaapkamer inricht. Verder heeft de woning een grote kunststof dakkapel op de 1e verdieping (2024) en de zonnige achtertuin is gelegen op het zuiden.\n\nJe wandelt zo naar de Struytse Zeedijk met het mooie Haringvliet; heerlijk om hier een rondje te gaan wandelen of hardlopen. Ook de gezellige Vesting met haar restaurants, terrassen en de jachthaven en voorzieningen zoals het winkelcentrum, basisscholen en openbaar vervoer zijn binnen handbereik. \n\nIndeling:\n\nBegane grond:\nHal/entree met de meterkast, geheel betegelde toiletruimte met handwasbakje, trapopgang en toegang tot de woonkamer. De woonkamer heeft een praktische trapkast en een deur naar de achtertuin. De open keuken is gesitueerd aan de voorzijde en ingericht met inbouwapparatuur als: een 5-pitsgaskookstel met oven en afzuigkap.\nOver de gehele begane grond ligt een laminaatvloer.\n\n1e verdieping:\nOverloop met toegang tot 3 slaapkamers en de badkamer. De 2 slaapkamers aan de achterzijde profiteren van de grote kunststof dakkapel (2024), de andere slaapkamer is gelegen aan de voorzijde. Over de gehele verdieping ligt een laminaatvloer.\nDe badkamer is ingericht met een ligbad met douchegelegenheid, een wastafel, 2e toilet en een radiator.\n\n2e verdieping:\nVaste trap naar de open 2e verdieping met 4 dakramen, de opstelplaats van de cv-combiketel Remeha (2009), de witgoedaansluitingen en er is een kleine bergvliering. Indien gewenst realiseer je hier eenvoudig een 4e slaapkamer of net als nu, een sport- of werkkamer.\n\nDe achtertuin is gesitueerd op het zuidoosten en is onderhoudsvriendelijk aangelegd met grotendeels sierbestrating en plantenborders. Er staat een stenen berging en een houten berging en de tuin is bereikbaar via een achterom, achter de woning loop je direct naar een speelveldje. \n\nKom een kijkje nemen bij",
+        "beschrijving_parsed": {
+          "verdieping": 2,
+          "heeft_zolder": true
         },
-        "motion": {
-          "dagen_online": 0,
-          "eerste_gezien": "2026-04-28T09:38:49.395893",
-          "laatste_gezien": "2026-04-28T09:38:49.395893",
-          "prijs_historie": [
-            {
-              "ts": "2026-04-28T09:38:49.395893",
-              "prijs": 329000
-            }
-          ],
-          "eerste_prijs": 329000,
-          "huidige_prijs": 329000,
-          "prijsverlaging_euro": 0,
-          "prijsverlaging_pct": 0.0,
-          "aantal_prijsverlagingen": 0,
-          "makelaarswissel": false,
-          "makelaars_recent": [
-            "Xtra Makelaardij"
-          ],
-          "onder_bod_terug": false,
-          "motivated_score": 0,
-          "motivated": false
+        "verdieping": 2,
+        "validatie": {
+          "goedgekeurd": false,
+          "onze_pm2": 4800,
+          "bronnen": {
+            "funda_pm2": 3194
+          },
+          "gem_extern_pm2": 3194,
+          "afwijking_pct": 50.3,
+          "gecorrigeerde_pm2": 3354,
+          "reden": "Onze prijs 50% hoger dan extern (3194/m2). Gecorrigeerd naar 3354/m2"
         },
         "bag": {
           "bouwjaar": 1982,
@@ -5421,14 +5695,19 @@
       "opp_m2": 120,
       "prijs_per_m2": 2896.0,
       "type_woning": "house",
-      "bouwjaar": 0,
+      "bouwjaar": 1972,
       "energie_label": "C",
       "kamers": 5,
       "source": "funda",
-      "url": "https://www.funda.nl/detail/koop/hellevoetsluis/huis-helmstraat-1/43309885/",
+      "url": "https://www.funda.nl/detail/koop/hellevoetsluis/helmstraat-1/43309885/",
       "foto_url": "https://cloud.funda.nl/valentina_media/226/946/269.jpg",
       "foto_urls": [
-        "https://cloud.funda.nl/valentina_media/226/946/269.jpg"
+        "https://cloud.funda.nl/valentina_media/226/946/269.jpg",
+        "https://cloud.funda.nl/valentina_media/226/946/245.jpg",
+        "https://cloud.funda.nl/valentina_media/226/946/265.jpg",
+        "https://cloud.funda.nl/valentina_media/226/946/202.jpg",
+        "https://cloud.funda.nl/valentina_media/226/946/122.jpg",
+        "https://cloud.funda.nl/valentina_media/226/946/261.jpg"
       ],
       "strategie": "fix_flip",
       "marge_pct": 18.5,
@@ -5438,29 +5717,7 @@
       "verwachte_opbrengst": 564860,
       "score": 5,
       "is_opknapper": false,
-      "motion": {
-        "dagen_online": 0,
-        "eerste_gezien": "2026-04-28T09:38:49.410130",
-        "laatste_gezien": "2026-04-28T09:38:49.410130",
-        "prijs_historie": [
-          {
-            "ts": "2026-04-28T09:38:49.410130",
-            "prijs": 347500
-          }
-        ],
-        "eerste_prijs": 347500,
-        "huidige_prijs": 347500,
-        "prijsverlaging_euro": 0,
-        "prijsverlaging_pct": 0.0,
-        "aantal_prijsverlagingen": 0,
-        "makelaarswissel": false,
-        "makelaars_recent": [
-          "Tanis & Akershoek Makelaardij"
-        ],
-        "onder_bod_terug": false,
-        "motivated_score": 0,
-        "motivated": false
-      },
+      "motion": {},
       "ep_online": {},
       "bag": {
         "bouwjaar": 1996,
@@ -5474,18 +5731,33 @@
       "monument": {
         "is_rijksmonument": false
       },
-      "erfpacht_detail": {},
+      "erfpacht_detail": {
+        "is_erfpacht": false,
+        "is_eeuwigdurend": false,
+        "is_afgekocht": false,
+        "eindjaar": null,
+        "jaren_resterend": null,
+        "canon_euro": null,
+        "rotterdam_afkoopkans": false,
+        "risk_level": "geen",
+        "toelichting": "Eigen grond — geen erfpacht."
+      },
       "risks": {
         "flags": [
           {
             "niveau": "oranje",
             "label": "Oppervlak afwijking 21%",
             "details": "Funda: 120 m², BAG: 151 m². Controleer NEN 2580."
+          },
+          {
+            "niveau": "geel",
+            "label": "Bouwjaar afwijking 24j",
+            "details": "Funda: 1972, BAG: 1996. Mogelijk verbouwing of parse-fout."
           }
         ],
         "kansen": [],
         "zwaarste": "oranje",
-        "aantal": 1
+        "aantal": 2
       },
       "dealscore": {
         "score": 0,
@@ -5569,13 +5841,13 @@
       "bod_advies": {
         "vraagprijs": 347500,
         "aggressief": {
-          "bod": 298850,
-          "korting_pct": 14.0,
+          "bod": 295375,
+          "korting_pct": 15.0,
           "label": "Agressief"
         },
         "markt": {
-          "bod": 326650,
-          "korting_pct": 6.0,
+          "bod": 324912,
+          "korting_pct": 6.5,
           "label": "Markt"
         },
         "plafond": {
@@ -5583,9 +5855,10 @@
           "tekst": "344,728",
           "label": "Plafond (10% worst-marge)"
         },
-        "korting_modifier": 2.0,
+        "korting_modifier": 3.0,
         "argumenten": [
-          "Oppervlakte-afwijking tussen Funda en BAG — kleiner pand dan geadverteerd."
+          "Oppervlakte-afwijking tussen Funda en BAG — kleiner pand dan geadverteerd.",
+          "Bouwjaar afwijkt van BAG — mogelijk ongeregistreerde verbouwing of onjuiste opgave."
         ],
         "strategie": "Krappe deal — pas bij aggressief bod rendabel."
       },
@@ -5762,37 +6035,40 @@
           "verkoop_bron": "landelijk gemiddelde",
           "type": "cosmetisch"
         },
-        "validatie": {
-          "goedgekeurd": true,
-          "onze_pm2": 4800,
-          "bronnen": {},
-          "gem_extern_pm2": 0,
-          "afwijking_pct": 0,
-          "gecorrigeerde_pm2": 4800,
-          "reden": "Geen externe bronnen beschikbaar"
+        "funda_prijs_per_m2": "€ 2.896",
+        "foto_urls": [
+          "https://cloud.funda.nl/valentina_media/226/946/269.jpg",
+          "https://cloud.funda.nl/valentina_media/226/946/245.jpg",
+          "https://cloud.funda.nl/valentina_media/226/946/265.jpg",
+          "https://cloud.funda.nl/valentina_media/226/946/202.jpg",
+          "https://cloud.funda.nl/valentina_media/226/946/122.jpg",
+          "https://cloud.funda.nl/valentina_media/226/946/261.jpg"
+        ],
+        "has_garden": true,
+        "has_balcony": false,
+        "has_roof_terrace": false,
+        "has_parking_on_site": false,
+        "has_solar_panels": false,
+        "has_heat_pump": false,
+        "is_monument": false,
+        "plot_area": 171,
+        "beschrijving_raw": "Je bent op zoek naar een comfortabele en goed ingedeelde woning met ruimte, licht en een zonnige tuin, en precies dat vind je in deze aantrekkelijke hoekwoning op een perceel van 171 m² eigen grond. \n\nJe geniet hier van een tuin op het zuiden, waardoor je vrijwel de hele dag zon hebt. Binnen ervaar je een praktische indeling met een ruime doorzonwoonkamer en een complete keuken. \nDe woning beschikt over maar liefst vier slaapkamers, verdeeld over twee verdiepingen, wat het ideaal maakt voor gezinnen of thuiswerken. \n\nDit is een woning waar je direct een fijn thuisgevoel krijgt en waar je nog jarenlang plezier van zult hebben.\n\nINDELING\n\nBEGANE GROND\n\nZodra je via de voortuin naar binnen stapt, kom je in de entreehal die direct een praktische eerste indruk geeft. Hier vind je de meterkast, een handige inloopkast met garderobe en de vaste trap naar de verdiepingen. \nDe deels betegelde toiletruimte is uitgevoerd in een lichte kleurstelling en voorzien van een fonteintje, wat zorgt voor een frisse uitstraling. \n\nVanuit de hal loop je door naar de woonkamer, waar je direct wordt verrast door de hoeveelheid lichtinval. De doorzonwoonkamer heeft grote raampartijen aan zowel de voor- als achterzijde, waardoor je een prettige, open sfeer ervaart en een mooi zicht hebt op zowel de straat als de tuin.\n\nDe half open keuken sluit mooi aan op de woonkamer en is opgesteld in een praktische hoekopstelling. De houtnerf kastfronten geven de keuken een warme uitstraling, terwijl het kunststof aanrechtblad zorgt voor gebruiksgemak. Je beschikt hier over veel bergruimte dankzij de vele laden en een handige carrouselkast. De keuken is bovendien uitgerust met diverse inbouwapparatuur, waaronder een afzuigkap, keramische kookplaat, vaatwasmachine, combimagnetron en een koel-/vriescombinatie. Vanuit de keuken heb je direct toegang tot de achtertuin, wat ideaal is tijdens zomerse dagen of wanneer je buiten wilt eten.\n\nDe begane grond is afgewerkt met een lichte plavuizenvloer . Daaronder bev",
+        "beschrijving_parsed": {
+          "erfpacht": false,
+          "verdieping": 1
         },
-        "motion": {
-          "dagen_online": 0,
-          "eerste_gezien": "2026-04-28T09:38:49.410130",
-          "laatste_gezien": "2026-04-28T09:38:49.410130",
-          "prijs_historie": [
-            {
-              "ts": "2026-04-28T09:38:49.410130",
-              "prijs": 347500
-            }
-          ],
-          "eerste_prijs": 347500,
-          "huidige_prijs": 347500,
-          "prijsverlaging_euro": 0,
-          "prijsverlaging_pct": 0.0,
-          "aantal_prijsverlagingen": 0,
-          "makelaarswissel": false,
-          "makelaars_recent": [
-            "Tanis & Akershoek Makelaardij"
-          ],
-          "onder_bod_terug": false,
-          "motivated_score": 0,
-          "motivated": false
+        "erfpacht": false,
+        "verdieping": 1,
+        "validatie": {
+          "goedgekeurd": false,
+          "onze_pm2": 4800,
+          "bronnen": {
+            "funda_pm2": 2896
+          },
+          "gem_extern_pm2": 2896,
+          "afwijking_pct": 65.7,
+          "gecorrigeerde_pm2": 3041,
+          "reden": "Onze prijs 66% hoger dan extern (2896/m2). Gecorrigeerd naar 3041/m2"
         },
         "bag": {
           "bouwjaar": 1996,
@@ -5818,17 +6094,33 @@
         "monument": {
           "is_rijksmonument": false
         },
+        "erfpacht_detail": {
+          "is_erfpacht": false,
+          "is_eeuwigdurend": false,
+          "is_afgekocht": false,
+          "eindjaar": null,
+          "jaren_resterend": null,
+          "canon_euro": null,
+          "rotterdam_afkoopkans": false,
+          "risk_level": "geen",
+          "toelichting": "Eigen grond — geen erfpacht."
+        },
         "risks": {
           "flags": [
             {
               "niveau": "oranje",
               "label": "Oppervlak afwijking 21%",
               "details": "Funda: 120 m², BAG: 151 m². Controleer NEN 2580."
+            },
+            {
+              "niveau": "geel",
+              "label": "Bouwjaar afwijking 24j",
+              "details": "Funda: 1972, BAG: 1996. Mogelijk verbouwing of parse-fout."
             }
           ],
           "kansen": [],
           "zwaarste": "oranje",
-          "aantal": 1
+          "aantal": 2
         },
         "dealscore": {
           "score": 0,
@@ -5864,13 +6156,13 @@
         "bod_advies": {
           "vraagprijs": 347500,
           "aggressief": {
-            "bod": 298850,
-            "korting_pct": 14.0,
+            "bod": 295375,
+            "korting_pct": 15.0,
             "label": "Agressief"
           },
           "markt": {
-            "bod": 326650,
-            "korting_pct": 6.0,
+            "bod": 324912,
+            "korting_pct": 6.5,
             "label": "Markt"
           },
           "plafond": {
@@ -5878,9 +6170,10 @@
             "tekst": "344,728",
             "label": "Plafond (10% worst-marge)"
           },
-          "korting_modifier": 2.0,
+          "korting_modifier": 3.0,
           "argumenten": [
-            "Oppervlakte-afwijking tussen Funda en BAG — kleiner pand dan geadverteerd."
+            "Oppervlakte-afwijking tussen Funda en BAG — kleiner pand dan geadverteerd.",
+            "Bouwjaar afwijkt van BAG — mogelijk ongeregistreerde verbouwing of onjuiste opgave."
           ],
           "strategie": "Krappe deal — pas bij aggressief bod rendabel."
         }
@@ -6245,7 +6538,7 @@
       "type_woning": "Woning / appartement",
       "url": "https://www.beleggingspanden.nl/nl/aanbod/nederland-den-haag-juliana-van-stolberglaan-288-16713",
       "source": "beleggingspanden",
-      "foto_url": "https://imagecdn.beleggingspanden.nl/images/016725/616326.jpg?width=1080&height=720&mode=crop&scale=both",
+      "foto_url": "https://imagecdn.beleggingspanden.nl/images/016713/616624.jpg?width=1080&height=720&mode=crop&scale=both",
       "bouwjaar": 0,
       "is_commercieel": false,
       "makelaar": "De Residentie Makelaar BV|Beleggingspanden.nl",
