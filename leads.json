@@ -1,10 +1,10 @@
 {
-  "scan_datum": "2026-05-17T09:28:52.034330",
-  "totaal_gescand": 1514,
-  "na_filter": 1467,
+  "scan_datum": "2026-05-18T11:29:03.588760",
+  "totaal_gescand": 1506,
+  "na_filter": 1458,
   "classificatie_audit": {
     "per_category": {
-      "wonen": 1475,
+      "wonen": 1466,
       "transformatie": 5,
       "verhuurd_wonen": 0,
       "skip": 10
@@ -16,7 +16,7 @@
       "onbekend type 'Beleggingspand' — niet op whitelist": 2,
       "onbekend type 'Overig' — niet op whitelist": 1
     },
-    "totaal_voor_filter": 1490
+    "totaal_voor_filter": 1481
   },
   "kansen": [
     {
@@ -131,7 +131,7 @@
         "n_refs": 14,
         "n_high_label": 14,
         "spread_pct": 3.0,
-        "avg_days_online": 6.6,
+        "avg_days_online": 7.6,
         "match_niveau": "pc4_label_fresh",
         "confidence": 92,
         "confidence_label": "hoog",
@@ -245,7 +245,7 @@
             "prijs_per_m2": 6773,
             "energie_label": "A+++",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -260,7 +260,7 @@
             "prijs_per_m2": 6719,
             "energie_label": "A+++",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -275,7 +275,7 @@
             "prijs_per_m2": 6589,
             "energie_label": "A+",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -290,7 +290,7 @@
             "prijs_per_m2": 6589,
             "energie_label": "A++",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -305,7 +305,7 @@
             "prijs_per_m2": 6525,
             "energie_label": "A++",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -366,7 +366,7 @@
           "n_refs": 14,
           "n_high_label": 14,
           "spread_pct": 3.0,
-          "avg_days_online": 6.6,
+          "avg_days_online": 7.6,
           "match_niveau": "pc4_label_fresh",
           "confidence": 92,
           "confidence_label": "hoog",
@@ -397,8 +397,8 @@
           "totaal_maanden": 4,
           "vergunning_maanden": 0,
           "verbouw_maanden": 2.0,
-          "verkoop_maanden": 1.7,
-          "verkoop_bron": "wijk-data (6d online)",
+          "verkoop_maanden": 1.8,
+          "verkoop_bron": "wijk-data (7d online)",
           "type": "cosmetisch"
         },
         "funda_prijs_per_m2": "€ 3.520",
@@ -615,7 +615,7 @@
         "n_refs": 14,
         "n_high_label": 14,
         "spread_pct": 3.0,
-        "avg_days_online": 6.6,
+        "avg_days_online": 7.6,
         "match_niveau": "pc4_label_fresh",
         "confidence": 92,
         "confidence_label": "hoog",
@@ -729,7 +729,7 @@
             "prijs_per_m2": 6773,
             "energie_label": "A+++",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -744,7 +744,7 @@
             "prijs_per_m2": 6719,
             "energie_label": "A+++",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -759,7 +759,7 @@
             "prijs_per_m2": 6589,
             "energie_label": "A+",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -774,7 +774,7 @@
             "prijs_per_m2": 6589,
             "energie_label": "A++",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -789,7 +789,7 @@
             "prijs_per_m2": 6525,
             "energie_label": "A++",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -850,7 +850,7 @@
           "n_refs": 14,
           "n_high_label": 14,
           "spread_pct": 3.0,
-          "avg_days_online": 6.6,
+          "avg_days_online": 7.6,
           "match_niveau": "pc4_label_fresh",
           "confidence": 92,
           "confidence_label": "hoog",
@@ -881,8 +881,8 @@
           "totaal_maanden": 4,
           "vergunning_maanden": 0,
           "verbouw_maanden": 2.0,
-          "verkoop_maanden": 1.7,
-          "verkoop_bron": "wijk-data (6d online)",
+          "verkoop_maanden": 1.8,
+          "verkoop_bron": "wijk-data (7d online)",
           "type": "cosmetisch"
         },
         "funda_prijs_per_m2": "€ 3.520",
@@ -2387,7 +2387,7 @@
         "n_refs": 14,
         "n_high_label": 14,
         "spread_pct": 33.6,
-        "avg_days_online": 6.4,
+        "avg_days_online": 7.5,
         "match_niveau": "pc4_label_fresh",
         "confidence": 77,
         "confidence_label": "hoog",
@@ -2519,7 +2519,7 @@
             "prijs_per_m2": 6773,
             "energie_label": "A+++",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -2534,7 +2534,7 @@
             "prijs_per_m2": 6719,
             "energie_label": "A+++",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -2549,7 +2549,7 @@
             "prijs_per_m2": 6589,
             "energie_label": "A+",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -2564,7 +2564,7 @@
             "prijs_per_m2": 6589,
             "energie_label": "A++",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -2579,7 +2579,7 @@
             "prijs_per_m2": 6525,
             "energie_label": "A++",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -2640,7 +2640,7 @@
           "n_refs": 14,
           "n_high_label": 14,
           "spread_pct": 33.6,
-          "avg_days_online": 6.4,
+          "avg_days_online": 7.5,
           "match_niveau": "pc4_label_fresh",
           "confidence": 77,
           "confidence_label": "hoog",
@@ -2671,8 +2671,8 @@
           "totaal_maanden": 7,
           "vergunning_maanden": 1,
           "verbouw_maanden": 4.0,
-          "verkoop_maanden": 1.7,
-          "verkoop_bron": "wijk-data (6d online)",
+          "verkoop_maanden": 1.8,
+          "verkoop_bron": "wijk-data (7d online)",
           "type": "medium"
         },
         "funda_prijs_per_m2": "€ 3.567",
@@ -2889,7 +2889,7 @@
         "n_refs": 14,
         "n_high_label": 14,
         "spread_pct": 34.7,
-        "avg_days_online": 6.4,
+        "avg_days_online": 7.9,
         "match_niveau": "pc4_label_fresh",
         "confidence": 77,
         "confidence_label": "hoog",
@@ -3027,7 +3027,7 @@
             "prijs_per_m2": 6589,
             "energie_label": "A+",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -3042,7 +3042,7 @@
             "prijs_per_m2": 6589,
             "energie_label": "A++",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -3057,7 +3057,7 @@
             "prijs_per_m2": 6438,
             "energie_label": "A+",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -3072,7 +3072,7 @@
             "prijs_per_m2": 6438,
             "energie_label": "A++",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -3087,7 +3087,7 @@
             "prijs_per_m2": 6286,
             "energie_label": "A+",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 9,
             "is_fresh": true,
             "postcode": "3313DD",
             "neighbourhood": "Stadswerven",
@@ -3148,7 +3148,7 @@
           "n_refs": 14,
           "n_high_label": 14,
           "spread_pct": 34.7,
-          "avg_days_online": 6.4,
+          "avg_days_online": 7.9,
           "match_niveau": "pc4_label_fresh",
           "confidence": 77,
           "confidence_label": "hoog",
@@ -3179,8 +3179,8 @@
           "totaal_maanden": 10,
           "vergunning_maanden": 2.5,
           "verbouw_maanden": 6.0,
-          "verkoop_maanden": 1.7,
-          "verkoop_bron": "wijk-data (6d online)",
+          "verkoop_maanden": 1.8,
+          "verkoop_bron": "wijk-data (7d online)",
           "type": "zwaar"
         },
         "funda_prijs_per_m2": "€ 3.238",
@@ -3412,7 +3412,7 @@
         "n_refs": 11,
         "n_high_label": 11,
         "spread_pct": 17.4,
-        "avg_days_online": 57.6,
+        "avg_days_online": 58.7,
         "match_niveau": "pc4_label_fresh",
         "confidence": 81,
         "confidence_label": "hoog",
@@ -3532,7 +3532,7 @@
             "prijs_per_m2": 4824,
             "energie_label": "A+++",
             "is_high_label": true,
-            "days_online": 80,
+            "days_online": 81,
             "is_fresh": true,
             "postcode": "3136GP",
             "neighbourhood": "Sportpark Holy",
@@ -3547,7 +3547,7 @@
             "prijs_per_m2": 4824,
             "energie_label": "A+++",
             "is_high_label": true,
-            "days_online": 80,
+            "days_online": 81,
             "is_fresh": true,
             "postcode": "3136GP",
             "neighbourhood": "Sportpark Holy",
@@ -3562,7 +3562,7 @@
             "prijs_per_m2": 4824,
             "energie_label": "A+++",
             "is_high_label": true,
-            "days_online": 80,
+            "days_online": 81,
             "is_fresh": true,
             "postcode": "3136GP",
             "neighbourhood": "Sportpark Holy",
@@ -3577,7 +3577,7 @@
             "prijs_per_m2": 4824,
             "energie_label": "A+++",
             "is_high_label": true,
-            "days_online": 80,
+            "days_online": 81,
             "is_fresh": true,
             "postcode": "3136GP",
             "neighbourhood": "Sportpark Holy",
@@ -3592,7 +3592,7 @@
             "prijs_per_m2": 4824,
             "energie_label": "A+++",
             "is_high_label": true,
-            "days_online": 80,
+            "days_online": 81,
             "is_fresh": true,
             "postcode": "3136GP",
             "neighbourhood": "Sportpark Holy",
@@ -3653,7 +3653,7 @@
           "n_refs": 11,
           "n_high_label": 11,
           "spread_pct": 17.4,
-          "avg_days_online": 57.6,
+          "avg_days_online": 58.7,
           "match_niveau": "pc4_label_fresh",
           "confidence": 81,
           "confidence_label": "hoog",
@@ -3683,8 +3683,8 @@
           "totaal_maanden": 9,
           "vergunning_maanden": 1,
           "verbouw_maanden": 4.3,
-          "verkoop_maanden": 3.4,
-          "verkoop_bron": "wijk-data (57d online)",
+          "verkoop_maanden": 3.5,
+          "verkoop_bron": "wijk-data (58d online)",
           "type": "medium"
         },
         "funda_prijs_per_m2": "€ 2.804",
@@ -3808,6 +3808,515 @@
       }
     },
     {
+      "adres": "Rijswijkseweg 177",
+      "stad": "Den Haag",
+      "postcode": "2516HC",
+      "wijk": "",
+      "prijs": 350000,
+      "opp_m2": 87,
+      "prijs_per_m2": 4023.0,
+      "type_woning": "apartment",
+      "bouwjaar": 1915,
+      "energie_label": "unknown",
+      "kamers": 3,
+      "source": "funda",
+      "url": "https://www.funda.nl/detail/koop/den-haag/rijswijkseweg-177/44459492/",
+      "foto_url": "https://cloud.funda.nl/valentina_media/228/925/695.jpg",
+      "foto_urls": [
+        "https://cloud.funda.nl/valentina_media/228/925/695.jpg",
+        "https://cloud.funda.nl/valentina_media/228/925/700.jpg",
+        "https://cloud.funda.nl/valentina_media/228/925/697.jpg",
+        "https://cloud.funda.nl/valentina_media/228/925/698.jpg",
+        "https://cloud.funda.nl/valentina_media/228/925/690.jpg",
+        "https://cloud.funda.nl/valentina_media/228/925/693.jpg"
+      ],
+      "strategie": "fix_flip",
+      "marge_pct": 12.1,
+      "winst_euro": 58816,
+      "roi_pct": 13.8,
+      "totale_kosten": 426802,
+      "verwachte_opbrengst": 485618,
+      "score": 3,
+      "is_opknapper": false,
+      "motion": {},
+      "ep_online": {},
+      "bag": {
+        "bouwjaar": 1915,
+        "oppervlakte": 83,
+        "gebruiksdoel": "woonfunctie",
+        "pandstatus": "Pand in gebruik",
+        "status": "Verblijfsobject in gebruik",
+        "wijk": "Wijk 38 Laakkwartier en Spoorwijk",
+        "buurt": "Noordpolderbuurt"
+      },
+      "monument": {
+        "is_rijksmonument": false
+      },
+      "erfpacht_detail": {},
+      "risks": {
+        "flags": [
+          {
+            "niveau": "oranje",
+            "label": "Splitsen verboden (wijk)",
+            "details": "wijk leefbaarometer score 6 (< 7 = niet splitsbaar)"
+          }
+        ],
+        "kansen": [],
+        "zwaarste": "oranje",
+        "aantal": 1
+      },
+      "dealscore": {
+        "score": 14,
+        "grade": "D",
+        "breakdown": [
+          {
+            "onderdeel": "Marge",
+            "punten": 0,
+            "uitleg": "-19.0% (worst-case P25) → 0/30"
+          },
+          {
+            "onderdeel": "Verkoop-confidence",
+            "punten": 11,
+            "uitleg": "hoog (77/100) — N=11 refs"
+          },
+          {
+            "onderdeel": "Kwaliteitsscore",
+            "punten": 3,
+            "uitleg": "3/10 (bouwjaar/label/eigen grond/etc)"
+          }
+        ]
+      },
+      "scenarios": {
+        "worst": {
+          "verkoop_m2": 4216,
+          "omzet": 366792,
+          "makelaar": 5501,
+          "notaris": 2500,
+          "netto": 358790,
+          "winst": -68012,
+          "marge_pct": -19.0,
+          "roi_pct": -15.9
+        },
+        "realistic": {
+          "verkoop_m2": 5696,
+          "omzet": 495552,
+          "makelaar": 7433,
+          "notaris": 2500,
+          "netto": 485618,
+          "winst": 58816,
+          "marge_pct": 12.1,
+          "roi_pct": 13.8
+        },
+        "best": {
+          "verkoop_m2": 5997,
+          "omzet": 521739,
+          "makelaar": 7826,
+          "notaris": 2500,
+          "netto": 511412,
+          "winst": 84610,
+          "marge_pct": 16.5,
+          "roi_pct": 19.8
+        }
+      },
+      "verkoop_referentie": {
+        "p25_pm2": 4216,
+        "p50_pm2": 5696,
+        "p75_pm2": 5997,
+        "n_refs": 11,
+        "n_high_label": 11,
+        "spread_pct": 31.3,
+        "avg_days_online": 22.5,
+        "match_niveau": "pc4_label_fresh",
+        "confidence": 77,
+        "confidence_label": "hoog",
+        "waarschuwingen": [],
+        "wijk": "Binckhorst"
+      },
+      "bod_advies": {
+        "vraagprijs": 350000,
+        "aggressief": {
+          "bod": 308000,
+          "korting_pct": 12.0,
+          "label": "Agressief"
+        },
+        "markt": {
+          "bod": 332500,
+          "korting_pct": 5.0,
+          "label": "Markt"
+        },
+        "plafond": {
+          "bod": 255409,
+          "tekst": "255,409",
+          "label": "Plafond (10% worst-marge)"
+        },
+        "korting_modifier": 0.0,
+        "argumenten": [],
+        "strategie": "Krappe deal — pas bij aggressief bod rendabel."
+      },
+      "calc": {
+        "vraagprijs": 350000,
+        "ovb_pct": 8.0,
+        "ovb": 28000,
+        "notaris_makelaar_aankoop": 4550,
+        "aankoop_totaal": 382550,
+        "renovatie_per_m2": 386,
+        "renovatie_detail": {
+          "componenten": [
+            {
+              "naam": "Keuken opfrissen",
+              "kosten": 8400,
+              "reden": "Nieuwe fronten, werkblad, apparatuur behouden",
+              "kosten_basis": 8000
+            },
+            {
+              "naam": "Badkamer opfrissen",
+              "kosten": 7350,
+              "reden": "Sanitair + kranen vervangen, voegen vernieuwen",
+              "kosten_basis": 7000
+            },
+            {
+              "naam": "Toilet opknappen",
+              "kosten": 2625,
+              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties",
+              "kosten_basis": 2500
+            },
+            {
+              "naam": "Vloeren (50/m²)",
+              "kosten": 4567,
+              "reden": "Nieuwe PVC click vloer leggen",
+              "kosten_basis": 4350
+            },
+            {
+              "naam": "Schilderwerk (20/m²)",
+              "kosten": 1827,
+              "reden": "Latex muren en plafonds",
+              "kosten_basis": 1740
+            },
+            {
+              "naam": "Elektra check + uitbreiden",
+              "kosten": 1575,
+              "reden": "Keuring + extra groepen/stopcontacten",
+              "kosten_basis": 1500
+            },
+            {
+              "naam": "Buitenschilderwerk",
+              "kosten": 2625,
+              "reden": "Kozijnen buiten schilderen",
+              "kosten_basis": 2500
+            },
+            {
+              "naam": "Onvoorzien (10%)",
+              "kosten": 2896,
+              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)",
+              "kosten_basis": 2759
+            },
+            {
+              "naam": "Architect + leges (6%)",
+              "kosten": 1738,
+              "reden": "Ontwerp, vergunning, bouwbegeleiding",
+              "kosten_basis": 1655
+            }
+          ],
+          "totaal": 33603,
+          "per_m2": 386,
+          "onvoorzien_pct": 10,
+          "wijk_factor": 1.05,
+          "wijk_bron": "stad Den Haag"
+        },
+        "bouw_totaal": 33603,
+        "looptijd_maanden": 4,
+        "rente_pct": 8.0,
+        "financiering_basis": 399351,
+        "rente": 10649,
+        "totaal_kosten": 426802,
+        "verkoop_m2": 5696,
+        "verkoop_bron": "referentie_p50",
+        "referenties": [
+          {
+            "adres": "Zodiakplein 57",
+            "prijs": 625000,
+            "opp_m2": 85,
+            "prijs_per_m2": 7353,
+            "energie_label": "A+++",
+            "is_high_label": true,
+            "days_online": 11,
+            "is_fresh": true,
+            "postcode": "2516CD",
+            "neighbourhood": "Binckhorst",
+            "type": "apartment",
+            "url": "https://www.funda.nl/detail/koop/den-haag/appartement-zodiakplein-57/43332367/",
+            "broker": "RM WONEN NVM Makelaardij"
+          },
+          {
+            "adres": "Saturnusstraat 18",
+            "prijs": 650000,
+            "opp_m2": 101,
+            "prijs_per_m2": 6436,
+            "energie_label": "A++",
+            "is_high_label": true,
+            "days_online": 0,
+            "is_fresh": true,
+            "postcode": "2516AH",
+            "neighbourhood": "Binckhorst",
+            "type": "apartment",
+            "url": "https://www.funda.nl/detail/koop/den-haag/appartement-saturnusstraat-18-1906/44459809/",
+            "broker": "Makelaarsland"
+          },
+          {
+            "adres": "Binckhorstlaan 313",
+            "prijs": 435000,
+            "opp_m2": 72,
+            "prijs_per_m2": 6042,
+            "energie_label": "A",
+            "is_high_label": true,
+            "days_online": 76,
+            "is_fresh": true,
+            "postcode": "2516BC",
+            "neighbourhood": "Binckhorst",
+            "type": "apartment",
+            "url": "https://www.funda.nl/detail/koop/den-haag/appartement-binckhorstlaan-313-l/43352991/",
+            "broker": "Frisia Makelaars"
+          },
+          {
+            "adres": "Binckhorstlaan 311",
+            "prijs": 375000,
+            "opp_m2": 63,
+            "prijs_per_m2": 5952,
+            "energie_label": "A",
+            "is_high_label": true,
+            "days_online": 66,
+            "is_fresh": true,
+            "postcode": "2516BC",
+            "neighbourhood": "Binckhorst",
+            "type": "apartment",
+            "url": "https://www.funda.nl/detail/koop/den-haag/appartement-binckhorstlaan-311-t/43377283/",
+            "broker": "RM WONEN NVM Makelaardij"
+          },
+          {
+            "adres": "Binckhorstlaan 313",
+            "prijs": 440000,
+            "opp_m2": 74,
+            "prijs_per_m2": 5946,
+            "energie_label": "A",
+            "is_high_label": true,
+            "days_online": 17,
+            "is_fresh": true,
+            "postcode": "2516BC",
+            "neighbourhood": "Binckhorst",
+            "type": "apartment",
+            "url": "https://www.funda.nl/detail/koop/den-haag/appartement-binckhorstlaan-313-n/43337358/",
+            "broker": "Hypodomus Leiden"
+          }
+        ],
+        "bruto_verkoopprijs": 495552,
+        "makelaar_verkoop": 7433,
+        "notaris_verkoop": 2500,
+        "verkoop_kosten": 9933,
+        "netto_opbrengst": 485618,
+        "winst": 58816,
+        "marge_pct": 12.1,
+        "roi_pct": 13.8,
+        "bod_korting_pct": 10,
+        "bod": 315000,
+        "bod_totaal_investering": 387527,
+        "bod_winst": 98090,
+        "bod_marge_pct": 20.2,
+        "scenarios": {
+          "worst": {
+            "verkoop_m2": 4216,
+            "omzet": 366792,
+            "makelaar": 5501,
+            "notaris": 2500,
+            "netto": 358790,
+            "winst": -68012,
+            "marge_pct": -19.0,
+            "roi_pct": -15.9
+          },
+          "realistic": {
+            "verkoop_m2": 5696,
+            "omzet": 495552,
+            "makelaar": 7433,
+            "notaris": 2500,
+            "netto": 485618,
+            "winst": 58816,
+            "marge_pct": 12.1,
+            "roi_pct": 13.8
+          },
+          "best": {
+            "verkoop_m2": 5997,
+            "omzet": 521739,
+            "makelaar": 7826,
+            "notaris": 2500,
+            "netto": 511412,
+            "winst": 84610,
+            "marge_pct": 16.5,
+            "roi_pct": 19.8
+          }
+        },
+        "verkoop_referentie": {
+          "p25_pm2": 4216,
+          "p50_pm2": 5696,
+          "p75_pm2": 5997,
+          "n_refs": 11,
+          "n_high_label": 11,
+          "spread_pct": 31.3,
+          "avg_days_online": 22.5,
+          "match_niveau": "pc4_label_fresh",
+          "confidence": 77,
+          "confidence_label": "hoog",
+          "waarschuwingen": [],
+          "wijk": "Binckhorst"
+        },
+        "splitsen": {
+          "mag_splitsen": false,
+          "uitleg": "Splitsen NIET toegestaan in Den Haag op dit adres. wijk leefbaarometer score 6 (< 7 = niet splitsbaar)",
+          "vergunning": "splitsingsvergunning",
+          "min_opp_m2": 70,
+          "max_units": null,
+          "min_per_unit_m2": 35,
+          "opp_per_unit": 43.5,
+          "bijzonderheden": "Per 1-4-2026: splitsen alleen in wijken met Leefbaarometer-score >= goed (7+) EN parkeerdruk < 90%. Min 35 m² GBO per nieuwe unit. Geluidsisolatie-eisen (Bouwbesluit). Bibob-check mogelijk.",
+          "wijkcheck": {
+            "mag": false,
+            "wijkscore": 6,
+            "parkeerdruk_hoog": false,
+            "opp_per_unit": 43.5,
+            "redenen": [
+              "wijk leefbaarometer score 6 (< 7 = niet splitsbaar)"
+            ],
+            "regime": "den_haag_2026"
+          }
+        },
+        "opbouwen": {
+          "mag_opbouwen": null,
+          "uitleg": "Woningtype 'apartment' niet gevonden voor Den Haag. Bekende types: tussenwoning, hoekwoning, twee_onder_een_kap, vrijstaand, appartement.",
+          "max_hoogte_m": null,
+          "max_verdiepingen": null,
+          "dakopbouw_toegestaan": null,
+          "ruimte_over_m": null,
+          "bijzonderheden": "Dakopbouw vergunningvrij mits <= 4m diep aan achterkant, kruimelregeling mogelijk. In beschermde stadsgezichten (Statenkwartier, Archipelbuurt, Zeeheldenkwartier) extra welstandseisen."
+        },
+        "looptijd_detail": {
+          "totaal_maanden": 4,
+          "vergunning_maanden": 0,
+          "verbouw_maanden": 2.0,
+          "verkoop_maanden": 2.2,
+          "verkoop_bron": "wijk-data (22d online)",
+          "type": "cosmetisch"
+        },
+        "funda_prijs_per_m2": "€ 4.023",
+        "foto_urls": [
+          "https://cloud.funda.nl/valentina_media/228/925/695.jpg",
+          "https://cloud.funda.nl/valentina_media/228/925/700.jpg",
+          "https://cloud.funda.nl/valentina_media/228/925/697.jpg",
+          "https://cloud.funda.nl/valentina_media/228/925/698.jpg",
+          "https://cloud.funda.nl/valentina_media/228/925/690.jpg",
+          "https://cloud.funda.nl/valentina_media/228/925/693.jpg"
+        ],
+        "has_garden": false,
+        "has_balcony": false,
+        "has_roof_terrace": false,
+        "has_parking_on_site": false,
+        "has_solar_panels": true,
+        "has_heat_pump": false,
+        "is_monument": false,
+        "beschrijving_raw": "Royaal, uitgebouwd 3-kamer parterre appartement met een moderne keuken voorzien van kookeiland en inbouwapparatuur, luxe badkamer, eigen cv combiketel, oppervlakte woonkamer & keuken ca. 39m², zonnige woonkamer op het zuidwesten met lichtstraat en een patio met een ruime schuur van ca. 19m².\n\nHeerlijk centraal gelegen en royaal uitgevoerde 3-kamer parterre appartement met een moderne keukenopstelling voorzien van fraai kookeiland en volledige inbouwapparatuur (2022), een luxe badkamer (2022) met inloopdouche en een ligbad, 2 ruime slaapkamers van beide ca. 17m², een eigen Vaillant cv combiketel, een ruime leefruimte van ca. 39m² met sfeervolle cinewall & uitbouw met lichtstraat, 10 zonnepanelen en een zonnige patiotuin op het zuidwesten met een ruime schuur van ca. 19m².\n\nWoningomschrijving\n\nRuime entreehal van ca. 605x100 met praktische trapkast voorzien van vernieuwde groepenkast (2022) en toegang tot de voorgelegen slaapkamer van ca. 470x368, de luxe badkamer en de woonkamer. De plafondhoog betegelde badkamer (2022) is ingericht met een ligbad, inloopdouche, vrijhangend closet, wastafelmeubel, een designradiator en een siernis met inbouwverlichting.\n\nDe royale woonkamer van ca. 852x368 met sfeervolle cinewall, lichtstraat en schuifpui loopt vrijwel naadloos over in de open keuken met een moderne opstelling met apparatenwand en speels kookeiland. De cinewall is voorzien van een elektrische sierhaard en siernissen. De keuken is voorzien van de volgende inbouwapparatuur (2022): inductiekookplaat met downdraft, vaatwasmachine, kokend waterkraan, wijnkoeler, oven, combimagnetron en een koel-/vriescombinatie. De werkbladen zijn van marmeren. Er zit een aansluiting voor de wasmachine in de keuken, evenals de opstelplaats van de Vaillant cv combiketel. De achtergelegen slaapkamer van ca. 584x283 is bereikbaar vanuit de keuken. De vloer van de gang, de woonkamer, de keuken en de badkamer is voorzien van comfortabele vloerverwarming. Vloerafwerking visgraat laminaat in de ",
+        "beschrijving_parsed": {
+          "erfpacht": false
+        },
+        "erfpacht": false,
+        "validatie": {
+          "goedgekeurd": false,
+          "onze_pm2": 5696,
+          "bronnen": {
+            "funda_pm2": 4023
+          },
+          "gem_extern_pm2": 4023,
+          "afwijking_pct": 41.6,
+          "gecorrigeerde_pm2": 4224,
+          "reden": "Onze prijs 42% hoger dan extern (4023/m2). Gecorrigeerd naar 4224/m2"
+        },
+        "bag": {
+          "bouwjaar": 1915,
+          "oppervlakte": 83,
+          "gebruiksdoel": "woonfunctie",
+          "pandstatus": "Pand in gebruik",
+          "status": "Verblijfsobject in gebruik",
+          "wijk": "Wijk 38 Laakkwartier en Spoorwijk",
+          "buurt": "Noordpolderbuurt"
+        },
+        "cbs": {
+          "wijkcode": "GM0518",
+          "gemeente": "'s-Gravenhage",
+          "bevolkingsdichtheid": 6901,
+          "gem_woz_x1000": 383,
+          "pct_koop": 43,
+          "pct_huur": 57,
+          "pct_corp": 30,
+          "pct_meergezins": 79,
+          "nieuwbouw_woningen": null
+        },
+        "wijk_kwaliteit": 55,
+        "monument": {
+          "is_rijksmonument": false
+        },
+        "risks": {
+          "flags": [
+            {
+              "niveau": "oranje",
+              "label": "Splitsen verboden (wijk)",
+              "details": "wijk leefbaarometer score 6 (< 7 = niet splitsbaar)"
+            }
+          ],
+          "kansen": [],
+          "zwaarste": "oranje",
+          "aantal": 1
+        },
+        "dealscore": {
+          "score": 14,
+          "grade": "D",
+          "breakdown": [
+            {
+              "onderdeel": "Marge",
+              "punten": 0,
+              "uitleg": "-19.0% (worst-case P25) → 0/30"
+            },
+            {
+              "onderdeel": "Verkoop-confidence",
+              "punten": 11,
+              "uitleg": "hoog (77/100) — N=11 refs"
+            },
+            {
+              "onderdeel": "Kwaliteitsscore",
+              "punten": 3,
+              "uitleg": "3/10 (bouwjaar/label/eigen grond/etc)"
+            }
+          ]
+        },
+        "bod_advies": {
+          "vraagprijs": 350000,
+          "aggressief": {
+            "bod": 308000,
+            "korting_pct": 12.0,
+            "label": "Agressief"
+          },
+          "markt": {
+            "bod": 332500,
+            "korting_pct": 5.0,
+            "label": "Markt"
+          },
+          "plafond": {
+            "bod": 255409,
+            "tekst": "255,409",
+            "label": "Plafond (10% worst-marge)"
+          },
+          "korting_modifier": 0.0,
+          "argumenten": [],
+          "strategie": "Krappe deal — pas bij aggressief bod rendabel."
+        }
+      }
+    },
+    {
       "adres": "Menno ter Braaklaan 245",
       "stad": "Delft",
       "postcode": "2624TG",
@@ -3919,7 +4428,7 @@
         "n_refs": 4,
         "n_high_label": 4,
         "spread_pct": 35.9,
-        "avg_days_online": 25.2,
+        "avg_days_online": 26.5,
         "match_niveau": "pc4_label_fresh",
         "confidence": 53,
         "confidence_label": "middel",
@@ -4054,7 +4563,7 @@
             "prijs_per_m2": 6318,
             "energie_label": "A+++",
             "is_high_label": true,
-            "days_online": 22,
+            "days_online": 23,
             "is_fresh": true,
             "postcode": "2624MT",
             "neighbourhood": "Bedrijventerrein Voorhof",
@@ -4069,7 +4578,7 @@
             "prijs_per_m2": 5959,
             "energie_label": "A+",
             "is_high_label": true,
-            "days_online": 18,
+            "days_online": 20,
             "is_fresh": true,
             "postcode": "2624ME",
             "neighbourhood": "Poptahof-Zuid",
@@ -4084,7 +4593,7 @@
             "prijs_per_m2": 4278,
             "energie_label": "C",
             "is_high_label": true,
-            "days_online": 30,
+            "days_online": 31,
             "is_fresh": true,
             "postcode": "2624AL",
             "neighbourhood": "Mythologiebuurt",
@@ -4099,7 +4608,7 @@
             "prijs_per_m2": 4011,
             "energie_label": "C",
             "is_high_label": true,
-            "days_online": 31,
+            "days_online": 32,
             "is_fresh": true,
             "postcode": "2624AP",
             "neighbourhood": "Mythologiebuurt",
@@ -4160,7 +4669,7 @@
           "n_refs": 4,
           "n_high_label": 4,
           "spread_pct": 35.9,
-          "avg_days_online": 25.2,
+          "avg_days_online": 26.5,
           "match_niveau": "pc4_label_fresh",
           "confidence": 53,
           "confidence_label": "middel",
@@ -4194,8 +4703,8 @@
           "totaal_maanden": 8,
           "vergunning_maanden": 1,
           "verbouw_maanden": 4.2,
-          "verkoop_maanden": 2.3,
-          "verkoop_bron": "wijk-data (25d online)",
+          "verkoop_maanden": 2.4,
+          "verkoop_bron": "wijk-data (26d online)",
           "type": "medium"
         },
         "funda_prijs_per_m2": "€ 3.125",
