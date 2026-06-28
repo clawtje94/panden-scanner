@@ -1,10 +1,10 @@
 {
-  "scan_datum": "2026-06-27T09:42:26.404189",
-  "totaal_gescand": 1517,
-  "na_filter": 1485,
+  "scan_datum": "2026-06-28T10:18:36.896246",
+  "totaal_gescand": 1490,
+  "na_filter": 1458,
   "classificatie_audit": {
     "per_category": {
-      "wonen": 1485,
+      "wonen": 1458,
       "transformatie": 0,
       "verhuurd_wonen": 0,
       "skip": 7
@@ -15,7 +15,7 @@
       "onbekend type 'Beleggingspand' — niet op whitelist": 2,
       "onbekend type 'Ontwikkeling' — niet op whitelist": 1
     },
-    "totaal_voor_filter": 1492
+    "totaal_voor_filter": 1465
   },
   "kansen": [
     {
@@ -634,7 +634,7 @@
         "n_refs": 11,
         "n_high_label": 11,
         "spread_pct": 44.0,
-        "avg_days_online": 26.8,
+        "avg_days_online": 27.8,
         "match_niveau": "pc4_label_fresh",
         "confidence": 71,
         "confidence_label": "hoog",
@@ -782,7 +782,7 @@
             "prijs_per_m2": 7426,
             "energie_label": "A++",
             "is_high_label": true,
-            "days_online": 7,
+            "days_online": 8,
             "is_fresh": true,
             "postcode": "2516AH",
             "neighbourhood": "Binckhorst",
@@ -797,7 +797,7 @@
             "prijs_per_m2": 6594,
             "energie_label": "A++",
             "is_high_label": true,
-            "days_online": 16,
+            "days_online": 17,
             "is_fresh": true,
             "postcode": "2516AH",
             "neighbourhood": "Binckhorst",
@@ -812,7 +812,7 @@
             "prijs_per_m2": 6436,
             "energie_label": "A++",
             "is_high_label": true,
-            "days_online": 40,
+            "days_online": 41,
             "is_fresh": true,
             "postcode": "2516AH",
             "neighbourhood": "Binckhorst",
@@ -827,7 +827,7 @@
             "prijs_per_m2": 6064,
             "energie_label": "A",
             "is_high_label": true,
-            "days_online": 39,
+            "days_online": 40,
             "is_fresh": true,
             "postcode": "2516BC",
             "neighbourhood": "Binckhorst",
@@ -842,7 +842,7 @@
             "prijs_per_m2": 5946,
             "energie_label": "A",
             "is_high_label": true,
-            "days_online": 32,
+            "days_online": 33,
             "is_fresh": true,
             "postcode": "2516BC",
             "neighbourhood": "Binckhorst",
@@ -903,7 +903,7 @@
           "n_refs": 11,
           "n_high_label": 11,
           "spread_pct": 44.0,
-          "avg_days_online": 26.8,
+          "avg_days_online": 27.8,
           "match_niveau": "pc4_label_fresh",
           "confidence": 71,
           "confidence_label": "hoog",
@@ -946,7 +946,7 @@
           "vergunning_maanden": 3,
           "verbouw_maanden": 6.2,
           "verkoop_maanden": 2.4,
-          "verkoop_bron": "wijk-data (26d online)",
+          "verkoop_bron": "wijk-data (27d online)",
           "type": "zwaar"
         },
         "funda_prijs_per_m2": "€ 2.957",
