@@ -1,21 +1,18 @@
 {
-  "scan_datum": "2026-07-06T11:51:47.814250",
-  "totaal_gescand": 737,
-  "na_filter": 707,
+  "scan_datum": "2026-07-07T10:38:58.273127",
+  "totaal_gescand": 732,
+  "na_filter": 705,
   "classificatie_audit": {
     "per_category": {
-      "wonen": 707,
+      "wonen": 705,
       "transformatie": 0,
       "verhuurd_wonen": 0,
-      "skip": 7
+      "skip": 4
     },
     "top_skip_redenen": {
-      "type leeg en geen woon-hint — defensief skip": 4,
-      "verhuurd-keyword in type/adres/beschrijving": 2,
-      "onbekend type 'Beleggingspand' — niet op whitelist": 2,
-      "onbekend type 'Ontwikkeling' — niet op whitelist": 1
+      "type leeg en geen woon-hint — defensief skip": 4
     },
-    "totaal_voor_filter": 714
+    "totaal_voor_filter": 709
   },
   "kansen": [],
   "biedboek": [],
