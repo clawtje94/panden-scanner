@@ -1,10 +1,10 @@
 {
-  "scan_datum": "2026-07-07T10:38:58.273127",
-  "totaal_gescand": 732,
-  "na_filter": 705,
+  "scan_datum": "2026-07-08T09:40:43.365686",
+  "totaal_gescand": 669,
+  "na_filter": 642,
   "classificatie_audit": {
     "per_category": {
-      "wonen": 705,
+      "wonen": 642,
       "transformatie": 0,
       "verhuurd_wonen": 0,
       "skip": 4
@@ -12,7 +12,7 @@
     "top_skip_redenen": {
       "type leeg en geen woon-hint — defensief skip": 4
     },
-    "totaal_voor_filter": 709
+    "totaal_voor_filter": 646
   },
   "kansen": [],
   "biedboek": [],
