@@ -1,18 +1,21 @@
 {
-  "scan_datum": "2026-07-08T09:40:43.365686",
-  "totaal_gescand": 669,
-  "na_filter": 642,
+  "scan_datum": "2026-07-09T10:38:47.383355",
+  "totaal_gescand": 679,
+  "na_filter": 649,
   "classificatie_audit": {
     "per_category": {
-      "wonen": 642,
+      "wonen": 649,
       "transformatie": 0,
       "verhuurd_wonen": 0,
-      "skip": 4
+      "skip": 7
     },
     "top_skip_redenen": {
-      "type leeg en geen woon-hint — defensief skip": 4
+      "type leeg en geen woon-hint — defensief skip": 4,
+      "verhuurd-keyword in type/adres/beschrijving": 2,
+      "onbekend type 'Beleggingspand' — niet op whitelist": 2,
+      "onbekend type 'Ontwikkeling' — niet op whitelist": 1
     },
-    "totaal_voor_filter": 646
+    "totaal_voor_filter": 656
   },
   "kansen": [],
   "biedboek": [],
@@ -207,6 +210,118 @@
         "classificatie": {
           "category": "wonen",
           "subtype": "Portiekwoning (veiling)",
+          "is_verhuurd": false,
+          "redenen": [],
+          "risk_flags": []
+        }
+      }
+    },
+    {
+      "adres": "Lisleede 14",
+      "stad": "Barendrecht",
+      "postcode": "",
+      "prijs": 414000,
+      "opp_m2": 0,
+      "prijs_per_m2": 0.0,
+      "type_woning": "Woonhuis (veiling)",
+      "url": "https://www.openbareverkoop.nl/kavel/4444/lisleede-14-barendrecht",
+      "source": "veiling_openbareverkoop",
+      "bouwjaar": 0,
+      "foto_url": "https://www.openbareverkoop.nl/webcontent/images/10A2EE5174C8C4193514609AE4E79C09B7E75F17",
+      "calc": {
+        "inzet": 414000,
+        "afslag": 420000,
+        "veiling_datum": "13:30",
+        "veilingwijze": "Internet-only Timed",
+        "organisatie": "Openbare Verkoop",
+        "is_veiling": true,
+        "classificatie": {
+          "category": "wonen",
+          "subtype": "Woonhuis (veiling)",
+          "is_verhuurd": false,
+          "redenen": [],
+          "risk_flags": []
+        }
+      }
+    },
+    {
+      "adres": "Troelstraweg 175",
+      "stad": "Dordrecht",
+      "postcode": "",
+      "prijs": 181000,
+      "opp_m2": 0,
+      "prijs_per_m2": 0.0,
+      "type_woning": "Appartement (veiling)",
+      "url": "https://www.openbareverkoop.nl/kavel/4446/troelstraweg-175-dordrecht",
+      "source": "veiling_openbareverkoop",
+      "bouwjaar": 0,
+      "foto_url": "https://www.openbareverkoop.nl/webcontent/images/072E2180B1B7D1907BC1F7C44963995CF5E3564E",
+      "calc": {
+        "inzet": 181000,
+        "afslag": 181000,
+        "veiling_datum": "13:30",
+        "veilingwijze": "Internet-only Timed",
+        "organisatie": "Openbare Verkoop",
+        "is_veiling": true,
+        "classificatie": {
+          "category": "wonen",
+          "subtype": "Appartement (veiling)",
+          "is_verhuurd": false,
+          "redenen": [],
+          "risk_flags": []
+        }
+      }
+    },
+    {
+      "adres": "Middenbeemsterstraat 34",
+      "stad": "Tilburg",
+      "postcode": "",
+      "prijs": 366000,
+      "opp_m2": 0,
+      "prijs_per_m2": 0.0,
+      "type_woning": "Woonhuis (veiling)",
+      "url": "https://www.openbareverkoop.nl/kavel/4449/middenbeemsterstraat-34-tilburg",
+      "source": "veiling_openbareverkoop",
+      "bouwjaar": 0,
+      "foto_url": "https://www.openbareverkoop.nl/webcontent/images/1691DA4924693040ED5B51AE27803BE6499B9032",
+      "calc": {
+        "inzet": 366000,
+        "afslag": 368000,
+        "veiling_datum": "13:30",
+        "veilingwijze": "Internet-only Timed",
+        "organisatie": "Openbare Verkoop",
+        "is_veiling": true,
+        "classificatie": {
+          "category": "wonen",
+          "subtype": "Woonhuis (veiling)",
+          "is_verhuurd": false,
+          "redenen": [],
+          "risk_flags": []
+        }
+      }
+    },
+    {
+      "adres": "Helbeek 152",
+      "stad": "Venlo",
+      "postcode": "",
+      "prijs": 294000,
+      "opp_m2": 0,
+      "prijs_per_m2": 0.0,
+      "type_woning": "Woonhuis (veiling)",
+      "url": "https://www.openbareverkoop.nl/kavel/4447/helbeek-152-venlo",
+      "source": "veiling_openbareverkoop",
+      "bouwjaar": 0,
+      "foto_url": "https://www.openbareverkoop.nl/webcontent/images/3FC63125D25415394892E7AADCA869EF6FB7DDA9",
+      "calc": {
+        "inzet": 294000,
+        "afslag": 301000,
+        "veiling_datum": "13:30",
+        "veilingwijze": "Internet-only Timed",
+        "organisatie": "Openbare Verkoop",
+        "is_veiling": true,
+        "classificatie": {
+          "category": "wonen",
+          "subtype": "Woonhuis (veiling)",
           "is_verhuurd": false,
           "redenen": [],
           "risk_flags": []
