@@ -1,10 +1,10 @@
 {
-  "scan_datum": "2026-07-10T10:34:37.633730",
-  "totaal_gescand": 668,
-  "na_filter": 638,
+  "scan_datum": "2026-07-11T09:02:07.230063",
+  "totaal_gescand": 637,
+  "na_filter": 607,
   "classificatie_audit": {
     "per_category": {
-      "wonen": 638,
+      "wonen": 607,
       "transformatie": 0,
       "verhuurd_wonen": 0,
       "skip": 7
@@ -15,7 +15,7 @@
       "onbekend type 'Beleggingspand' — niet op whitelist": 2,
       "onbekend type 'Ontwikkeling' — niet op whitelist": 1
     },
-    "totaal_voor_filter": 645
+    "totaal_voor_filter": 614
   },
   "kansen": [],
   "biedboek": [],
