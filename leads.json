@@ -1,21 +1,18 @@
 {
-  "scan_datum": "2026-08-24T08:26:40.947418",
-  "totaal_gescand": 517,
-  "na_filter": 496,
+  "scan_datum": "2026-08-25T08:17:04.686841",
+  "totaal_gescand": 510,
+  "na_filter": 493,
   "classificatie_audit": {
     "per_category": {
-      "wonen": 496,
+      "wonen": 493,
       "transformatie": 0,
       "verhuurd_wonen": 0,
-      "skip": 4
+      "skip": 2
     },
     "top_skip_redenen": {
-      "type leeg en geen woon-hint — defensief skip": 2,
-      "verhuurd-keyword in type/adres/beschrijving": 1,
-      "onbekend type 'Beleggingspand' — niet op whitelist": 1,
-      "onbekend type 'Ontwikkeling' — niet op whitelist": 1
+      "type leeg en geen woon-hint — defensief skip": 2
     },
-    "totaal_voor_filter": 500
+    "totaal_voor_filter": 495
   },
   "kansen": [
     {
@@ -44,11 +41,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-08-24T08:07:26.819050",
-        "laatste_gezien": "2026-08-24T08:07:26.819050",
+        "eerste_gezien": "2026-08-25T07:56:38.332923",
+        "laatste_gezien": "2026-08-25T07:56:38.332923",
         "prijs_historie": [
           {
-            "ts": "2026-08-24T08:07:26.819050",
+            "ts": "2026-08-25T07:56:38.332923",
             "prijs": 300000
           }
         ],
@@ -65,9 +62,7 @@
       },
       "ep_online": {},
       "bag": {},
-      "monument": {
-        "is_rijksmonument": false
-      },
+      "monument": {},
       "erfpacht_detail": {},
       "risks": {
         "flags": [
@@ -394,11 +389,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-08-24T08:07:26.819050",
-          "laatste_gezien": "2026-08-24T08:07:26.819050",
+          "eerste_gezien": "2026-08-25T07:56:38.332923",
+          "laatste_gezien": "2026-08-25T07:56:38.332923",
           "prijs_historie": [
             {
-              "ts": "2026-08-24T08:07:26.819050",
+              "ts": "2026-08-25T07:56:38.332923",
               "prijs": 300000
             }
           ],
@@ -425,9 +420,6 @@
           "nieuwbouw_woningen": 2269
         },
         "wijk_kwaliteit": 45,
-        "monument": {
-          "is_rijksmonument": false
-        },
         "risks": {
           "flags": [
             {
@@ -515,11 +507,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-08-24T08:07:26.861030",
-        "laatste_gezien": "2026-08-24T08:07:26.861030",
+        "eerste_gezien": "2026-08-25T07:56:38.369376",
+        "laatste_gezien": "2026-08-25T07:56:38.369376",
         "prijs_historie": [
           {
-            "ts": "2026-08-24T08:07:26.861030",
+            "ts": "2026-08-25T07:56:38.369376",
             "prijs": 335000
           }
         ],
@@ -544,9 +536,7 @@
         "wijk": "Charlois",
         "buurt": "Carnisse"
       },
-      "monument": {
-        "is_rijksmonument": false
-      },
+      "monument": {},
       "erfpacht_detail": {},
       "risks": {
         "flags": [
@@ -873,11 +863,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-08-24T08:07:26.861030",
-          "laatste_gezien": "2026-08-24T08:07:26.861030",
+          "eerste_gezien": "2026-08-25T07:56:38.369376",
+          "laatste_gezien": "2026-08-25T07:56:38.369376",
           "prijs_historie": [
             {
-              "ts": "2026-08-24T08:07:26.861030",
+              "ts": "2026-08-25T07:56:38.369376",
               "prijs": 335000
             }
           ],
@@ -913,9 +903,6 @@
           "nieuwbouw_woningen": 2269
         },
         "wijk_kwaliteit": 45,
-        "monument": {
-          "is_rijksmonument": false
-        },
         "risks": {
           "flags": [
             {
@@ -1003,11 +990,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-08-24T08:07:26.877960",
-        "laatste_gezien": "2026-08-24T08:07:26.877960",
+        "eerste_gezien": "2026-08-25T07:56:38.383301",
+        "laatste_gezien": "2026-08-25T07:56:38.383301",
         "prijs_historie": [
           {
-            "ts": "2026-08-24T08:07:26.877960",
+            "ts": "2026-08-25T07:56:38.383301",
             "prijs": 325000
           }
         ],
@@ -1032,9 +1019,7 @@
         "wijk": "Feijenoord",
         "buurt": "Bloemhof"
       },
-      "monument": {
-        "is_rijksmonument": false
-      },
+      "monument": {},
       "erfpacht_detail": {},
       "risks": {
         "flags": [
@@ -1361,11 +1346,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-08-24T08:07:26.877960",
-          "laatste_gezien": "2026-08-24T08:07:26.877960",
+          "eerste_gezien": "2026-08-25T07:56:38.383301",
+          "laatste_gezien": "2026-08-25T07:56:38.383301",
           "prijs_historie": [
             {
-              "ts": "2026-08-24T08:07:26.877960",
+              "ts": "2026-08-25T07:56:38.383301",
               "prijs": 325000
             }
           ],
@@ -1401,9 +1386,6 @@
           "nieuwbouw_woningen": 2269
         },
         "wijk_kwaliteit": 45,
-        "monument": {
-          "is_rijksmonument": false
-        },
         "risks": {
           "flags": [
             {
@@ -1491,11 +1473,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-08-24T08:07:26.819870",
-        "laatste_gezien": "2026-08-24T08:07:26.819870",
+        "eerste_gezien": "2026-08-25T07:56:38.333734",
+        "laatste_gezien": "2026-08-25T07:56:38.333734",
         "prijs_historie": [
           {
-            "ts": "2026-08-24T08:07:26.819870",
+            "ts": "2026-08-25T07:56:38.333734",
             "prijs": 350000
           }
         ],
@@ -1512,9 +1494,7 @@
       },
       "ep_online": {},
       "bag": {},
-      "monument": {
-        "is_rijksmonument": false
-      },
+      "monument": {},
       "erfpacht_detail": {},
       "risks": {
         "flags": [
@@ -1841,11 +1821,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-08-24T08:07:26.819870",
-          "laatste_gezien": "2026-08-24T08:07:26.819870",
+          "eerste_gezien": "2026-08-25T07:56:38.333734",
+          "laatste_gezien": "2026-08-25T07:56:38.333734",
           "prijs_historie": [
             {
-              "ts": "2026-08-24T08:07:26.819870",
+              "ts": "2026-08-25T07:56:38.333734",
               "prijs": 350000
             }
           ],
@@ -1872,9 +1852,6 @@
           "nieuwbouw_woningen": 2269
         },
         "wijk_kwaliteit": 45,
-        "monument": {
-          "is_rijksmonument": false
-        },
         "risks": {
           "flags": [
             {
