@@ -1,10 +1,10 @@
 {
-  "scan_datum": "2026-08-28T19:51:05.623735",
-  "totaal_gescand": 515,
-  "na_filter": 493,
+  "scan_datum": "2026-08-29T13:28:23.202494",
+  "totaal_gescand": 547,
+  "na_filter": 525,
   "classificatie_audit": {
     "per_category": {
-      "wonen": 493,
+      "wonen": 525,
       "transformatie": 0,
       "verhuurd_wonen": 0,
       "skip": 4
@@ -15,7 +15,7 @@
       "onbekend type 'Beleggingspand' — niet op whitelist": 1,
       "onbekend type 'Ontwikkeling' — niet op whitelist": 1
     },
-    "totaal_voor_filter": 497
+    "totaal_voor_filter": 529
   },
   "kansen": [
     {
@@ -44,11 +44,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-08-28T19:29:37.680450",
-        "laatste_gezien": "2026-08-28T19:29:37.680450",
+        "eerste_gezien": "2026-08-29T13:12:04.059696",
+        "laatste_gezien": "2026-08-29T13:12:04.059696",
         "prijs_historie": [
           {
-            "ts": "2026-08-28T19:29:37.680450",
+            "ts": "2026-08-29T13:12:04.059696",
             "prijs": 300000
           }
         ],
@@ -394,11 +394,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-08-28T19:29:37.680450",
-          "laatste_gezien": "2026-08-28T19:29:37.680450",
+          "eerste_gezien": "2026-08-29T13:12:04.059696",
+          "laatste_gezien": "2026-08-29T13:12:04.059696",
           "prijs_historie": [
             {
-              "ts": "2026-08-28T19:29:37.680450",
+              "ts": "2026-08-29T13:12:04.059696",
               "prijs": 300000
             }
           ],
@@ -515,11 +515,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-08-28T19:29:37.722506",
-        "laatste_gezien": "2026-08-28T19:29:37.722506",
+        "eerste_gezien": "2026-08-29T13:12:04.102920",
+        "laatste_gezien": "2026-08-29T13:12:04.102920",
         "prijs_historie": [
           {
-            "ts": "2026-08-28T19:29:37.722506",
+            "ts": "2026-08-29T13:12:04.102920",
             "prijs": 335000
           }
         ],
@@ -873,11 +873,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-08-28T19:29:37.722506",
-          "laatste_gezien": "2026-08-28T19:29:37.722506",
+          "eerste_gezien": "2026-08-29T13:12:04.102920",
+          "laatste_gezien": "2026-08-29T13:12:04.102920",
           "prijs_historie": [
             {
-              "ts": "2026-08-28T19:29:37.722506",
+              "ts": "2026-08-29T13:12:04.102920",
               "prijs": 335000
             }
           ],
@@ -1003,11 +1003,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-08-28T19:29:37.736863",
-        "laatste_gezien": "2026-08-28T19:29:37.736863",
+        "eerste_gezien": "2026-08-29T13:12:04.120255",
+        "laatste_gezien": "2026-08-29T13:12:04.120255",
         "prijs_historie": [
           {
-            "ts": "2026-08-28T19:29:37.736863",
+            "ts": "2026-08-29T13:12:04.120255",
             "prijs": 325000
           }
         ],
@@ -1361,11 +1361,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-08-28T19:29:37.736863",
-          "laatste_gezien": "2026-08-28T19:29:37.736863",
+          "eerste_gezien": "2026-08-29T13:12:04.120255",
+          "laatste_gezien": "2026-08-29T13:12:04.120255",
           "prijs_historie": [
             {
-              "ts": "2026-08-28T19:29:37.736863",
+              "ts": "2026-08-29T13:12:04.120255",
               "prijs": 325000
             }
           ],
@@ -1491,11 +1491,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-08-28T19:29:37.681703",
-        "laatste_gezien": "2026-08-28T19:29:37.681703",
+        "eerste_gezien": "2026-08-29T13:12:04.060855",
+        "laatste_gezien": "2026-08-29T13:12:04.060855",
         "prijs_historie": [
           {
-            "ts": "2026-08-28T19:29:37.681703",
+            "ts": "2026-08-29T13:12:04.060855",
             "prijs": 350000
           }
         ],
@@ -1841,11 +1841,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-08-28T19:29:37.681703",
-          "laatste_gezien": "2026-08-28T19:29:37.681703",
+          "eerste_gezien": "2026-08-29T13:12:04.060855",
+          "laatste_gezien": "2026-08-29T13:12:04.060855",
           "prijs_historie": [
             {
-              "ts": "2026-08-28T19:29:37.681703",
+              "ts": "2026-08-29T13:12:04.060855",
               "prijs": 350000
             }
           ],
