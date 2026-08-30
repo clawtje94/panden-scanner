@@ -1,10 +1,10 @@
 {
-  "scan_datum": "2026-08-29T13:28:23.202494",
-  "totaal_gescand": 547,
-  "na_filter": 525,
+  "scan_datum": "2026-08-30T13:03:08.177662",
+  "totaal_gescand": 517,
+  "na_filter": 495,
   "classificatie_audit": {
     "per_category": {
-      "wonen": 525,
+      "wonen": 495,
       "transformatie": 0,
       "verhuurd_wonen": 0,
       "skip": 4
@@ -15,7 +15,7 @@
       "onbekend type 'Beleggingspand' — niet op whitelist": 1,
       "onbekend type 'Ontwikkeling' — niet op whitelist": 1
     },
-    "totaal_voor_filter": 529
+    "totaal_voor_filter": 499
   },
   "kansen": [
     {
@@ -44,11 +44,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-08-29T13:12:04.059696",
-        "laatste_gezien": "2026-08-29T13:12:04.059696",
+        "eerste_gezien": "2026-08-30T12:49:13.182592",
+        "laatste_gezien": "2026-08-30T12:49:13.182592",
         "prijs_historie": [
           {
-            "ts": "2026-08-29T13:12:04.059696",
+            "ts": "2026-08-30T12:49:13.182592",
             "prijs": 300000
           }
         ],
@@ -394,11 +394,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-08-29T13:12:04.059696",
-          "laatste_gezien": "2026-08-29T13:12:04.059696",
+          "eerste_gezien": "2026-08-30T12:49:13.182592",
+          "laatste_gezien": "2026-08-30T12:49:13.182592",
           "prijs_historie": [
             {
-              "ts": "2026-08-29T13:12:04.059696",
+              "ts": "2026-08-30T12:49:13.182592",
               "prijs": 300000
             }
           ],
@@ -515,11 +515,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-08-29T13:12:04.102920",
-        "laatste_gezien": "2026-08-29T13:12:04.102920",
+        "eerste_gezien": "2026-08-30T12:49:13.223659",
+        "laatste_gezien": "2026-08-30T12:49:13.223659",
         "prijs_historie": [
           {
-            "ts": "2026-08-29T13:12:04.102920",
+            "ts": "2026-08-30T12:49:13.223659",
             "prijs": 335000
           }
         ],
@@ -873,11 +873,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-08-29T13:12:04.102920",
-          "laatste_gezien": "2026-08-29T13:12:04.102920",
+          "eerste_gezien": "2026-08-30T12:49:13.223659",
+          "laatste_gezien": "2026-08-30T12:49:13.223659",
           "prijs_historie": [
             {
-              "ts": "2026-08-29T13:12:04.102920",
+              "ts": "2026-08-30T12:49:13.223659",
               "prijs": 335000
             }
           ],
@@ -1003,11 +1003,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-08-29T13:12:04.120255",
-        "laatste_gezien": "2026-08-29T13:12:04.120255",
+        "eerste_gezien": "2026-08-30T12:49:13.237954",
+        "laatste_gezien": "2026-08-30T12:49:13.237954",
         "prijs_historie": [
           {
-            "ts": "2026-08-29T13:12:04.120255",
+            "ts": "2026-08-30T12:49:13.237954",
             "prijs": 325000
           }
         ],
@@ -1023,18 +1023,8 @@
         "motivated": false
       },
       "ep_online": {},
-      "bag": {
-        "bouwjaar": 1902,
-        "oppervlakte": 121,
-        "gebruiksdoel": "woonfunctie",
-        "pandstatus": "Pand in gebruik",
-        "status": "Verblijfsobject in gebruik",
-        "wijk": "Feijenoord",
-        "buurt": "Bloemhof"
-      },
-      "monument": {
-        "is_rijksmonument": false
-      },
+      "bag": {},
+      "monument": {},
       "erfpacht_detail": {},
       "risks": {
         "flags": [
@@ -1361,11 +1351,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-08-29T13:12:04.120255",
-          "laatste_gezien": "2026-08-29T13:12:04.120255",
+          "eerste_gezien": "2026-08-30T12:49:13.237954",
+          "laatste_gezien": "2026-08-30T12:49:13.237954",
           "prijs_historie": [
             {
-              "ts": "2026-08-29T13:12:04.120255",
+              "ts": "2026-08-30T12:49:13.237954",
               "prijs": 325000
             }
           ],
@@ -1380,15 +1370,6 @@
           "motivated_score": 0,
           "motivated": false
         },
-        "bag": {
-          "bouwjaar": 1902,
-          "oppervlakte": 121,
-          "gebruiksdoel": "woonfunctie",
-          "pandstatus": "Pand in gebruik",
-          "status": "Verblijfsobject in gebruik",
-          "wijk": "Feijenoord",
-          "buurt": "Bloemhof"
-        },
         "cbs": {
           "wijkcode": "GM0599",
           "gemeente": "Rotterdam",
@@ -1401,9 +1382,6 @@
           "nieuwbouw_woningen": 2269
         },
         "wijk_kwaliteit": 45,
-        "monument": {
-          "is_rijksmonument": false
-        },
         "risks": {
           "flags": [
             {
@@ -1491,11 +1469,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-08-29T13:12:04.060855",
-        "laatste_gezien": "2026-08-29T13:12:04.060855",
+        "eerste_gezien": "2026-08-30T12:49:13.183651",
+        "laatste_gezien": "2026-08-30T12:49:13.183651",
         "prijs_historie": [
           {
-            "ts": "2026-08-29T13:12:04.060855",
+            "ts": "2026-08-30T12:49:13.183651",
             "prijs": 350000
           }
         ],
@@ -1512,9 +1490,7 @@
       },
       "ep_online": {},
       "bag": {},
-      "monument": {
-        "is_rijksmonument": false
-      },
+      "monument": {},
       "erfpacht_detail": {},
       "risks": {
         "flags": [
@@ -1841,11 +1817,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-08-29T13:12:04.060855",
-          "laatste_gezien": "2026-08-29T13:12:04.060855",
+          "eerste_gezien": "2026-08-30T12:49:13.183651",
+          "laatste_gezien": "2026-08-30T12:49:13.183651",
           "prijs_historie": [
             {
-              "ts": "2026-08-29T13:12:04.060855",
+              "ts": "2026-08-30T12:49:13.183651",
               "prijs": 350000
             }
           ],
@@ -1872,9 +1848,6 @@
           "nieuwbouw_woningen": 2269
         },
         "wijk_kwaliteit": 45,
-        "monument": {
-          "is_rijksmonument": false
-        },
         "risks": {
           "flags": [
             {
