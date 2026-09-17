@@ -1,18 +1,18 @@
 {
-  "scan_datum": "2026-09-16T13:03:31.194169",
-  "totaal_gescand": 591,
-  "na_filter": 572,
+  "scan_datum": "2026-09-17T12:50:55.648273",
+  "totaal_gescand": 594,
+  "na_filter": 573,
   "classificatie_audit": {
     "per_category": {
-      "wonen": 572,
+      "wonen": 573,
       "transformatie": 0,
       "verhuurd_wonen": 0,
-      "skip": 3
+      "skip": 4
     },
     "top_skip_redenen": {
-      "type leeg en geen woon-hint — defensief skip": 3
+      "type leeg en geen woon-hint — defensief skip": 4
     },
-    "totaal_voor_filter": 575
+    "totaal_voor_filter": 577
   },
   "kansen": [
     {
@@ -41,11 +41,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-09-16T12:39:09.780173",
-        "laatste_gezien": "2026-09-16T12:39:09.780173",
+        "eerste_gezien": "2026-09-17T12:37:02.280140",
+        "laatste_gezien": "2026-09-17T12:37:02.280140",
         "prijs_historie": [
           {
-            "ts": "2026-09-16T12:39:09.780173",
+            "ts": "2026-09-17T12:37:02.280140",
             "prijs": 300000
           }
         ],
@@ -391,11 +391,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-09-16T12:39:09.780173",
-          "laatste_gezien": "2026-09-16T12:39:09.780173",
+          "eerste_gezien": "2026-09-17T12:37:02.280140",
+          "laatste_gezien": "2026-09-17T12:37:02.280140",
           "prijs_historie": [
             {
-              "ts": "2026-09-16T12:39:09.780173",
+              "ts": "2026-09-17T12:37:02.280140",
               "prijs": 300000
             }
           ],
@@ -512,11 +512,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-09-16T12:39:10.260817",
-        "laatste_gezien": "2026-09-16T12:39:10.260817",
+        "eerste_gezien": "2026-09-17T12:37:02.319555",
+        "laatste_gezien": "2026-09-17T12:37:02.319555",
         "prijs_historie": [
           {
-            "ts": "2026-09-16T12:39:10.260817",
+            "ts": "2026-09-17T12:37:02.319555",
             "prijs": 335000
           }
         ],
@@ -870,11 +870,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-09-16T12:39:10.260817",
-          "laatste_gezien": "2026-09-16T12:39:10.260817",
+          "eerste_gezien": "2026-09-17T12:37:02.319555",
+          "laatste_gezien": "2026-09-17T12:37:02.319555",
           "prijs_historie": [
             {
-              "ts": "2026-09-16T12:39:10.260817",
+              "ts": "2026-09-17T12:37:02.319555",
               "prijs": 335000
             }
           ],
@@ -1000,11 +1000,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-09-16T12:39:10.273186",
-        "laatste_gezien": "2026-09-16T12:39:10.273186",
+        "eerste_gezien": "2026-09-17T12:37:02.345099",
+        "laatste_gezien": "2026-09-17T12:37:02.345099",
         "prijs_historie": [
           {
-            "ts": "2026-09-16T12:39:10.273186",
+            "ts": "2026-09-17T12:37:02.345099",
             "prijs": 325000
           }
         ],
@@ -1358,11 +1358,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-09-16T12:39:10.273186",
-          "laatste_gezien": "2026-09-16T12:39:10.273186",
+          "eerste_gezien": "2026-09-17T12:37:02.345099",
+          "laatste_gezien": "2026-09-17T12:37:02.345099",
           "prijs_historie": [
             {
-              "ts": "2026-09-16T12:39:10.273186",
+              "ts": "2026-09-17T12:37:02.345099",
               "prijs": 325000
             }
           ],
@@ -1463,450 +1463,6 @@
       }
     },
     {
-      "adres": "Toulonselaan 62",
-      "stad": "Dordrecht",
-      "postcode": "3312EV",
-      "wijk": "",
-      "prijs": 250000,
-      "opp_m2": 103,
-      "prijs_per_m2": 2427,
-      "type_woning": "",
-      "bouwjaar": 0,
-      "energie_label": "",
-      "kamers": 0,
-      "source": "mkl_waltmann",
-      "url": "https://www.waltmann.com/property/toulonselaan-62-dordrecht-1815",
-      "foto_url": "",
-      "foto_urls": [],
-      "strategie": "fix_flip",
-      "marge_pct": 21.6,
-      "winst_euro": 104762,
-      "roi_pct": 27.6,
-      "totale_kosten": 379721,
-      "verwachte_opbrengst": 484484,
-      "score": 6,
-      "is_opknapper": false,
-      "motion": {
-        "dagen_online": 0,
-        "eerste_gezien": "2026-09-16T12:39:10.731613",
-        "laatste_gezien": "2026-09-16T12:39:10.731613",
-        "prijs_historie": [
-          {
-            "ts": "2026-09-16T12:39:10.731613",
-            "prijs": 250000
-          }
-        ],
-        "eerste_prijs": 250000,
-        "huidige_prijs": 250000,
-        "prijsverlaging_euro": 0,
-        "prijsverlaging_pct": 0.0,
-        "aantal_prijsverlagingen": 0,
-        "makelaarswissel": false,
-        "makelaars_recent": [],
-        "onder_bod_terug": false,
-        "motivated_score": 0,
-        "motivated": false
-      },
-      "ep_online": {},
-      "bag": {
-        "bouwjaar": 1927,
-        "oppervlakte": 100,
-        "gebruiksdoel": "woonfunctie",
-        "pandstatus": "Pand in gebruik",
-        "status": "Verblijfsobject in gebruik",
-        "wijk": "Wijk 05 Het Reeland",
-        "buurt": "Transvaalstraat en omgeving"
-      },
-      "monument": {
-        "is_rijksmonument": false
-      },
-      "erfpacht_detail": {},
-      "risks": {
-        "flags": [],
-        "kansen": [],
-        "zwaarste": "geen",
-        "aantal": 0
-      },
-      "dealscore": {
-        "score": 8,
-        "grade": "D",
-        "breakdown": [
-          {
-            "onderdeel": "Marge",
-            "punten": 12,
-            "uitleg": "12.9% (worst-case P25) → 12/30"
-          },
-          {
-            "onderdeel": "Verkoop-confidence",
-            "punten": 0,
-            "uitleg": "onvoldoende (0/100) — N=0 refs"
-          },
-          {
-            "onderdeel": "Verkoop onbetrouwbaar",
-            "punten": -10,
-            "uitleg": "Geen/te weinig vergelijkbare panden"
-          },
-          {
-            "onderdeel": "Kwaliteitsscore",
-            "punten": 6,
-            "uitleg": "6/10 (bouwjaar/label/eigen grond/etc)"
-          }
-        ]
-      },
-      "scenarios": {
-        "worst": {
-          "verkoop_m2": 4320.0,
-          "omzet": 444960,
-          "makelaar": 6674,
-          "notaris": 2500,
-          "netto": 435785,
-          "winst": 56063,
-          "marge_pct": 12.9,
-          "roi_pct": 14.8
-        },
-        "realistic": {
-          "verkoop_m2": 4800,
-          "omzet": 494400,
-          "makelaar": 7416,
-          "notaris": 2500,
-          "netto": 484484,
-          "winst": 104762,
-          "marge_pct": 21.6,
-          "roi_pct": 27.6
-        },
-        "best": {
-          "verkoop_m2": 5280.0,
-          "omzet": 543840,
-          "makelaar": 8157,
-          "notaris": 2500,
-          "netto": 533182,
-          "winst": 153460,
-          "marge_pct": 28.8,
-          "roi_pct": 40.4
-        }
-      },
-      "verkoop_referentie": {
-        "p25_pm2": 0,
-        "p50_pm2": 0,
-        "p75_pm2": 0,
-        "n_refs": 0,
-        "n_high_label": 0,
-        "spread_pct": 0.0,
-        "avg_days_online": null,
-        "match_niveau": "geen",
-        "confidence": 0,
-        "confidence_label": "onvoldoende",
-        "waarschuwingen": [
-          "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
-        ],
-        "wijk": ""
-      },
-      "bod_advies": {
-        "vraagprijs": 250000,
-        "aggressief": {
-          "bod": 220000,
-          "korting_pct": 12.0,
-          "label": "Agressief"
-        },
-        "markt": {
-          "bod": 237500,
-          "korting_pct": 5.0,
-          "label": "Markt"
-        },
-        "plafond": {
-          "bod": 250000,
-          "tekst": "250,000",
-          "label": "Plafond (10% worst-marge)"
-        },
-        "korting_modifier": 0.0,
-        "argumenten": [],
-        "strategie": "Krappe deal — pas bij aggressief bod rendabel."
-      },
-      "calc": {
-        "vraagprijs": 250000,
-        "ovb_pct": 8.0,
-        "ovb": 20000,
-        "notaris_makelaar_aankoop": 3250,
-        "aankoop_totaal": 273250,
-        "renovatie_per_m2": 889,
-        "renovatie_detail": {
-          "componenten": [
-            {
-              "naam": "Keuken renovatie",
-              "kosten": 14000,
-              "reden": "Nieuwe fronten, apparatuur, blad, tegelwerk"
-            },
-            {
-              "naam": "Badkamer renovatie",
-              "kosten": 12000,
-              "reden": "Nieuwe tegels, sanitair, kranen"
-            },
-            {
-              "naam": "Toilet opknappen",
-              "kosten": 2500,
-              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties"
-            },
-            {
-              "naam": "Vloeren (70/m²)",
-              "kosten": 7210,
-              "reden": "Egaliseren + PVC click vloer leggen"
-            },
-            {
-              "naam": "Schilderwerk (35/m²)",
-              "kosten": 3605,
-              "reden": "Latex muren+plafonds + binnenkozijnen schilderen"
-            },
-            {
-              "naam": "Elektra upgraden",
-              "kosten": 3500,
-              "reden": "Groepenkast + extra groepen + stopcontacten"
-            },
-            {
-              "naam": "Leidingwerk aanpassen",
-              "kosten": 2000,
-              "reden": "Verouderd leidingwerk bijwerken"
-            },
-            {
-              "naam": "Isolatie (dak+vloer+spouw)",
-              "kosten": 7725,
-              "reden": "Label ?: dak 2832, vloer 3090, spouw 1802"
-            },
-            {
-              "naam": "Ramen HR++ (12x)",
-              "kosten": 18000,
-              "reden": "Enkel/dubbel glas naar HR++ incl nieuwe kozijnen"
-            },
-            {
-              "naam": "CV-ketel nieuw (HR-combi)",
-              "kosten": 2200,
-              "reden": "Nieuwe HR-combi ketel incl installatie"
-            },
-            {
-              "naam": "Radiatoren (6x)",
-              "kosten": 1080,
-              "reden": "Oude radiatoren vervangen (6 stuks)"
-            },
-            {
-              "naam": "Buitenschilderwerk",
-              "kosten": 2500,
-              "reden": "Kozijnen buiten schilderen"
-            },
-            {
-              "naam": "Onvoorzien (12%)",
-              "kosten": 9158,
-              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)"
-            },
-            {
-              "naam": "Architect + leges (8%)",
-              "kosten": 6105,
-              "reden": "Ontwerp, vergunning, bouwbegeleiding"
-            }
-          ],
-          "totaal": 91583,
-          "per_m2": 889,
-          "onvoorzien_pct": 12,
-          "wijk_factor": 1.0,
-          "wijk_bron": "stad Dordrecht"
-        },
-        "bouw_totaal": 91583,
-        "looptijd_maanden": 7,
-        "rente_pct": 8.0,
-        "financiering_basis": 319041,
-        "rente": 14888,
-        "totaal_kosten": 379721,
-        "verkoop_m2": 4800,
-        "verkoop_bron": "config",
-        "referenties": [],
-        "bruto_verkoopprijs": 494400,
-        "makelaar_verkoop": 7416,
-        "notaris_verkoop": 2500,
-        "verkoop_kosten": 9916,
-        "netto_opbrengst": 484484,
-        "winst": 104762,
-        "marge_pct": 21.6,
-        "roi_pct": 27.6,
-        "bod_korting_pct": 10,
-        "bod": 225000,
-        "bod_totaal_investering": 351121,
-        "bod_winst": 133362,
-        "bod_marge_pct": 27.5,
-        "scenarios": {
-          "worst": {
-            "verkoop_m2": 4320.0,
-            "omzet": 444960,
-            "makelaar": 6674,
-            "notaris": 2500,
-            "netto": 435785,
-            "winst": 56063,
-            "marge_pct": 12.9,
-            "roi_pct": 14.8
-          },
-          "realistic": {
-            "verkoop_m2": 4800,
-            "omzet": 494400,
-            "makelaar": 7416,
-            "notaris": 2500,
-            "netto": 484484,
-            "winst": 104762,
-            "marge_pct": 21.6,
-            "roi_pct": 27.6
-          },
-          "best": {
-            "verkoop_m2": 5280.0,
-            "omzet": 543840,
-            "makelaar": 8157,
-            "notaris": 2500,
-            "netto": 533182,
-            "winst": 153460,
-            "marge_pct": 28.8,
-            "roi_pct": 40.4
-          }
-        },
-        "verkoop_referentie": {
-          "p25_pm2": 0,
-          "p50_pm2": 0,
-          "p75_pm2": 0,
-          "n_refs": 0,
-          "n_high_label": 0,
-          "spread_pct": 0.0,
-          "avg_days_online": null,
-          "match_niveau": "geen",
-          "confidence": 0,
-          "confidence_label": "onvoldoende",
-          "waarschuwingen": [
-            "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
-          ],
-          "wijk": ""
-        },
-        "splitsen": {
-          "mag_splitsen": true,
-          "uitleg": "Splitsen is waarschijnlijk toegestaan in Dordrecht. Oppervlak (103m2) voldoet aan minimum (100m2). Per unit: 52m2 (min: 24m2). Vereist: splitsingsvergunning.",
-          "vergunning": "splitsingsvergunning",
-          "min_opp_m2": 100,
-          "max_units": 3,
-          "min_per_unit_m2": 24,
-          "opp_per_unit": 51.5,
-          "bijzonderheden": "Splitsingsvergunning vereist. Min 100m2 totaal, max 3 units. In eiland van Dordrecht: beschermd stadsgezicht.",
-          "wijkcheck": null
-        },
-        "opbouwen": {
-          "mag_opbouwen": null,
-          "uitleg": "Geen opbouwbeleid bekend voor Dordrecht. Check het bestemmingsplan op ruimtelijkeplannen.nl.",
-          "max_hoogte_m": null,
-          "max_verdiepingen": null,
-          "dakopbouw_toegestaan": null,
-          "ruimte_over_m": null,
-          "bijzonderheden": ""
-        },
-        "looptijd_detail": {
-          "totaal_maanden": 7,
-          "vergunning_maanden": 1,
-          "verbouw_maanden": 4.2,
-          "verkoop_maanden": 2,
-          "verkoop_bron": "landelijk gemiddelde",
-          "type": "medium"
-        },
-        "motion": {
-          "dagen_online": 0,
-          "eerste_gezien": "2026-09-16T12:39:10.731613",
-          "laatste_gezien": "2026-09-16T12:39:10.731613",
-          "prijs_historie": [
-            {
-              "ts": "2026-09-16T12:39:10.731613",
-              "prijs": 250000
-            }
-          ],
-          "eerste_prijs": 250000,
-          "huidige_prijs": 250000,
-          "prijsverlaging_euro": 0,
-          "prijsverlaging_pct": 0.0,
-          "aantal_prijsverlagingen": 0,
-          "makelaarswissel": false,
-          "makelaars_recent": [],
-          "onder_bod_terug": false,
-          "motivated_score": 0,
-          "motivated": false
-        },
-        "bag": {
-          "bouwjaar": 1927,
-          "oppervlakte": 100,
-          "gebruiksdoel": "woonfunctie",
-          "pandstatus": "Pand in gebruik",
-          "status": "Verblijfsobject in gebruik",
-          "wijk": "Wijk 05 Het Reeland",
-          "buurt": "Transvaalstraat en omgeving"
-        },
-        "cbs": {
-          "wijkcode": "GM0505",
-          "gemeente": "Dordrecht",
-          "bevolkingsdichtheid": 1583,
-          "gem_woz_x1000": 331,
-          "pct_koop": 58,
-          "pct_huur": 42,
-          "pct_corp": 28,
-          "pct_meergezins": 45,
-          "nieuwbouw_woningen": 525
-        },
-        "wijk_kwaliteit": 60,
-        "monument": {
-          "is_rijksmonument": false
-        },
-        "risks": {
-          "flags": [],
-          "kansen": [],
-          "zwaarste": "geen",
-          "aantal": 0
-        },
-        "dealscore": {
-          "score": 8,
-          "grade": "D",
-          "breakdown": [
-            {
-              "onderdeel": "Marge",
-              "punten": 12,
-              "uitleg": "12.9% (worst-case P25) → 12/30"
-            },
-            {
-              "onderdeel": "Verkoop-confidence",
-              "punten": 0,
-              "uitleg": "onvoldoende (0/100) — N=0 refs"
-            },
-            {
-              "onderdeel": "Verkoop onbetrouwbaar",
-              "punten": -10,
-              "uitleg": "Geen/te weinig vergelijkbare panden"
-            },
-            {
-              "onderdeel": "Kwaliteitsscore",
-              "punten": 6,
-              "uitleg": "6/10 (bouwjaar/label/eigen grond/etc)"
-            }
-          ]
-        },
-        "bod_advies": {
-          "vraagprijs": 250000,
-          "aggressief": {
-            "bod": 220000,
-            "korting_pct": 12.0,
-            "label": "Agressief"
-          },
-          "markt": {
-            "bod": 237500,
-            "korting_pct": 5.0,
-            "label": "Markt"
-          },
-          "plafond": {
-            "bod": 250000,
-            "tekst": "250,000",
-            "label": "Plafond (10% worst-marge)"
-          },
-          "korting_modifier": 0.0,
-          "argumenten": [],
-          "strategie": "Krappe deal — pas bij aggressief bod rendabel."
-        }
-      }
-    },
-    {
       "adres": "2e Carnissestraat 23",
       "stad": "Rotterdam",
       "postcode": "3083 JE",
@@ -1932,11 +1488,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-09-16T12:39:09.780981",
-        "laatste_gezien": "2026-09-16T12:39:09.780981",
+        "eerste_gezien": "2026-09-17T12:37:02.281140",
+        "laatste_gezien": "2026-09-17T12:37:02.281140",
         "prijs_historie": [
           {
-            "ts": "2026-09-16T12:39:09.780981",
+            "ts": "2026-09-17T12:37:02.281140",
             "prijs": 350000
           }
         ],
@@ -2282,11 +1838,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-09-16T12:39:09.780981",
-          "laatste_gezien": "2026-09-16T12:39:09.780981",
+          "eerste_gezien": "2026-09-17T12:37:02.281140",
+          "laatste_gezien": "2026-09-17T12:37:02.281140",
           "prijs_historie": [
             {
-              "ts": "2026-09-16T12:39:09.780981",
+              "ts": "2026-09-17T12:37:02.281140",
               "prijs": 350000
             }
           ],
