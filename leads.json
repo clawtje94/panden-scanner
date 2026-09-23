@@ -1,6 +1,6 @@
 {
-  "scan_datum": "2026-09-22T13:02:13.652596",
-  "totaal_gescand": 592,
+  "scan_datum": "2026-09-23T13:10:21.355664",
+  "totaal_gescand": 591,
   "na_filter": 571,
   "classificatie_audit": {
     "per_category": {
@@ -41,11 +41,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-09-22T12:37:10.503296",
-        "laatste_gezien": "2026-09-22T12:37:10.503296",
+        "eerste_gezien": "2026-09-23T12:48:57.586812",
+        "laatste_gezien": "2026-09-23T12:48:57.586812",
         "prijs_historie": [
           {
-            "ts": "2026-09-22T12:37:10.503296",
+            "ts": "2026-09-23T12:48:57.586812",
             "prijs": 300000
           }
         ],
@@ -391,11 +391,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-09-22T12:37:10.503296",
-          "laatste_gezien": "2026-09-22T12:37:10.503296",
+          "eerste_gezien": "2026-09-23T12:48:57.586812",
+          "laatste_gezien": "2026-09-23T12:48:57.586812",
           "prijs_historie": [
             {
-              "ts": "2026-09-22T12:37:10.503296",
+              "ts": "2026-09-23T12:48:57.586812",
               "prijs": 300000
             }
           ],
@@ -487,494 +487,6 @@
       }
     },
     {
-      "adres": "Ebenhaëzerstraat 47",
-      "stad": "Rotterdam",
-      "postcode": "3083 RE",
-      "wijk": "",
-      "prijs": 335000,
-      "opp_m2": 147,
-      "prijs_per_m2": 2279,
-      "type_woning": "",
-      "bouwjaar": 0,
-      "energie_label": "",
-      "kamers": 1,
-      "source": "mkl_ooms",
-      "url": "https://ooms.com/wonen/aanbod/ebenhaezerstraat-47-rotterdam-rm123391",
-      "foto_url": "",
-      "foto_urls": [],
-      "strategie": "fix_flip",
-      "marge_pct": 29.3,
-      "winst_euro": 202850,
-      "roi_pct": 41.4,
-      "totale_kosten": 489665,
-      "verwachte_opbrengst": 692516,
-      "score": 6,
-      "is_opknapper": false,
-      "motion": {
-        "dagen_online": 0,
-        "eerste_gezien": "2026-09-22T12:37:10.542900",
-        "laatste_gezien": "2026-09-22T12:37:10.542900",
-        "prijs_historie": [
-          {
-            "ts": "2026-09-22T12:37:10.542900",
-            "prijs": 335000
-          }
-        ],
-        "eerste_prijs": 335000,
-        "huidige_prijs": 335000,
-        "prijsverlaging_euro": 0,
-        "prijsverlaging_pct": 0.0,
-        "aantal_prijsverlagingen": 0,
-        "makelaarswissel": false,
-        "makelaars_recent": [],
-        "onder_bod_terug": false,
-        "motivated_score": 0,
-        "motivated": false
-      },
-      "ep_online": {},
-      "bag": {
-        "bouwjaar": 1907,
-        "oppervlakte": 155,
-        "gebruiksdoel": "woonfunctie",
-        "pandstatus": "Pand in gebruik",
-        "status": "Verblijfsobject in gebruik",
-        "wijk": "Charlois",
-        "buurt": "Carnisse"
-      },
-      "monument": {
-        "is_rijksmonument": false
-      },
-      "erfpacht_detail": {},
-      "risks": {
-        "flags": [
-          {
-            "niveau": "oranje",
-            "label": "Splitsen verboden (wijk)",
-            "details": "GBO per unit 74 m² < vereist 85 m² (NPRZ-kerngebied)"
-          }
-        ],
-        "kansen": [],
-        "zwaarste": "oranje",
-        "aantal": 1
-      },
-      "dealscore": {
-        "score": 17,
-        "grade": "D",
-        "breakdown": [
-          {
-            "onderdeel": "Marge",
-            "punten": 21,
-            "uitleg": "21.4% (worst-case P25) → 21/30"
-          },
-          {
-            "onderdeel": "Verkoop-confidence",
-            "punten": 0,
-            "uitleg": "onvoldoende (0/100) — N=0 refs"
-          },
-          {
-            "onderdeel": "Verkoop onbetrouwbaar",
-            "punten": -10,
-            "uitleg": "Geen/te weinig vergelijkbare panden"
-          },
-          {
-            "onderdeel": "Kwaliteitsscore",
-            "punten": 6,
-            "uitleg": "6/10 (bouwjaar/label/eigen grond/etc)"
-          }
-        ]
-      },
-      "scenarios": {
-        "worst": {
-          "verkoop_m2": 4320.0,
-          "omzet": 635040,
-          "makelaar": 9525,
-          "notaris": 2500,
-          "netto": 623014,
-          "winst": 133349,
-          "marge_pct": 21.4,
-          "roi_pct": 27.2
-        },
-        "realistic": {
-          "verkoop_m2": 4800,
-          "omzet": 705600,
-          "makelaar": 10584,
-          "notaris": 2500,
-          "netto": 692516,
-          "winst": 202850,
-          "marge_pct": 29.3,
-          "roi_pct": 41.4
-        },
-        "best": {
-          "verkoop_m2": 5280.0,
-          "omzet": 776160,
-          "makelaar": 11642,
-          "notaris": 2500,
-          "netto": 762017,
-          "winst": 272352,
-          "marge_pct": 35.7,
-          "roi_pct": 55.6
-        }
-      },
-      "verkoop_referentie": {
-        "p25_pm2": 0,
-        "p50_pm2": 0,
-        "p75_pm2": 0,
-        "n_refs": 0,
-        "n_high_label": 0,
-        "spread_pct": 0.0,
-        "avg_days_online": null,
-        "match_niveau": "geen",
-        "confidence": 0,
-        "confidence_label": "onvoldoende",
-        "waarschuwingen": [
-          "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
-        ],
-        "wijk": ""
-      },
-      "bod_advies": {
-        "vraagprijs": 335000,
-        "aggressief": {
-          "bod": 294800,
-          "korting_pct": 12.0,
-          "label": "Agressief"
-        },
-        "markt": {
-          "bod": 318250,
-          "korting_pct": 5.0,
-          "label": "Markt"
-        },
-        "plafond": {
-          "bod": 335000,
-          "tekst": "335,000",
-          "label": "Plafond (10% worst-marge)"
-        },
-        "korting_modifier": 0.0,
-        "argumenten": [],
-        "strategie": "Solide deal — markt-bod, niet te veel bieden."
-      },
-      "calc": {
-        "vraagprijs": 335000,
-        "ovb_pct": 8.0,
-        "ovb": 26800,
-        "notaris_makelaar_aankoop": 4355,
-        "aankoop_totaal": 366155,
-        "renovatie_per_m2": 689,
-        "renovatie_detail": {
-          "componenten": [
-            {
-              "naam": "Keuken renovatie",
-              "kosten": 12600,
-              "reden": "Nieuwe fronten, apparatuur, blad, tegelwerk",
-              "kosten_basis": 14000
-            },
-            {
-              "naam": "Badkamer renovatie",
-              "kosten": 10800,
-              "reden": "Nieuwe tegels, sanitair, kranen",
-              "kosten_basis": 12000
-            },
-            {
-              "naam": "Toilet opknappen",
-              "kosten": 2250,
-              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties",
-              "kosten_basis": 2500
-            },
-            {
-              "naam": "Vloeren (70/m²)",
-              "kosten": 9261,
-              "reden": "Egaliseren + PVC click vloer leggen",
-              "kosten_basis": 10290
-            },
-            {
-              "naam": "Schilderwerk (35/m²)",
-              "kosten": 4630,
-              "reden": "Latex muren+plafonds + binnenkozijnen schilderen",
-              "kosten_basis": 5145
-            },
-            {
-              "naam": "Elektra upgraden",
-              "kosten": 3150,
-              "reden": "Groepenkast + extra groepen + stopcontacten",
-              "kosten_basis": 3500
-            },
-            {
-              "naam": "Leidingwerk aanpassen",
-              "kosten": 1800,
-              "reden": "Verouderd leidingwerk bijwerken",
-              "kosten_basis": 2000
-            },
-            {
-              "naam": "Isolatie (dak+vloer+spouw)",
-              "kosten": 9922,
-              "reden": "Label ?: dak 4042, vloer 4410, spouw 2572",
-              "kosten_basis": 11025
-            },
-            {
-              "naam": "Ramen HR++ (18x)",
-              "kosten": 24300,
-              "reden": "Enkel/dubbel glas naar HR++ incl nieuwe kozijnen",
-              "kosten_basis": 27000
-            },
-            {
-              "naam": "CV-ketel nieuw (HR-combi)",
-              "kosten": 1980,
-              "reden": "Nieuwe HR-combi ketel incl installatie",
-              "kosten_basis": 2200
-            },
-            {
-              "naam": "Radiatoren (9x)",
-              "kosten": 1458,
-              "reden": "Oude radiatoren vervangen (9 stuks)",
-              "kosten_basis": 1620
-            },
-            {
-              "naam": "Buitenschilderwerk",
-              "kosten": 2250,
-              "reden": "Kozijnen buiten schilderen",
-              "kosten_basis": 2500
-            },
-            {
-              "naam": "Onvoorzien (12%)",
-              "kosten": 10128,
-              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)",
-              "kosten_basis": 11253
-            },
-            {
-              "naam": "Architect + leges (8%)",
-              "kosten": 6752,
-              "reden": "Ontwerp, vergunning, bouwbegeleiding",
-              "kosten_basis": 7502
-            }
-          ],
-          "totaal": 101281,
-          "per_m2": 689,
-          "onvoorzien_pct": 12,
-          "wijk_factor": 0.9,
-          "wijk_bron": "PC4 3083"
-        },
-        "bouw_totaal": 101281,
-        "looptijd_maanden": 8,
-        "rente_pct": 8.0,
-        "financiering_basis": 416795,
-        "rente": 22229,
-        "totaal_kosten": 489665,
-        "verkoop_m2": 4800,
-        "verkoop_bron": "config",
-        "referenties": [],
-        "bruto_verkoopprijs": 705600,
-        "makelaar_verkoop": 10584,
-        "notaris_verkoop": 2500,
-        "verkoop_kosten": 13084,
-        "netto_opbrengst": 692516,
-        "winst": 202850,
-        "marge_pct": 29.3,
-        "roi_pct": 41.4,
-        "bod_korting_pct": 10,
-        "bod": 301500,
-        "bod_totaal_investering": 451096,
-        "bod_winst": 241419,
-        "bod_marge_pct": 34.9,
-        "scenarios": {
-          "worst": {
-            "verkoop_m2": 4320.0,
-            "omzet": 635040,
-            "makelaar": 9525,
-            "notaris": 2500,
-            "netto": 623014,
-            "winst": 133349,
-            "marge_pct": 21.4,
-            "roi_pct": 27.2
-          },
-          "realistic": {
-            "verkoop_m2": 4800,
-            "omzet": 705600,
-            "makelaar": 10584,
-            "notaris": 2500,
-            "netto": 692516,
-            "winst": 202850,
-            "marge_pct": 29.3,
-            "roi_pct": 41.4
-          },
-          "best": {
-            "verkoop_m2": 5280.0,
-            "omzet": 776160,
-            "makelaar": 11642,
-            "notaris": 2500,
-            "netto": 762017,
-            "winst": 272352,
-            "marge_pct": 35.7,
-            "roi_pct": 55.6
-          }
-        },
-        "verkoop_referentie": {
-          "p25_pm2": 0,
-          "p50_pm2": 0,
-          "p75_pm2": 0,
-          "n_refs": 0,
-          "n_high_label": 0,
-          "spread_pct": 0.0,
-          "avg_days_online": null,
-          "match_niveau": "geen",
-          "confidence": 0,
-          "confidence_label": "onvoldoende",
-          "waarschuwingen": [
-            "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
-          ],
-          "wijk": ""
-        },
-        "splitsen": {
-          "mag_splitsen": false,
-          "uitleg": "Splitsen NIET toegestaan in Rotterdam op dit adres. GBO per unit 74 m² < vereist 85 m² (NPRZ-kerngebied)",
-          "vergunning": "woningvormingsvergunning",
-          "min_opp_m2": 100,
-          "max_units": 3,
-          "min_per_unit_m2": 50,
-          "opp_per_unit": 73.5,
-          "bijzonderheden": "Per 1-7-2025: standaard 50 m² per unit. In NPRZ-kerngebieden (delen Feijenoord 3071-3075 en Charlois 3081-3083) geldt 85 m². Woningvormings- + splitsingsvergunning vereist (ca. EUR 1.350).",
-          "wijkcheck": {
-            "mag": false,
-            "min_per_unit_m2": 85,
-            "is_nprz": true,
-            "opp_per_unit": 73.5,
-            "redenen": [
-              "GBO per unit 74 m² < vereist 85 m² (NPRZ-kerngebied)"
-            ],
-            "regime": "rotterdam_2025"
-          }
-        },
-        "opbouwen": {
-          "mag_opbouwen": null,
-          "uitleg": "Woningtype '' niet gevonden voor Rotterdam. Bekende types: tussenwoning, hoekwoning, twee_onder_een_kap, vrijstaand, appartement.",
-          "max_hoogte_m": null,
-          "max_verdiepingen": null,
-          "dakopbouw_toegestaan": null,
-          "ruimte_over_m": null,
-          "bijzonderheden": "Rotterdam is relatief soepel met opbouwen. Dakopbouw vergunningvrij onder voorwaarden. Welstandsnota Rotterdam: gebiedsafhankelijk."
-        },
-        "looptijd_detail": {
-          "totaal_maanden": 8,
-          "vergunning_maanden": 1,
-          "verbouw_maanden": 4.7,
-          "verkoop_maanden": 2,
-          "verkoop_bron": "landelijk gemiddelde",
-          "type": "medium"
-        },
-        "validatie": {
-          "goedgekeurd": true,
-          "onze_pm2": 4800,
-          "bronnen": {},
-          "gem_extern_pm2": 0,
-          "afwijking_pct": 0,
-          "gecorrigeerde_pm2": 4800,
-          "reden": "Geen externe bronnen beschikbaar"
-        },
-        "motion": {
-          "dagen_online": 0,
-          "eerste_gezien": "2026-09-22T12:37:10.542900",
-          "laatste_gezien": "2026-09-22T12:37:10.542900",
-          "prijs_historie": [
-            {
-              "ts": "2026-09-22T12:37:10.542900",
-              "prijs": 335000
-            }
-          ],
-          "eerste_prijs": 335000,
-          "huidige_prijs": 335000,
-          "prijsverlaging_euro": 0,
-          "prijsverlaging_pct": 0.0,
-          "aantal_prijsverlagingen": 0,
-          "makelaarswissel": false,
-          "makelaars_recent": [],
-          "onder_bod_terug": false,
-          "motivated_score": 0,
-          "motivated": false
-        },
-        "bag": {
-          "bouwjaar": 1907,
-          "oppervlakte": 155,
-          "gebruiksdoel": "woonfunctie",
-          "pandstatus": "Pand in gebruik",
-          "status": "Verblijfsobject in gebruik",
-          "wijk": "Charlois",
-          "buurt": "Carnisse"
-        },
-        "cbs": {
-          "wijkcode": "GM0599",
-          "gemeente": "Rotterdam",
-          "bevolkingsdichtheid": 3081,
-          "gem_woz_x1000": 342,
-          "pct_koop": 35,
-          "pct_huur": 65,
-          "pct_corp": 43,
-          "pct_meergezins": 75,
-          "nieuwbouw_woningen": 2269
-        },
-        "wijk_kwaliteit": 45,
-        "monument": {
-          "is_rijksmonument": false
-        },
-        "risks": {
-          "flags": [
-            {
-              "niveau": "oranje",
-              "label": "Splitsen verboden (wijk)",
-              "details": "GBO per unit 74 m² < vereist 85 m² (NPRZ-kerngebied)"
-            }
-          ],
-          "kansen": [],
-          "zwaarste": "oranje",
-          "aantal": 1
-        },
-        "dealscore": {
-          "score": 17,
-          "grade": "D",
-          "breakdown": [
-            {
-              "onderdeel": "Marge",
-              "punten": 21,
-              "uitleg": "21.4% (worst-case P25) → 21/30"
-            },
-            {
-              "onderdeel": "Verkoop-confidence",
-              "punten": 0,
-              "uitleg": "onvoldoende (0/100) — N=0 refs"
-            },
-            {
-              "onderdeel": "Verkoop onbetrouwbaar",
-              "punten": -10,
-              "uitleg": "Geen/te weinig vergelijkbare panden"
-            },
-            {
-              "onderdeel": "Kwaliteitsscore",
-              "punten": 6,
-              "uitleg": "6/10 (bouwjaar/label/eigen grond/etc)"
-            }
-          ]
-        },
-        "bod_advies": {
-          "vraagprijs": 335000,
-          "aggressief": {
-            "bod": 294800,
-            "korting_pct": 12.0,
-            "label": "Agressief"
-          },
-          "markt": {
-            "bod": 318250,
-            "korting_pct": 5.0,
-            "label": "Markt"
-          },
-          "plafond": {
-            "bod": 335000,
-            "tekst": "335,000",
-            "label": "Plafond (10% worst-marge)"
-          },
-          "korting_modifier": 0.0,
-          "argumenten": [],
-          "strategie": "Solide deal — markt-bod, niet te veel bieden."
-        }
-      }
-    },
-    {
       "adres": "Zwederstraat 48 A",
       "stad": "Rotterdam",
       "postcode": "3073 ZT",
@@ -1000,11 +512,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-09-22T12:37:10.557032",
-        "laatste_gezien": "2026-09-22T12:37:10.557032",
+        "eerste_gezien": "2026-09-23T12:48:57.642987",
+        "laatste_gezien": "2026-09-23T12:48:57.642987",
         "prijs_historie": [
           {
-            "ts": "2026-09-22T12:37:10.557032",
+            "ts": "2026-09-23T12:48:57.642987",
             "prijs": 325000
           }
         ],
@@ -1358,11 +870,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-09-22T12:37:10.557032",
-          "laatste_gezien": "2026-09-22T12:37:10.557032",
+          "eerste_gezien": "2026-09-23T12:48:57.642987",
+          "laatste_gezien": "2026-09-23T12:48:57.642987",
           "prijs_historie": [
             {
-              "ts": "2026-09-22T12:37:10.557032",
+              "ts": "2026-09-23T12:48:57.642987",
               "prijs": 325000
             }
           ],
@@ -1488,11 +1000,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-09-22T12:37:10.504243",
-        "laatste_gezien": "2026-09-22T12:37:10.504243",
+        "eerste_gezien": "2026-09-23T12:48:57.587875",
+        "laatste_gezien": "2026-09-23T12:48:57.587875",
         "prijs_historie": [
           {
-            "ts": "2026-09-22T12:37:10.504243",
+            "ts": "2026-09-23T12:48:57.587875",
             "prijs": 350000
           }
         ],
@@ -1838,11 +1350,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-09-22T12:37:10.504243",
-          "laatste_gezien": "2026-09-22T12:37:10.504243",
+          "eerste_gezien": "2026-09-23T12:48:57.587875",
+          "laatste_gezien": "2026-09-23T12:48:57.587875",
           "prijs_historie": [
             {
-              "ts": "2026-09-22T12:37:10.504243",
+              "ts": "2026-09-23T12:48:57.587875",
               "prijs": 350000
             }
           ],
