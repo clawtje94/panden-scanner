@@ -1,18 +1,18 @@
 {
-  "scan_datum": "2026-09-23T13:10:21.355664",
-  "totaal_gescand": 591,
-  "na_filter": 571,
+  "scan_datum": "2026-09-24T13:11:57.530854",
+  "totaal_gescand": 588,
+  "na_filter": 573,
   "classificatie_audit": {
     "per_category": {
-      "wonen": 571,
+      "wonen": 573,
       "transformatie": 0,
       "verhuurd_wonen": 0,
-      "skip": 4
+      "skip": 3
     },
     "top_skip_redenen": {
-      "type leeg en geen woon-hint — defensief skip": 4
+      "type leeg en geen woon-hint — defensief skip": 3
     },
-    "totaal_voor_filter": 575
+    "totaal_voor_filter": 576
   },
   "kansen": [
     {
@@ -41,11 +41,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-09-23T12:48:57.586812",
-        "laatste_gezien": "2026-09-23T12:48:57.586812",
+        "eerste_gezien": "2026-09-24T12:45:18.111014",
+        "laatste_gezien": "2026-09-24T12:45:18.111014",
         "prijs_historie": [
           {
-            "ts": "2026-09-23T12:48:57.586812",
+            "ts": "2026-09-24T12:45:18.111014",
             "prijs": 300000
           }
         ],
@@ -391,11 +391,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-09-23T12:48:57.586812",
-          "laatste_gezien": "2026-09-23T12:48:57.586812",
+          "eerste_gezien": "2026-09-24T12:45:18.111014",
+          "laatste_gezien": "2026-09-24T12:45:18.111014",
           "prijs_historie": [
             {
-              "ts": "2026-09-23T12:48:57.586812",
+              "ts": "2026-09-24T12:45:18.111014",
               "prijs": 300000
             }
           ],
@@ -512,11 +512,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-09-23T12:48:57.642987",
-        "laatste_gezien": "2026-09-23T12:48:57.642987",
+        "eerste_gezien": "2026-09-24T12:45:18.145708",
+        "laatste_gezien": "2026-09-24T12:45:18.145708",
         "prijs_historie": [
           {
-            "ts": "2026-09-23T12:48:57.642987",
+            "ts": "2026-09-24T12:45:18.145708",
             "prijs": 325000
           }
         ],
@@ -870,11 +870,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-09-23T12:48:57.642987",
-          "laatste_gezien": "2026-09-23T12:48:57.642987",
+          "eerste_gezien": "2026-09-24T12:45:18.145708",
+          "laatste_gezien": "2026-09-24T12:45:18.145708",
           "prijs_historie": [
             {
-              "ts": "2026-09-23T12:48:57.642987",
+              "ts": "2026-09-24T12:45:18.145708",
               "prijs": 325000
             }
           ],
@@ -1000,11 +1000,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-09-23T12:48:57.587875",
-        "laatste_gezien": "2026-09-23T12:48:57.587875",
+        "eerste_gezien": "2026-09-24T12:45:18.111688",
+        "laatste_gezien": "2026-09-24T12:45:18.111688",
         "prijs_historie": [
           {
-            "ts": "2026-09-23T12:48:57.587875",
+            "ts": "2026-09-24T12:45:18.111688",
             "prijs": 350000
           }
         ],
@@ -1350,11 +1350,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-09-23T12:48:57.587875",
-          "laatste_gezien": "2026-09-23T12:48:57.587875",
+          "eerste_gezien": "2026-09-24T12:45:18.111688",
+          "laatste_gezien": "2026-09-24T12:45:18.111688",
           "prijs_historie": [
             {
-              "ts": "2026-09-23T12:48:57.587875",
+              "ts": "2026-09-24T12:45:18.111688",
               "prijs": 350000
             }
           ],
@@ -1668,6 +1668,62 @@
         "classificatie": {
           "category": "wonen",
           "subtype": "Portiekwoning (veiling)",
+          "is_verhuurd": false,
+          "redenen": [],
+          "risk_flags": []
+        }
+      }
+    },
+    {
+      "adres": "Piet Heinstraat 32",
+      "stad": "Oud Beijerland",
+      "postcode": "",
+      "prijs": 282000,
+      "opp_m2": 0,
+      "prijs_per_m2": 0.0,
+      "type_woning": "Woonhuis (veiling)",
+      "url": "https://www.openbareverkoop.nl/kavel/4480/piet-heinstraat-32-oud-beijerland",
+      "source": "veiling_openbareverkoop",
+      "bouwjaar": 0,
+      "foto_url": "https://www.openbareverkoop.nl/webcontent/images/F9E41B2F24EE8E835D01BC6193DD679FD0CCECE6",
+      "calc": {
+        "inzet": 282000,
+        "afslag": 284000,
+        "veiling_datum": "13:30",
+        "veilingwijze": "Internet-only Timed",
+        "organisatie": "Openbare Verkoop",
+        "is_veiling": true,
+        "classificatie": {
+          "category": "wonen",
+          "subtype": "Woonhuis (veiling)",
+          "is_verhuurd": false,
+          "redenen": [],
+          "risk_flags": []
+        }
+      }
+    },
+    {
+      "adres": "Prins Mauritsstraat 29",
+      "stad": "Schiedam",
+      "postcode": "",
+      "prijs": 230000,
+      "opp_m2": 0,
+      "prijs_per_m2": 0.0,
+      "type_woning": "Appartement (veiling)",
+      "url": "https://www.openbareverkoop.nl/kavel/4472/prins-mauritsstraat-29-schiedam",
+      "source": "veiling_openbareverkoop",
+      "bouwjaar": 0,
+      "foto_url": "https://www.openbareverkoop.nl/webcontent/images/E8FACCDC895116C00DB8F95232C49DFAC49D58B2",
+      "calc": {
+        "inzet": 230000,
+        "afslag": 231000,
+        "veiling_datum": "13:30",
+        "veilingwijze": "Internet-only Timed",
+        "organisatie": "Openbare Verkoop",
+        "is_veiling": true,
+        "classificatie": {
+          "category": "wonen",
+          "subtype": "Appartement (veiling)",
           "is_verhuurd": false,
           "redenen": [],
           "risk_flags": []
