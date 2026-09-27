@@ -1,10 +1,10 @@
 {
-  "scan_datum": "2026-09-26T12:38:57.671900",
-  "totaal_gescand": 595,
-  "na_filter": 578,
+  "scan_datum": "2026-09-27T13:24:06.522839",
+  "totaal_gescand": 594,
+  "na_filter": 577,
   "classificatie_audit": {
     "per_category": {
-      "wonen": 578,
+      "wonen": 577,
       "transformatie": 0,
       "verhuurd_wonen": 0,
       "skip": 3
@@ -12,7 +12,7 @@
     "top_skip_redenen": {
       "type leeg en geen woon-hint — defensief skip": 3
     },
-    "totaal_voor_filter": 581
+    "totaal_voor_filter": 580
   },
   "kansen": [
     {
@@ -41,11 +41,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-09-26T12:15:11.849462",
-        "laatste_gezien": "2026-09-26T12:15:11.849462",
+        "eerste_gezien": "2026-09-27T13:01:52.297043",
+        "laatste_gezien": "2026-09-27T13:01:52.297043",
         "prijs_historie": [
           {
-            "ts": "2026-09-26T12:15:11.849462",
+            "ts": "2026-09-27T13:01:52.297043",
             "prijs": 300000
           }
         ],
@@ -391,11 +391,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-09-26T12:15:11.849462",
-          "laatste_gezien": "2026-09-26T12:15:11.849462",
+          "eerste_gezien": "2026-09-27T13:01:52.297043",
+          "laatste_gezien": "2026-09-27T13:01:52.297043",
           "prijs_historie": [
             {
-              "ts": "2026-09-26T12:15:11.849462",
+              "ts": "2026-09-27T13:01:52.297043",
               "prijs": 300000
             }
           ],
@@ -410,18 +410,6 @@
           "motivated_score": 0,
           "motivated": false
         },
-        "cbs": {
-          "wijkcode": "GM0599",
-          "gemeente": "Rotterdam",
-          "bevolkingsdichtheid": 3081,
-          "gem_woz_x1000": 342,
-          "pct_koop": 35,
-          "pct_huur": 65,
-          "pct_corp": 43,
-          "pct_meergezins": 75,
-          "nieuwbouw_woningen": 2269
-        },
-        "wijk_kwaliteit": 45,
         "monument": {
           "is_rijksmonument": false
         },
@@ -512,11 +500,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-09-26T12:15:12.309541",
-        "laatste_gezien": "2026-09-26T12:15:12.309541",
+        "eerste_gezien": "2026-09-27T13:01:52.349431",
+        "laatste_gezien": "2026-09-27T13:01:52.349431",
         "prijs_historie": [
           {
-            "ts": "2026-09-26T12:15:12.309541",
+            "ts": "2026-09-27T13:01:52.349431",
             "prijs": 325000
           }
         ],
@@ -870,11 +858,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-09-26T12:15:12.309541",
-          "laatste_gezien": "2026-09-26T12:15:12.309541",
+          "eerste_gezien": "2026-09-27T13:01:52.349431",
+          "laatste_gezien": "2026-09-27T13:01:52.349431",
           "prijs_historie": [
             {
-              "ts": "2026-09-26T12:15:12.309541",
+              "ts": "2026-09-27T13:01:52.349431",
               "prijs": 325000
             }
           ],
@@ -898,18 +886,6 @@
           "wijk": "Feijenoord",
           "buurt": "Bloemhof"
         },
-        "cbs": {
-          "wijkcode": "GM0599",
-          "gemeente": "Rotterdam",
-          "bevolkingsdichtheid": 3081,
-          "gem_woz_x1000": 342,
-          "pct_koop": 35,
-          "pct_huur": 65,
-          "pct_corp": 43,
-          "pct_meergezins": 75,
-          "nieuwbouw_woningen": 2269
-        },
-        "wijk_kwaliteit": 45,
         "monument": {
           "is_rijksmonument": false
         },
@@ -1000,11 +976,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-09-26T12:15:11.850281",
-        "laatste_gezien": "2026-09-26T12:15:11.850281",
+        "eerste_gezien": "2026-09-27T13:01:52.298031",
+        "laatste_gezien": "2026-09-27T13:01:52.298031",
         "prijs_historie": [
           {
-            "ts": "2026-09-26T12:15:11.850281",
+            "ts": "2026-09-27T13:01:52.298031",
             "prijs": 350000
           }
         ],
@@ -1350,11 +1326,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-09-26T12:15:11.850281",
-          "laatste_gezien": "2026-09-26T12:15:11.850281",
+          "eerste_gezien": "2026-09-27T13:01:52.298031",
+          "laatste_gezien": "2026-09-27T13:01:52.298031",
           "prijs_historie": [
             {
-              "ts": "2026-09-26T12:15:11.850281",
+              "ts": "2026-09-27T13:01:52.298031",
               "prijs": 350000
             }
           ],
@@ -1369,18 +1345,6 @@
           "motivated_score": 0,
           "motivated": false
         },
-        "cbs": {
-          "wijkcode": "GM0599",
-          "gemeente": "Rotterdam",
-          "bevolkingsdichtheid": 3081,
-          "gem_woz_x1000": 342,
-          "pct_koop": 35,
-          "pct_huur": 65,
-          "pct_corp": 43,
-          "pct_meergezins": 75,
-          "nieuwbouw_woningen": 2269
-        },
-        "wijk_kwaliteit": 45,
         "monument": {
           "is_rijksmonument": false
         },
