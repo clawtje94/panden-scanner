@@ -1,10 +1,10 @@
 {
-  "scan_datum": "2026-09-30T14:03:24.877118",
-  "totaal_gescand": 597,
-  "na_filter": 578,
+  "scan_datum": "2026-10-01T14:45:28.681256",
+  "totaal_gescand": 600,
+  "na_filter": 580,
   "classificatie_audit": {
     "per_category": {
-      "wonen": 578,
+      "wonen": 580,
       "transformatie": 0,
       "verhuurd_wonen": 0,
       "skip": 3
@@ -12,7 +12,7 @@
     "top_skip_redenen": {
       "type leeg en geen woon-hint — defensief skip": 3
     },
-    "totaal_voor_filter": 581
+    "totaal_voor_filter": 583
   },
   "kansen": [
     {
@@ -41,11 +41,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-09-30T13:39:00.161230",
-        "laatste_gezien": "2026-09-30T13:39:00.161230",
+        "eerste_gezien": "2026-10-01T14:29:33.932008",
+        "laatste_gezien": "2026-10-01T14:29:33.932008",
         "prijs_historie": [
           {
-            "ts": "2026-09-30T13:39:00.161230",
+            "ts": "2026-10-01T14:29:33.932008",
             "prijs": 300000
           }
         ],
@@ -391,11 +391,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-09-30T13:39:00.161230",
-          "laatste_gezien": "2026-09-30T13:39:00.161230",
+          "eerste_gezien": "2026-10-01T14:29:33.932008",
+          "laatste_gezien": "2026-10-01T14:29:33.932008",
           "prijs_historie": [
             {
-              "ts": "2026-09-30T13:39:00.161230",
+              "ts": "2026-10-01T14:29:33.932008",
               "prijs": 300000
             }
           ],
@@ -512,11 +512,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-09-30T13:39:00.210250",
-        "laatste_gezien": "2026-09-30T13:39:00.210250",
+        "eerste_gezien": "2026-10-01T14:29:33.980062",
+        "laatste_gezien": "2026-10-01T14:29:33.980062",
         "prijs_historie": [
           {
-            "ts": "2026-09-30T13:39:00.210250",
+            "ts": "2026-10-01T14:29:33.980062",
             "prijs": 325000
           }
         ],
@@ -870,11 +870,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-09-30T13:39:00.210250",
-          "laatste_gezien": "2026-09-30T13:39:00.210250",
+          "eerste_gezien": "2026-10-01T14:29:33.980062",
+          "laatste_gezien": "2026-10-01T14:29:33.980062",
           "prijs_historie": [
             {
-              "ts": "2026-09-30T13:39:00.210250",
+              "ts": "2026-10-01T14:29:33.980062",
               "prijs": 325000
             }
           ],
@@ -1000,11 +1000,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-09-30T13:39:00.162170",
-        "laatste_gezien": "2026-09-30T13:39:00.162170",
+        "eerste_gezien": "2026-10-01T14:29:33.932797",
+        "laatste_gezien": "2026-10-01T14:29:33.932797",
         "prijs_historie": [
           {
-            "ts": "2026-09-30T13:39:00.162170",
+            "ts": "2026-10-01T14:29:33.932797",
             "prijs": 350000
           }
         ],
@@ -1350,11 +1350,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-09-30T13:39:00.162170",
-          "laatste_gezien": "2026-09-30T13:39:00.162170",
+          "eerste_gezien": "2026-10-01T14:29:33.932797",
+          "laatste_gezien": "2026-10-01T14:29:33.932797",
           "prijs_historie": [
             {
-              "ts": "2026-09-30T13:39:00.162170",
+              "ts": "2026-10-01T14:29:33.932797",
               "prijs": 350000
             }
           ],
@@ -1448,36 +1448,6 @@
   ],
   "biedboek": [],
   "veilingen": [
-    {
-      "adres": "Platostraat 133",
-      "stad": "Rotterdam",
-      "postcode": "3076 BM",
-      "prijs": 1000000,
-      "opp_m2": 0,
-      "prijs_per_m2": 0,
-      "type_woning": "Appartement (beslagveiling)",
-      "url": "",
-      "source": "veiling_vastgoedveiling",
-      "bouwjaar": 0,
-      "foto_url": "https://d147a5vd7kzml6.cloudfront.net/img/veilingportaal_com/42389/2160x1440/resize:normal/1.webp",
-      "calc": {
-        "veiling_datum": "30-09-2026 12:00",
-        "startbod": 1000000,
-        "afslag": 500000,
-        "kosten_aanvullend": 6522,
-        "type_verkoop": "beslagveiling",
-        "onderhands_bod_mogelijk": "nee",
-        "gebruikssituatie": "onbekend",
-        "is_veiling": true,
-        "classificatie": {
-          "category": "wonen",
-          "subtype": "Appartement (beslagveiling)",
-          "is_verhuurd": false,
-          "redenen": [],
-          "risk_flags": []
-        }
-      }
-    },
     {
       "adres": "Zuidbuurt 16",
       "stad": "Maassluis",
@@ -1668,62 +1638,6 @@
         "classificatie": {
           "category": "wonen",
           "subtype": "Portiekwoning (veiling)",
-          "is_verhuurd": false,
-          "redenen": [],
-          "risk_flags": []
-        }
-      }
-    },
-    {
-      "adres": "Piet Heinstraat 32",
-      "stad": "Oud Beijerland",
-      "postcode": "",
-      "prijs": 282000,
-      "opp_m2": 0,
-      "prijs_per_m2": 0.0,
-      "type_woning": "Woonhuis (veiling)",
-      "url": "https://www.openbareverkoop.nl/kavel/4480/piet-heinstraat-32-oud-beijerland",
-      "source": "veiling_openbareverkoop",
-      "bouwjaar": 0,
-      "foto_url": "https://www.openbareverkoop.nl/webcontent/images/F9E41B2F24EE8E835D01BC6193DD679FD0CCECE6",
-      "calc": {
-        "inzet": 282000,
-        "afslag": 284000,
-        "veiling_datum": "13:30",
-        "veilingwijze": "Internet-only Timed",
-        "organisatie": "Openbare Verkoop",
-        "is_veiling": true,
-        "classificatie": {
-          "category": "wonen",
-          "subtype": "Woonhuis (veiling)",
-          "is_verhuurd": false,
-          "redenen": [],
-          "risk_flags": []
-        }
-      }
-    },
-    {
-      "adres": "Prins Mauritsstraat 29",
-      "stad": "Schiedam",
-      "postcode": "",
-      "prijs": 230000,
-      "opp_m2": 0,
-      "prijs_per_m2": 0.0,
-      "type_woning": "Appartement (veiling)",
-      "url": "https://www.openbareverkoop.nl/kavel/4472/prins-mauritsstraat-29-schiedam",
-      "source": "veiling_openbareverkoop",
-      "bouwjaar": 0,
-      "foto_url": "https://www.openbareverkoop.nl/webcontent/images/E8FACCDC895116C00DB8F95232C49DFAC49D58B2",
-      "calc": {
-        "inzet": 230000,
-        "afslag": 231000,
-        "veiling_datum": "13:30",
-        "veilingwijze": "Internet-only Timed",
-        "organisatie": "Openbare Verkoop",
-        "is_veiling": true,
-        "classificatie": {
-          "category": "wonen",
-          "subtype": "Appartement (veiling)",
           "is_verhuurd": false,
           "redenen": [],
           "risk_flags": []
