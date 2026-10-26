@@ -1,10 +1,10 @@
 {
-  "scan_datum": "2026-10-25T12:51:23.869558",
-  "totaal_gescand": 637,
-  "na_filter": 613,
+  "scan_datum": "2026-10-26T14:26:17.601027",
+  "totaal_gescand": 545,
+  "na_filter": 541,
   "classificatie_audit": {
     "per_category": {
-      "wonen": 613,
+      "wonen": 541,
       "transformatie": 0,
       "verhuurd_wonen": 0,
       "skip": 3
@@ -12,7 +12,7 @@
     "top_skip_redenen": {
       "type leeg en geen woon-hint — defensief skip": 3
     },
-    "totaal_voor_filter": 616
+    "totaal_voor_filter": 544
   },
   "kansen": [
     {
@@ -41,11 +41,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-10-25T12:34:38.229797",
-        "laatste_gezien": "2026-10-25T12:34:38.229797",
+        "eerste_gezien": "2026-10-26T14:11:29.908276",
+        "laatste_gezien": "2026-10-26T14:11:29.908276",
         "prijs_historie": [
           {
-            "ts": "2026-10-25T12:34:38.229797",
+            "ts": "2026-10-26T14:11:29.908276",
             "prijs": 300000
           }
         ],
@@ -391,11 +391,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-10-25T12:34:38.229797",
-          "laatste_gezien": "2026-10-25T12:34:38.229797",
+          "eerste_gezien": "2026-10-26T14:11:29.908276",
+          "laatste_gezien": "2026-10-26T14:11:29.908276",
           "prijs_historie": [
             {
-              "ts": "2026-10-25T12:34:38.229797",
+              "ts": "2026-10-26T14:11:29.908276",
               "prijs": 300000
             }
           ],
@@ -512,11 +512,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-10-25T12:34:38.272348",
-        "laatste_gezien": "2026-10-25T12:34:38.272348",
+        "eerste_gezien": "2026-10-26T14:11:29.961094",
+        "laatste_gezien": "2026-10-26T14:11:29.961094",
         "prijs_historie": [
           {
-            "ts": "2026-10-25T12:34:38.272348",
+            "ts": "2026-10-26T14:11:29.961094",
             "prijs": 325000
           }
         ],
@@ -870,11 +870,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-10-25T12:34:38.272348",
-          "laatste_gezien": "2026-10-25T12:34:38.272348",
+          "eerste_gezien": "2026-10-26T14:11:29.961094",
+          "laatste_gezien": "2026-10-26T14:11:29.961094",
           "prijs_historie": [
             {
-              "ts": "2026-10-25T12:34:38.272348",
+              "ts": "2026-10-26T14:11:29.961094",
               "prijs": 325000
             }
           ],
@@ -1000,11 +1000,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-10-25T12:34:38.230812",
-        "laatste_gezien": "2026-10-25T12:34:38.230812",
+        "eerste_gezien": "2026-10-26T14:11:29.909661",
+        "laatste_gezien": "2026-10-26T14:11:29.909661",
         "prijs_historie": [
           {
-            "ts": "2026-10-25T12:34:38.230812",
+            "ts": "2026-10-26T14:11:29.909661",
             "prijs": 350000
           }
         ],
@@ -1350,11 +1350,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-10-25T12:34:38.230812",
-          "laatste_gezien": "2026-10-25T12:34:38.230812",
+          "eerste_gezien": "2026-10-26T14:11:29.909661",
+          "laatste_gezien": "2026-10-26T14:11:29.909661",
           "prijs_historie": [
             {
-              "ts": "2026-10-25T12:34:38.230812",
+              "ts": "2026-10-26T14:11:29.909661",
               "prijs": 350000
             }
           ],
