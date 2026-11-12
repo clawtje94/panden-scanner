@@ -1,10 +1,10 @@
 {
-  "scan_datum": "2026-11-10T15:59:19.814829",
-  "totaal_gescand": 601,
-  "na_filter": 573,
+  "scan_datum": "2026-11-12T16:17:10.736741",
+  "totaal_gescand": 591,
+  "na_filter": 564,
   "classificatie_audit": {
     "per_category": {
-      "wonen": 573,
+      "wonen": 564,
       "transformatie": 0,
       "verhuurd_wonen": 0,
       "skip": 4
@@ -12,7 +12,7 @@
     "top_skip_redenen": {
       "type leeg en geen woon-hint — defensief skip": 4
     },
-    "totaal_voor_filter": 577
+    "totaal_voor_filter": 568
   },
   "kansen": [
     {
@@ -41,11 +41,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-11-10T15:37:09.168561",
-        "laatste_gezien": "2026-11-10T15:37:09.168561",
+        "eerste_gezien": "2026-11-12T15:59:59.698008",
+        "laatste_gezien": "2026-11-12T15:59:59.698008",
         "prijs_historie": [
           {
-            "ts": "2026-11-10T15:37:09.168561",
+            "ts": "2026-11-12T15:59:59.698008",
             "prijs": 275000
           }
         ],
@@ -391,11 +391,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-11-10T15:37:09.168561",
-          "laatste_gezien": "2026-11-10T15:37:09.168561",
+          "eerste_gezien": "2026-11-12T15:59:59.698008",
+          "laatste_gezien": "2026-11-12T15:59:59.698008",
           "prijs_historie": [
             {
-              "ts": "2026-11-10T15:37:09.168561",
+              "ts": "2026-11-12T15:59:59.698008",
               "prijs": 275000
             }
           ],
@@ -512,11 +512,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-11-10T15:37:09.169575",
-        "laatste_gezien": "2026-11-10T15:37:09.169575",
+        "eerste_gezien": "2026-11-12T15:59:59.698736",
+        "laatste_gezien": "2026-11-12T15:59:59.698736",
         "prijs_historie": [
           {
-            "ts": "2026-11-10T15:37:09.169575",
+            "ts": "2026-11-12T15:59:59.698736",
             "prijs": 325000
           }
         ],
@@ -862,11 +862,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-11-10T15:37:09.169575",
-          "laatste_gezien": "2026-11-10T15:37:09.169575",
+          "eerste_gezien": "2026-11-12T15:59:59.698736",
+          "laatste_gezien": "2026-11-12T15:59:59.698736",
           "prijs_historie": [
             {
-              "ts": "2026-11-10T15:37:09.169575",
+              "ts": "2026-11-12T15:59:59.698736",
               "prijs": 325000
             }
           ],
@@ -983,11 +983,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-11-10T15:37:09.200202",
-        "laatste_gezien": "2026-11-10T15:37:09.200202",
+        "eerste_gezien": "2026-11-12T15:59:59.720608",
+        "laatste_gezien": "2026-11-12T15:59:59.720608",
         "prijs_historie": [
           {
-            "ts": "2026-11-10T15:37:09.200202",
+            "ts": "2026-11-12T15:59:59.720608",
             "prijs": 325000
           }
         ],
@@ -1341,11 +1341,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-11-10T15:37:09.200202",
-          "laatste_gezien": "2026-11-10T15:37:09.200202",
+          "eerste_gezien": "2026-11-12T15:59:59.720608",
+          "laatste_gezien": "2026-11-12T15:59:59.720608",
           "prijs_historie": [
             {
-              "ts": "2026-11-10T15:37:09.200202",
+              "ts": "2026-11-12T15:59:59.720608",
               "prijs": 325000
             }
           ],
@@ -1638,6 +1638,34 @@
         "classificatie": {
           "category": "wonen",
           "subtype": "Portiekwoning (veiling)",
+          "is_verhuurd": false,
+          "redenen": [],
+          "risk_flags": []
+        }
+      }
+    },
+    {
+      "adres": "Jacques Urlusplantsoen 193",
+      "stad": "Leiden",
+      "postcode": "",
+      "prijs": 236000,
+      "opp_m2": 0,
+      "prijs_per_m2": 0.0,
+      "type_woning": "Appartement (veiling)",
+      "url": "https://www.openbareverkoop.nl/kavel/4520/jacques-urlusplantsoen-193-leiden",
+      "source": "veiling_openbareverkoop",
+      "bouwjaar": 0,
+      "foto_url": "https://www.openbareverkoop.nl/webcontent/images/D6A424291A53EE7D26BFEFFA0D0866872440D6E4",
+      "calc": {
+        "inzet": 236000,
+        "afslag": 241000,
+        "veiling_datum": "13:30",
+        "veilingwijze": "Internet-only Timed",
+        "organisatie": "Openbare Verkoop",
+        "is_veiling": true,
+        "classificatie": {
+          "category": "wonen",
+          "subtype": "Appartement (veiling)",
           "is_verhuurd": false,
           "redenen": [],
           "risk_flags": []
