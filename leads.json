@@ -1,10 +1,10 @@
 {
-  "scan_datum": "2026-11-13T15:37:08.538038",
-  "totaal_gescand": 598,
-  "na_filter": 571,
+  "scan_datum": "2026-11-14T14:25:20.883692",
+  "totaal_gescand": 594,
+  "na_filter": 567,
   "classificatie_audit": {
     "per_category": {
-      "wonen": 571,
+      "wonen": 567,
       "transformatie": 0,
       "verhuurd_wonen": 0,
       "skip": 4
@@ -12,7 +12,7 @@
     "top_skip_redenen": {
       "type leeg en geen woon-hint — defensief skip": 4
     },
-    "totaal_voor_filter": 575
+    "totaal_voor_filter": 571
   },
   "kansen": [
     {
@@ -41,11 +41,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-11-13T15:21:07.548986",
-        "laatste_gezien": "2026-11-13T15:21:07.548986",
+        "eerste_gezien": "2026-11-14T14:07:45.334912",
+        "laatste_gezien": "2026-11-14T14:07:45.334912",
         "prijs_historie": [
           {
-            "ts": "2026-11-13T15:21:07.548986",
+            "ts": "2026-11-14T14:07:45.334912",
             "prijs": 275000
           }
         ],
@@ -391,11 +391,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-11-13T15:21:07.548986",
-          "laatste_gezien": "2026-11-13T15:21:07.548986",
+          "eerste_gezien": "2026-11-14T14:07:45.334912",
+          "laatste_gezien": "2026-11-14T14:07:45.334912",
           "prijs_historie": [
             {
-              "ts": "2026-11-13T15:21:07.548986",
+              "ts": "2026-11-14T14:07:45.334912",
               "prijs": 275000
             }
           ],
@@ -487,6 +487,1341 @@
       }
     },
     {
+      "adres": "Van Duvenvoordepad",
+      "stad": "Zoetermeer",
+      "postcode": "2722 CB",
+      "wijk": "",
+      "prijs": 340000,
+      "opp_m2": 158,
+      "prijs_per_m2": 2152.0,
+      "type_woning": "",
+      "bouwjaar": 2021,
+      "energie_label": "",
+      "kamers": 3,
+      "source": "pararius",
+      "url": "https://www.pararius.nl/huis-te-koop/zoetermeer/98bddfe1/van-duvenvoordepad",
+      "foto_url": "",
+      "foto_urls": [],
+      "strategie": "fix_flip",
+      "marge_pct": 31.6,
+      "winst_euro": 235441,
+      "roi_pct": 46.2,
+      "totale_kosten": 509082,
+      "verwachte_opbrengst": 744524,
+      "score": 7,
+      "is_opknapper": false,
+      "motion": {
+        "dagen_online": 0,
+        "eerste_gezien": "2026-11-14T14:07:44.664252",
+        "laatste_gezien": "2026-11-14T14:07:44.664252",
+        "prijs_historie": [
+          {
+            "ts": "2026-11-14T14:07:44.664252",
+            "prijs": 340000
+          }
+        ],
+        "eerste_prijs": 340000,
+        "huidige_prijs": 340000,
+        "prijsverlaging_euro": 0,
+        "prijsverlaging_pct": 0.0,
+        "aantal_prijsverlagingen": 0,
+        "makelaarswissel": false,
+        "makelaars_recent": [],
+        "onder_bod_terug": false,
+        "motivated_score": 0,
+        "motivated": false
+      },
+      "ep_online": {},
+      "bag": {},
+      "monument": {},
+      "erfpacht_detail": {},
+      "risks": {
+        "flags": [],
+        "kansen": [],
+        "zwaarste": "geen",
+        "aantal": 0
+      },
+      "dealscore": {
+        "score": 21,
+        "grade": "D",
+        "breakdown": [
+          {
+            "onderdeel": "Marge",
+            "punten": 24,
+            "uitleg": "24.0% (worst-case P25) → 24/30"
+          },
+          {
+            "onderdeel": "Verkoop-confidence",
+            "punten": 0,
+            "uitleg": "onvoldoende (0/100) — N=0 refs"
+          },
+          {
+            "onderdeel": "Verkoop onbetrouwbaar",
+            "punten": -10,
+            "uitleg": "Geen/te weinig vergelijkbare panden"
+          },
+          {
+            "onderdeel": "Kwaliteitsscore",
+            "punten": 7,
+            "uitleg": "7/10 (bouwjaar/label/eigen grond/etc)"
+          }
+        ]
+      },
+      "scenarios": {
+        "worst": {
+          "verkoop_m2": 4320.0,
+          "omzet": 682560,
+          "makelaar": 10238,
+          "notaris": 2500,
+          "netto": 669821,
+          "winst": 160739,
+          "marge_pct": 24.0,
+          "roi_pct": 31.6
+        },
+        "realistic": {
+          "verkoop_m2": 4800,
+          "omzet": 758400,
+          "makelaar": 11376,
+          "notaris": 2500,
+          "netto": 744524,
+          "winst": 235441,
+          "marge_pct": 31.6,
+          "roi_pct": 46.2
+        },
+        "best": {
+          "verkoop_m2": 5280.0,
+          "omzet": 834240,
+          "makelaar": 12513,
+          "notaris": 2500,
+          "netto": 819226,
+          "winst": 310144,
+          "marge_pct": 37.9,
+          "roi_pct": 60.9
+        }
+      },
+      "verkoop_referentie": {
+        "p25_pm2": 0,
+        "p50_pm2": 0,
+        "p75_pm2": 0,
+        "n_refs": 0,
+        "n_high_label": 0,
+        "spread_pct": 0.0,
+        "avg_days_online": null,
+        "match_niveau": "geen",
+        "confidence": 0,
+        "confidence_label": "onvoldoende",
+        "waarschuwingen": [
+          "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
+        ],
+        "wijk": ""
+      },
+      "bod_advies": {
+        "vraagprijs": 340000,
+        "aggressief": {
+          "bod": 299200,
+          "korting_pct": 12.0,
+          "label": "Agressief"
+        },
+        "markt": {
+          "bod": 323000,
+          "korting_pct": 5.0,
+          "label": "Markt"
+        },
+        "plafond": {
+          "bod": 340000,
+          "tekst": "340,000",
+          "label": "Plafond (10% worst-marge)"
+        },
+        "korting_modifier": 0.0,
+        "argumenten": [],
+        "strategie": "Solide deal — markt-bod, niet te veel bieden."
+      },
+      "calc": {
+        "vraagprijs": 340000,
+        "ovb_pct": 8.0,
+        "ovb": 27200,
+        "notaris_makelaar_aankoop": 4420,
+        "aankoop_totaal": 371620,
+        "renovatie_per_m2": 725,
+        "renovatie_detail": {
+          "componenten": [
+            {
+              "naam": "Keuken renovatie",
+              "kosten": 13720,
+              "reden": "Nieuwe fronten, apparatuur, blad, tegelwerk",
+              "kosten_basis": 14000
+            },
+            {
+              "naam": "Badkamer renovatie",
+              "kosten": 11760,
+              "reden": "Nieuwe tegels, sanitair, kranen",
+              "kosten_basis": 12000
+            },
+            {
+              "naam": "Toilet opknappen",
+              "kosten": 2450,
+              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties",
+              "kosten_basis": 2500
+            },
+            {
+              "naam": "Vloeren (70/m²)",
+              "kosten": 10838,
+              "reden": "Egaliseren + PVC click vloer leggen",
+              "kosten_basis": 11060
+            },
+            {
+              "naam": "Schilderwerk (35/m²)",
+              "kosten": 5419,
+              "reden": "Latex muren+plafonds + binnenkozijnen schilderen",
+              "kosten_basis": 5530
+            },
+            {
+              "naam": "Elektra upgraden",
+              "kosten": 3430,
+              "reden": "Groepenkast + extra groepen + stopcontacten",
+              "kosten_basis": 3500
+            },
+            {
+              "naam": "Leidingwerk aanpassen",
+              "kosten": 1960,
+              "reden": "Verouderd leidingwerk bijwerken",
+              "kosten_basis": 2000
+            },
+            {
+              "naam": "Isolatie (dak+vloer+spouw)",
+              "kosten": 11613,
+              "reden": "Label ?: dak 4345, vloer 4740, spouw 2765",
+              "kosten_basis": 11850
+            },
+            {
+              "naam": "Ramen HR++ (19x)",
+              "kosten": 27930,
+              "reden": "Enkel/dubbel glas naar HR++ incl nieuwe kozijnen",
+              "kosten_basis": 28500
+            },
+            {
+              "naam": "CV-ketel nieuw (HR-combi)",
+              "kosten": 2156,
+              "reden": "Nieuwe HR-combi ketel incl installatie",
+              "kosten_basis": 2200
+            },
+            {
+              "naam": "Radiatoren (10x)",
+              "kosten": 1764,
+              "reden": "Oude radiatoren vervangen (10 stuks)",
+              "kosten_basis": 1800
+            },
+            {
+              "naam": "Buitenschilderwerk",
+              "kosten": 2450,
+              "reden": "Kozijnen buiten schilderen",
+              "kosten_basis": 2500
+            },
+            {
+              "naam": "Onvoorzien (12%)",
+              "kosten": 11458,
+              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)",
+              "kosten_basis": 11692
+            },
+            {
+              "naam": "Architect + leges (8%)",
+              "kosten": 7639,
+              "reden": "Ontwerp, vergunning, bouwbegeleiding",
+              "kosten_basis": 7795
+            }
+          ],
+          "totaal": 114587,
+          "per_m2": 725,
+          "onvoorzien_pct": 12,
+          "wijk_factor": 0.98,
+          "wijk_bron": "stad Zoetermeer"
+        },
+        "bouw_totaal": 114587,
+        "looptijd_maanden": 8,
+        "rente_pct": 8.0,
+        "financiering_basis": 428913,
+        "rente": 22875,
+        "totaal_kosten": 509082,
+        "verkoop_m2": 4800,
+        "verkoop_bron": "config",
+        "referenties": [],
+        "bruto_verkoopprijs": 758400,
+        "makelaar_verkoop": 11376,
+        "notaris_verkoop": 2500,
+        "verkoop_kosten": 13876,
+        "netto_opbrengst": 744524,
+        "winst": 235441,
+        "marge_pct": 31.6,
+        "roi_pct": 46.2,
+        "bod_korting_pct": 10,
+        "bod": 306000,
+        "bod_totaal_investering": 469938,
+        "bod_winst": 274585,
+        "bod_marge_pct": 36.9,
+        "scenarios": {
+          "worst": {
+            "verkoop_m2": 4320.0,
+            "omzet": 682560,
+            "makelaar": 10238,
+            "notaris": 2500,
+            "netto": 669821,
+            "winst": 160739,
+            "marge_pct": 24.0,
+            "roi_pct": 31.6
+          },
+          "realistic": {
+            "verkoop_m2": 4800,
+            "omzet": 758400,
+            "makelaar": 11376,
+            "notaris": 2500,
+            "netto": 744524,
+            "winst": 235441,
+            "marge_pct": 31.6,
+            "roi_pct": 46.2
+          },
+          "best": {
+            "verkoop_m2": 5280.0,
+            "omzet": 834240,
+            "makelaar": 12513,
+            "notaris": 2500,
+            "netto": 819226,
+            "winst": 310144,
+            "marge_pct": 37.9,
+            "roi_pct": 60.9
+          }
+        },
+        "verkoop_referentie": {
+          "p25_pm2": 0,
+          "p50_pm2": 0,
+          "p75_pm2": 0,
+          "n_refs": 0,
+          "n_high_label": 0,
+          "spread_pct": 0.0,
+          "avg_days_online": null,
+          "match_niveau": "geen",
+          "confidence": 0,
+          "confidence_label": "onvoldoende",
+          "waarschuwingen": [
+            "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
+          ],
+          "wijk": ""
+        },
+        "splitsen": {
+          "mag_splitsen": true,
+          "uitleg": "Splitsen is waarschijnlijk toegestaan in Zoetermeer. Oppervlak (158m2) voldoet aan minimum (100m2). Per unit: 79m2 (min: 28m2). Vereist: splitsingsvergunning.",
+          "vergunning": "splitsingsvergunning",
+          "min_opp_m2": 100,
+          "max_units": 2,
+          "min_per_unit_m2": 28,
+          "opp_per_unit": 79.0,
+          "bijzonderheden": "Splitsingsvergunning vereist. Relatief soepel beleid. Min 100m2 totaal. Parkeereis per extra unit.",
+          "wijkcheck": null
+        },
+        "opbouwen": {
+          "mag_opbouwen": null,
+          "uitleg": "Geen opbouwbeleid bekend voor Zoetermeer. Check het bestemmingsplan op ruimtelijkeplannen.nl.",
+          "max_hoogte_m": null,
+          "max_verdiepingen": null,
+          "dakopbouw_toegestaan": null,
+          "ruimte_over_m": null,
+          "bijzonderheden": ""
+        },
+        "looptijd_detail": {
+          "totaal_maanden": 8,
+          "vergunning_maanden": 1,
+          "verbouw_maanden": 4.8,
+          "verkoop_maanden": 2,
+          "verkoop_bron": "landelijk gemiddelde",
+          "type": "medium"
+        },
+        "validatie": {
+          "goedgekeurd": true,
+          "onze_pm2": 4800,
+          "bronnen": {},
+          "gem_extern_pm2": 0,
+          "afwijking_pct": 0,
+          "gecorrigeerde_pm2": 4800,
+          "reden": "Geen externe bronnen beschikbaar"
+        },
+        "motion": {
+          "dagen_online": 0,
+          "eerste_gezien": "2026-11-14T14:07:44.664252",
+          "laatste_gezien": "2026-11-14T14:07:44.664252",
+          "prijs_historie": [
+            {
+              "ts": "2026-11-14T14:07:44.664252",
+              "prijs": 340000
+            }
+          ],
+          "eerste_prijs": 340000,
+          "huidige_prijs": 340000,
+          "prijsverlaging_euro": 0,
+          "prijsverlaging_pct": 0.0,
+          "aantal_prijsverlagingen": 0,
+          "makelaarswissel": false,
+          "makelaars_recent": [],
+          "onder_bod_terug": false,
+          "motivated_score": 0,
+          "motivated": false
+        },
+        "cbs": {
+          "wijkcode": "GM0637",
+          "gemeente": "Zoetermeer",
+          "bevolkingsdichtheid": 3772,
+          "gem_woz_x1000": 375,
+          "pct_koop": 56,
+          "pct_huur": 44,
+          "pct_corp": 34,
+          "pct_meergezins": 44,
+          "nieuwbouw_woningen": 292
+        },
+        "wijk_kwaliteit": 60,
+        "risks": {
+          "flags": [],
+          "kansen": [],
+          "zwaarste": "geen",
+          "aantal": 0
+        },
+        "dealscore": {
+          "score": 21,
+          "grade": "D",
+          "breakdown": [
+            {
+              "onderdeel": "Marge",
+              "punten": 24,
+              "uitleg": "24.0% (worst-case P25) → 24/30"
+            },
+            {
+              "onderdeel": "Verkoop-confidence",
+              "punten": 0,
+              "uitleg": "onvoldoende (0/100) — N=0 refs"
+            },
+            {
+              "onderdeel": "Verkoop onbetrouwbaar",
+              "punten": -10,
+              "uitleg": "Geen/te weinig vergelijkbare panden"
+            },
+            {
+              "onderdeel": "Kwaliteitsscore",
+              "punten": 7,
+              "uitleg": "7/10 (bouwjaar/label/eigen grond/etc)"
+            }
+          ]
+        },
+        "bod_advies": {
+          "vraagprijs": 340000,
+          "aggressief": {
+            "bod": 299200,
+            "korting_pct": 12.0,
+            "label": "Agressief"
+          },
+          "markt": {
+            "bod": 323000,
+            "korting_pct": 5.0,
+            "label": "Markt"
+          },
+          "plafond": {
+            "bod": 340000,
+            "tekst": "340,000",
+            "label": "Plafond (10% worst-marge)"
+          },
+          "korting_modifier": 0.0,
+          "argumenten": [],
+          "strategie": "Solide deal — markt-bod, niet te veel bieden."
+        }
+      }
+    },
+    {
+      "adres": "Van Duvenvoordepad",
+      "stad": "Zoetermeer",
+      "postcode": "2722 CB",
+      "wijk": "",
+      "prijs": 350000,
+      "opp_m2": 158,
+      "prijs_per_m2": 2215.0,
+      "type_woning": "",
+      "bouwjaar": 2021,
+      "energie_label": "",
+      "kamers": 3,
+      "source": "pararius",
+      "url": "https://www.pararius.nl/huis-te-koop/zoetermeer/e1c0d41e/van-duvenvoordepad",
+      "foto_url": "",
+      "foto_urls": [],
+      "strategie": "fix_flip",
+      "marge_pct": 30.1,
+      "winst_euro": 223928,
+      "roi_pct": 43.0,
+      "totale_kosten": 520595,
+      "verwachte_opbrengst": 744524,
+      "score": 7,
+      "is_opknapper": false,
+      "motion": {
+        "dagen_online": 0,
+        "eerste_gezien": "2026-11-14T14:07:44.665164",
+        "laatste_gezien": "2026-11-14T14:07:44.665164",
+        "prijs_historie": [
+          {
+            "ts": "2026-11-14T14:07:44.665164",
+            "prijs": 350000
+          }
+        ],
+        "eerste_prijs": 350000,
+        "huidige_prijs": 350000,
+        "prijsverlaging_euro": 0,
+        "prijsverlaging_pct": 0.0,
+        "aantal_prijsverlagingen": 0,
+        "makelaarswissel": false,
+        "makelaars_recent": [],
+        "onder_bod_terug": false,
+        "motivated_score": 0,
+        "motivated": false
+      },
+      "ep_online": {},
+      "bag": {},
+      "monument": {},
+      "erfpacht_detail": {},
+      "risks": {
+        "flags": [],
+        "kansen": [],
+        "zwaarste": "geen",
+        "aantal": 0
+      },
+      "dealscore": {
+        "score": 19,
+        "grade": "D",
+        "breakdown": [
+          {
+            "onderdeel": "Marge",
+            "punten": 22,
+            "uitleg": "22.3% (worst-case P25) → 22/30"
+          },
+          {
+            "onderdeel": "Verkoop-confidence",
+            "punten": 0,
+            "uitleg": "onvoldoende (0/100) — N=0 refs"
+          },
+          {
+            "onderdeel": "Verkoop onbetrouwbaar",
+            "punten": -10,
+            "uitleg": "Geen/te weinig vergelijkbare panden"
+          },
+          {
+            "onderdeel": "Kwaliteitsscore",
+            "punten": 7,
+            "uitleg": "7/10 (bouwjaar/label/eigen grond/etc)"
+          }
+        ]
+      },
+      "scenarios": {
+        "worst": {
+          "verkoop_m2": 4320.0,
+          "omzet": 682560,
+          "makelaar": 10238,
+          "notaris": 2500,
+          "netto": 669821,
+          "winst": 149226,
+          "marge_pct": 22.3,
+          "roi_pct": 28.7
+        },
+        "realistic": {
+          "verkoop_m2": 4800,
+          "omzet": 758400,
+          "makelaar": 11376,
+          "notaris": 2500,
+          "netto": 744524,
+          "winst": 223928,
+          "marge_pct": 30.1,
+          "roi_pct": 43.0
+        },
+        "best": {
+          "verkoop_m2": 5280.0,
+          "omzet": 834240,
+          "makelaar": 12513,
+          "notaris": 2500,
+          "netto": 819226,
+          "winst": 298631,
+          "marge_pct": 36.5,
+          "roi_pct": 57.4
+        }
+      },
+      "verkoop_referentie": {
+        "p25_pm2": 0,
+        "p50_pm2": 0,
+        "p75_pm2": 0,
+        "n_refs": 0,
+        "n_high_label": 0,
+        "spread_pct": 0.0,
+        "avg_days_online": null,
+        "match_niveau": "geen",
+        "confidence": 0,
+        "confidence_label": "onvoldoende",
+        "waarschuwingen": [
+          "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
+        ],
+        "wijk": ""
+      },
+      "bod_advies": {
+        "vraagprijs": 350000,
+        "aggressief": {
+          "bod": 308000,
+          "korting_pct": 12.0,
+          "label": "Agressief"
+        },
+        "markt": {
+          "bod": 332500,
+          "korting_pct": 5.0,
+          "label": "Markt"
+        },
+        "plafond": {
+          "bod": 350000,
+          "tekst": "350,000",
+          "label": "Plafond (10% worst-marge)"
+        },
+        "korting_modifier": 0.0,
+        "argumenten": [],
+        "strategie": "Solide deal — markt-bod, niet te veel bieden."
+      },
+      "calc": {
+        "vraagprijs": 350000,
+        "ovb_pct": 8.0,
+        "ovb": 28000,
+        "notaris_makelaar_aankoop": 4550,
+        "aankoop_totaal": 382550,
+        "renovatie_per_m2": 725,
+        "renovatie_detail": {
+          "componenten": [
+            {
+              "naam": "Keuken renovatie",
+              "kosten": 13720,
+              "reden": "Nieuwe fronten, apparatuur, blad, tegelwerk",
+              "kosten_basis": 14000
+            },
+            {
+              "naam": "Badkamer renovatie",
+              "kosten": 11760,
+              "reden": "Nieuwe tegels, sanitair, kranen",
+              "kosten_basis": 12000
+            },
+            {
+              "naam": "Toilet opknappen",
+              "kosten": 2450,
+              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties",
+              "kosten_basis": 2500
+            },
+            {
+              "naam": "Vloeren (70/m²)",
+              "kosten": 10838,
+              "reden": "Egaliseren + PVC click vloer leggen",
+              "kosten_basis": 11060
+            },
+            {
+              "naam": "Schilderwerk (35/m²)",
+              "kosten": 5419,
+              "reden": "Latex muren+plafonds + binnenkozijnen schilderen",
+              "kosten_basis": 5530
+            },
+            {
+              "naam": "Elektra upgraden",
+              "kosten": 3430,
+              "reden": "Groepenkast + extra groepen + stopcontacten",
+              "kosten_basis": 3500
+            },
+            {
+              "naam": "Leidingwerk aanpassen",
+              "kosten": 1960,
+              "reden": "Verouderd leidingwerk bijwerken",
+              "kosten_basis": 2000
+            },
+            {
+              "naam": "Isolatie (dak+vloer+spouw)",
+              "kosten": 11613,
+              "reden": "Label ?: dak 4345, vloer 4740, spouw 2765",
+              "kosten_basis": 11850
+            },
+            {
+              "naam": "Ramen HR++ (19x)",
+              "kosten": 27930,
+              "reden": "Enkel/dubbel glas naar HR++ incl nieuwe kozijnen",
+              "kosten_basis": 28500
+            },
+            {
+              "naam": "CV-ketel nieuw (HR-combi)",
+              "kosten": 2156,
+              "reden": "Nieuwe HR-combi ketel incl installatie",
+              "kosten_basis": 2200
+            },
+            {
+              "naam": "Radiatoren (10x)",
+              "kosten": 1764,
+              "reden": "Oude radiatoren vervangen (10 stuks)",
+              "kosten_basis": 1800
+            },
+            {
+              "naam": "Buitenschilderwerk",
+              "kosten": 2450,
+              "reden": "Kozijnen buiten schilderen",
+              "kosten_basis": 2500
+            },
+            {
+              "naam": "Onvoorzien (12%)",
+              "kosten": 11458,
+              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)",
+              "kosten_basis": 11692
+            },
+            {
+              "naam": "Architect + leges (8%)",
+              "kosten": 7639,
+              "reden": "Ontwerp, vergunning, bouwbegeleiding",
+              "kosten_basis": 7795
+            }
+          ],
+          "totaal": 114587,
+          "per_m2": 725,
+          "onvoorzien_pct": 12,
+          "wijk_factor": 0.98,
+          "wijk_bron": "stad Zoetermeer"
+        },
+        "bouw_totaal": 114587,
+        "looptijd_maanden": 8,
+        "rente_pct": 8.0,
+        "financiering_basis": 439843,
+        "rente": 23458,
+        "totaal_kosten": 520595,
+        "verkoop_m2": 4800,
+        "verkoop_bron": "config",
+        "referenties": [],
+        "bruto_verkoopprijs": 758400,
+        "makelaar_verkoop": 11376,
+        "notaris_verkoop": 2500,
+        "verkoop_kosten": 13876,
+        "netto_opbrengst": 744524,
+        "winst": 223928,
+        "marge_pct": 30.1,
+        "roi_pct": 43.0,
+        "bod_korting_pct": 10,
+        "bod": 315000,
+        "bod_totaal_investering": 480300,
+        "bod_winst": 264223,
+        "bod_marge_pct": 35.5,
+        "scenarios": {
+          "worst": {
+            "verkoop_m2": 4320.0,
+            "omzet": 682560,
+            "makelaar": 10238,
+            "notaris": 2500,
+            "netto": 669821,
+            "winst": 149226,
+            "marge_pct": 22.3,
+            "roi_pct": 28.7
+          },
+          "realistic": {
+            "verkoop_m2": 4800,
+            "omzet": 758400,
+            "makelaar": 11376,
+            "notaris": 2500,
+            "netto": 744524,
+            "winst": 223928,
+            "marge_pct": 30.1,
+            "roi_pct": 43.0
+          },
+          "best": {
+            "verkoop_m2": 5280.0,
+            "omzet": 834240,
+            "makelaar": 12513,
+            "notaris": 2500,
+            "netto": 819226,
+            "winst": 298631,
+            "marge_pct": 36.5,
+            "roi_pct": 57.4
+          }
+        },
+        "verkoop_referentie": {
+          "p25_pm2": 0,
+          "p50_pm2": 0,
+          "p75_pm2": 0,
+          "n_refs": 0,
+          "n_high_label": 0,
+          "spread_pct": 0.0,
+          "avg_days_online": null,
+          "match_niveau": "geen",
+          "confidence": 0,
+          "confidence_label": "onvoldoende",
+          "waarschuwingen": [
+            "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
+          ],
+          "wijk": ""
+        },
+        "splitsen": {
+          "mag_splitsen": true,
+          "uitleg": "Splitsen is waarschijnlijk toegestaan in Zoetermeer. Oppervlak (158m2) voldoet aan minimum (100m2). Per unit: 79m2 (min: 28m2). Vereist: splitsingsvergunning.",
+          "vergunning": "splitsingsvergunning",
+          "min_opp_m2": 100,
+          "max_units": 2,
+          "min_per_unit_m2": 28,
+          "opp_per_unit": 79.0,
+          "bijzonderheden": "Splitsingsvergunning vereist. Relatief soepel beleid. Min 100m2 totaal. Parkeereis per extra unit.",
+          "wijkcheck": null
+        },
+        "opbouwen": {
+          "mag_opbouwen": null,
+          "uitleg": "Geen opbouwbeleid bekend voor Zoetermeer. Check het bestemmingsplan op ruimtelijkeplannen.nl.",
+          "max_hoogte_m": null,
+          "max_verdiepingen": null,
+          "dakopbouw_toegestaan": null,
+          "ruimte_over_m": null,
+          "bijzonderheden": ""
+        },
+        "looptijd_detail": {
+          "totaal_maanden": 8,
+          "vergunning_maanden": 1,
+          "verbouw_maanden": 4.8,
+          "verkoop_maanden": 2,
+          "verkoop_bron": "landelijk gemiddelde",
+          "type": "medium"
+        },
+        "validatie": {
+          "goedgekeurd": true,
+          "onze_pm2": 4800,
+          "bronnen": {},
+          "gem_extern_pm2": 0,
+          "afwijking_pct": 0,
+          "gecorrigeerde_pm2": 4800,
+          "reden": "Geen externe bronnen beschikbaar"
+        },
+        "motion": {
+          "dagen_online": 0,
+          "eerste_gezien": "2026-11-14T14:07:44.665164",
+          "laatste_gezien": "2026-11-14T14:07:44.665164",
+          "prijs_historie": [
+            {
+              "ts": "2026-11-14T14:07:44.665164",
+              "prijs": 350000
+            }
+          ],
+          "eerste_prijs": 350000,
+          "huidige_prijs": 350000,
+          "prijsverlaging_euro": 0,
+          "prijsverlaging_pct": 0.0,
+          "aantal_prijsverlagingen": 0,
+          "makelaarswissel": false,
+          "makelaars_recent": [],
+          "onder_bod_terug": false,
+          "motivated_score": 0,
+          "motivated": false
+        },
+        "cbs": {
+          "wijkcode": "GM0637",
+          "gemeente": "Zoetermeer",
+          "bevolkingsdichtheid": 3772,
+          "gem_woz_x1000": 375,
+          "pct_koop": 56,
+          "pct_huur": 44,
+          "pct_corp": 34,
+          "pct_meergezins": 44,
+          "nieuwbouw_woningen": 292
+        },
+        "wijk_kwaliteit": 60,
+        "risks": {
+          "flags": [],
+          "kansen": [],
+          "zwaarste": "geen",
+          "aantal": 0
+        },
+        "dealscore": {
+          "score": 19,
+          "grade": "D",
+          "breakdown": [
+            {
+              "onderdeel": "Marge",
+              "punten": 22,
+              "uitleg": "22.3% (worst-case P25) → 22/30"
+            },
+            {
+              "onderdeel": "Verkoop-confidence",
+              "punten": 0,
+              "uitleg": "onvoldoende (0/100) — N=0 refs"
+            },
+            {
+              "onderdeel": "Verkoop onbetrouwbaar",
+              "punten": -10,
+              "uitleg": "Geen/te weinig vergelijkbare panden"
+            },
+            {
+              "onderdeel": "Kwaliteitsscore",
+              "punten": 7,
+              "uitleg": "7/10 (bouwjaar/label/eigen grond/etc)"
+            }
+          ]
+        },
+        "bod_advies": {
+          "vraagprijs": 350000,
+          "aggressief": {
+            "bod": 308000,
+            "korting_pct": 12.0,
+            "label": "Agressief"
+          },
+          "markt": {
+            "bod": 332500,
+            "korting_pct": 5.0,
+            "label": "Markt"
+          },
+          "plafond": {
+            "bod": 350000,
+            "tekst": "350,000",
+            "label": "Plafond (10% worst-marge)"
+          },
+          "korting_modifier": 0.0,
+          "argumenten": [],
+          "strategie": "Solide deal — markt-bod, niet te veel bieden."
+        }
+      }
+    },
+    {
+      "adres": "Van Duvenvoordepad",
+      "stad": "Zoetermeer",
+      "postcode": "2722 CB",
+      "wijk": "",
+      "prijs": 335000,
+      "opp_m2": 149,
+      "prijs_per_m2": 2248.0,
+      "type_woning": "",
+      "bouwjaar": 2021,
+      "energie_label": "",
+      "kamers": 3,
+      "source": "pararius",
+      "url": "https://www.pararius.nl/huis-te-koop/zoetermeer/0c725dbc/van-duvenvoordepad",
+      "foto_url": "",
+      "foto_urls": [],
+      "strategie": "fix_flip",
+      "marge_pct": 28.9,
+      "winst_euro": 202631,
+      "roi_pct": 40.6,
+      "totale_kosten": 499340,
+      "verwachte_opbrengst": 701972,
+      "score": 6,
+      "is_opknapper": false,
+      "motion": {
+        "dagen_online": 0,
+        "eerste_gezien": "2026-11-14T14:07:44.666006",
+        "laatste_gezien": "2026-11-14T14:07:44.666006",
+        "prijs_historie": [
+          {
+            "ts": "2026-11-14T14:07:44.666006",
+            "prijs": 335000
+          }
+        ],
+        "eerste_prijs": 335000,
+        "huidige_prijs": 335000,
+        "prijsverlaging_euro": 0,
+        "prijsverlaging_pct": 0.0,
+        "aantal_prijsverlagingen": 0,
+        "makelaarswissel": false,
+        "makelaars_recent": [],
+        "onder_bod_terug": false,
+        "motivated_score": 0,
+        "motivated": false
+      },
+      "ep_online": {},
+      "bag": {},
+      "monument": {},
+      "erfpacht_detail": {},
+      "risks": {
+        "flags": [],
+        "kansen": [],
+        "zwaarste": "geen",
+        "aantal": 0
+      },
+      "dealscore": {
+        "score": 16,
+        "grade": "D",
+        "breakdown": [
+          {
+            "onderdeel": "Marge",
+            "punten": 20,
+            "uitleg": "20.9% (worst-case P25) → 20/30"
+          },
+          {
+            "onderdeel": "Verkoop-confidence",
+            "punten": 0,
+            "uitleg": "onvoldoende (0/100) — N=0 refs"
+          },
+          {
+            "onderdeel": "Verkoop onbetrouwbaar",
+            "punten": -10,
+            "uitleg": "Geen/te weinig vergelijkbare panden"
+          },
+          {
+            "onderdeel": "Kwaliteitsscore",
+            "punten": 6,
+            "uitleg": "6/10 (bouwjaar/label/eigen grond/etc)"
+          }
+        ]
+      },
+      "scenarios": {
+        "worst": {
+          "verkoop_m2": 4320.0,
+          "omzet": 643680,
+          "makelaar": 9655,
+          "notaris": 2500,
+          "netto": 631524,
+          "winst": 132184,
+          "marge_pct": 20.9,
+          "roi_pct": 26.5
+        },
+        "realistic": {
+          "verkoop_m2": 4800,
+          "omzet": 715200,
+          "makelaar": 10728,
+          "notaris": 2500,
+          "netto": 701972,
+          "winst": 202631,
+          "marge_pct": 28.9,
+          "roi_pct": 40.6
+        },
+        "best": {
+          "verkoop_m2": 5280.0,
+          "omzet": 786720,
+          "makelaar": 11800,
+          "notaris": 2500,
+          "netto": 772419,
+          "winst": 273078,
+          "marge_pct": 35.4,
+          "roi_pct": 54.7
+        }
+      },
+      "verkoop_referentie": {
+        "p25_pm2": 0,
+        "p50_pm2": 0,
+        "p75_pm2": 0,
+        "n_refs": 0,
+        "n_high_label": 0,
+        "spread_pct": 0.0,
+        "avg_days_online": null,
+        "match_niveau": "geen",
+        "confidence": 0,
+        "confidence_label": "onvoldoende",
+        "waarschuwingen": [
+          "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
+        ],
+        "wijk": ""
+      },
+      "bod_advies": {
+        "vraagprijs": 335000,
+        "aggressief": {
+          "bod": 294800,
+          "korting_pct": 12.0,
+          "label": "Agressief"
+        },
+        "markt": {
+          "bod": 318250,
+          "korting_pct": 5.0,
+          "label": "Markt"
+        },
+        "plafond": {
+          "bod": 335000,
+          "tekst": "335,000",
+          "label": "Plafond (10% worst-marge)"
+        },
+        "korting_modifier": 0.0,
+        "argumenten": [],
+        "strategie": "Solide deal — markt-bod, niet te veel bieden."
+      },
+      "calc": {
+        "vraagprijs": 335000,
+        "ovb_pct": 8.0,
+        "ovb": 26800,
+        "notaris_makelaar_aankoop": 4355,
+        "aankoop_totaal": 366155,
+        "renovatie_per_m2": 743,
+        "renovatie_detail": {
+          "componenten": [
+            {
+              "naam": "Keuken renovatie",
+              "kosten": 13720,
+              "reden": "Nieuwe fronten, apparatuur, blad, tegelwerk",
+              "kosten_basis": 14000
+            },
+            {
+              "naam": "Badkamer renovatie",
+              "kosten": 11760,
+              "reden": "Nieuwe tegels, sanitair, kranen",
+              "kosten_basis": 12000
+            },
+            {
+              "naam": "Toilet opknappen",
+              "kosten": 2450,
+              "reden": "Nieuwe WC pot, fontein, kleine tegelreparaties",
+              "kosten_basis": 2500
+            },
+            {
+              "naam": "Vloeren (70/m²)",
+              "kosten": 10221,
+              "reden": "Egaliseren + PVC click vloer leggen",
+              "kosten_basis": 10430
+            },
+            {
+              "naam": "Schilderwerk (35/m²)",
+              "kosten": 5110,
+              "reden": "Latex muren+plafonds + binnenkozijnen schilderen",
+              "kosten_basis": 5215
+            },
+            {
+              "naam": "Elektra upgraden",
+              "kosten": 3430,
+              "reden": "Groepenkast + extra groepen + stopcontacten",
+              "kosten_basis": 3500
+            },
+            {
+              "naam": "Leidingwerk aanpassen",
+              "kosten": 1960,
+              "reden": "Verouderd leidingwerk bijwerken",
+              "kosten_basis": 2000
+            },
+            {
+              "naam": "Isolatie (dak+vloer+spouw)",
+              "kosten": 10951,
+              "reden": "Label ?: dak 4097, vloer 4470, spouw 2607",
+              "kosten_basis": 11175
+            },
+            {
+              "naam": "Ramen HR++ (18x)",
+              "kosten": 26460,
+              "reden": "Enkel/dubbel glas naar HR++ incl nieuwe kozijnen",
+              "kosten_basis": 27000
+            },
+            {
+              "naam": "CV-ketel nieuw (HR-combi)",
+              "kosten": 2156,
+              "reden": "Nieuwe HR-combi ketel incl installatie",
+              "kosten_basis": 2200
+            },
+            {
+              "naam": "Radiatoren (9x)",
+              "kosten": 1587,
+              "reden": "Oude radiatoren vervangen (9 stuks)",
+              "kosten_basis": 1620
+            },
+            {
+              "naam": "Buitenschilderwerk",
+              "kosten": 2450,
+              "reden": "Kozijnen buiten schilderen",
+              "kosten_basis": 2500
+            },
+            {
+              "naam": "Onvoorzien (12%)",
+              "kosten": 11070,
+              "reden": "Buffer voor verrassingen (asbest, fundering, verborgen gebreken)",
+              "kosten_basis": 11296
+            },
+            {
+              "naam": "Architect + leges (8%)",
+              "kosten": 7380,
+              "reden": "Ontwerp, vergunning, bouwbegeleiding",
+              "kosten_basis": 7531
+            }
+          ],
+          "totaal": 110705,
+          "per_m2": 743,
+          "onvoorzien_pct": 12,
+          "wijk_factor": 0.98,
+          "wijk_bron": "stad Zoetermeer"
+        },
+        "bouw_totaal": 110705,
+        "looptijd_maanden": 8,
+        "rente_pct": 8.0,
+        "financiering_basis": 421507,
+        "rente": 22480,
+        "totaal_kosten": 499340,
+        "verkoop_m2": 4800,
+        "verkoop_bron": "config",
+        "referenties": [],
+        "bruto_verkoopprijs": 715200,
+        "makelaar_verkoop": 10728,
+        "notaris_verkoop": 2500,
+        "verkoop_kosten": 13228,
+        "netto_opbrengst": 701972,
+        "winst": 202631,
+        "marge_pct": 28.9,
+        "roi_pct": 40.6,
+        "bod_korting_pct": 10,
+        "bod": 301500,
+        "bod_totaal_investering": 460772,
+        "bod_winst": 241199,
+        "bod_marge_pct": 34.4,
+        "scenarios": {
+          "worst": {
+            "verkoop_m2": 4320.0,
+            "omzet": 643680,
+            "makelaar": 9655,
+            "notaris": 2500,
+            "netto": 631524,
+            "winst": 132184,
+            "marge_pct": 20.9,
+            "roi_pct": 26.5
+          },
+          "realistic": {
+            "verkoop_m2": 4800,
+            "omzet": 715200,
+            "makelaar": 10728,
+            "notaris": 2500,
+            "netto": 701972,
+            "winst": 202631,
+            "marge_pct": 28.9,
+            "roi_pct": 40.6
+          },
+          "best": {
+            "verkoop_m2": 5280.0,
+            "omzet": 786720,
+            "makelaar": 11800,
+            "notaris": 2500,
+            "netto": 772419,
+            "winst": 273078,
+            "marge_pct": 35.4,
+            "roi_pct": 54.7
+          }
+        },
+        "verkoop_referentie": {
+          "p25_pm2": 0,
+          "p50_pm2": 0,
+          "p75_pm2": 0,
+          "n_refs": 0,
+          "n_high_label": 0,
+          "spread_pct": 0.0,
+          "avg_days_online": null,
+          "match_niveau": "geen",
+          "confidence": 0,
+          "confidence_label": "onvoldoende",
+          "waarschuwingen": [
+            "Geen vergelijkbare panden gevonden — verkoop-schatting valt terug op config"
+          ],
+          "wijk": ""
+        },
+        "splitsen": {
+          "mag_splitsen": true,
+          "uitleg": "Splitsen is waarschijnlijk toegestaan in Zoetermeer. Oppervlak (149m2) voldoet aan minimum (100m2). Per unit: 74m2 (min: 28m2). Vereist: splitsingsvergunning.",
+          "vergunning": "splitsingsvergunning",
+          "min_opp_m2": 100,
+          "max_units": 2,
+          "min_per_unit_m2": 28,
+          "opp_per_unit": 74.5,
+          "bijzonderheden": "Splitsingsvergunning vereist. Relatief soepel beleid. Min 100m2 totaal. Parkeereis per extra unit.",
+          "wijkcheck": null
+        },
+        "opbouwen": {
+          "mag_opbouwen": null,
+          "uitleg": "Geen opbouwbeleid bekend voor Zoetermeer. Check het bestemmingsplan op ruimtelijkeplannen.nl.",
+          "max_hoogte_m": null,
+          "max_verdiepingen": null,
+          "dakopbouw_toegestaan": null,
+          "ruimte_over_m": null,
+          "bijzonderheden": ""
+        },
+        "looptijd_detail": {
+          "totaal_maanden": 8,
+          "vergunning_maanden": 1,
+          "verbouw_maanden": 4.7,
+          "verkoop_maanden": 2,
+          "verkoop_bron": "landelijk gemiddelde",
+          "type": "medium"
+        },
+        "validatie": {
+          "goedgekeurd": true,
+          "onze_pm2": 4800,
+          "bronnen": {},
+          "gem_extern_pm2": 0,
+          "afwijking_pct": 0,
+          "gecorrigeerde_pm2": 4800,
+          "reden": "Geen externe bronnen beschikbaar"
+        },
+        "motion": {
+          "dagen_online": 0,
+          "eerste_gezien": "2026-11-14T14:07:44.666006",
+          "laatste_gezien": "2026-11-14T14:07:44.666006",
+          "prijs_historie": [
+            {
+              "ts": "2026-11-14T14:07:44.666006",
+              "prijs": 335000
+            }
+          ],
+          "eerste_prijs": 335000,
+          "huidige_prijs": 335000,
+          "prijsverlaging_euro": 0,
+          "prijsverlaging_pct": 0.0,
+          "aantal_prijsverlagingen": 0,
+          "makelaarswissel": false,
+          "makelaars_recent": [],
+          "onder_bod_terug": false,
+          "motivated_score": 0,
+          "motivated": false
+        },
+        "cbs": {
+          "wijkcode": "GM0637",
+          "gemeente": "Zoetermeer",
+          "bevolkingsdichtheid": 3772,
+          "gem_woz_x1000": 375,
+          "pct_koop": 56,
+          "pct_huur": 44,
+          "pct_corp": 34,
+          "pct_meergezins": 44,
+          "nieuwbouw_woningen": 292
+        },
+        "wijk_kwaliteit": 60,
+        "risks": {
+          "flags": [],
+          "kansen": [],
+          "zwaarste": "geen",
+          "aantal": 0
+        },
+        "dealscore": {
+          "score": 16,
+          "grade": "D",
+          "breakdown": [
+            {
+              "onderdeel": "Marge",
+              "punten": 20,
+              "uitleg": "20.9% (worst-case P25) → 20/30"
+            },
+            {
+              "onderdeel": "Verkoop-confidence",
+              "punten": 0,
+              "uitleg": "onvoldoende (0/100) — N=0 refs"
+            },
+            {
+              "onderdeel": "Verkoop onbetrouwbaar",
+              "punten": -10,
+              "uitleg": "Geen/te weinig vergelijkbare panden"
+            },
+            {
+              "onderdeel": "Kwaliteitsscore",
+              "punten": 6,
+              "uitleg": "6/10 (bouwjaar/label/eigen grond/etc)"
+            }
+          ]
+        },
+        "bod_advies": {
+          "vraagprijs": 335000,
+          "aggressief": {
+            "bod": 294800,
+            "korting_pct": 12.0,
+            "label": "Agressief"
+          },
+          "markt": {
+            "bod": 318250,
+            "korting_pct": 5.0,
+            "label": "Markt"
+          },
+          "plafond": {
+            "bod": 335000,
+            "tekst": "335,000",
+            "label": "Plafond (10% worst-marge)"
+          },
+          "korting_modifier": 0.0,
+          "argumenten": [],
+          "strategie": "Solide deal — markt-bod, niet te veel bieden."
+        }
+      }
+    },
+    {
       "adres": "2e Carnissestraat 23",
       "stad": "Rotterdam",
       "postcode": "3083 JE",
@@ -512,11 +1847,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-11-13T15:21:07.549829",
-        "laatste_gezien": "2026-11-13T15:21:07.549829",
+        "eerste_gezien": "2026-11-14T14:07:45.336145",
+        "laatste_gezien": "2026-11-14T14:07:45.336145",
         "prijs_historie": [
           {
-            "ts": "2026-11-13T15:21:07.549829",
+            "ts": "2026-11-14T14:07:45.336145",
             "prijs": 325000
           }
         ],
@@ -862,11 +2197,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-11-13T15:21:07.549829",
-          "laatste_gezien": "2026-11-13T15:21:07.549829",
+          "eerste_gezien": "2026-11-14T14:07:45.336145",
+          "laatste_gezien": "2026-11-14T14:07:45.336145",
           "prijs_historie": [
             {
-              "ts": "2026-11-13T15:21:07.549829",
+              "ts": "2026-11-14T14:07:45.336145",
               "prijs": 325000
             }
           ],
@@ -983,11 +2318,11 @@
       "is_opknapper": false,
       "motion": {
         "dagen_online": 0,
-        "eerste_gezien": "2026-11-13T15:21:07.575666",
-        "laatste_gezien": "2026-11-13T15:21:07.575666",
+        "eerste_gezien": "2026-11-14T14:07:45.527826",
+        "laatste_gezien": "2026-11-14T14:07:45.527826",
         "prijs_historie": [
           {
-            "ts": "2026-11-13T15:21:07.575666",
+            "ts": "2026-11-14T14:07:45.527826",
             "prijs": 325000
           }
         ],
@@ -1341,11 +2676,11 @@
         },
         "motion": {
           "dagen_online": 0,
-          "eerste_gezien": "2026-11-13T15:21:07.575666",
-          "laatste_gezien": "2026-11-13T15:21:07.575666",
+          "eerste_gezien": "2026-11-14T14:07:45.527826",
+          "laatste_gezien": "2026-11-14T14:07:45.527826",
           "prijs_historie": [
             {
-              "ts": "2026-11-13T15:21:07.575666",
+              "ts": "2026-11-14T14:07:45.527826",
               "prijs": 325000
             }
           ],
